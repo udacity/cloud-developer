@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-config
+data:
+  config: |
+    [default]
+    region=__INSERT_AWS_REGION___
+  credentials: |
+    [default]
+    aws_access_key_id=___INSERT_AWS_ACCESS_KEY_ID___
+    aws_secret_access_key=___INSERT_AWS_SECRET_ACCESS_KEY

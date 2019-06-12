@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  nginx.conf: "worker_processes 1;\n  \nevents { worker_connections 1024; }\nerror_log
+    /dev/stdout debug;\n\nhttp {\n\n    sendfile on;\n\n    upstream user {\n        server
+    backend-user:8080;\n    }\n\n    upstream feed {\n        server backend-feed:8080;\n
+    \   }\n    \n    proxy_set_header   Host $host;\n    proxy_set_header   X-Real-IP
+    $remote_addr;\n    proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;\n
+    \   proxy_set_header   X-Forwarded-Host $server_name;\n    \n    server {\n        listen
+    8080;\n        location /api/v0/feed {\n            proxy_pass         http://feed;\n
+    \       }\n        location /api/v0/users {\n            proxy_pass         http://user;\n
+    \       }            \n    }\n\n}"
+
