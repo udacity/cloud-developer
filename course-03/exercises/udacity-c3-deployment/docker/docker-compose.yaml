@@ -6,9 +6,9 @@ services:
           - 8080:8080
       restart: always
       depends_on:
-        - backend_user
-        - backend_feed     
-  backend_user:
+        - backend-user
+        - backend-feed     
+  backend-user:
     image: scheele/udacity-restapi-user
     volumes:
       - $HOME/.aws:/root/.aws
@@ -21,7 +21,8 @@ services:
       AWS_PROFILE: $AWS_PROFILE 
       AWS_BUCKET: $AWS_BUCKET
       JWT_SECRET: $JWT_SECRET
-  backend_feed:
+      URL: "http://localhost:8100"
+  backend-feed:
     image: scheele/udacity-restapi-feed
     volumes:
       - $HOME/.aws:/root/.aws
@@ -34,7 +35,8 @@ services:
       AWS_PROFILE: $AWS_PROFILE 
       AWS_BUCKET: $AWS_BUCKET
       JWT_SECRET: $JWT_SECRET
+      URL: "http://localhost:8100"
   frontend:
-    image: scheele/udacity-frontend
+    image: scheele/udacity-frontend:local
     ports:
       - "8100:80"
