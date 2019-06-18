@@ -1,40 +1,26 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert -f docker-compose.yml
-    kompose.version: 1.18.0 (06a2e56)
-  creationTimestamp: null
   labels:
-    io.kompose.service: backend-user
+    service: backend-user
   name: backend-user
 spec:
   replicas: 1
-  strategy:
-    type: Recreate
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        io.kompose.service: backend-user
+        service: backend-user
     spec:
       containers:
-      - env:
-        - name: AWS_BUCKET
+      - image: scheele/udacity-restapi-user
+        name: backend-user 
+        imagePullPolicy: Always  
+        env:
+        - name: URL
           valueFrom:
             configMapKeyRef:
               name: env-config
-              key: AWS_BUCKET
-        - name: AWS_PROFILE
-          valueFrom:
-            configMapKeyRef:
-              name: env-config
-              key: AWS_PROFILE
-        - name: AWS_REGION
-          valueFrom:
-            configMapKeyRef:
-              name: env-config
-              key: AWS_REGION
+              key: URL 
         - name: JWT_SECRET
           valueFrom:
             configMapKeyRef:
@@ -60,15 +46,6 @@ spec:
             secretKeyRef:
               name: env-secret
               key: POSTGRESS_USERNAME
-        image: scheele/udacity-restapi-user
-        name: backend-user
-        resources: {}
-        volumeMounts:
-        - mountPath: /root/.aws
-          name: backend-user-claim0
       restartPolicy: Always
-      volumes:
-      - name: backend-user-claim0
-        persistentVolumeClaim:
-          claimName: backend-user-claim0
-status: {}
+
+
