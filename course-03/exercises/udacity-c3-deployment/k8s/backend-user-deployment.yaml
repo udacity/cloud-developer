@@ -5,7 +5,7 @@ metadata:
     service: backend-user
   name: backend-user
 spec:
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -15,6 +15,13 @@ spec:
       - image: scheele/udacity-restapi-user
         name: backend-user 
         imagePullPolicy: Always  
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "1024Mi"
+            cpu: "500m"      
         env:
         - name: URL
           valueFrom:
