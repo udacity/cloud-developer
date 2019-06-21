@@ -10,8 +10,6 @@ services:
         - backend-feed     
   backend-user:
     image: scheele/udacity-restapi-user
-    volumes:
-      - $HOME/.aws:/root/.aws
     environment:
       POSTGRESS_USERNAME: $POSTGRESS_USERNAME
       POSTGRESS_PASSWORD: $POSTGRESS_PASSWORD 
