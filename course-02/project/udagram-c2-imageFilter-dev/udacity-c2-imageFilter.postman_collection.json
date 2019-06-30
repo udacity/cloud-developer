@@ -1,0 +1,83 @@
+{
+	"info": {
+		"_postman_id": "8499b2ad-364f-446f-8d53-4532e0839657",
+		"name": "cloud-cdnd-c2-final",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Filter image /filteredimage?image_url",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "90982951-6cba-41d6-9f43-8ca3ea0bcf06",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{S_HOST}}/filteredimage?image_url={{SITE}}",
+					"host": [
+						"{{S_HOST}}"
+					],
+					"path": [
+						"filteredimage"
+					],
+					"query": [
+						{
+							"key": "image_url",
+							"value": "{{SITE}}"
+						}
+					]
+				},
+				"description": "Process a query of a url, filter the image if it exists, send it to user, and delete the file on the server."
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "5887df52-1889-4e1f-82ee-054ab37b450a",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "5e332dfe-c833-430b-b947-ab6c00311c28",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "f514885f-d16d-4f9d-8559-10267da3f5fe",
+			"key": "HOST",
+			"value": "http://udagram-c2-imagefilter-dev.us-east-2.elasticbeanstalk.com",
+			"type": "string"
+		},
+		{
+			"id": "cfb6718d-089e-4eef-ba62-e561dbda90d0",
+			"key": "SITE",
+			"value": "https://timedotcom.files.wordpress.com/2019/03/kitten-report.jpg",
+			"type": "string"
+		}
+	]
+}
