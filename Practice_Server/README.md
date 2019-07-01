@@ -75,7 +75,7 @@ Give an example
 ## Authors
 This repo was forked from Udacity's GitHub page as per the assignment
 [udacity/cloud-developer](https://github.com/udacity/cloud-developer/tree/master/course-02)
-* Udacity Cloud Developer authors: **Udacavs** and **eddyudacity** for their *initial work*
+* Udacity Cloud Developer authors: **Udacity** and **[Michele Cavaioni](https://github.com/Udacavs)** for their *initial work*
 * Udacity Cloud Developer student: **dSalazar10** for my participation in the exercises
 
 ## License
