@@ -1,17 +1,56 @@
 {
 	"info": {
-		"_postman_id": "8499b2ad-364f-446f-8d53-4532e0839657",
-		"name": "cloud-cdnd-c2-final",
+		"_postman_id": "e476c8a0-01c7-4161-92a4-71961c91fd42",
+		"name": "Image_Filter_Server",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Filter image /filteredimage?image_url",
+			"name": "Filter image from localhost",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"id": "90982951-6cba-41d6-9f43-8ca3ea0bcf06",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/filteredimage?image_url={{SITE}}",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"filteredimage"
+					],
+					"query": [
+						{
+							"key": "image_url",
+							"value": "{{SITE}}"
+						}
+					]
+				},
+				"description": "Process a query of a url, filter the image if it exists, send it to user, and delete the file on the server."
+			},
+			"response": []
+		},
+		{
+			"name": "Filter image from EB",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7cea7049-a30d-4ec8-b7ce-8b569609cdf9",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -25,9 +64,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{S_HOST}}/filteredimage?image_url={{SITE}}",
+					"raw": "{{EB_HOST}}/filteredimage?image_url={{SITE}}",
 					"host": [
-						"{{S_HOST}}"
+						"{{EB_HOST}}"
 					],
 					"path": [
 						"filteredimage"
@@ -38,8 +77,7 @@
 							"value": "{{SITE}}"
 						}
 					]
-				},
-				"description": "Process a query of a url, filter the image if it exists, send it to user, and delete the file on the server."
+				}
 			},
 			"response": []
 		}
@@ -68,15 +106,21 @@
 	],
 	"variable": [
 		{
-			"id": "f514885f-d16d-4f9d-8559-10267da3f5fe",
+			"id": "6b48db73-23f5-438b-a209-9a22baecbb0b",
 			"key": "HOST",
-			"value": "http://udagram-c2-imagefilter-dev.us-east-2.elasticbeanstalk.com",
+			"value": "http://localhost:8082",
 			"type": "string"
 		},
 		{
-			"id": "cfb6718d-089e-4eef-ba62-e561dbda90d0",
+			"id": "1a8238e2-c101-4272-8efc-f9ce297ad471",
 			"key": "SITE",
 			"value": "https://timedotcom.files.wordpress.com/2019/03/kitten-report.jpg",
+			"type": "string"
+		},
+		{
+			"id": "ede136df-e30d-4b79-80b7-137c619ccfab",
+			"key": "EB_HOST",
+			"value": "http://udagram-c2-imagefilter-dev.us-east-2.elasticbeanstalk.com",
 			"type": "string"
 		}
 	]

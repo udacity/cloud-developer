@@ -28,12 +28,14 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
       res.status(400).send(`image_url required`);
     }
     const img_url = req.query.image_url;
-    // call filterImageFromURL(image_url) to filter the image
-    const filteredPath = await filterImageFromURL(img_url);
-    // return the filtered image file
-    res.status(200).send(filteredPath);
-    // deletes any files on the server on finish of the response
-    await deleteLocalFiles(Array<string>(filteredPath));
+    // Filter the image
+    filterImageFromURL(img_url).then(async(data) => {
+      // Send the resulting file in the response
+      res.sendFile(data, {}, function (err) {
+        // Deletes any files on the server on finish of the response
+        deleteLocalFiles([data]);
+      })
+    });
   });
 
   // Start the Server
