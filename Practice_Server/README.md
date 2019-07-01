@@ -68,7 +68,7 @@ This repo was forked from Udacity's GitHub page as per the assignment
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/dSalazar10/App-Udagram/blob/master/LICENSE) file for details
 
 ## Acknowledgments
 
