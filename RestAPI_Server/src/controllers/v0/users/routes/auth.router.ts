@@ -34,6 +34,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
     // If we do have a header, then split it into salt and hash
     const token_bearer = req.headers.authorization.split(' ');
     // Check to see if there are actually two parts
+    // tslint:disable-next-line:triple-equals
     if (token_bearer.length != 2) {
         return res.status(401).send({ message: `Malformed token.` });
     }
