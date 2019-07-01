@@ -42,29 +42,17 @@ You will see a new folder has been added to the collections list on the left.
 If you click on the folder, you will be presented with a list of examples and exercises.
 
 To run a single test:
+```
 * Be sure that your server is running. If not, run the following command `npm run dev`
 * Back in Postman, click any of the listed requests on the left side
 * Click the blue Send button on the right side
+```
 
 For example:
+```
 * Making a GET request of `http://localhost:8082/` to the server
 * Responds with `Welcome to the Cloud!`
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
 ```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-``` 
 
 ## Built With
 
