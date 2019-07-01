@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 
 import { User } from '../models/User';
-import { AuthRouter, requireAuth } from './auth.router';
+import { AuthRouter } from './auth.router';
 
 const router: Router = Router();
 

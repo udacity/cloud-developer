@@ -51,7 +51,7 @@ router.patch('/:id', requireAuth, async (req: Request, res: Response) => {
     item.url = AWS.getPutSignedUrl(fileName);
     item.updatedAt = new Date();
     // Return item
-    res.status(200).send(item);
+    res.send(item);
 });
 
 
