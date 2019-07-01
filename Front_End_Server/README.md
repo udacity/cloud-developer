@@ -1,57 +1,89 @@
-# Udagram Simple Frontend
+# Project Title
+@TODO: Complete Readme
 
-Udagram is a simple cloud application developed along side the Udacity Cloud Engineering Nanodegree. It allows users to register and log into a web client, post photos to the feed, and process photos using an image filtering microservice.
+One Paragraph of project description goes here
 
-The project is split into three parts:
-1. [The Simple Frontend](https://github.com/grutt/udacity-c2-frontend) `This Repo`
-A basic Ionic client web application which consumes the RestAPI Backend. 
-2. [The RestAPI Backend](https://github.com/grutt/udacity-c2-restapi)
-Which is a Node-Express server which can be deployed to a cloud service.
-3. [The Image Filtering Microservice](https://github.com/grutt/udacity-c2-image-filter)
-Which is the final project for the course. It is a Node-Express application which runs a simple Python script to process images.
+## Getting Started
 
-***
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-## Getting Setup
+### Prerequisites
 
-> _tip_: this frontend is designed to work with [The RestAPI Backend](https://github.com/grutt/udacity-c2-restapi). It is recommended you stand up the backend first, test using Postman, and then the frontend should integrate.
+What things you need to install the software and how to install them
 
-### Installing Node and NPM
-This project depends on Nodejs and Node Package Manager (NPM). Before continuing, you must download and install Node (NPM is included) from [https://nodejs.com/en/download](https://nodejs.org/en/download/).
-
-### Installing Ionic Cli
-The Ionic Command Line Interface is required to serve and build the frontend. Instructions for installing the CLI can be found in the [Ionic Framework Docs](https://ionicframework.com/docs/installation/cli).
-
-### Installing project dependencies
-
-This project uses NPM to manage software dependencies. NPM Relies on the package.json file located in the root of this repository. After cloning, open your terminal and run:
-```bash
-npm install
 ```
->_tip_: **npm i** is shorthand for **npm install**
-
-### Configure The Backend Endpoint
-Ionic uses enviornment files located in `./src/enviornments/enviornment.*.ts` to load configuration variables at runtime. By default `environment.ts` is used for development and `enviornment.prod.ts` is used for produciton. The `apiHost` variable should be set to your server url either locally or in the cloud.
-
-***
-### Running the Development Server
-Ionic CLI provides an easy to use development server to run and autoreload the frontend. This allows you to make quick changes and see them in real time in your browser. To run the development server, open terminal and run:
-
-```bash
-ionic serve
+Give examples
 ```
 
-### Building the Static Frontend Files
-Ionic CLI can build the frontend into static HTML/CSS/JavaScript files. These files can be uploaded to a host to be consumed by users on the web. Build artifacts are located in `./www`. To build from source, open terminal and run:
-```bash
-ionic build
-```
-***
+### Installing
 
-## @TODO
-2. Tasks
-    i. Setup
-        a. Clone, set up protected branches (dev, staging, master)
-        b. NPM, Ionic CLI
-        c. run tests (npm test), identify broken function, fix the function
-        d. write tests for form validation and re-run tests
+A step by step series of examples that tell you how to get a development env running
+
+Say what the step will be
+
+```
+Give the example
+```
+
+And repeat
+
+```
+until finished
+```
+
+End with an example of getting some data out of the system or using it for a little demo
+
+## Running the tests
+
+Explain how to run the automated tests for this system
+
+### Break down into end to end tests
+
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+### And coding style tests
+
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+## Deployment
+
+Add additional notes about how to deploy this on a live system
+
+## Built With
+
+* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
+* [Maven](https://maven.apache.org/) - Dependency Management
+* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+
+## Contributing
+
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+
+## Authors
+
+* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+
+See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Acknowledgments
+
+* Hat tip to anyone whose code was used
+* Inspiration
+* etc
+
