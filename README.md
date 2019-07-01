@@ -1,6 +1,11 @@
 # Udagram
 This repo contains answers to the assignment. If you are currently taking the course, spoilers beware!
 
+For Udacity Reviewer:
+Image Filter Link: http://udagram-c2-imagefilter-dev.us-east-2.elasticbeanstalk.com/
+RestAPI Link: http://udagram-c2-restapi-dev.us-east-2.elasticbeanstalk.com/
+Screenshot of healthy servers are found in the root of each server's respective folder
+
 Tasks completed:
 1) Practice with routing with the Practice_Server
 - GET
