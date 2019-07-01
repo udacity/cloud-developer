@@ -2,6 +2,7 @@
 @TODO: Complete Readme
 
 One Paragraph of project description goes here
+This server contains both Authentication and FeedItem
 
 ## Getting Started
 
@@ -11,16 +12,15 @@ These instructions will get you a copy of the project up and running on your loc
 
 What things you need to install the software and how to install them
 
-The server is dependent on Nodejs and Node Package Manager. Installation instructions can be found
-[here](https://nodejs.org/en/download/)
-
+The server is dependent on Nodejs and Node Package Manager. 
+* Installation instructions can be found [here](https://nodejs.org/en/download/).
 * To test if Nodejs is installed, execute the following code in your terminal: `npm -v`
 
-We can issue and save requests to the server with ease using Postman. Installation instruction can
-be found [here](https://www.getpostman.com/downloads/).
+We can issue and save requests to the server with ease using Postman. 
+* Installation instruction can be found [here](https://www.getpostman.com/downloads/).
 
-We can interact with our PostGresSQL database with ease using Postbird. Installation instructions can
-be found [here](https://github.com/paxa/postbird).
+We can interact with our PostGresSQL database with ease using Postbird.
+* Installation instructions can be found [here](https://github.com/paxa/postbird).
 
 ### Installing
 
