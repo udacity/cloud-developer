@@ -3,19 +3,12 @@
 PracticeServer is a simple Node.JS server meant to teach concepts such as installing packages and dependencies.
 * Express framework helps us build our webserver. 
 * body-parser helps us parse, remove, and make use of inbound requests.
-* Mocha is the unit testing framework
+* Mocha and Chai frameworks help us with unit testing.
 
 ## Getting Started
 
-See deployment for notes on how to deploy the project on a live system.
-
-* Download a copy of App-Udagram
-* Open a terminal
-* Navigate to the Practice_Server directory
-* Install the dependencies. Type the following and press enter: `npm install`
-* Spin up the server. Type the following and press enter: `npm run dev`
-
-Now your server is up and running. See running the tests for more information on testing the server.
+You will want to start by download a copy of Udagram and installing the necessary programs. See the Prerequisites docs for
+more information on the dependencies.
 
 ### Prerequisites
 
@@ -31,12 +24,13 @@ be found [here](https://www.getpostman.com/downloads/).
 
 A step by step series of examples that tell you how to get a development env running
 
+Once you have Node and Postman installed, you are ready to start up a local server.
+* Open a terminal
+* Navigate to the Practice_Server directory
+* Install the dependencies: type the following and press enter `npm install`
+* Spin up the server: type the following and press enter `npm run dev`
 
-* Navigate your terminal to the Practice Server directory
-* To install the dependencies, run the following command: `npm install`
-
-
-End with an example of getting some data out of the system or using it for a little demo
+Now your server is up and running. See the Running the tests docs for more information on testing the server.
 
 ## Running the tests
 
