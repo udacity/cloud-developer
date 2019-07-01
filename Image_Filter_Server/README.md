@@ -1,4 +1,4 @@
-# Project Title
+# Image Filter Server
 @TODO: Complete Readme
 
 One Paragraph of project description goes here
