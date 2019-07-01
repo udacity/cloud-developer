@@ -109,9 +109,10 @@ import { Car, cars as cars_list } from "./cars";
 
   // Get a list of cars by make and sort order
   // it should require a make and a sort type
-  app.get( "/cars/:make/:sort", (req: Request, res: Response) => {
-      const { make, sort } = req.params;
-      if ( !make || !sort) {
+  app.get( "/cars/:make?sort", (req: Request, res: Response) => {
+      const { make } = req.params;
+      const { sort } = req.query;
+      if ( !make && !sort) {
           return res.status(400).send(`make and sort are required`);
       }
       const priceSortedCars = cars.filter( (car) => car.make === make);
