@@ -1,79 +1,89 @@
-# Udagram Image Filtering Microservice
+# Project Title
+@TODO: Complete Readme
 
-Udagram is a simple cloud application developed alongside the Udacity Cloud Engineering Nanodegree. It allows users to register and log into a web client, post photos to the feed, and process photos using an image filtering microservice.
+One Paragraph of project description goes here
 
-The project is split into three parts:
-1. [The Simple Frontend](https://github.com/grutt/udacity-c2-frontend)
-A basic Ionic client web application which consumes the RestAPI Backend. 
-2. [The RestAPI Backend](https://github.com/grutt/udacity-c2-restapi), a Node-Express server which can be deployed to a cloud service.
-3. [The Image Filtering Microservice](https://github.com/grutt/udacity-c2-image-filter), the final project for the course. It is a Node-Express application which runs a simple Python script to process images.
+## Getting Started
 
-## Tasks
-### Setup Python Environment
-You'll need to set up and use a virtual environment for this project.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-To create a virtual environment run the following from within the project directory:
-1. Install virtualenv dependency: `pip install virtualenv`
-2. Create a virtual environment:    `virtualenv venv`
-3. Activate the virtual environment: `source venv/bin/activate` (Note: You'll need to do this every time you open a new terminal)
-4. Install dependencies: `pip install -r requirements.txt`
+### Prerequisites
 
-When you're done working and leave the virtual environment, run: `deactivate`
+What things you need to install the software and how to install them
 
-### Setup Node Environment
-You'll need to create a new node server. Open a new terminal within the project directory and run:
-1. Initialize a new project: `npm init`
-2. Install express: `npm i express --save`
-3. Install typescript dependencies: `npm i ts-node-dev tslint typescript  @types/bluebird @types/express @types/node --save-dev`
-4. Look at the `package.json` file from the RestAPI repo and copy the `scripts` block into the auto-generated `package.json` in this project. This will allow you to use shorthand commands like `npm run dev`
+```
+Give examples
+```
 
-### Create a new server.ts file
-Use our basic server as an example to set up this file. For this project, it's ok to keep all of your business logic in the one server.ts file, but you can try to use feature directories and app.use routing if you're up for it. Use the RestAPI structure to guide you.
+### Installing
 
-### Add an endpoint to handle POST /imagetoprocess requests
-It should accept two POST parameter:
->    image_url: string - a public URL of a valid image file
+A step by step series of examples that tell you how to get a development env running
 
->    upload_image_signedUrl: string (OPTIONAL) - a URL which will allow a PUT request with the processed image
-    
-It should respond with 422 unprocessable if either POST parameters are invalid.
+Say what the step will be
 
-It should require a token in the Auth Header or respond with 401 unauthorized.
+```
+Give the example
+```
 
-It should be versioned.
+And repeat
 
-> The matching token should be saved as an environment variable
-    
-> (TIP we broke this out into its own auth.router before, but you can access headers as part of the req.headers within your endpoint block)
+```
+until finished
+```
 
-It should respond with the image as the body if upload_image_signedUrl is included in the request.
+End with an example of getting some data out of the system or using it for a little demo
 
-It should respond with a success message if upload_image_signedUrl is NOT included in the request.
+## Running the tests
 
+Explain how to run the automated tests for this system
 
-### Refactor your RestApi server
-#### Add a request to the image-filter server within the RestAPI POST feed endpoint
+### Break down into end to end tests
 
-It should create new SignedURLs required for the imagetoprocess POST Request body.
+Explain what these tests test and why
 
-It should include a POST request to the new server (TIP keep the server address and token as environment variables).
+```
+Give an example
+```
 
-It should overwrite the image in the bucket with the filtered image (in other words, it will have the same filename in S3).
+### And coding style tests
 
+Explain what these tests test and why
 
-### Deploying your system!
-Follow the process described in the course to `eb init` a new application and `eb create` a new environment to deploy your image-filter service!
+```
+Give an example
+```
 
+## Deployment
 
-## Stand Out
-#### Postman Integration Tests
-Try writing a postman collection to test your endpoint. Be sure to cover:
-> POST requests with and without tokens
-> POST requests with valid and invalid parameters
+Add additional notes about how to deploy this on a live system
 
-#### Refactor Data Models
-Try adding another column to your tables to save a separate key for your filtered image. Remember, you'll have to rename the file before adding it to S3!
+## Built With
 
-#### (ADVANCED) Refactor Data Models
-Try adding a second OpenCV filter script and add an additional parameter to select which filter to use as a POST parameter
+* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
+* [Maven](https://maven.apache.org/) - Dependency Management
+* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+
+## Contributing
+
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+
+## Authors
+
+* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+
+See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Acknowledgments
+
+* Hat tip to anyone whose code was used
+* Inspiration
+* etc
 
