@@ -72,19 +72,11 @@ Give an example
 * [body-parser](https://github.com/expressjs/body-parser) helps us parse, remove, and make use of inbound requests.
 * [Mocha](https://mochajs.org) and [Chai](https://www.chaijs.com) frameworks help us with unit testing.
 
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
 ## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+This repo was forked from Udacity's GitHub page as per the assignment
+[udacity/cloud-developer](https://github.com/udacity/cloud-developer/tree/master/course-02)
+* Udacity Cloud Developer authors: **Udacavs** and **eddyudacity** for their *initial work*
+* Udacity Cloud Developer student: **dSalazar10** for my participation in the exercises
 
 ## License
 
@@ -92,6 +84,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* Hat tip to [Gabe Ruttner](https://github.com/grutt) for teaching the lesson and providing the instructions to complete the assignments.
