@@ -2,7 +2,8 @@
 
 PracticeServer is a simple Node.JS server meant to teach concepts such as installing packages and dependencies.
 * Express framework helps us build our webserver. 
-* body-parser helps us parse, remove, and make use of inbound requests. 
+* body-parser helps us parse, remove, and make use of inbound requests.
+* Mocha is the unit testing framework
 
 ## Getting Started
 
@@ -18,8 +19,6 @@ npm run dev
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
-
 The server is dependent on Nodejs and Node Package Manager. Installation instructions can be found
 [here](https://nodejs.org/en/download/)
 
@@ -32,17 +31,9 @@ be found [here](https://www.getpostman.com/downloads/).
 
 A step by step series of examples that tell you how to get a development env running
 
-Say what the step will be
+* Navigate your terminal to the Practice Server directory
+* To install the dependencies, run the following command: `npm install`
 
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
 
 End with an example of getting some data out of the system or using it for a little demo
 
