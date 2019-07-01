@@ -23,6 +23,8 @@ What things you need to install the software and how to install them
 The server is dependent on Nodejs and Node Package Manager. Installation instructions can be found
 [here](https://nodejs.org/en/download/)
 
+* To test if Nodejs is installed, execute the following code in your terminal: `npm -v`
+
 We can issue and save requests to the server with ease using Postman. Installation instruction can
 be found [here](https://www.getpostman.com/downloads/).
 
@@ -66,14 +68,7 @@ Give an example
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
-
-You can deploy this server to the cloud using Amazon Web Services. Instructions to sign up can be 
-found [here](https://portal.aws.amazon.com/billing/signup#/).
-
-Interfacing with AWS can be done through the terminal, which will require AWS CLI. Installation instructions can
-be found [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html).
-
+This is not meant to be deployed to the cloud. 
 
 ## Built With
 
