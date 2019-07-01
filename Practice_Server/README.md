@@ -1,6 +1,7 @@
 # Practice Server
 
-PracticeServer is a simple Node.JS server meant to teach concepts such as installing packages and dependencies.
+PracticeServer is a simple Node.JS server meant to help familiarize ourselves with the node environment and
+dealing with dependencies.
 
 ## Getting Started
 
@@ -30,8 +31,6 @@ Now your server is up and running. See the Running the tests docs for more infor
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
-
 Now you should be ready to interact with your local server using Postman.
 * A Postman collection named Practice_Server.postman_collection.json is located in the root directory of Practice_Server.
 * Open Postman and close the simple menu that pops up
@@ -50,15 +49,16 @@ To run a single test:
 
 For example:
 ```
-* Making a GET request of `http://localhost:8082/` to the server
-* Responds with `Welcome to the Cloud!`
+* Making a GET request of "http://localhost:8082/" to the server
+* Responds with "Welcome to the Cloud!"
 ```
 
 ## Built With
 
 * [Express](https://expressjs.com) framework helps us build our webserver. 
 * [body-parser](https://github.com/expressjs/body-parser) helps us parse, remove, and make use of inbound requests.
-* [Mocha](https://mochajs.org) and [Chai](https://www.chaijs.com) frameworks help us with unit testing.
+* [Mocha](https://mochajs.org) framework help us with unit testing.
+* [Chai](https://www.chaijs.com) framework help us with unit testing.
 
 ## Authors
 This repo was forked from Udacity's GitHub page as per the assignment
