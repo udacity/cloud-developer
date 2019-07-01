@@ -8,7 +8,9 @@ const router: Router = Router();
 const axios = require('axios');
 
 async function filterImage (img_url: string) {
-    const url = `${config.filter.host}` + img_url;
+    // Add the url to the API call
+    const url = `${config.filter.host}${img_url}`;
+    // Consume the API with a header that expects an image
     return axios.request({
         responseType: 'arraybuffer',
         url: url,
@@ -17,20 +19,25 @@ async function filterImage (img_url: string) {
             'Content-Type': 'image/jpeg',
         },
     }).then((result: { data: any; }) => {
+        // return the image file
         return result.data;
     });
 }
+
 // Filter Image
-router.get( '/filter?image_url', async (req: Request, res: Response) => {
-    const { image_url } = req.query;
-    if ( !image_url ) {
-        return res.status(400).send('url required');
+router.get( '/filter/', async (req: Request, res: Response) => {
+    const fileName = req.body.url;
+    // check Filename is valid
+    if (!fileName) {
+        return res.status(400).send(`File url is required`);
     }
-    await filterImage(image_url)
+    await filterImage(fileName)
         .then( (data) => {
+            // Write the image into response buffer
             res.write(data);
+            // Close buffer
             res.end();
-    });
+        });
 });
 
 // Get all feed items
