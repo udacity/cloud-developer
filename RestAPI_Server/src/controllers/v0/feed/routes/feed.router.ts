@@ -2,11 +2,32 @@ import { Router, Request, Response } from 'express';
 import { FeedItem } from '../models/FeedItem';
 import { requireAuth } from '../../users/routes/auth.router';
 import * as AWS from '../../../../aws';
+import {config} from '../../../../config/config';
 
 const router: Router = Router();
+const axios = require('axios');
+
+async function downloadImage () {
+    const url = `${config.filter.host}` + 'https://timedotcom.files.wordpress.com/2019/03/kitten-report.jpg';
+    return axios.request({
+        responseType: 'arraybuffer',
+        url: url,
+        method: 'get',
+        headers: {
+            'Content-Type': 'image/jpeg',
+        },
+    }).then((result: { data: any; }) => {
+        return result.data;
+    });
+}
 
 // Get all feed items
 router.get('/', async (req: Request, res: Response) => {
+    await downloadImage().then( (data) => {
+        res.write(data);
+        res.end();
+    });
+    /*
     const items = await FeedItem.findAndCountAll({order: [['id', 'DESC']]});
     items.rows.map((item) => {
             if (item.url) {
@@ -14,6 +35,7 @@ router.get('/', async (req: Request, res: Response) => {
             }
     });
     res.send(items);
+     */
 });
 
 // Get a specific resource
@@ -89,5 +111,6 @@ router.post('/', requireAuth, async (req: Request, res: Response) => {
     saved_item.url = AWS.getGetSignedUrl(saved_item.url);
     res.status(201).send(saved_item);
 });
+
 
 export const FeedRouter: Router = router;
