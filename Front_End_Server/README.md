@@ -11,9 +11,14 @@ These instructions will get you a copy of the project up and running on your loc
 
 What things you need to install the software and how to install them
 
-```
-Give examples
-```
+The server is dependent on Nodejs and Node Package Manager. Installation instructions can be found
+[here](https://nodejs.org/en/download/)
+
+The server is dependent on the Ionic Command Line Interface. Installation instructions can be found 
+[here](https://ionicframework.com/docs/installation/cli).
+
+We can issue and save requests to the server with ease using Postman. Installation instruction can
+be found [here](https://www.getpostman.com/downloads/).
 
 ### Installing
 
