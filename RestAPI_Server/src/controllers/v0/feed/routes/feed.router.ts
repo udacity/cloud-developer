@@ -6,22 +6,13 @@ import {config} from '../../../../config/config';
 
 const router: Router = Router();
 const axios = require('axios');
+const fs = require('fs');
+const fileUrl = require('file-url');
 
-async function filterImage (img_url: string) {
-    // Add the url to the API call
-    const url = `${config.filter.host}${img_url}`;
-    // Consume the API with a header that expects an image
-    return axios.request({
-        responseType: 'arraybuffer',
-        url: url,
-        method: 'get',
-        headers: {
-            'Content-Type': 'image/jpeg',
-        },
-    }).then((result: { data: any; }) => {
-        // return the image file
-        return result.data;
-    });
+
+
+export async function deleteLocalFile(file: string) {
+    fs.unlinkSync(file);
 }
 
 // Filter Image
@@ -32,11 +23,8 @@ router.get( '/filter/', async (req: Request, res: Response) => {
         return res.status(400).send(`File url is required`);
     }
     await filterImage(fileName)
-        .then( (data) => {
-            // Write the image into response buffer
-            res.write(data);
-            // Close buffer
-            res.end();
+        .then( async (data: string) => {
+            res.send(data);
         });
 });
 
@@ -97,6 +85,30 @@ router.get('/signed-url/:fileName', requireAuth, async (req: Request, res: Respo
     res.status(201).send({url: url});
 });
 
+async function filterImage (img_url: string) {
+    // Add the url to the API call
+    const url = `${config.filter.host}${img_url}`;
+    // Consume the API with a header that expects an image
+    return axios.request({
+        responseType: 'arraybuffer',
+        url: url,
+        method: 'get',
+        headers: {
+            'Content-Type': 'image/jpeg',
+        },
+    }).then((result: { data: any; }) => {
+        const file = '/src/tmp/filtered.' + Math.floor(Math.random() * 2000) + '.jpg';
+        fs.writeFile(file, result.data, 'binary', function(err: any) {
+            if (err) {
+                throw err;
+            }
+        });
+        return fileUrl(file);
+    });
+}
+
+// @todo Refactor the project to make a request to the image filtering service upon image upload
+
 // Post meta data and the filename after a file is uploaded
 // NOTE the file name is they key name in the s3 bucket.
 // body : {caption: string, fileName: string};
@@ -118,9 +130,7 @@ router.post('/', requireAuth, async (req: Request, res: Response) => {
             caption: caption,
             url: fileName
     });
-
     const saved_item = await item.save();
-
     saved_item.url = AWS.getGetSignedUrl(saved_item.url);
     res.status(201).send(saved_item);
 });

@@ -1,4 +1,5 @@
 import { Table, Column, Model, CreatedAt, UpdatedAt } from 'sequelize-typescript';
+import { User } from '../../users/models/User';
 
 @Table
 export class FeedItem extends Model<FeedItem> {
@@ -7,6 +8,9 @@ export class FeedItem extends Model<FeedItem> {
 
   @Column
   public url!: string;
+
+  @Column
+  public user!: User;
 
   @Column
   @CreatedAt

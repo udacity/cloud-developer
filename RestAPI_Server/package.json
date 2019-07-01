@@ -28,6 +28,7 @@
     "codelyzer": "^5.1.0",
     "email-validator": "^2.0.4",
     "express": "^4.16.4",
+    "file-url": "^3.0.0",
     "jsonwebtoken": "^8.5.1",
     "marked": "^0.6.2",
     "pg": "^7.9.0",
