@@ -36,7 +36,19 @@ Now your server is up and running. See the Running the tests docs for more infor
 Explain how to run the automated tests for this system
 
 Now you should be ready to interact with your local server using Postman.
-* You will find a Postman script [here](https://github.com/dSalazar10/App-Udagram/blob/master/Practice_Server/Practice_Server.postman_collection.json).
+* A Postman collection named Practice_Server.postman_collection.json is located in the root directory of Practice_Server.
+* Open Postman and close the simple menu that pops up
+* Click the Import button located in the top left corner of the app
+* Import the postman_collection.json file
+
+You will see a new folder has been added to the collections list on the left.
+If you click on the folder, you will be presented with a list of examples and exercises.
+
+To run a single test:
+* Be sure that your server is running `npm run dev`
+* Click any of the listed requests
+* Click the blue Send button on the right side
+
 
 ### Break down into end to end tests
 
