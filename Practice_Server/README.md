@@ -1,11 +1,20 @@
 # Practice Server
-@TODO: Complete Readme
 
-One Paragraph of project description goes here
+PracticeServer is a simple Node.JS server meant to teach concepts such as installing packages and dependencies.
+* Express framework helps us build our webserver. 
+* body-parser helps us parse, remove, and make use of inbound requests. 
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+See deployment for notes on how to deploy the project on a live system.
+
+* Download a copy of App-Udagram
+* Open a terminal
+* Navigate to the Practice_Server directory
+* Type in the following code and press enter
+```
+npm run dev
+```
 
 ### Prerequisites
 
