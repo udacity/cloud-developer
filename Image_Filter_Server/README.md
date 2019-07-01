@@ -1,40 +1,89 @@
-# Udagram Image Filtering Microservice
+# Project Title
+@TODO: Complete Readme
 
-## Tasks
+One Paragraph of project description goes here
 
-### Setup Node Enviornment
+## Getting Started
 
-You'll need to create a new node server. Open a new terminal within the project directory and run:
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-1. Initialize a new project: `npm i`
-2. run the development server with `npm run dev`
+### Prerequisites
 
-### Create a new endpoint in the server.ts file
+What things you need to install the software and how to install them
 
-The starter code has a task for you to complete an endpoint in `./src/server.ts` which uses query paramater to download an image from a public URL, filter the image, and return the result.
-
-We've included a few helper functions to handle some of these concepts and we're importing it for you at the top of the `./src/server.ts`  file.
-
-```typescript
-import {filterImageFromURL, deleteLocalFiles} from './util/util';
+```
+Give examples
 ```
 
-### Deploying your system
+### Installing
 
-Follow the process described in the course to `eb init` a new application and `eb create` a new enviornment to deploy your image-filter service! Don't forget you can use `eb deploy` to push changes.
+A step by step series of examples that tell you how to get a development env running
 
-## Stand Out (Optional)
+Say what the step will be
 
-### Refactor the course RESTapi
+```
+Give the example
+```
 
-If you're feeling up to it, refactor the course RESTapi to make a request to your newly provisioned image server.
+And repeat
 
-### Authentication
+```
+until finished
+```
 
-Prevent requests without valid authentication headers.
-> !!NOTE if you choose to submit this, make sure to add the token to the postman collection and export the postman collection file to your submission so we can review!
+End with an example of getting some data out of the system or using it for a little demo
 
-### Custom Domain Name
+## Running the tests
 
-Add your own domain name and have it point to the running services (try adding a subdomain name to point to the processing server)
-> !NOTE: Domain names are not included in AWS’ free tier and will incur a cost.
+Explain how to run the automated tests for this system
+
+### Break down into end to end tests
+
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+### And coding style tests
+
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+## Deployment
+
+Add additional notes about how to deploy this on a live system
+
+## Built With
+
+* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
+* [Maven](https://maven.apache.org/) - Dependency Management
+* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+
+## Contributing
+
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+
+## Authors
+
+* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+
+See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Acknowledgments
+
+* Hat tip to anyone whose code was used
+* Inspiration
+* etc
+
