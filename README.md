@@ -1,4 +1,6 @@
-# cloud-developer
+# Udagram
+This repo contains answers to the assignment. If you are currently taking the course, spoilers beware!
+
 Tasks completed:
 1) Practice with routing with the Practice_Server
 - GET
