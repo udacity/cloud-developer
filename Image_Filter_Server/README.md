@@ -14,10 +14,14 @@ What things you need to install the software and how to install them
 The server is dependent on Nodejs and Node Package Manager. Installation instructions can be found
 [here](https://nodejs.org/en/download/)
 
+* To test if Nodejs is installed, execute the following code in your terminal: `npm -v`
+
 We can issue and save requests to the server with ease using Postman. Installation instruction can
 be found [here](https://www.getpostman.com/downloads/).
 
 The server is dependent on Python3. Installation instructions can be found [here](https://www.python.org/downloads/).
+
+* To test if Python3 is installed, execute the following code in your terminal: `python3 --version`
 
 
 ### Installing
@@ -67,6 +71,8 @@ found [here](https://portal.aws.amazon.com/billing/signup#/).
 
 Interfacing with AWS can be done through the terminal, which will require AWS CLI. Installation instructions can
 be found [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html).
+
+* To test if AWS CLI is installed, execute the following code in your terminal: `aws --version`
 
 ## Built With
 
