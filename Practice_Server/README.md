@@ -36,7 +36,7 @@ Now your server is up and running. See the Running the tests docs for more infor
 Explain how to run the automated tests for this system
 
 Now you should be ready to interact with your local server using Postman.
-* You will find a Postman script [here](https://github.com/dSalazar10/App-Udagram/blob/master/Practice_Server/udacity-c2-basic-server.postman_collection.json).
+* You will find a Postman script [here](https://github.com/dSalazar10/App-Udagram/blob/master/Practice_Server/Practice_Server.postman_collection.json).
 
 ### Break down into end to end tests
 
