@@ -18,3 +18,5 @@ Tasks completed:
 
 4) Deploying a Nodejs + Python RestAPI server with the Image_Filter_Server
 - Image processing with Jimp based on queries
+
+Click into each of the folders for more information.
