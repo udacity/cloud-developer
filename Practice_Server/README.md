@@ -1,62 +1,88 @@
-# udacity-c2-basic-server
+# Practice Server
+@TODO: Complete Readme
 
-This is a simple node-express server to explore and understand the Request-Response pattern.
+One Paragraph of project description goes here
 
-***
-## Getting Setup
+## Getting Started
 
-### Installing project dependencies
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-This project uses NPM to manage software dependencies. NPM Relies on the package.json file located in the root of this repository. After cloning, open your terminal and run:
-```bash
-npm install
+### Prerequisites
+
+What things you need to install the software and how to install them
+
 ```
->_tip_: **npm i** is shorthand for **npm install**
-
-### Installing useful tools
-#### 1. [Postbird](https://github.com/paxa/postbird)
-Postbird is a useful client GUI (graphical user interface) to interact with our provisioned Postgres database. We can establish a remote connection and complete actions like viewing data and changing schema (tables, columns, ect).
-
-#### 2. [Postman](https://www.getpostman.com/downloads/)
-Postman is a useful tool to issue and save requests. Postman can create GET, PUT, POST, etc. requests complete with bodies. It can also be used to test endpoints automatically. We've included a collection (`./udacity-c2-restapi.postman_collection.json `) which contains example requsts.
-
-***
-
-## Running the Server Locally
-To run the server locally in developer mode, open terminal and run:
-```bash
-npm run dev
+Give examples
 ```
 
-Developer mode runs off the TypeScript source. Any saves will reset the server and run the latest version of the codebase. 
+### Installing
 
-***
-## Important Files and Project Structure
+A step by step series of examples that tell you how to get a development env running
 
-The source code for this demo resides in the ./src directory.
+Say what the step will be
 
-### src/server.ts
-The main code for this demo is located in the ./src/server.ts file. This includes 
+```
+Give the example
+```
 
-### src/cars.ts
-This is a javascript object containing a list of cars. This will be useful for providing data for our simple endpoints.
+And repeat
 
-### src/unit-test-examples/
-This directory contains some simple unit functions (`units.ts`) and corresponding tests using Mocha and Chai (`units.tests.ts`).
+```
+until finished
+```
 
-***
-# Tasks
-1. @TODO `./src/server.ts/`
-Add an endpoint to GET a list of cars.
+End with an example of getting some data out of the system or using it for a little demo
 
-2. @TODO `./src/server.ts/` 
-Add an endpoint to get a specific car.
+## Running the tests
 
-3. @TODO `./src/server.ts/` 
-Add an endpoint to post a new car to our list.
+Explain how to run the automated tests for this system
 
-4. @TODO `./src/unit-test-examples/units.ts`
-Try creating a method "concat" to concatenate two strings.
+### Break down into end to end tests
 
-5. @TODO `./src/unit-test-examples/units.tests.ts`
-Try creating a new describe block for the "concat" method.
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+### And coding style tests
+
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+## Deployment
+
+Add additional notes about how to deploy this on a live system
+
+## Built With
+
+* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
+* [Maven](https://maven.apache.org/) - Dependency Management
+* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+
+## Contributing
+
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+
+## Authors
+
+* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+
+See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Acknowledgments
+
+* Hat tip to anyone whose code was used
+* Inspiration
+* etc
