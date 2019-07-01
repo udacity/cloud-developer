@@ -14,8 +14,12 @@ What things you need to install the software and how to install them
 The server is dependent on Nodejs and Node Package Manager. Installation instructions can be found
 [here](https://nodejs.org/en/download/)
 
+* To test if Nodejs is installed, execute the following code in your terminal: `npm -v`
+
 The server is dependent on the Ionic Command Line Interface. Installation instructions can be found 
 [here](https://ionicframework.com/docs/installation/cli).
+
+* To test if Ionic is installed, execute the following code in your terminal: `ionic --version`
 
 We can issue and save requests to the server with ease using Postman. Installation instruction can
 be found [here](https://www.getpostman.com/downloads/).
