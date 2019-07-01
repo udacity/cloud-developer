@@ -11,9 +11,14 @@ These instructions will get you a copy of the project up and running on your loc
 
 What things you need to install the software and how to install them
 
-```
-Give examples
-```
+The server is dependent on Nodejs and Node Package Manager. Installation instructions can be found
+[here](https://nodejs.org/en/download/)
+
+We can issue and save requests to the server with ease using Postman. Installation instruction can
+be found [here](https://www.getpostman.com/downloads/).
+
+We can interact with our PostGresSQL database with ease using Postbird. Installation instructions can
+be found [here](https://github.com/paxa/postbird).
 
 ### Installing
 
@@ -56,6 +61,12 @@ Give an example
 ## Deployment
 
 Add additional notes about how to deploy this on a live system
+
+You can deploy this server to the cloud using Amazon Web Services. Instructions to sign up can be 
+found [here](https://portal.aws.amazon.com/billing/signup#/).
+
+Interfacing with AWS can be done through the terminal, which will require AWS CLI. Installation instructions can
+be found [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html).
 
 ## Built With
 
