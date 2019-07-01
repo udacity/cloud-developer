@@ -1,9 +1,6 @@
 # Practice Server
 
 PracticeServer is a simple Node.JS server meant to teach concepts such as installing packages and dependencies.
-* Express framework helps us build our webserver. 
-* body-parser helps us parse, remove, and make use of inbound requests.
-* Mocha and Chai frameworks help us with unit testing.
 
 ## Getting Started
 
@@ -45,10 +42,13 @@ You will see a new folder has been added to the collections list on the left.
 If you click on the folder, you will be presented with a list of examples and exercises.
 
 To run a single test:
-* Be sure that your server is running `npm run dev`
-* Click any of the listed requests
+* Be sure that your server is running. If not, run the following command `npm run dev`
+* Back in Postman, click any of the listed requests on the left side
 * Click the blue Send button on the right side
 
+For example:
+* Making a GET request of `http://localhost:8082/` to the server
+* Responds with `Welcome to the Cloud!`
 
 ### Break down into end to end tests
 
@@ -64,17 +64,13 @@ Explain what these tests test and why
 
 ```
 Give an example
-```
-
-## Deployment
-
-This is not meant to be deployed to the cloud. 
+``` 
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [Express](https://expressjs.com) framework helps us build our webserver. 
+* [body-parser](https://github.com/expressjs/body-parser) helps us parse, remove, and make use of inbound requests.
+* [Mocha](https://mochajs.org) and [Chai](https://www.chaijs.com) frameworks help us with unit testing.
 
 ## Contributing
 
