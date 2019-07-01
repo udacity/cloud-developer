@@ -7,8 +7,8 @@ import {config} from '../../../../config/config';
 const router: Router = Router();
 const axios = require('axios');
 
-async function downloadImage () {
-    const url = `${config.filter.host}` + 'https://timedotcom.files.wordpress.com/2019/03/kitten-report.jpg';
+async function filterImage (img_url: string) {
+    const url = `${config.filter.host}` + img_url;
     return axios.request({
         responseType: 'arraybuffer',
         url: url,
@@ -20,14 +20,21 @@ async function downloadImage () {
         return result.data;
     });
 }
+// Filter Image
+router.get( '/filter?image_url', async (req: Request, res: Response) => {
+    const { image_url } = req.query;
+    if ( !image_url ) {
+        return res.status(400).send('url required');
+    }
+    await filterImage(image_url)
+        .then( (data) => {
+            res.write(data);
+            res.end();
+    });
+});
 
 // Get all feed items
 router.get('/', async (req: Request, res: Response) => {
-    await downloadImage().then( (data) => {
-        res.write(data);
-        res.end();
-    });
-    /*
     const items = await FeedItem.findAndCountAll({order: [['id', 'DESC']]});
     items.rows.map((item) => {
             if (item.url) {
@@ -35,7 +42,6 @@ router.get('/', async (req: Request, res: Response) => {
             }
     });
     res.send(items);
-     */
 });
 
 // Get a specific resource
