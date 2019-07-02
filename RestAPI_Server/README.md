@@ -15,7 +15,7 @@ The RestAPI Server (bottom server) is a nodejs/typescript cloud server which
 * Amazon Web Services Account
 * AWS CLI
 
-## Getting Started
+### Installing
 
 The server is dependent on Nodejs and Node Package Manager. 
 * Installation instructions can be found [here](https://nodejs.org/en/download/)
@@ -37,6 +37,8 @@ We will be interacting with our AWS services using the command line, so you will
 * Instructions can be found [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html).
 * To test if aws-cli is installed, execute the following code in your terminal: `aws --version`
 
+## Getting Started
+
 These instructions will get you a copy of the project up and running on your local machine for development and 
 testing purposes. See deployment for notes on how to deploy the project on a live system
 
@@ -51,14 +53,19 @@ testing purposes. See deployment for notes on how to deploy the project on a liv
 ![](./tutorial/L2-6.png)
 * The server can be located at `http://localhost:8080`
 
-
-### Installing
-
-@TODO Finish installation tutorial
-
-Explain how to install a local server
-
 ## Running the local tests
+
+* Open Postman and close the startup menu
+* Type in ` http://localhost:8080/` and hit send
+  * Here we see the root response telling us that api is located at /api/v0/
+* You can import the provided test collections by
+  * Click the ‘Import’ button in the upper left
+  * Click the ‘Choose Files’
+  * Navigate to the RestAPI Server folder `App-Udagram-master > RestAPI_Server`
+  * Open ‘RestAPI.postman_collection.json’
+  * Click the ‘Collections’ button, below the ‘Import’ button
+  * Here you will find three folders to test different features
+
 
 @TODO Finish local testing tutorial
 
