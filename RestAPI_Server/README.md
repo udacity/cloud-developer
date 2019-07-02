@@ -73,9 +73,9 @@ Give examples
 
 * [sequelize-typescript](https://www.npmjs.com/package/sequelize-typescript) a promise-based Node.js + typescrpt 
 Object-Relational Mapping for PostgresSQL.
-* [AWS SDK](https://aws.amazon.com/cli/) a software development kit that helps us manage our S3 and Elastic Beanstalk
+* [aws sdk](https://aws.amazon.com/cli/) a software development kit that helps us manage our S3 and Elastic Beanstalk
 services.
-* [Express](https://expressjs.com) framework helps us build our webserver. 
+* [express](https://expressjs.com) framework helps us build our webserver. 
 * [bcrypt](https://www.npmjs.com/package/bcrypt) library helps us hash passwords.
 * [JsonWebToken](https://github.com/auth0/node-jsonwebtoken) library helps us manage tokens.
 * [connect](https://www.npmjs.com/package/connect) library helps us glue together middleware.
