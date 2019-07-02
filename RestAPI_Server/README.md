@@ -7,32 +7,45 @@ The RestAPI Server (bottom server) is a nodejs/typescript cloud server which
 
 ### Prerequisites
 
-* Amazon Web Services Account
-* Linux or macOS
+
 * Nodejs and NPM
-* AWS CLI
 * Postman
 * Postbird
+* Visual Studio Code
+* Amazon Web Services Account
+* AWS CLI
 
 ## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and 
-testing purposes. See deployment for notes on how to deploy the project on a live system
-* Fork the Udagram repo
-* Clone to your computer
-* Navigate a terminal to the RestAPI_Server directory
 
 The server is dependent on Nodejs and Node Package Manager. 
 * Installation instructions can be found [here](https://nodejs.org/en/download/)
 * To test if Nodejs is installed, execute the following code in your terminal: `npm -v`
-* Now that you have node installed, type in the following and press enter `npm run i && npm run dev`
-* Now the server is up and running. Great job!
 
 We can issue and save requests to the server with ease using Postman. 
 * Installation instruction can be found [here](https://www.getpostman.com/downloads/).
 
 We can interact with our database with ease using Postbird.
 * Installation instructions can be found [here](https://github.com/paxa/postbird).
+
+We can interact with our repo with ease using Visual Studio Code.
+* Installation instructions can be found [here](https://code.visualstudio.com/docs/setup/setup-overview).
+
+We will be using multiple services provided by Amazon Web Services, so you will need to set up an account.
+* Instructions can be found [here](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/).
+
+We will be interacting with our AWS services using the command line, so you will need the AWS CLI
+* Instructions can be found [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html).
+* To test if aws-cli is installed, execute the following code in your terminal: `aws --version`
+
+These instructions will get you a copy of the project up and running on your local machine for development and 
+testing purposes. See deployment for notes on how to deploy the project on a live system
+
+* Clone the repo
+* Open the RestAPI_Server folder in Visual Studio Code
+* Open a new terminal in Visual Studio Code
+* To install the project’s dependencies, type in `npm i` and press enter
+* To start the server, type in `npm run dev`
+* The server can be located at `http://localhost:8080`
 
 
 ### Installing
