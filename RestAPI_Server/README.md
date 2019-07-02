@@ -101,6 +101,18 @@ testing purposes. See deployment for notes on how to deploy the project on a liv
   - We will be using a signedURL pattern to provide access indirectly
   ![](./tutorial/L6-3f.png)
   - Click next, review, and then click create
+* Open the bucket by clicking on its name
+![](./tutorial/L6-4.png)
+* Click the permissions tab at the top
+![](./tutorial/L6-5.png)
+  - Click CORS configuration
+  ![](./tutorial/L6-5a.png)
+  - A configuration file is located in the RestAPI Server folder 
+  [here]( https://github.com/dSalazar10/App-Udagram/blob/dev/RestAPI_Server/RestAPI.CORS_policy.xml). 
+  - Copy and paste the XML code into the development environment
+  ![](./tutorial/L6-5c.png)
+  - Click Save
+
 
 
 ### Setting up the local server
