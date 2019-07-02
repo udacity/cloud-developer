@@ -57,21 +57,34 @@ testing purposes. See deployment for notes on how to deploy the project on a liv
 
 * Open Postman and close the startup menu
 * Type in ` http://localhost:8080/` and hit send
-  * Here we see the root response telling us that api is located at /api/v0/
-* You can import the provided test collections by
+![](./tutorial/L3-2.png)
+  * Here we see the root response telling us that the api is located at /api/v0/
+* You can import the provided test collections
   * Click the ‘Import’ button in the upper left
-  * Click the ‘Choose Files’
+  ![](./tutorial/L3-3a.png)
+  * Click the ‘Choose Files’ button
+  ![](./tutorial/L3-3b.png)
   * Navigate to the RestAPI Server folder `App-Udagram-master > RestAPI_Server`
-  * Open ‘RestAPI.postman_collection.json’
+  * Open ‘RestAPI.postman_collection.json’ file
+  ![](./tutorial/L3-3d.png)
   * Click the ‘Collections’ button, below the ‘Import’ button
+  ![](./tutorial/L3-3e.png)
   * Here you will find three folders to test different features
 
+Public:
+- test getting all the images in the S3 bucket
+- test getting a specific image
+- test creating a new user with valid credentials
+- test creating a new user with invalid credentials
+- test loggin in with valid credentials
+- test loggin in with invalid credentials
 
-@TODO Finish local testing tutorial
+Unauthorized:
+- test posting an image with invalid credentials
 
-Explain how to run the automated tests
-Explain what is being tested and why
-Give examples
+Authorized: 
+- test posting an image with valid credentials and a malformed payload
+- test posting an image with valid credentials and valid payload
 
 ## Deployment
 
