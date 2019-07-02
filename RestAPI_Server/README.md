@@ -78,7 +78,7 @@ testing purposes. See deployment for notes on how to deploy the project on a liv
 ### Setting up Postbird
 * Open Postbird
 ![](./tutorial/L5-1.png)
-* Copy and paste endpoint, username password, and database name
+* Copy and paste the endpoint, username, password, and database name
 ![](./tutorial/L5-2.png)
 * Click the “Save & Connect” button
 ![](./tutorial/L5-3.png)
