@@ -5,7 +5,7 @@ import * as AWS from '../../../../aws';
 import {config} from '../../../../config/config';
 
 const router: Router = Router();
-
+const axios = require('axios');
 
 // Get all feed items
 router.get('/', async (req: Request, res: Response) => {
@@ -67,9 +67,6 @@ router.get('/signed-url/:fileName', requireAuth, async (req: Request, res: Respo
     res.status(201).send({url: url});
 });
 
-
-
-
 // Post meta data and the filename after a file is uploaded
 // NOTE the file name is they key name in the s3 bucket.
 // body : {caption: string, fileName: string};
@@ -99,23 +96,21 @@ router.post('/', requireAuth, async (req: Request, res: Response) => {
 /***********************************************************************************************/
 // @TODO Refactor the project to make a request to the image filtering service upon image upload
 
-
-const axios = require('axios');
-const fs = require('fs');
-const fileUrl = require('file-url');
-
 // Save an image and return its URL in local host
-async function saveData (data: any) {
-    // Create a random file
-    const fileName = '/src/tmp/filtered.' + Math.floor(Math.random() * 2000) + '.jpg';
-    // Save the file
-    fs.writeFile(fileName, data, 'binary', function(err: any) {
-        if (err) {
-            throw err;
-        }
-        return fileUrl(fileName);
-    });
-}
+// const fs = require('fs');
+// const fileUrl = require('file-url');
+// async function saveData (data: any) {
+//     // Create a random file
+//     const fileName = '/src/tmp/filtered.' + Math.floor(Math.random() * 2000) + '.jpg';
+//     // Save the file
+//     fs.writeFile(fileName, data, 'binary', function(err: any) {
+//         if (err) {
+//             throw err;
+//         }
+//         return fileUrl(fileName);
+//     });
+// }
+
 // Interact with Image_Filter_Server
 async function filterImage (img_url: string) {
     // Add the url to the API call
