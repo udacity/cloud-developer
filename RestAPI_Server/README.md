@@ -1,8 +1,8 @@
 # RestAPI Server
-The RestAPI Server (bottom server) is a nodejs/typescript cloud server
-* Manage user authentication, storing emails and password hashes in an AWS Relational Database Service (DB)
-* Manage user data, storing images in an AWS Simple Storage Service (FS)
-* Manage image filters using the Image_Filter_Server (top server)
+The RestAPI Server (bottom server) is a nodejs/typescript cloud server which
+* Manages user authentication, storing emails and password hashes in an AWS Relational Database Service (DB)
+* Manages user data, storing images in an AWS Simple Storage Service (FS)
+* Manages image filters using the Image_Filter_Server (top server)
 ![](Server_Overview.png)
 
 ### Prerequisites
@@ -37,41 +37,17 @@ We can interact with our database with ease using Postbird.
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
+@TODO Finish installation tutorial
 
-Say what the step will be
+Explain how to install a local server
 
-```
-Give the example
-```
+## Running the local tests
 
-And repeat
+@TODO Finish local testing tutorial
 
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
+Explain how to run the automated tests
+Explain what is being tested and why
+Give examples
 
 ## Deployment
 
@@ -85,9 +61,25 @@ be found [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-instal
 
 * To test if AWS CLI is installed, execute the following code in your terminal: `aws --version`
 
+## Running the cloud tests
+
+@TODO Finish cloud testing tutorial
+
+Explain how to run the automated tests
+Explain what is being tested and why
+Give examples
+
 ## Built With
 
+* [sequelize-typescript](https://www.npmjs.com/package/sequelize-typescript) a promise-based Node.js + typescrpt 
+Object-Relational Mapping for PostgresSQL.
+* [AWS SDK](https://aws.amazon.com/cli/) a software development kit that helps us manage our S3 and Elastic Beanstalk
+services.
 * [Express](https://expressjs.com) framework helps us build our webserver. 
+* [bcrypt](https://www.npmjs.com/package/bcrypt) library helps us hash passwords.
+* [JsonWebToken](https://github.com/auth0/node-jsonwebtoken) library helps us manage tokens.
+* [connect](https://www.npmjs.com/package/connect) library helps us glue together middleware.
+* [email-validator](https://www.npmjs.com/package/email-validator) library helps us validate emails.
 * [body-parser](https://github.com/expressjs/body-parser) helps us parse, remove, and make use of inbound requests.
 
 ## Authors
