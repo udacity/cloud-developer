@@ -44,9 +44,7 @@
     "@types/node": "^11.11.6",
     "@types/sequelize": "^4.27.44",
     "@types/validator": "^10.9.0",
-    "chai": "^4.2.0",
     "chai-http": "^4.2.1",
-    "mocha": "^6.1.4",
     "ts-node-dev": "^1.0.0-pre.32",
     "tslint": "^5.14.0",
     "typescript": "^3.3.4000"
