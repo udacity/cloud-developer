@@ -1,8 +1,18 @@
 # RestAPI Server
+[Server_Overview](Server_Overview.png)
 
 The RestAPI Server is a nodejs/typescript rest api implemented indesigned to handle two things:
 * Authentication using javascript web tokens and emails stored in an AWS Relational Database Service
 * Manage image data using AWS Simple Storage Service
+
+### Prerequisites
+
+* Amazon Web Services Account
+* Linux or macOS
+* Nodejs and NPM
+* AWS CLI
+* Postman
+* Postbird
 
 ## Getting Started
 
@@ -10,7 +20,7 @@ These instructions will get you a copy of the project up and running on your loc
 testing purposes. See deployment for notes on how to deploy the project on a live system
 * Fork the Udagram repo
 * Clone to your computer
-* Navigate a terminal to the Practice_Server directory
+* Navigate a terminal to the RestAPI_Server directory
 
 The server is dependent on Nodejs and Node Package Manager. 
 * Installation instructions can be found [here](https://nodejs.org/en/download/)
@@ -23,9 +33,6 @@ We can issue and save requests to the server with ease using Postman.
 
 We can interact with our database with ease using Postbird.
 * Installation instructions can be found [here](https://github.com/paxa/postbird).
-
-
-### Prerequisites
 
 
 ### Installing
