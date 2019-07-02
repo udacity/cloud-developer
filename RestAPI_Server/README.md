@@ -1,26 +1,32 @@
 # RestAPI Server
-@TODO: Complete Readme
 
-One Paragraph of project description goes here
-This server contains both Authentication and FeedItem
+The RestAPI Server is a nodejs/typescript rest api designed to handle two things:
+* Authentication using javascript web tokens and emails stored in an AWS Relational Database Service
+* Manage image data using AWS Simple Storage Service
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
-### Prerequisites
-
-What things you need to install the software and how to install them
+These instructions will get you a copy of the project up and running on your local machine for development and 
+testing purposes. See deployment for notes on how to deploy the project on a live system
+* Fork the Udagram repo
+* Clone to your computer
+* Navigate a terminal to the Practice_Server directory
 
 The server is dependent on Nodejs and Node Package Manager. 
-* Installation instructions can be found [here](https://nodejs.org/en/download/).
+* Installation instructions can be found [here](https://nodejs.org/en/download/)
 * To test if Nodejs is installed, execute the following code in your terminal: `npm -v`
+* Now that you have node installed, type in the following and press enter `npm run i && npm run dev`
+* Now the server is up and running. Great job!
 
 We can issue and save requests to the server with ease using Postman. 
 * Installation instruction can be found [here](https://www.getpostman.com/downloads/).
 
-We can interact with our PostGresSQL database with ease using Postbird.
+We can interact with our database with ease using Postbird.
 * Installation instructions can be found [here](https://github.com/paxa/postbird).
+
+
+### Prerequisites
+
 
 ### Installing
 
@@ -74,9 +80,8 @@ be found [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-instal
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [Express](https://expressjs.com) framework helps us build our webserver. 
+* [body-parser](https://github.com/expressjs/body-parser) helps us parse, remove, and make use of inbound requests.
 
 ## Authors
 This repo was forked from Udacity's GitHub page as per the assignment
