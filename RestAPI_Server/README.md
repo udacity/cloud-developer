@@ -1,4 +1,5 @@
 # RestAPI Server
+
 The RestAPI Server (bottom server) is a nodejs/typescript cloud server which
 * Manages user authentication, storing emails and password hashes in an AWS Relational Database Service (DB)
 * Manages user data, storing images in an AWS Simple Storage Service (FS)
@@ -35,12 +36,74 @@ We will be using multiple services provided by Amazon Web Services, so you will 
 
 We will be interacting with our AWS services using the command line, so you will need the AWS CLI
 * Instructions can be found [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html).
-* To test if aws-cli is installed, execute the following code in your terminal: `aws --version`
 
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and 
-testing purposes. See deployment for notes on how to deploy the project on a live system
+testing purposes. See deployment for notes on how to deploy the project on a live system.
+
+### Setting up the database
+
+* Go to the main page of AWS [here](https://aws.amazon.com).
+* Sign into your console
+* Click the Services button.
+* Search for RDS and click RDS
+![](./tutorial/L4-1.png)
+* Click ‘Create Database’
+![](./tutorial/L4-2.png)
+  - Select PostGres SQL
+  - Check the radio button “Only enable options eligible for RDS Free Usage Tier”
+  - Click next
+  ![](./tutorial/L4-3a.png)
+* Database Details:
+  - Keep the Instance Specifications at their default settings. Be sure that your DB instance class is ‘db.t2.micro’
+  ![](./tutorial/L4-4a.png)
+  - Settings - Enter a DB Instance Identifier, a Master username, and Master password
+    ![](./tutorial/L4-4b.png)
+  - Network & Security - set Public accessibility to yes and keep the rest of the settings default
+    ![](./tutorial/L4-4c.png)
+  - Database options - enter a database name and keep the rest default
+    ![](./tutorial/L4-4d.png)
+  - Backup – keep everything default
+  - Monitoring – keep everything default
+  ![](./tutorial/L4-4e.png)
+  - Performance Insights - keep everything default
+  - Log exports – select Postgresql log
+  - Maintenance - keep everything default
+  - Delete Protection – be sure the radio button is checked and click Create Database
+  ![](./tutorial/L4-4h.png)
+  - Navigate to the database to obtain the endpoint url
+  ![](./tutorial/L4-4i.png)
+  
+### Setting up Postbird
+* Open Postbird
+![](./tutorial/L5-1.png)
+* Copy and paste the endpoint, username, password, and database name
+![](./tutorial/L5-2.png)
+* Click the “Save & Connect” button
+![](./tutorial/L5-3.png)
+* Now your Database setup is complete. Great job!
+
+
+### Setting up the Filestore
+
+* On the main page of AWS, click Services and search for S3
+* Click S3
+![](./tutorial/L6-1.png)
+* Click ‘Create Bucket’
+  - Enter in a domain wide unique bucket name and your region, and click next
+  ![](./tutorial/L6-3a.png)
+  - Click the radio box to turn on “Automatically encrypt objects when they are stored in S3” and set it to AES-256, and click 
+  next
+  ![](./tutorial/L6-3c.png)
+  - Make sure that the radio box is selected for “Block all public access”.
+  ![](./tutorial/L6-3e.png)
+  - We will be using a signedURL pattern to provide access indirectly
+  ![](./tutorial/L6-3f.png)
+  - Click next, review, and then click create
+
+
+### Setting up the local server
 
 * Clone the repo
 ![](./tutorial/L2-2.png)
