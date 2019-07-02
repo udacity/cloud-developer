@@ -44,7 +44,9 @@ testing purposes. See deployment for notes on how to deploy the project on a liv
 
 ### Setting up the database
 
-* Go to the main page of AWS [here](aws.amazon.com). Click the Services button.
+* Go to the main page of AWS [here](https://aws.amazon.com).
+* Sign into your console
+* Click the Services button.
 * Search for RDS and click RDS
 ![](./tutorial/L4-1.png)
 * Click ‘Create Database’
