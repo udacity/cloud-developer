@@ -46,12 +46,12 @@ testing purposes. See deployment for notes on how to deploy the project on a liv
 ### Setting up the database
 
 * Go to the main page of AWS
-![](./tutorial/L4-1.png)
 * Search for RDS and click RDS
-![](./tutorial/L4-2.png)
+![](./tutorial/L4-1.png)
 * Click ‘Create Database’
-![](./tutorial/L4-3a.png)
+![](./tutorial/L4-2.png)
   - Select PostGres SQL and Check the radio button “Only enable options eligible for RDS Free Usage Tier”
+  ![](./tutorial/L4-3a.png)
   - Click next 
 * Database Details:
   ![](./tutorial/L4-4a.png)
