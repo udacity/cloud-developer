@@ -65,12 +65,13 @@ testing purposes. See deployment for notes on how to deploy the project on a liv
   - Monitoring – keep everything default
   ![](./tutorial/L4-4e.png)
   - Performance Insights - keep everything default
-  - Log exports – select PostGresql log
+  - Log exports – select Postgresql log
   - Maintenance - keep everything default
+  - Delete Protection – be sure the radio button is checked and click Create Database
   ![](./tutorial/L4-4h.png)
-  - Delete Protection – be sure the radio button is checked
-  - Click Create Database
 
+
+### Setting up the local server
 
 * Clone the repo
 ![](./tutorial/L2-2.png)
