@@ -63,6 +63,7 @@ testing purposes. See deployment for notes on how to deploy the project on a liv
   - Network & Security - set Public accessibility to yes and keep the rest of the settings default
     ![](./tutorial/L4-4c.png)
   - Database options - enter a database name and keep the rest default
+    ![](./tutorial/L4-4d.png)
   - Backup – keep everything default
   - Monitoring – keep everything default
   ![](./tutorial/L4-4e.png)
