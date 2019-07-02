@@ -72,6 +72,8 @@ testing purposes. See deployment for notes on how to deploy the project on a liv
   - Maintenance - keep everything default
   - Delete Protection – be sure the radio button is checked and click Create Database
   ![](./tutorial/L4-4h.png)
+  - Navigate to the database to obtain the endpoint url
+  ![](./tutorial/L4-4i.png)
 
 
 ### Setting up the local server
