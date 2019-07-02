@@ -45,29 +45,29 @@ testing purposes. See deployment for notes on how to deploy the project on a liv
 
 ### Setting up the database
 
-* Go to the main page of AWS
+* Go to the main page of AWS [here](aws.amazon.com). Click the Services button.
 * Search for RDS and click RDS
 ![](./tutorial/L4-1.png)
 * Click ‘Create Database’
 ![](./tutorial/L4-2.png)
-  - Select PostGres SQL and Check the radio button “Only enable options eligible for RDS Free Usage Tier”
+  - Select PostGres SQL and check the radio button “Only enable options eligible for RDS Free Usage Tier”
   ![](./tutorial/L4-3a.png)
   - Click next 
 * Database Details:
   - Keep the Instance Specifications at their default settings. Be sure that your DB instance class is ‘db.t2.micro’
   ![](./tutorial/L4-4a.png)
-  - Enter in your own DB Instance Identifier 
+  - Settings - Enter a DB Instance Identifier, a Master username, and Master password
     ![](./tutorial/L4-4b.png)
-  - In the Network & Security set Public accessibility to yes and keep the rest of the settings default
+  - Network & Security - set Public accessibility to yes and keep the rest of the settings default
     ![](./tutorial/L4-4c.png)
   - Database options - enter a database name and keep the rest default
-  ![](./tutorial/L4-4e.png)
   - Backup – keep everything default
   - Monitoring – keep everything default
+  ![](./tutorial/L4-4e.png)
   - Performance Insights - keep everything default
-  ![](./tutorial/L4-4h.png)
   - Log exports – select PostGresql log
   - Maintenance - keep everything default
+  ![](./tutorial/L4-4h.png)
   - Delete Protection – be sure the radio button is checked
   - Click Create Database
 
