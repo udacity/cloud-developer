@@ -87,6 +87,20 @@ testing purposes. See deployment for notes on how to deploy the project on a liv
 
 ### Setting up the Filestore
 
+* On the main page of AWS, click Services and search for S3
+* Click S3
+![](./tutorial/L6-1.png)
+* Click ‘Create Bucket’
+  - Enter in a domain wide unique bucket name and your region
+  ![](./tutorial/L6-3a.png)
+  - Click next
+  - Click the radio box to turn on “Automatically encrypt objects when they are stored in S3” and set it to AES-256
+  ![](./tutorial/L6-3c.png)
+  - Click next
+  - Make sure that the radio box is selected for “Block all public access”. 
+  - We will be using a signedURL pattern to provide access indirectly
+  ![](./tutorial/L6-3f.png)
+  - Click next, review, and then click create
 
 
 ### Setting up the local server
