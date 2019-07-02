@@ -54,12 +54,12 @@ testing purposes. See deployment for notes on how to deploy the project on a liv
   ![](./tutorial/L4-3a.png)
   - Click next 
 * Database Details:
-  ![](./tutorial/L4-4a.png)
   - Keep the Instance Specifications at their default settings. Be sure that your DB instance class is ‘db.t2.micro’
-  ![](./tutorial/L4-4b.png)
+  ![](./tutorial/L4-4a.png)
   - Enter in your own DB Instance Identifier 
-  ![](./tutorial/L4-4c.png)
+    ![](./tutorial/L4-4b.png)
   - In the Network & Security set Public accessibility to yes and keep the rest of the settings default
+    ![](./tutorial/L4-4c.png)
   - Database options - enter a database name and keep the rest default
   ![](./tutorial/L4-4e.png)
   - Backup – keep everything default
