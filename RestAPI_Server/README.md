@@ -1,9 +1,7 @@
 # RestAPI Server
-![](Server_Overview.png)
-
-The RestAPI Server is a nodejs/typescript rest api implemented indesigned to handle two things:
+![The RestAPI Server is a nodejs/typescript rest api implemented indesigned to handle two things:
 * Authentication using javascript web tokens and emails stored in an AWS Relational Database Service
-* Manage image data using AWS Simple Storage Service
+* Manage image data using AWS Simple Storage Service](Server_Overview.png)
 
 ### Prerequisites
 
