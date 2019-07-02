@@ -5,17 +5,24 @@ dealing with dependencies.
 
 ## Getting Started
 
-You will want to start by download a copy of Udagram and installing the necessary programs. See the Prerequisites docs for
-more information on the dependencies.
-
-### Prerequisites
+These instructions will get you a copy of the project up and running on your local machine for development and 
+testing purposes. See deployment for notes on how to deploy the project on a live system
+* Fork the Udagram repo
+* Clone to your computer
+* Navigate a terminal to the Practice_Server directory
 
 The server is dependent on Nodejs and Node Package Manager. 
 * Installation instructions can be found [here](https://nodejs.org/en/download/)
 * To test if Nodejs is installed, execute the following code in your terminal: `npm -v`
+* Now that you have node installed, type in the following and press enter `npm run i && npm run dev`
+* Now the server is up and running. Great job!
 
 We can issue and save requests to the server with ease using Postman. 
 * Installation instruction can be found [here](https://www.getpostman.com/downloads/).
+
+### Prerequisites
+
+
 
 ### Installing
 
