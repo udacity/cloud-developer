@@ -1,7 +1,7 @@
 # RestAPI Server
-The RestAPI Server is a nodejs/typescript rest api implemented indesigned to handle two things:
-* Authentication using javascript web tokens and emails stored in an AWS Relational Database Service
-* Manage image data using AWS Simple Storage Service
+The RestAPI Server is a nodejs/typescript server served in the cloud. It deals with:
+* Authentication using emails and password hashes using an AWS Relational Database Service (DB)
+* Manages data using an AWS Simple Storage Service (FS)
 ![](Server_Overview.png)
 
 ### Prerequisites
