@@ -41,14 +41,14 @@ These instructions will get you a copy of the project up and running on your loc
 testing purposes. See deployment for notes on how to deploy the project on a live system
 
 * Clone the repo
-![](L2-2.png)
+![](./tutorial/L2-2.png)
 * Open the RestAPI_Server folder in Visual Studio Code
-![](L2-3.png)
+![](./tutorial/L2-3.png)
 * Open a new terminal in Visual Studio Code
 * To install the project’s dependencies, type in `npm i` and press enter
-![](L2-5.png)
+![](./tutorial/L2-5.png)
 * To start the server, type in `npm run dev`
-![](L2-6.png)
+![](./tutorial/L2-6.png)
 * The server can be located at `http://localhost:8080`
 
 
