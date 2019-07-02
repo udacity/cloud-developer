@@ -72,7 +72,7 @@ testing purposes. See deployment for notes on how to deploy the project on a liv
   * Here you will find three folders to test different features
 
 Public:
-- test getting all the images in the S3 bucket
+- test getting all the images in the feed
 - test getting a specific image
 - test creating a new user with valid credentials
 - test creating a new user with invalid credentials
