@@ -36,7 +36,6 @@ We will be using multiple services provided by Amazon Web Services, so you will 
 
 We will be interacting with our AWS services using the command line, so you will need the AWS CLI
 * Instructions can be found [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html).
-* To test if aws-cli is installed, execute the following code in your terminal: `aws --version`
 
 ## Getting Started
 
@@ -50,9 +49,10 @@ testing purposes. See deployment for notes on how to deploy the project on a liv
 ![](./tutorial/L4-1.png)
 * Click ‘Create Database’
 ![](./tutorial/L4-2.png)
-  - Select PostGres SQL and check the radio button “Only enable options eligible for RDS Free Usage Tier”
+  - Select PostGres SQL
+  - Check the radio button “Only enable options eligible for RDS Free Usage Tier”
+  - Click next
   ![](./tutorial/L4-3a.png)
-  - Click next 
 * Database Details:
   - Keep the Instance Specifications at their default settings. Be sure that your DB instance class is ‘db.t2.micro’
   ![](./tutorial/L4-4a.png)
