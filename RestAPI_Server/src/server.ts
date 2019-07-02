@@ -3,6 +3,7 @@ import { sequelize } from './sequelize';
 import { IndexRouter } from './controllers/v0/index.router';
 import bodyParser from 'body-parser';
 import { V0MODELS } from './controllers/v0/model.index';
+import {config} from './config/config';
 
 (async () => {
   await sequelize.addModels(V0MODELS);
@@ -25,9 +26,11 @@ import { V0MODELS } from './controllers/v0/model.index';
   // Root URI call
   app.get( '/', async ( req, res ) => {
     res.send( '/api/v0/' );
-  } );
+  });
+  // Initialize sentry for server analytics
   const Sentry = require('@sentry/node');
-  Sentry.init({ dsn: 'https://eaca2fde1bbc4219ad87993489b1824f@sentry.io/1493448' });
+  Sentry.init({ dsn: config.sentry.dns });
+
   // Start the Server
   app.listen( port, () => {
       console.log( `server running http://localhost:${ port }` );
