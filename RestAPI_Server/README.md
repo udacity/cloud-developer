@@ -91,13 +91,13 @@ testing purposes. See deployment for notes on how to deploy the project on a liv
 * Click S3
 ![](./tutorial/L6-1.png)
 * Click ‘Create Bucket’
-  - Enter in a domain wide unique bucket name and your region
+  - Enter in a domain wide unique bucket name and your region, and click next
   ![](./tutorial/L6-3a.png)
-  - Click next
-  - Click the radio box to turn on “Automatically encrypt objects when they are stored in S3” and set it to AES-256
+  - Click the radio box to turn on “Automatically encrypt objects when they are stored in S3” and set it to AES-256, and click 
+  next
   ![](./tutorial/L6-3c.png)
-  - Click next
-  - Make sure that the radio box is selected for “Block all public access”. 
+  - Make sure that the radio box is selected for “Block all public access”.
+  ![](./tutorial/L6-3e.png)
   - We will be using a signedURL pattern to provide access indirectly
   ![](./tutorial/L6-3f.png)
   - Click next, review, and then click create
