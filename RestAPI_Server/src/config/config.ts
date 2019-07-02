@@ -24,5 +24,8 @@ export const config = {
   },
   'filter': {
     'host': process.env.FILTER_HOST
+  },
+  'sentry': {
+    'dns': process.env.SENTRY
   }
 };
