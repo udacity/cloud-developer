@@ -41,7 +41,28 @@ We will be interacting with our AWS services using the command line, so you will
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and 
-testing purposes. See deployment for notes on how to deploy the project on a live system
+testing purposes. See deployment for notes on how to deploy the project on a live system.
+
+# Setting up the database
+
+* Go to the main page of AWS
+* Search for RDS and click RDS
+* Click ‘Create Database’
+  - Select PostGres SQL and Check the radio button “Only enable options eligible for RDS Free Usage Tier”
+  - Click next 
+* Database Details:
+  - Keep the Instance Specifications at their default settings. Be sure that your DB instance class is ‘db.t2.micro’
+  - Enter in your own DB Instance Identifier 
+  - In the Network & Security set Public accessibility to yes and keep the rest of the settings default
+  - Database options - enter a database name and keep the rest default
+  - Backup – keep everything default
+  - Monitoring – keep everything default
+  - Performance Insights - keep everything default
+  - Log exports – select PostGresql log
+  - Maintenance - keep everything default
+  - Delete Protection – be sure the radio button is checked
+  - Click Create Database
+
 
 * Clone the repo
 ![](./tutorial/L2-2.png)
