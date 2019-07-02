@@ -1,17 +1,15 @@
 import { Router, Request, Response } from 'express';
-
 import { User } from '../models/User';
-
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { NextFunction } from 'connect';
-
 import * as EmailValidator from 'email-validator';
-import {config} from '../../../../config/config';
+import { config } from '../../../../config/config';
 
 const router: Router = Router();
 
 async function generatePassword(plainTextPassword: string): Promise<string> {
+    // Results in 1024 rounds
     const saltRounds = 10;
     const salt = await bcrypt.genSalt(saltRounds);
     return await bcrypt.hash(plainTextPassword, salt);
@@ -38,7 +36,6 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
     if (token_bearer.length != 2) {
         return res.status(401).send({ message: `Malformed token.` });
     }
-
     const token = token_bearer[1];
     // Verify if the token is valid
     return jwt.verify(token, config.jwt.secret, (err, decoded) => {
@@ -51,10 +48,12 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
     });
 }
 
+// Verify if authenticated
 router.get('/verification', requireAuth, async (req: Request, res: Response) => {
         return res.status(200).send({ auth: true, message: 'Authenticated.' });
 });
 
+// Login with current user
 router.post('/login', async (req: Request, res: Response) => {
     const email = req.body.email;
     const password = req.body.password;
@@ -80,7 +79,7 @@ router.post('/login', async (req: Request, res: Response) => {
     if (!authValid) {
         return res.status(401).send({ auth: false, message: 'Unauthorized' });
     }
-
+    // Responds with jwt and email
     res.status(200).send({ auth: true, token: generateJWT(user), user: user.short()});
 });
 
@@ -92,26 +91,21 @@ router.post('/', async (req: Request, res: Response) => {
     if (!email || !EmailValidator.validate(email)) {
         return res.status(400).send({ auth: false, message: 'Email is required or malformed' });
     }
-
     // check email password valid
     if (!plainTextPassword) {
         return res.status(400).send({ auth: false, message: 'Password is required' });
     }
-
     // find the user
     const user = await User.findByPk(email);
     // check that user doesnt exists
     if (user) {
         return res.status(422).send({ auth: false, message: 'User may already exist' });
     }
-
     const password_hash = await generatePassword(plainTextPassword);
-
     const newUser = await new User({
         email: email,
         password_hash: password_hash
     });
-
     let savedUser;
     try {
         savedUser = await newUser.save();
