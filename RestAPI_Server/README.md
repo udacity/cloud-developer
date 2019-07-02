@@ -1,4 +1,7 @@
 # RestAPI Server
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/StTqXEQ2l-Y" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 The RestAPI Server (bottom server) is a nodejs/typescript cloud server which
 * Manages user authentication, storing emails and password hashes in an AWS Relational Database Service (DB)
 * Manages user data, storing images in an AWS Simple Storage Service (FS)
