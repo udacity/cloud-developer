@@ -2,25 +2,25 @@ import {Table, Column, Model, HasMany, PrimaryKey, CreatedAt, UpdatedAt} from 's
 
 @Table
 export class User extends Model<User> {
-  
-  @PrimaryKey
-  @Column
-  public email!: string;
 
-  @Column
-  public password_hash!: string; // for nullable fields
+    @PrimaryKey
+    @Column
+    public email!: string;
 
-  @Column
-  @CreatedAt
-  public createdAt: Date = new Date();
+    @Column
+    public password_hash!: string; // for nullable fields
 
-  @Column
-  @UpdatedAt
-  public updatedAt: Date = new Date();
+    @Column
+    @CreatedAt
+    public createdAt: Date = new Date();
 
-  short() {
-    return {
-      email: this.email
+    @Column
+    @UpdatedAt
+    public updatedAt: Date = new Date();
+
+    short() {
+        return {
+            email: this.email
+        };
     }
-  }
 }
