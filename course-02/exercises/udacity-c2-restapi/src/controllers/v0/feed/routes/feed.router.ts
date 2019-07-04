@@ -19,7 +19,7 @@ router.get('/', async (req: Request, res: Response) => {
 // Get a specific resource
 router.get('/:id',
     async (req: Request, res: Response) => {
-        let {id} = req.params;
+        const {id} = req.params;
         const item = await FeedItem.findByPk(id);
         res.send(item);
     });
@@ -28,8 +28,32 @@ router.get('/:id',
 router.patch('/:id',
     requireAuth,
     async (req: Request, res: Response) => {
-        //@TODO try it yourself
-        res.send(500).send('not implemented');
+        // Upload and delete old image from s3 at the client side first.
+
+        const id = req.body.id;
+        const newCaption = req.body.caption;
+        const newUrl = req.body.url;
+
+        if (!id) {
+            return res.status(400).send({message: 'id is required'});
+        }
+        if (!newCaption) {
+            return res.status(400).send({message: 'Caption is required or malformed'});
+        }
+
+        // check Filename is valid
+        if (!newUrl) {
+            return res.status(400).send({message: 'File url is required'});
+        }
+
+        const item: FeedItem = await FeedItem.findByPk(id);
+        item.url = newUrl;
+        item.caption = newCaption;
+        item.update({url: newUrl, caption: newCaption}).then(() => {
+            console.log('Updated');
+        });
+
+        return res.status(200).send('edited');
     });
 
 
