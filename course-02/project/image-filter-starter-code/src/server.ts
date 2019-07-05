@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import {IndexRouter} from "./controllers/v0/index.router";
 
 (async () => {
 
@@ -28,6 +29,10 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
+
+  //*I will just follow the project rubrics although it says that the api must be version
+  // in github. It is really confusing. Just remove the github readme*/
+  app.use('/', IndexRouter);
 
   //! END @TODO1
   
