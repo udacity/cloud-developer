@@ -29,4 +29,8 @@ describe('FeedUploadPage', () => {
     it('should create', () => {
         expect(component).toBeTruthy();
     });
+    it('should be valid when caption is set', () => {
+        component.uploadForm.controls.caption.setValue('test');
+        expect(component.uploadForm.valid).toBeTruthy();
+    });
 });
