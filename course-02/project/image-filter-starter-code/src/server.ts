@@ -34,17 +34,13 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     const imageUrl = req.query.image_url;
 
     if (!imageUrl) {
-      return res.status(400).send({ message: 'Image Url is required' });
+      return res.status(400).send({ message: 'Image url is required' });
     }
 
     const filteredImageUrl = await filterImageFromURL(imageUrl);
 
     res.sendFile(filteredImageUrl, function(error) {
-      if (error) {
-        res.status(400).send({ message: 'Something went wront while sending the file' });
-      } else {
-        deleteLocalFiles([filteredImageUrl]);
-      }
+      deleteLocalFiles([filteredImageUrl]);
     });
   });
 
