@@ -2,6 +2,7 @@ import express, { Router, Request, Response } from 'express';
 import bodyParser from 'body-parser';
 
 import { Car, cars as cars_list } from './cars';
+import { request } from 'http';
 
 (async () => {
   let cars:Car[]  = cars_list;
@@ -70,14 +71,39 @@ import { Car, cars as cars_list } from './cars';
 
   // @TODO Add an endpoint to GET a list of cars
   // it should be filterable by make with a query paramater
+  app.get("/cars/", async(req, res)=>{
+    let {make} = req.query;
+    let cars_list = cars;
+    if ( make ) {
+      cars_list = cars.filter(car=>car.make === make)
+    }
 
+    return res.status(200)
+              .send(cars_list);
+  });
   // @TODO Add an endpoint to get a specific car
   // it should require id
   // it should fail gracefully if no matching car is found
-
+  app.get("/cars/:id", (req, res)=>{
+    let {id} = req.params
+    if ( !id ) {
+      return res.status(400)
+                .send(`id is required`);
+    }
+    let car = cars.filter((car)=>car.id == id);
+    return res.status(200)
+              .send(car);
+  })
   /// @TODO Add an endpoint to post a new car to our list
   // it should require id, type, model, and cost
-
+  app.post("/cars/", (req, res)=>{
+    let { make, type, model, cost, id} = req.body;
+    let new_car: Car = {
+      make:make, type:type, model:model, cost:cost, id:id
+    }
+    cars.push(new_car)
+    res.status(201).send(new_car);
+  })
   // Start the Server
   app.listen( port, () => {
       console.log( `server running http://localhost:${ port }` );
