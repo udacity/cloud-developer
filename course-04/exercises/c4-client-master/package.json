@@ -3,16 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "dateformat": "^3.0.3",
-    "immutability-helper": "^3.0.0",
+    "immutability-helper": "^3.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-router-dom": "^5.0.0",
+    "react-router-dom": "^5.0.1",
     "react-scripts": "2.1.8",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.86.0",
-    "styled-components": "^4.2.0"
+    "styled-components": "^4.3.2"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
@@ -21,9 +21,9 @@
     "@types/node": "11.13.4",
     "@types/react": "16.8.13",
     "@types/react-dom": "16.8.4",
-    "@types/react-router-dom": "^4.3.2",
-    "@types/styled-components": "^4.1.14",
-    "auth0-js": "^9.10.1",
+    "@types/react-router-dom": "^4.3.4",
+    "@types/styled-components": "^4.1.18",
+    "auth0-js": "^9.11.1",
     "typescript": "3.4.3"
   },
   "scripts": {
