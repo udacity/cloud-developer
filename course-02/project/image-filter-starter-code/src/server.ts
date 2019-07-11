@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import { isURL } from "validator";
 
 (async () => {
 
@@ -29,18 +30,21 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   /**************************************************************************** */
 
   //! END @TODO1
-  app.get("/filteredimage/:image_url", async ( req, res ) => {
-    let { image_url } = req.params;
-    console.log("image_url message 400", image_url);
+
+  app.get("/filteredimage", async (req, res) => {
+    let {image_url} = req.query;
     if(!image_url){
-      return res.status(400).send("image url is required");
+          return res.status(402).send("image url is required");
+        }
+        try{
+     await(filterImageFromURL(image_url)).then(function(data){
+       res.status(200).sendFile(data, () => deleteLocalFiles([data]));
+     })
+     
     }
-      let image_path = await(filterImageFromURL(image_url));
-      console.log("image_url", image_url);
-      console.log("image_path ", image_path);
-      //await(deleteLocalFiles([image_path]));
-      return res.status(200).sendFile(image_path);
-  
+    catch (err){
+      res.status(400).send('Something went wrong');
+    }
   })
   
   // Root Endpoint
