@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf www/ || true",
+    "lint": "tslint -c tslint.json 'src/**/*.ts' --fix",
     "build": "npm run clean && tsc && cp package.json www/package.json && mkdir www/tmp/ && cd www && zip -r Archive.zip . && cd ..",
     "dev": "ts-node-dev --respawn --transpileOnly ./src/server.ts"
   },
@@ -24,7 +25,7 @@
     "@types/express": "^4.16.1",
     "@types/node": "^11.13.11",
     "ts-node-dev": "^1.0.0-pre.39",
-    "tslint": "^5.16.0",
+    "tslint": "^5.18.0",
     "typescript": "^3.4.5"
   },
   "dependencies": {
