@@ -4,22 +4,24 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\"",
     "clean": "rm -rf www/ || true",
+    "clean-win": "rmdir /s /q www",
     "lint": "tslint -c tslint.json 'src/**/*.ts' --fix",
     "build": "npm run clean && tsc && cp package.json www/package.json && mkdir www/tmp/ && cd www && zip -r Archive.zip . && cd ..",
+    "build-win": "npm run clean-win && tsc && copy package.json www\\package.json && mkdir www\\tmp && cd www && 7z a -r Archive.zip . && cd ..",
     "dev": "ts-node-dev --respawn --transpileOnly ./src/server.ts"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/grutt/udacity-c2-image-filter.git"
+    "url": "git+https://github.com/tinohe/cloud-developer.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/grutt/udacity-c2-image-filter/issues"
+    "url": "https://github.com/tinohe/cloud-developer/issues"
   },
-  "homepage": "https://github.com/grutt/udacity-c2-image-filter#readme",
+  "homepage": "https://github.com/tinohe/cloud-developer#readme",
   "devDependencies": {
     "@types/bluebird": "^3.5.27",
     "@types/express": "^4.16.1",
