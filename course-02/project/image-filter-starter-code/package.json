@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\"",
     "clean": "rm -rf www/ || true",
-    "clean-win": "rmdir /s /q www",
+    "clean-win": "if exist www rmdir /s /q www",
     "lint": "tslint -c tslint.json 'src/**/*.ts' --fix",
     "build": "npm run clean && tsc && cp package.json www/package.json && mkdir www/tmp/ && cd www && zip -r Archive.zip . && cd ..",
     "build-win": "npm run clean-win && tsc && copy package.json www\\package.json && mkdir www\\tmp && cd www && 7z a -r Archive.zip . && cd ..",
