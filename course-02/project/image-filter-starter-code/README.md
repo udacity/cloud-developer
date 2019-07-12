@@ -1,5 +1,9 @@
 # Udagram Image Filtering Microservice
 
+## URLs for grading
+* [Test it on AWS](http://ud-nd-cd-udagram-dev.eu-central-1.elasticbeanstalk.com/filteredimage?image_url=https://timedotcom.files.wordpress.com/2019/03/kitten-report.jpg)
+* [Have a look at the git repository](https://github.com/tinohe/cloud-developer)
+
 ## Tasks
 
 ### Setup Node Enviornment
