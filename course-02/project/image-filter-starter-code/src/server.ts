@@ -1,7 +1,7 @@
-import express from 'express';
+import express, { Router, Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
-import { isURL } from "validator";
+
 
 (async () => {
 
@@ -31,7 +31,7 @@ import { isURL } from "validator";
 
   //! END @TODO1
 
-  app.get("/filteredimage", async (req, res) => {
+  app.get("/filteredimage", async ( req: Request, res: Response ) => {
     let {image_url} = req.query;
     if(!image_url){
           return res.status(402).send("image url is required");
