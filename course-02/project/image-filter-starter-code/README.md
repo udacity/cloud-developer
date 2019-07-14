@@ -38,3 +38,9 @@ Prevent requests without valid authentication headers.
 
 Add your own domain name and have it point to the running services (try adding a subdomain name to point to the processing server)
 > !NOTE: Domain names are not included in AWS’ free tier and will incur a cost.
+
+#### EBS URL
+http://udacity-image-filter-chafik.us-west-1.elasticbeanstalk.com/filteredimage?image_url=https://timedotcom.files.wordpress.com/2019/03/kitten-report.jpg
+
+#### Github repo
+https://github.com/gChafik/cloud-developer/tree/master/course-02/project/image-filter-starter-code
