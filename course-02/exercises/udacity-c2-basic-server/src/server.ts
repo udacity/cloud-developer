@@ -73,8 +73,10 @@ import { Car, cars as cars_list } from './cars';
   app.get("/cars/", (req: Request, res: Response) => {
     const { make } = req.query;
     let cars_list = cars;
-    if (make) cars_list = cars.filter(car => car.make === make);
-    res.status(200).send(cars_list);
+    if (make) {
+      cars_list = cars.filter(car => car.make === make);
+      res.status(200).send(cars_list);
+    } else res.status(400).send('need make of car');
   });
 
   // @TODO Add an endpoint to get a specific car
