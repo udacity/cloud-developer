@@ -2,6 +2,9 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
+import Jimp = require ('jimp');
+
+
 (async () => {
 
   // Init the Express application
