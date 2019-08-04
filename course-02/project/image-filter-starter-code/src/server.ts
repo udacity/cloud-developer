@@ -35,7 +35,7 @@ import Jimp = require ('jimp');
 
   // Root Endpoint
   // Displays a simple message to the user
-  app.get( "/filteredimage/", async ( req: Request, res: Response ) => {
+  app.get( "/filteredimage/", async ( req, res ) => {
           let { image_url } = req.query;
 
           if(!image_url) {
