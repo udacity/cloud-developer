@@ -39,7 +39,7 @@ import Jimp = require ('jimp');
           let { image_url } = req.query;
 
           if(!image_url) {
-          return res.status(400).send("The URL is required");
+          return res.status(402).send("The URL is required");
         } else {
           let filteredImage = await filterImageFromURL(image_url);
 
@@ -48,7 +48,7 @@ import Jimp = require ('jimp');
 
         });
 
-
+        
 
   app.get( "/", async ( req, res ) => {
     res.send("try GET /filteredimage?image_url={{}}")
