@@ -28,28 +28,27 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
-  app.get( "/filteredimage", async ( req, res ) => {
+  app.get( "/filteredimage", async ( req: Request, res: Response ) => {
 
     try {
       let url = req.query.image_url;
 
       // check url is valid
       if (!url) {
-          return res.status(400).send({ message: 'Public image url is required' });
+          return res.status(422).send({ message: 'Public image url is required' });
       }
 
-      console.log(deleteLocalFiles);
       // call filterImageFromURL
       const filtered_image = await filterImageFromURL(url);
 
       // send the resulting file in the response
-      res.status(201).sendFile(filtered_image);
+      res.status(200).sendFile(filtered_image);
 
       //delete any file on the server
-      deleteLocalFiles();
+      deleteLocalFiles([]);
 
     } catch(err) {
-      console.log(err); // TypeError: failed to fetch
+      console.log(err.status); // TypeError: failed to fetch
     }
   } );
 
