@@ -7,23 +7,23 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "elasticsearch": "^15.4.1",
+    "elasticsearch": "^15.5.0",
     "http-aws-es": "^6.0.0",
-    "jimp": "^0.6.1",
+    "jimp": "^0.6.4",
     "source-map-support": "^0.5.11",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.17",
-    "@types/elasticsearch": "^5.0.32",
-    "@types/node": "^10.14.4",
-    "aws-sdk": "^2.433.0",
+    "@types/aws-lambda": "^8.10.28",
+    "@types/elasticsearch": "^5.0.34",
+    "@types/node": "^10.14.12",
+    "aws-sdk": "^2.492.0",
     "serverless-aws-documentation": "^1.1.0",
     "serverless-reqvalidator-plugin": "^1.0.3",
-    "serverless-webpack": "^5.2.0",
-    "ts-loader": "^5.3.3",
-    "typescript": "^3.4.1",
-    "webpack": "^4.29.6"
+    "serverless-webpack": "^5.3.1",
+    "ts-loader": "^5.4.5",
+    "typescript": "^3.5.3",
+    "webpack": "^4.35.3"
   },
   "author": "Ivan Mushketyk",
   "license": "MIT"
