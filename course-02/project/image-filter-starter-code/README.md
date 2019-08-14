@@ -1,5 +1,13 @@
 # Udagram Image Filtering Microservice
 
+## Repo
+
+The repo can be cloned from:
+https://github.com/mzucchelli/cloud-developer
+
+The path to the image-filter-starter-code within the repo is:
+https://github.com/mzucchelli/cloud-developer/tree/master/course-02/project/image-filter-starter-code
+
 ## Tasks
 
 ### Setup Node Enviornment
