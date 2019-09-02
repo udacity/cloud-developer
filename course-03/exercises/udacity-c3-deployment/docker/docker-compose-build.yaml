@@ -3,16 +3,16 @@ services:
   reverseproxy:
     build:
       context: .
-    image: weilip/reverseproxy 
+    image: weilip/reverseproxy
   backend_user:
     build:
       context: ../../udacity-c3-restapi-user
     image: weilip/udacity-restapi-user
   backend_feed:
     build:
-      context: ../../udacity-c3-restapi-feed  
+      context: ../../udacity-c3-restapi-feed
     image: weilip/udacity-restapi-feed
   frontend:
     build:
-      context: ../../udacity-c3-frontend  
+      context: ../../udacity-c3-frontend
     image: weilip/udacity-frontend:local
