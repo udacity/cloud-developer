@@ -22,3 +22,8 @@ install:
 
 
 
+deploy:
+  provider: script
+  script: bash docker_push
+  on:
+    branch: 06-ci
