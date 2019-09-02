@@ -26,4 +26,4 @@ deploy:
   provider: script
   script: bash docker_push.sh
   on:
-    branch: 06-ci
+    branch: master
