@@ -13,6 +13,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     // }).promise()
     const result = await docClient.query({
         TableName : process.env.TodoTable,
+        IndexName: process.env.USER_ID_INDEX,
         KeyConditionExpression: 'userId = :userId',
         ExpressionAttributeValues: {
             ':userId': getUserId(event)

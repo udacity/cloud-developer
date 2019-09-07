@@ -2,6 +2,7 @@ import 'source-map-support/register'
 import * as AWS from 'aws-sdk'
 import {APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler} from 'aws-lambda'
 import * as uuid from 'uuid'
+import {getUserId} from "../utils";
 
 
 const bucketName = process.env.TODO_IMAGES_S3_BUCKET;
@@ -18,7 +19,11 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
 
     await docClient.update({
         TableName: process.env.TodoTable,
-        Key: {'todoId': todoId},
+        Key: {
+            'todoId': todoId,
+            'userId': getUserId(event)
+
+        },
         UpdateExpression: 'set attachmentUrl = :a',
         ExpressionAttributeValues: {
             ':a': `https://${bucketName}.s3.amazonaws.com/${imageId}`,

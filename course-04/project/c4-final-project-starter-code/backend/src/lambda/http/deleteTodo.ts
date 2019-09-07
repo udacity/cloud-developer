@@ -1,8 +1,8 @@
 import 'source-map-support/register'
 
-import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
+import {APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler} from 'aws-lambda'
 import * as AWS from "aws-sdk";
-// import {getUserId} from "../utils";
+import {getUserId} from "../utils";
 // import {TodoItem} from "../../models/TodoItem";
 const docClient = new AWS.DynamoDB.DocumentClient();
 
@@ -12,7 +12,11 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
 
     await docClient.delete({
         TableName: process.env.TodoTable,
-        Key: {'todoId': todoId}
+        Key: {
+            'todoId': todoId,
+            'userId': getUserId(event)
+
+        }
     }).promise();
     return {
         statusCode: 201,
@@ -21,5 +25,6 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
             'Access-Control-Allow-Credentials': true
         },
         body: ''
-    }};
+    }
+};
 
