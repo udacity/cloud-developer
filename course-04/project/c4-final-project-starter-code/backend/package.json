@@ -9,16 +9,21 @@
     "axios": "^0.18.0",
     "http-errors": "^1.7.2",
     "jsonwebtoken": "^8.5.1",
+    "jwks-rsa": "^1.6.0",
     "middy": "^0.27.0",
     "source-map-support": "^0.5.11",
-    "uuid": "^3.3.2",
+    "uuid": "^3.3.3",
     "winston": "^3.2.1"
+  },
+  "scripts": {
+    "deploy": "serverless deploy -v"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.17",
     "@types/jsonwebtoken": "^8.3.2",
     "@types/node": "^10.14.4",
     "aws-sdk": "^2.433.0",
+    "serverless": "^1.51.0",
     "serverless-aws-documentation": "^1.1.0",
     "serverless-iam-roles-per-function": "^1.0.4",
     "serverless-plugin-canary-deployments": "^0.4.7",
