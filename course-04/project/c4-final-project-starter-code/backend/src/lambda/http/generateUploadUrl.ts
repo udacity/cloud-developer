@@ -1,34 +1,23 @@
 import 'source-map-support/register'
-import * as AWS from 'aws-sdk'
 import {APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler} from 'aws-lambda'
 import * as uuid from 'uuid'
 import {getUserId} from "../utils";
+import {getUploadUrl} from "../../dataLayer/imageStorageAccess";
+import {updateTodoImageUrl} from "../../businessLogic/todos";
+import {createLogger} from "../../utils/logger";
 
+const logger = createLogger('GenerateUploadUrlLamda');
 
-const bucketName = process.env.TODO_IMAGES_S3_BUCKET;
-const urlExpiration = process.env.SIGNED_URL_EXPIRATION;
-const docClient = new AWS.DynamoDB.DocumentClient();
-const s3 = new AWS.S3({
-    signatureVersion: 'v4'
-})
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+
     const todoId = event.pathParameters.todoId;
+    logger.info('Generating a new upload url', {id: todoId});
+
     const imageId = uuid.v4();
 
     const uploadUrl = getUploadUrl(imageId);
 
-    await docClient.update({
-        TableName: process.env.TodoTable,
-        Key: {
-            'todoId': todoId,
-            'userId': getUserId(event)
-
-        },
-        UpdateExpression: 'set attachmentUrl = :a',
-        ExpressionAttributeValues: {
-            ':a': `https://${bucketName}.s3.amazonaws.com/${imageId}`,
-        }
-    }).promise();
+    await updateTodoImageUrl(todoId, getUserId(event), imageId);
 
     // TODO: Return a presigned URL to upload a file for a TODO item with the provided id
     const reply = {"uploadUrl": uploadUrl};
@@ -46,10 +35,4 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
 };
 
 
-function getUploadUrl(imageId: string) {
-    return s3.getSignedUrl('putObject', {
-        Bucket: bucketName,
-        Key: imageId,
-        Expires: urlExpiration
-    })
-}
+

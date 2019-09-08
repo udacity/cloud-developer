@@ -17,25 +17,23 @@ provider:
     USER_ID_INDEX: UserIdIndex
 
 
-  iamRoleStatements:
-  - Effect: Allow
-    Action:
-    - dynamodb:Query
-#    - dynamodb:Scan
-#    - dynamodb:GetItem
-    - dynamodb:PutItem
-    - dynamodb:UpdateItem
-    - dynamodb:DeleteItem
-    Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TodoTable}
-  - Effect: Allow
-    Action:
-      - dynamodb:Query
-    Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TodoTable}/index/${self:provider.environment.USER_ID_INDEX}
-
-  - Effect: Allow
-    Action:
-    - s3:PutObject
-    Resource: arn:aws:s3:::${self:provider.environment.TODO_IMAGES_S3_BUCKET}/*
+#  iamRoleStatements:
+#  - Effect: Allow
+#    Action:
+#    - dynamodb:Query
+#    - dynamodb:PutItem
+#    - dynamodb:UpdateItem
+#    - dynamodb:DeleteItem
+#    Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TodoTable}
+##  - Effect: Allow
+##    Action:
+##      - dynamodb:Query
+##    Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TodoTable}/index/${self:provider.environment.USER_ID_INDEX}
+#
+#  - Effect: Allow
+#    Action:
+#    - s3:PutObject
+#    Resource: arn:aws:s3:::${self:provider.environment.TODO_IMAGES_S3_BUCKET}/*
 
 functions:
 
@@ -51,7 +49,13 @@ functions:
           path: todos
           cors: true
           authorizer: Auth
-#
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TodoTable}/index/${self:provider.environment.USER_ID_INDEX}
+
+  #
 #  # TODO: Configure this function
   CreateTodo:
     handler: src/lambda/http/createTodo.handler
@@ -61,6 +65,11 @@ functions:
           path: todos
           cors: true
           authorizer: Auth
+    iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TodoTable}
 #  # TODO: Configure this function
   UpdateTodo:
     handler: src/lambda/http/updateTodo.handler
@@ -70,6 +79,11 @@ functions:
           path: todos/{todoId}
           cors: true
           authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TodoTable}
 #  # TODO: Configure this function
   DeleteTodo:
     handler: src/lambda/http/deleteTodo.handler
@@ -79,6 +93,11 @@ functions:
           path: todos/{todoId}
           cors: true
           authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:DeleteItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TodoTable}
 #  # TODO: Configure this function
   GenerateUploadUrl:
     handler: src/lambda/http/generateUploadUrl.handler
@@ -88,6 +107,16 @@ functions:
           path: todos/{todoId}/attachment
           cors: true
           authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - s3:PutObject
+        Resource: arn:aws:s3:::${self:provider.environment.TODO_IMAGES_S3_BUCKET}/*
+      - Effect: Allow
+        Action:
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TodoTable}
+
 resources:
   Resources:
     # TODO: Add any necessary AWS resources
