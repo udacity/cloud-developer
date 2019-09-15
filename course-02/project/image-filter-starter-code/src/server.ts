@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import { runInNewContext } from 'vm';
 
 (async () => {
 
@@ -30,6 +31,31 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   /**************************************************************************** */
 
   //! END @TODO1
+
+  app.get("/filteredimage", 
+    async (req, res) => {
+
+      // Check the image_url parameter has been passed
+      if(!req.query.image_url){
+        return res.status(400).send("Bad Request please include Image Url parameter");
+      }
+
+      // Deconstruct image_url parameter
+      const { image_url } = req.query;
+
+      // Grab filtered Image from Url
+      const img = await filterImageFromURL(image_url);
+
+      // Send file to client
+      res.sendFile(img,(error) => {
+        if(!error){
+          deleteLocalFiles([img]);
+        }
+      });
+
+
+    }
+  )
   
   // Root Endpoint
   // Displays a simple message to the user
