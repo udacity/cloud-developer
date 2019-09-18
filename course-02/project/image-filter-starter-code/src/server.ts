@@ -29,6 +29,29 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   /**************************************************************************** */
 
+  app.get("/filteredimage/", async ( req, res ) => {
+    let {image_url} = req.query;
+
+    if(!image_url)
+    {
+      return res.status(400).send("image_url not exists");
+    }
+
+    //console.log('image_url:',image_url);
+
+    filterImageFromURL(image_url).then( function sendResult(retimg) {
+
+      //send result
+      res.status(200).sendFile(retimg);
+      //res.status(200).send(retimg);
+
+      // wait untill upload finish, and delete file
+      res.on('finish', function deletFile(){deleteLocalFiles([retimg])} );
+
+      return retimg;
+    })
+  });
+
   //! END @TODO1
   
   // Root Endpoint
