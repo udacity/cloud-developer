@@ -29,7 +29,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   /**************************************************************************** */
 
-  app.get("/filteredimage/", async ( req, res ) => {
+  app.get("/filteredimage/", async ( req:express.Request, res:express.Response ) => {
     let {image_url} = req.query;
 
     if(!image_url)
@@ -39,7 +39,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
     //console.log('image_url:',image_url);
 
-    filterImageFromURL(image_url).then( function sendResult(retimg) {
+    filterImageFromURL(image_url).then( function sendResult(retimg:string) {
 
       //send result
       res.status(200).sendFile(retimg);
@@ -56,7 +56,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   
   // Root Endpoint
   // Displays a simple message to the user
-  app.get( "/", async ( req, res ) => {
+  app.get( "/", async ( req:express.Request, res:express.Response ) => {
     res.send("try GET /filteredimage?image_url={{}}")
   } );
   
