@@ -39,20 +39,20 @@ let  files: Array<string>=[];
   
     let{image_url} = req.query; 
     if(!image_url){
-     return res.send('image url is required');
+     return res.status(400).send('image url is required');
    }
    else {
    const imageF= await filterImageFromURL(image_url);
    files.push(imageF);//
   //  console.log("files.pop() "+files.pop());
-    res.status(200).sendFile(imageF);
+    res.sendFile(imageF);
 
     
     res.on('finish', function() {
       res.status(503).end();
       if(files.length<1){
        // console.log('Files Array is empty');
-        //res.status(400);
+        res.sendStatus(400);//.status(400)
       }else{deleteLocalFiles(files);
      const temp= files.pop();
      }

@@ -38,8 +38,8 @@ export async function deleteLocalFiles(files:Array<string>){
 
     for( let file of files) {
         fs.unlinkSync(file.toString());
-       // console.log('****************************************');
-       // console.log('file: '+file +' was deleted successfully');
+        console.log('****************************************');
+        console.log('file: '+file +' was deleted successfully');
     }
 
 
