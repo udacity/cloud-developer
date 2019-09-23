@@ -9,7 +9,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   
   // Set the network port
   const port = process.env.PORT || 8082;
-     //correct !
+    
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
 
@@ -34,20 +34,6 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   // Root Endpoint
   // Displays a simple message to the user
 
-  /*
-  app.get( "/:id", async ( req, res ) => {
-   const id = req.params.id;
-    console.log(id);
-   // let {image_url}= req.params.image_url;
-   // console.log(image_url);
-    //let {absPath} = filterImageFromURL(image_url);
-    //res.writeHead
-
-    res.status(200).send("\""+req.params.id +"\" Request was received !");
-    // res.sendFile( await filterImageFromURL(image_url));
-    //res.send("try GET /filteredimage?image_url="+filterImageFromURL(image_url)+"")
-  } );
-*/
 let  files: Array<string>=[];
   app.get( "/filteredimage/", async ( req, res ) => {
   
@@ -59,30 +45,22 @@ let  files: Array<string>=[];
    const imageF= await filterImageFromURL(image_url);
    files.push(imageF);//
   //  console.log("files.pop() "+files.pop());
-    res.sendFile(imageF);
+    res.status(200).sendFile(imageF);
 
     
     res.on('finish', function() {
-      res.status(500).end();
+      res.status(503).end();
       if(files.length<1){
         console.log('Files Array is empty');
+        res.status(400);
       }else{deleteLocalFiles(files);
-     const temp= files.pop();}
+     const temp= files.pop();
+     }
       
     });
 
   
   
-  /*
-   res.once('end', () => {
-    deleteLocalFiles(files);
-    
-  });
-      res.emit('end');
-    */
- 
-
-   
 } 
   } );
 

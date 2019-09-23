@@ -19,7 +19,7 @@ export async function filterImageFromURL(inputURL: string): Promise<string>{
         .write(__dirname+outpath, (img)=>{
             resolve(__dirname+outpath);
         });
-        console.log('');
+     //   console.log('');
     });
 
     
@@ -38,8 +38,8 @@ export async function deleteLocalFiles(files:Array<string>){
 
     for( let file of files) {
         fs.unlinkSync(file.toString());
-        console.log('****************************************');
-        console.log('file: '+file +' was deleted successfully');
+       // console.log('****************************************');
+       // console.log('file: '+file +' was deleted successfully');
     }
 
 
