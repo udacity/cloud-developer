@@ -64,7 +64,12 @@ let  files: Array<string>=[];
   } );
 
 
+  app.get( "/", async ( req, res ) => {
+     return res.status(200).send('Enter /filteredimage/');
   
+      
+   
+  } );
 
   // Start the Server
   app.listen( port, () => {
