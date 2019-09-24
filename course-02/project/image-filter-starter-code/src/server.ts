@@ -45,23 +45,22 @@ let  files: Array<string>=[];
    const imageF= await filterImageFromURL(image_url);
    files.push(imageF);//
   //  console.log("files.pop() "+files.pop());
-    res.sendFile(imageF);
+    res.status(200).sendFile(imageF);
 
-    
     res.on('finish', function() {
-      res.status(503).end();
+      res.end();
       if(files.length<1){
        // console.log('Files Array is empty');
-        res.sendStatus(400);//.status(400)
+      //  res.sendStatus(400);//.status(400)
       }else{deleteLocalFiles(files);
      const temp= files.pop();
      }
       
     });
 
+  return res.status(200);
   
-  
-} 
+} //end else 
   } );
 
 

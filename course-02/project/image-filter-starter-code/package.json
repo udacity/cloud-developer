@@ -25,8 +25,7 @@
     "@types/node": "^11.13.17",
     "ts-node-dev": "^1.0.0-pre.40",
     "tslint": "^5.18.0",
-    "typescript": "^3.5.3",
-    "fs-extra": "6.9.0"
+    "typescript": "^3.5.3"
   },
   "dependencies": {
     "express": "^4.17.1",
