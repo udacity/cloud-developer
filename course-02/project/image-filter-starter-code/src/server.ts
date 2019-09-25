@@ -65,10 +65,8 @@ let  files: Array<string>=[];
 
 
   app.get( "/", async ( req, res ) => {
-     return res.status(200).send('Enter /filteredimage/');
+     return res.status(200).send('try Get /filteredimage/');
   
-      
-   
   } );
 
   // Start the Server
