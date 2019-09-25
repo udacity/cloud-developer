@@ -9,17 +9,6 @@ A basic Ionic client web application which consumes the RestAPI Backend.
 3. [The Image Filtering Microservice](https://github.com/grutt/udacity-c2-image-filter), the final project for the course. It is a Node-Express application which runs a simple Python script to process images.
 
 ## Tasks
-### Setup Python Environment
-You'll need to set up and use a virtual environment for this project.
-
-To create a virtual environment run the following from within the project directory:
-1. Install virtualenv dependency: `pip install virtualenv`
-2. Create a virtual environment:    `virtualenv venv`
-3. Activate the virtual environment: `source venv/bin/activate` (Note: You'll need to do this every time you open a new terminal)
-4. Install dependencies: `pip install -r requirements.txt`
-
-When you're done working and leave the virtual environment, run: `deactivate`
-
 ### Setup Node Environment
 You'll need to create a new node server. Open a new terminal within the project directory and run:
 1. Initialize a new project: `npm init`
@@ -73,7 +62,4 @@ Try writing a postman collection to test your endpoint. Be sure to cover:
 
 #### Refactor Data Models
 Try adding another column to your tables to save a separate key for your filtered image. Remember, you'll have to rename the file before adding it to S3!
-
-#### (ADVANCED) Refactor Data Models
-Try adding a second OpenCV filter script and add an additional parameter to select which filter to use as a POST parameter
 
