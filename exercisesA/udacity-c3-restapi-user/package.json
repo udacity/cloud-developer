@@ -26,15 +26,15 @@
     "jsonwebtoken": "^8.5.1",
     "pg": "^7.9.0",
     "reflect-metadata": "^0.1.13",
-    "sequelize": "^5.3.5",
-    "sequelize-typescript": "^0.6.9"
+    "sequelize": "5.1.1",
+    "sequelize-typescript": "^0.6.11"
   },
   "devDependencies": {
-    "@types/bluebird": "^3.5.26",
+    "@types/bluebird": "^3.5.27",
     "@types/express": "^4.16.1",
-    "@types/node": "^11.11.6",
+    "@types/node": "^11.13.21",
     "@types/sequelize": "^4.27.44",
-    "@types/validator": "^10.9.0",
+    "@types/validator": "^10.11.3",
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",
     "mocha": "^6.1.4",
