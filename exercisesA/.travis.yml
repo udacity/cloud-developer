@@ -1,5 +1,3 @@
-language:node_js
-node_js
- - "stable"
-script: gulp travis
-
+language: node_js
+node_js:
+  - 10.16.3
