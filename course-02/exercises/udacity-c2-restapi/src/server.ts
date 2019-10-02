@@ -1,6 +1,7 @@
 import express from 'express';
 import { sequelize } from './sequelize';
 
+//IndexRouter
 import { IndexRouter } from './controllers/v0/index.router';
 
 import bodyParser from 'body-parser';
@@ -23,6 +24,7 @@ import { V0MODELS } from './controllers/v0/model.index';
     next();
   });
 
+  // IMPORTANT, IndexRouter!
   app.use('/api/v0/', IndexRouter)
 
   // Root URI call

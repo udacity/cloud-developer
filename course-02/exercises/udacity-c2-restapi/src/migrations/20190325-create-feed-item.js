@@ -1,3 +1,4 @@
+// database versioning
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {

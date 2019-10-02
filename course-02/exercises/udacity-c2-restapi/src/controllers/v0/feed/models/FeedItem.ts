@@ -1,6 +1,7 @@
 import {Table, Column, Model, HasMany, PrimaryKey, CreatedAt, UpdatedAt, ForeignKey} from 'sequelize-typescript';
 import { User } from '../../users/models/User';
 
+// decorator to translate typescript to postreSQL
 @Table
 export class FeedItem extends Model<FeedItem> {
   @Column

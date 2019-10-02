@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { FeedRouter } from './feed/routes/feed.router';
 import { UserRouter } from './users/routes/user.router';
 
+//router object instead of app object
 const router: Router = Router();
 
 router.use('/feed', FeedRouter);
