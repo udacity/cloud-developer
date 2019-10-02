@@ -1,13 +1,13 @@
 export const config = {
   "dev": {
-    "username": "udagramevah",
-    "password": "Bigbig12",
-    "database": "udagramevah",
-    "host": "udagramevah.cg1mnahqfly8.ca-central-1.rds.amazonaws.com",
+    "username": process.env.RDS_USERNAME,
+    "password": process.env.RDS_PASSCODE,
+    "database": process.env.RDS_DATABASE,
+    "host": process.env.RDS_HOST,
     "dialect": "postgres",
-    "aws_region": "ca-central-1",
-    "aws_profile": "default",
-    "aws_media_bucket": "udagram-evah-dev"
+    "aws_region": process.env.AWS_REGION,
+    "aws_profile": process.env.AWS_PROFILE,
+    "aws_media_bucket": process.env.AWS_MEDIA_BUCKET
   },
   "prod": {
     "username": "",

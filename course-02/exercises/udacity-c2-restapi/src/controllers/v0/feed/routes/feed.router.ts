@@ -25,7 +25,7 @@ router.get('/:id',
     const item = await FeedItem.findByPk(id);
     if(item)
         res.status(200).send(item);
-    res.status(400).send("Feed not found. id="+id);
+    res.status(404).send("Feed not found. id="+id);
 });
 
 
