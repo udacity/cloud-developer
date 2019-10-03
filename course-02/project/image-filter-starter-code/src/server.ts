@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import {filterImageFromURL, deleteLocalFiles, getTempFiles} from './util/util';
 
 (async () => {
 
@@ -36,14 +36,21 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
         if (imageUrl) {
             try {
                 imageFilteredPath = await filterImageFromURL(imageUrl);
-                return res.sendFile(imageFilteredPath);
+                await res.sendFile(imageFilteredPath,  (error) => {
+                    if(error){
+                        console.error('Error while sending file :', error);
+                        return res.status(422).send({message: 'Something went wrong while processing the image. Please try later.'});
+                    }
+                });
+                const tempFiles = getTempFiles(imageFilteredPath);
+                await deleteLocalFiles(tempFiles);
+                return;
             } catch (error) {
               console.error('Something went wrong while processing the image : ', error);
               return res.status(422).send({message: 'Something went wrong while processing the image. Please try later.'});
             }
         }
         res.status(400).send({message: 'image_url is required or malformed'});
-        await deleteLocalFiles([imageFilteredPath]);
     });
 
 

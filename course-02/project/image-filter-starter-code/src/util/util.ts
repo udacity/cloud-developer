@@ -14,7 +14,9 @@ export async function filterImageFromURL(inputURL: string): Promise<string> {
         photo = await Jimp.read(inputURL);
     } catch (error) {
         console.error("Could not read the file from the link provided.");
-        return new Promise((resolve, reject) => {return reject("Could not read the file from the link provided.")});
+        return new Promise((resolve, reject) => {
+            return reject("Could not read the file from the link provided.")
+        });
     }
 
     return new Promise(async resolve => {
@@ -36,6 +38,17 @@ export async function filterImageFromURL(inputURL: string): Promise<string> {
 //    files: Array<string> an array of absolute paths to files
 export async function deleteLocalFiles(files: Array<string>) {
     for (let file of files) {
-        fs.unlinkSync(file);
+        if (file) {
+            try {
+                fs.unlinkSync(file);
+            } catch (error) {
+                console.error("Error deleting the file : ", error);
+            }
+        }
+
     }
+}
+
+export function getTempFiles(currFile: string) {
+    return fs.readdirSync('./src/util/tmp').filter(file => currFile !== __dirname + '/tmp/' + file).map(file => __dirname + '/tmp/' + file);
 }
