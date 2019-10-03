@@ -36,7 +36,7 @@ import {filterImageFromURL, deleteLocalFiles, getTempFiles} from './util/util';
         if (imageUrl) {
             try {
                 imageFilteredPath = await filterImageFromURL(imageUrl);
-                await res.sendFile(imageFilteredPath,  (error) => {
+                res.sendFile(imageFilteredPath,  (error) => {
                     if(error){
                         console.error('Error while sending file :', error);
                         return res.status(422).send({message: 'Something went wrong while processing the image. Please try later.'});

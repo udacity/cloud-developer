@@ -50,5 +50,5 @@ export async function deleteLocalFiles(files: Array<string>) {
 }
 
 export function getTempFiles(currFile: string) {
-    return fs.readdirSync('./src/util/tmp').filter(file => currFile !== __dirname + '/tmp/' + file).map(file => __dirname + '/tmp/' + file);
+    return fs.readdirSync(__dirname + '/tmp').filter(file => currFile !== __dirname + '/tmp/' + file).map(file => __dirname + '/tmp/' + file);
 }
