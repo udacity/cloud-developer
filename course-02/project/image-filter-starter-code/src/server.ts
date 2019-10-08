@@ -38,6 +38,10 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
         });
       });
     } 
+    else {
+      res.status(400).send("Client error");
+      res.status(500).send("server error");
+    }
   });
   //! END @TODO1
   
