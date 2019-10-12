@@ -1,0 +1,1 @@
+{"ast":null,"code":"'use strict';\n\nrequire('./warnAboutDeprecatedCJSRequire.js')('createBrowserHistory');\n\nmodule.exports = require('./index.js').createBrowserHistory;","map":null,"metadata":{},"sourceType":"script"}

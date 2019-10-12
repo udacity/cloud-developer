@@ -1,0 +1,1 @@
+{"ast":null,"code":"/**\n * Normalizes the offset value.\n * @param {number|array} value The value to normalize.\n * @returns {number}\n */\nexport default (function (value) {\n  return typeof value === 'number' || typeof value === 'string' ? [value, value] : value;\n});","map":null,"metadata":{},"sourceType":"module"}
