@@ -20,7 +20,14 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - dynamodb:DeleteItem
+        - codedeploy:*
+      Resource:
+        - '*'
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:scan
+        - dynamodb:PutItem
         - dynamodb:GetItem
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
     - Effect: Allow
@@ -44,12 +51,6 @@ functions:
           cors: true
           authorizer: Auth
 
-    iamRoleStatements:
-      - Effect: Allow
-        Action:
-          - dynamodb:scan
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
-
   # TODO: Configure this function
   CreateTodo:
     handler: src/lambda/http/createTodo.handler
@@ -59,11 +60,6 @@ functions:
           path: todos
           cors: true
           authorizer: Auth
-    iamRoleStatements:
-      - Effect: Allow
-        Action:
-          - dynamodb:PutItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
   # TODO: Configure this function
   UpdateTodo:
@@ -80,7 +76,6 @@ functions:
         Action:
           - dynamodb:UpdateItem
           - dynamodb:GetItem
-          - dynamodb:PutItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
   # TODO: Configure this function
