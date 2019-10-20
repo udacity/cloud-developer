@@ -2,6 +2,7 @@ import * as AWS  from 'aws-sdk'
 import * as AWSXRay from 'aws-xray-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 
+// AWS X Ray is for tracing
 const XAWS = AWSXRay.captureAWS(AWS)
 
 import { Group } from '../models/Group'
