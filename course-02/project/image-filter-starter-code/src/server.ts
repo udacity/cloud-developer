@@ -37,8 +37,8 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
                 .send(`image_url is required`);
     }
 
-    try {
-      const filename = await filterImageFromURL(image_url);
+    var fetchImage = filterImageFromURL(image_url);
+    fetchImage.then(function(filename) {
       console.log(`filename is: ${filename}`);
       res.status(200).sendFile(filename);
       res.on('finish', function() {
@@ -52,9 +52,12 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
           console.log("Error removing file ", filename)
           return res.status(500).send(`Error removing file ${filename}`);
         }
-      } );
-        
-    }
+      } );  
+    }).catch(function() {
+          console.log(`Error fetching url ${image_url}`);
+          return res.status(422).send(`Error fetching url ${image_url}`);
+    });
+    // const filename = await filterImageFromURL(image_url);
   } );
   
   // Root Endpoint
