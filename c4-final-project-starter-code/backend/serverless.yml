@@ -11,6 +11,7 @@ provider:
 
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
+  profile: serverless
 
 functions:
 
