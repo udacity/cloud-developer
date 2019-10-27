@@ -25,6 +25,7 @@ functions:
       - http:
           method: get
           path: todos
+          authorizer: Auth
 
   # TODO: Configure this function
   CreateTodo:
@@ -33,6 +34,7 @@ functions:
       - http:
           method: post
           path: todos
+          authorizer: Auth
 
   # TODO: Configure this function
   UpdateTodo:
@@ -41,6 +43,7 @@ functions:
       - http:
           method: patch
           path: todos/{todoId}
+          authorizer: Auth
 
   # TODO: Configure this function
   DeleteTodo:
@@ -49,6 +52,7 @@ functions:
       - http:
           method: delete
           path: todos/{todoId}
+          authorizer: Auth
 
   # TODO: Configure this function
   GenerateUploadUrl:
@@ -57,7 +61,21 @@ functions:
       - http:
           method: post
           path: todos/{todoId}/attachment
+          authorizer: Auth
 
 resources:
   Resources:
-    # TODO: Add any necessary AWS resources
+    # resource for setting CORS headers for custom authorizer function
+    GatewayResponseDefault4XX:
+      Type: AWS::ApiGateway::GatewayResponse
+      Properties:
+        ResponseParameters:
+          # allow any request origin to access this resource
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          # only allow these headers in the follow up request
+          gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+          # only allow these methods to access the resource
+          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: ApiGatewayRestApi
