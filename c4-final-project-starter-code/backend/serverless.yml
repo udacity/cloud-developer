@@ -1,9 +1,13 @@
+org: imdanwu
+app: todo-app
 service:
   name: serverless-todo-app
 
 plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
+  - serverless-dynamodb-local
+  - serverless-offline
 
 provider:
   name: aws
@@ -13,8 +17,40 @@ provider:
   region: ${opt:region, 'us-east-1'}
   profile: serverless
 
-functions:
+  environment:
+    AWS_XRAY_CONTEXT_MISSING: LOG_ERROR # https://github.com/aws/aws-xray-sdk-node/tree/master/packages/core#context-missing-strategy-configuration
+    TODOS_TABLE: Todos-${self:provider.stage}
 
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+
+custom:
+  serverless-offline:
+    port: 3003
+
+  dynamodb:
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+      seed: true
+    stages:
+      - dev # https://github.com/99xt/serverless-dynamodb-local/issues/225#issuecomment-498023248
+    seed:
+      domain:
+        sources:
+          - table: ${self:provider.environment.TODOS_TABLE}
+            sources: [./seedTodos.json]
+
+functions:
   Auth:
     handler: src/lambda/auth/auth0Authorizer.handler
 
@@ -25,6 +61,7 @@ functions:
       - http:
           method: get
           path: todos
+          # cors: true
           authorizer: Auth
 
   # TODO: Configure this function
@@ -79,3 +116,25 @@ resources:
         ResponseType: DEFAULT_4XX
         RestApiId:
           Ref: ApiGatewayRestApi
+
+    # Don't think I need this for the project
+    # RequestBodyValidator:
+    #   Type: AWS::ApiGateway::RequestValidator
+    #   Properties:
+    #     Name: 'request-body-validator'
+    #     RestApiId:
+    #       Ref: ApiGatewayRestApi
+    #     ValidateRequestBody: true
+    #     ValidateRequestParameters: false
+
+    TodosTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.TODOS_TABLE}
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
