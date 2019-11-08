@@ -2,6 +2,9 @@
   "name": "serverless-todo-app",
   "version": "1.0.0",
   "description": "Serverless TODO image app",
+  "scripts": {
+    "debug": "node --inspect $(npm bin)/sls offline start"
+  },
   "dependencies": {
     "@types/axios": "^0.14.0",
     "@types/http-errors": "^1.6.1",
@@ -20,6 +23,7 @@
     "@types/jsonwebtoken": "^8.3.2",
     "@types/node": "^10.17.2",
     "@types/uuid": "^3.4.6",
+    "serverless": "^1.57.0",
     "serverless-aws-documentation": "^1.1.0",
     "serverless-dynamodb-local": "^0.2.38",
     "serverless-iam-roles-per-function": "^1.0.4",
