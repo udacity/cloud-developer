@@ -6,13 +6,13 @@ import { Car, cars as cars_list } from './cars';
 (async () => {
   let cars:Car[]  = cars_list;
 
-  //Create an express applicaiton
+  //Create an express application
   const app = express(); 
   //default port to listen
   const port = 8082; 
   
   //use middleware so post bodies 
-  //are accessable as req.body.{{variable}}
+  //are accessible as req.body.{{variable}}
   app.use(bodyParser.json()); 
 
   // Root URI call
@@ -69,11 +69,58 @@ import { Car, cars as cars_list } from './cars';
   } );
 
   // @TODO Add an endpoint to GET a list of cars
-  // it should be filterable by make with a query paramater
+  // it should be filterable by make with a query parameter
+  app.get( "/cars/", ( req: Request, res: Response ) => {
+    let { make } = req.query;
+    cars_list
+
+    if ( !make ) {
+      return res.status(200)
+                .send(cars_list);
+    }
+    
+    let cars_by_make:Car[] = [];
+    for (var i=0; i < cars_list.length; i++) {      
+      if (cars_list[i].make === make) {
+        cars_by_make.push(cars_list[i])
+      }
+    };
+
+    if (cars_by_make.length > 0) {
+      return res.status(200)
+                .send(cars_by_make);
+    }
+    else {
+      return res.status(404)
+                .send(`Couldn't find a car with the make '${make}'`);
+    }
+  } );
 
   // @TODO Add an endpoint to get a specific car
   // it should require id
   // it should fail gracefully if no matching car is found
+  app.get( "/cars/:id", 
+    ( req: Request, res: Response ) => {
+      let { id } = req.params;
+      
+      if ( !id ) {
+        return res.status(400)
+                  .send(`id is required`);
+      }
+
+      let id_val = Number(id);
+
+      for (var i=0; i < cars_list.length; i++) {
+        if (cars_list[i].id === id_val) {
+          
+          return res.status(200)
+                    .send(cars_list[i]);
+        }
+      };
+
+      return res.status(404)
+                .send(`Couldn't find a car with the id '${id}'`);
+  } );
 
   /// @TODO Add an endpoint to post a new car to our list
   // it should require id, type, model, and cost
