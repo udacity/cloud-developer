@@ -61,7 +61,7 @@ functions:
       - http:
           method: get
           path: todos
-          # cors: true
+          cors: true
           authorizer: Auth
 
   # TODO: Configure this function
