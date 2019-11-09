@@ -15,9 +15,7 @@ const logger = createLogger('getTodos')
 export const handler: APIGatewayProxyHandler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
-  console.log('Processing event: ', event)
   const userId = getUserId(event)
-  console.log('userId :', userId)
 
   if (!userId) {
     logger.error('Unauthorized createTodo')

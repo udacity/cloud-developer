@@ -12,14 +12,14 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   const todoId = event.pathParameters.todoId
 
   if (!todoId) {
-    logger.error("Delete missing id")
+    logger.error("Delete missing todoId")
     return {
       statusCode: 200,
       body: ""
     }
   }
 
-  // TODO: Remove a TODO item by id
+  // TODO: Remove a TODO item by todoId
   try {
     await todosClient.deleteTodo(todoId)
     return {
