@@ -10,28 +10,26 @@ import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 export default class TodosAccess {
   constructor(
     private readonly docClient: DocumentClient = createDynamoDBClient(),
-    private readonly todosTable = process.env.TODOS_TABLE
-  ) {}
+    private readonly todosTable = process.env.TODOS_TABLE,
+    private readonly index = process.env.INDEX_NAME
+  ) { }
 
-  async getAllTodos(): Promise<TodoItem[]> {
-    console.log('Getting all todos')
+  // async getAllTodos(): Promise<TodoItem[]> {
+  //   const result = await this.docClient
+  //     .scan({
+  //       TableName: this.todosTable
+  //     })
+  //     .promise()
 
-    const result = await this.docClient
-      .scan({
-        TableName: this.todosTable
-      })
-      .promise()
-
-    const items = result.Items
-    return items as TodoItem[]
-  }
+  //   const items = result.Items
+  //   return items as TodoItem[]
+  // }
 
   async getTodos(userId: string): Promise<TodoItem[]> {
-    console.log('Getting all todos')
-
     const result = await this.docClient
       .query({
         TableName: this.todosTable,
+        IndexName: this.index,
         KeyConditionExpression: 'userId = :userId',
         ExpressionAttributeValues: {
           ':userId': userId
@@ -55,6 +53,7 @@ export default class TodosAccess {
   }
 
   async updateTodo(
+    userId: TodoItem['userId'],
     todoId: TodoItem['todoId'],
     updatedTodo: UpdateTodoRequest
   ): Promise<void> {
@@ -62,9 +61,13 @@ export default class TodosAccess {
       .update({
         TableName: this.todosTable,
         Key: {
+          userId: userId,
           todoId: todoId
         },
-        UpdateExpression: 'set name = :name, dueDate = :dueDate, done = :done',
+        UpdateExpression: 'set #name = :name, dueDate = :dueDate, done = :done',
+        ExpressionAttributeNames: {
+          "#name": "name"
+        },
         ExpressionAttributeValues: {
           ':name': updatedTodo.name,
           ':dueDate': updatedTodo.dueDate,
@@ -74,11 +77,12 @@ export default class TodosAccess {
       .promise()
   }
 
-  async deleteTodo(todoId: TodoItem['todoId']): Promise<void> {
+  async deleteTodo(userId: TodoItem['userId'], todoId: TodoItem['todoId']): Promise<void> {
     await this.docClient
       .delete({
         TableName: this.todosTable,
         Key: {
+          userId: userId,
           todoId: todoId
         }
       })

@@ -66,7 +66,8 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
       this.setState({
         todos: this.state.todos.filter(todo => todo.todoId != todoId)
       })
-    } catch {
+    } catch(e) {
+      console.log('e :', e);
       alert('Todo deletion failed')
     }
   }
@@ -84,8 +85,9 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
           [pos]: { done: { $set: !todo.done } }
         })
       })
-    } catch {
-      alert('Todo deletion failed')
+    } catch(e) {
+      console.log('e :', e);
+      alert('Todo update failed')
     }
   }
 

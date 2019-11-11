@@ -25,7 +25,6 @@ export const handler: APIGatewayProxyHandler = async (
     }
   }
 
-  // TODO: Get all TODO items for a current user
   const items = await todosClient.getTodos(userId)
   logger.info('retrieved todos for user', {
     userId,

@@ -15,40 +15,50 @@ import { createLogger } from '../../utils/logger'
 const todosClient = new TodosAccess()
 const logger = createLogger('createTodo')
 
+const bucketName = process.env.IMAGES_S3_BUCKET
+
 export const handler: APIGatewayProxyHandler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
+  // TODO: add API gateway request validation to handle 422s
   const newTodo: CreateTodoRequest = JSON.parse(event.body)
-  console.log('newTodo :', newTodo)
   const userId = getUserId(event)
-  console.log('userId :', userId)
 
   if (!userId) {
     logger.error('Unauthorized createTodo')
     return {
       statusCode: 401,
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },  
       body: 'unauthorized request'
     }
   }
 
-  // TODO: Implement creating a new TODO item
   try {
-    const res = await todosClient.createTodo({
+    const todoId = v4();
+    const item = await todosClient.createTodo({
       userId,
-      todoId: v4(),
+      todoId,
       createdAt: new Date().toString(),
-      name: newTodo.name,
-      dueDate: newTodo.dueDate,
-      done: false
+      done: false,
+      attachmentUrl: `https://${bucketName}.s3.amazonaws.com/${todoId}`,
+      ...newTodo
     })
     return {
       statusCode: 201,
-      body: JSON.stringify(res)
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
+      body: JSON.stringify({ item })
     }
   } catch (e) {
     logger.error('Todo could not be created', { error: e.message })
     return {
       statusCode: 422,
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },      
       body: 'Could not create todo'
     }
   }

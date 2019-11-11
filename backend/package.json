@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Serverless TODO image app",
   "scripts": {
-    "debug": "node --inspect $(npm bin)/sls offline start"
+    "debug": "SLS_DEBUG=* node --inspect $(npm bin)/serverless offline start"
   },
   "dependencies": {
     "@types/axios": "^0.14.0",
