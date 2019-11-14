@@ -18,13 +18,49 @@ router.get('/', async (req: Request, res: Response) => {
 
 //@TODO
 //Add an endpoint to GET a specific resource by Primary Key
+router.get('/:id', async (req: Request, res: Response) => {
+    let { id } = req.params;
+    
+    if (!id || !Number.isInteger(id)) {
+        return res.status(400).send(`To retrieve a specific item, an integer id is required`)
+    }
+
+    const item = await FeedItem.findByPk(id);
+    if(item && item.url) {
+        item.url = AWS.getGetSignedUrl(item.url);
+        res.status(200).send(item);
+    }
+    else {
+        res.status(404).send(`Could not find id ( ${id} )`);
+    }
+    
+});
 
 // update a specific resource
 router.patch('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
-        //@TODO try it yourself
-        res.send(500).send("not implemented")
+        const caption = req.body.caption;
+        const fileName = req.body.url;
+        const { id } = req.params;
+
+        if (!id || !Number.isInteger(id)) {
+            return res.status(400).send(`To patch a specific item, an integer id is required`)
+        }
+
+        let item = await FeedItem.findByPk(id);
+        if (item) {
+            item.caption = caption || item.caption;
+            item.url = fileName || item.url;
+            
+            const saved_item = await item.save();
+
+            saved_item.url = AWS.getGetSignedUrl(saved_item.url);
+            res.status(201).send(saved_item);
+        }
+        else {
+            res.sendStatus(404);
+        }
 });
 
 
