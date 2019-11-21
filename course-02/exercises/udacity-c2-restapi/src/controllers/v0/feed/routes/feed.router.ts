@@ -33,7 +33,7 @@ router.get('/:id', async (req: Request, res: Response) => {
     else {
         res.status(404).send(`Could not find id ( ${id} )`);
     }
-    
+    return res
 });
 
 // update a specific resource
