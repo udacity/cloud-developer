@@ -8,6 +8,7 @@ plugins:
   - serverless-iam-roles-per-function
   - serverless-dynamodb-local
   - serverless-offline
+  - serverless-dotenv-plugin
 
 provider:
   name: aws
@@ -113,6 +114,14 @@ functions:
           cors: true
           authorizer: Auth
 
+  PollTasks:
+    handler: src/lambda/cron/pollTasks.handler
+    events:
+      - schedule:
+          name: pollTasks
+          description: "Polling for new completed tasks at a set interval."
+          rate: rate(1 minute)
+
 resources:
   Resources:
     # resource for setting CORS headers for custom authorizer function
@@ -171,11 +180,10 @@ resources:
         BucketName: ${self:provider.environment.IMAGES_S3_BUCKET}
         CorsConfiguration:
           CorsRules:
-            -
-              AllowedOrigins:
-                - '*'
+            - AllowedOrigins:
+                - "*"
               AllowedHeaders:
-                - '*'
+                - "*"
               AllowedMethods:
                 - GET
                 - PUT
@@ -193,7 +201,7 @@ resources:
           Statement:
             - Sid: PublicReadForGetBucketObjects
               Effect: Allow
-              Principal: '*'
+              Principal: "*"
               Action: s3:GetObject
               Resource: "arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*"
         Bucket: !Ref AttachmentsBucket
