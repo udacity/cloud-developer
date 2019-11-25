@@ -10,3 +10,6 @@ jspm_packages
 
 # Local DynamoDb
 .dynamodb
+
+# holds sensitive configuration values
+.env
