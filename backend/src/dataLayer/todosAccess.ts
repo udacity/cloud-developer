@@ -11,19 +11,8 @@ export default class TodosAccess {
   constructor(
     private readonly docClient: DocumentClient = createDynamoDBClient(),
     private readonly todosTable = process.env.TODOS_TABLE,
-    private readonly index = process.env.INDEX_NAME
+    private readonly index = process.env.TODOS_INDEX
   ) { }
-
-  // async getAllTodos(): Promise<TodoItem[]> {
-  //   const result = await this.docClient
-  //     .scan({
-  //       TableName: this.todosTable
-  //     })
-  //     .promise()
-
-  //   const items = result.Items
-  //   return items as TodoItem[]
-  // }
 
   async getTodos(userId: string): Promise<TodoItem[]> {
     const result = await this.docClient
@@ -93,13 +82,12 @@ export default class TodosAccess {
 function createDynamoDBClient() {
   if (process.env.IS_OFFLINE) {
     console.log('Creating a local DynamoDB instance')
-    return new XAWS.DynamoDB.DocumentClient({
-      region: 'localhost',
-      endpoint: 'http://localhost:8000',
-      // needed if you don't have aws credentials at all in env
-      accessKeyId: 'DEFAULT_ACCESS_KEY',
-      secretAccessKey: 'DEFAULT_SECRET'
-    })
+    return new AWS.DynamoDB.DocumentClient({
+      region: "localhost",
+      accessKeyId: "MOCK_ACCESS_KEY_ID",
+      secretAccessKey: "MOCK_SECRET_ACCESS_KEY",
+      endpoint: "http://dynamo:8000"
+    });
   }
 
   return new XAWS.DynamoDB.DocumentClient()

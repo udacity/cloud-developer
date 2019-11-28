@@ -23,7 +23,9 @@ provider:
     AWS_XRAY_CONTEXT_MISSING: LOG_ERROR
     # DynamoDB
     TODOS_TABLE: Todos-${self:provider.stage}
-    INDEX_NAME: UserIdTodoIdIndex
+    TODOS_INDEX: UserIdTodoIdIndex
+    TASK_LISTS_TABLE: TaskLists-${self:provider.stage}
+    TASK_LISTS_INDEX: UserIdTaskListIdIndex
     # S3 stuff
     IMAGES_S3_BUCKET: todo-images-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
@@ -41,7 +43,7 @@ provider:
     - Effect: Allow
       Action:
         - dynamodb:Query
-      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.INDEX_NAME}
+      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.TODOS_INDEX}
     - Effect: Allow
       Action:
         - s3:PutObject
@@ -118,6 +120,7 @@ functions:
     handler: src/lambda/cron/pollTasks.handler
     events:
       - schedule:
+          enabled: false
           name: pollTasks
           description: "Polling for new completed tasks at a set interval."
           rate: rate(1 minute)
@@ -165,11 +168,36 @@ resources:
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.TODOS_TABLE}
         LocalSecondaryIndexes:
-          - IndexName: ${self:provider.environment.INDEX_NAME}
+          - IndexName: ${self:provider.environment.TODOS_INDEX}
             KeySchema:
               - AttributeName: userId
                 KeyType: HASH
               - AttributeName: todoId
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL # What attributes will be copied to an index
+
+    TaskListsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: taskListId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+          - AttributeName: taskListId
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:provider.environment.TASK_LISTS_TABLE}
+        LocalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.TASK_LISTS_INDEX}
+            KeySchema:
+              - AttributeName: userId
+                KeyType: HASH
+              - AttributeName: taskListId
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL # What attributes will be copied to an index

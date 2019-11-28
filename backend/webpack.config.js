@@ -8,6 +8,11 @@ module.exports = {
   stats: {
     errorDetails: true
   },
+  externals: [
+    {
+      formidable: 'commonjs formidable',
+    },
+  ],
   // externals: [nodeExternals()],
   devtool: 'source-map',
   resolve: {
