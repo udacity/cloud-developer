@@ -9,7 +9,7 @@ export interface GoogleTaskList {
 
 export interface TaskList {
   userId: string
-  id: string
+  taskListId: string
   // undefined means never synced
   syncedAt?: string
   title: string

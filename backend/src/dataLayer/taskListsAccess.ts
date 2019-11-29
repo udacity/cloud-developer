@@ -14,13 +14,13 @@ export default class TaskListsAccess {
     private readonly index = process.env.TASK_LISTS_INDEX
   ) { }
 
-  async getTaskList(userId: string, taskListId: TaskList['id']): Promise<TaskList> {
+  async getTaskList(userId: string, taskListId: TaskList['taskListId']): Promise<TaskList | undefined> {
     const result = await this.docClient
       .get({
         TableName: this.taskListsTable,
         Key: {
-          'userId': userId,
-          'id': taskListId,
+          userId,
+          taskListId,
         }
       })
       .promise()
@@ -44,72 +44,61 @@ export default class TaskListsAccess {
     return items as TaskList[]
   }
 
-  async createTaskList(taskList: TaskList): Promise<TaskList> {
+  async createTaskList(taskList: TaskList): Promise<void> {
     await this.docClient
       .put({
         TableName: this.taskListsTable,
         Item: taskList
       })
       .promise()
-
-    return taskList
   }
 
   async upsertTaskList(taskList: TaskList): Promise<TaskList> {
-    const result = await this.docClient
-      .update({
-        TableName: this.taskListsTable,
-        Key: {
-          userId: taskList.userId,
-          id: taskList.id,
-        },
-        UpdateExpression: 'set userId = :userId, id = :id, title = :title',
-        ConditionExpression: 'attribute_not_exists(id) OR id = :id',
-        ExpressionAttributeValues: {
-          ':userId': taskList.userId,
-          ':id': taskList.id,
-          ':title': taskList.title,
-        },
-        ReturnValues: 'ALL_NEW'
-      })
-      .promise()
+    const { taskListId, userId } = taskList;
 
-    return result.Attributes as TaskList
+    // cannot use ConditionExpression to do a conditional update because the composite PK is used in the
+    // UpdateExpression and ConditionExpression...
+    // doing a GET and then UPDATE allows a race condition then 🤷‍♂️
+    const existing = await this.getTaskList(userId, taskListId)
+    if (existing) {
+      return existing;
+    } else {
+      await this.createTaskList(taskList)
+      return taskList
+    }
   }
 
   async updateTaskList(
     userId: TaskList['userId'],
-    taskListId: TaskList['id'],
+    taskListId: TaskList['taskListId'],
     updatedTaskList: UpdateTaskListRequest
-  ): Promise<TaskList> {
+  ): Promise<void> {
     const { title, syncedAt } = updatedTaskList
+    const UpdateExpression = `SET ${title ? 'title = :title' : ''} ${syncedAt ? ', #syncedAt = :syncedAt,' : ''}`;
 
-    const result = await this.docClient
+    await this.docClient
       .update({
         TableName: this.taskListsTable,
         Key: {
-          userId: userId,
-          id: taskListId
+          userId,
+          taskListId
         },
-        UpdateExpression: `set ${title ? '#title = :title,' : ''} ${syncedAt ? '#syncedAt = :syncedAt,' : ''}`,
+        UpdateExpression,
         ExpressionAttributeValues: {
           ':title': title,
           ':syncedAt': syncedAt,
         },
-        ReturnValues: 'ALL_NEW'
       })
       .promise()
-
-    return result.Attributes as TaskList
   }
 
-  async deleteTaskList(userId: TaskList['userId'], taskListId: TaskList['id']): Promise<void> {
+  async deleteTaskList(userId: TaskList['userId'], taskListId: TaskList['taskListId']): Promise<void> {
     await this.docClient
       .delete({
         TableName: this.taskListsTable,
         Key: {
-          userId: userId,
-          id: taskListId
+          userId,
+          taskListId
         }
       })
       .promise()
@@ -126,13 +115,6 @@ function createDynamoDBClient() {
       secretAccessKey: "MOCK_SECRET_ACCESS_KEY",
       endpoint: "http://dynamo:8000"
     });
-    // return new AWS.DynamoDB.DocumentClient({
-    //   region: 'localhost',
-    //   endpoint: 'http://localhost:8000',
-    //   // needed if you don't have aws credentials at all in env
-    //   accessKeyId: 'DEFAULT_ACCESS_KEY',
-    //   secretAccessKey: 'DEFAULT_SECRET'
-    // })
   }
 
   // return new XAWS.DynamoDB.DocumentClient()

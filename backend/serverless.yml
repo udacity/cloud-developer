@@ -26,6 +26,9 @@ provider:
     TODOS_INDEX: UserIdTodoIdIndex
     TASK_LISTS_TABLE: TaskLists-${self:provider.stage}
     TASK_LISTS_INDEX: UserIdTaskListIdIndex
+    REWARDS_TABLE: Rewards-${self:provider.stage}
+    REWARDS_INDEX: UserIdRewardIdIndex
+    USERS_TABLE: Users-${self:provider.stage}
     # S3 stuff
     IMAGES_S3_BUCKET: todo-images-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
@@ -152,6 +155,8 @@ resources:
     #     ValidateRequestBody: true
     #     ValidateRequestParameters: false
 
+    # TODO: schema seems inefficient. Might be better to have a users table that stores all other tables as a property.
+    # It would have a HASH PK of userId and use query() to fetch other properties. Not sure if that's better.
     TodosTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -201,6 +206,43 @@ resources:
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL # What attributes will be copied to an index
+
+    RewardsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: rewardId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+          - AttributeName: rewardId
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:provider.environment.REWARDS_TABLE}
+        LocalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.REWARDS_INDEX}
+            KeySchema:
+              - AttributeName: userId
+                KeyType: HASH
+              - AttributeName: rewardId
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL # What attributes will be copied to an index
+
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:provider.environment.USERS_TABLE}
 
     AttachmentsBucket:
       Type: AWS::S3::Bucket

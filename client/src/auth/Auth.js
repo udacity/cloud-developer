@@ -27,7 +27,10 @@ export default class Auth {
   }
 
   login() {
-    this.auth0.authorize();
+    this.auth0.authorize({
+      approvalPrompt: 'force',
+      accessType: 'offline', // Auth0 will store the refresh token in Management API
+    });
   }
 
   handleAuthentication() {

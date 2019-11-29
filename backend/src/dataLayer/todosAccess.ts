@@ -41,6 +41,23 @@ export default class TodosAccess {
     return todo
   }
 
+  async createTodos(todos: TodoItem[] = []): Promise<any> {
+    if (!todos.length) return
+    // TODO: there must be a cheaper/more efficient way to do this right?!
+    const writes = todos.map(todo => ({
+      PutRequest: {
+        Item: todo
+      }
+    }))
+    await this.docClient
+      .batchWrite({
+        RequestItems: {
+          [this.todosTable]: writes,
+        },
+      })
+      .promise();
+  }
+
   async updateTodo(
     userId: TodoItem['userId'],
     todoId: TodoItem['todoId'],
