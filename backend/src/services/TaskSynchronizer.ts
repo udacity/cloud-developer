@@ -40,7 +40,6 @@ export default class TaskSynchronizer {
     try {
       const googleTaskLists = await this.googleAccessor.getTaskLists();
       const taskLists = await this.getTaskListsForGoogleTaskLists(googleTaskLists);
-      console.log('\n\n taskLists', taskLists, '\n\n');
       await Promise.all(taskLists.map(({ taskListId, syncedAt }) => this.syncCompletedTasksForTaskList(taskListId, syncedAt)))
     } catch (err) {
       this.logger.error(`Failed to sync completed tasks for user ${this.userId}`, err)
@@ -58,12 +57,10 @@ export default class TaskSynchronizer {
   }
 
   async syncCompletedTasksForTaskList(taskListId: TaskList['taskListId'], syncedAt: TaskList['syncedAt']) {
-    console.log('getting newly completed tasks syncedAt, taskListId', syncedAt, taskListId);
     const newGoogleTasks = await this.googleAccessor.getCompletedTasks({
       completedMin: syncedAt,
       taskListId
     })
-    console.log('newGoogleTasks :', newGoogleTasks.length);
 
     const newTasks = newGoogleTasks.map(googleTask => this.googleTaskToTodoItem(googleTask))
     const newSyncedAt = this.getNewSyncedAt(newTasks)

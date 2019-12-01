@@ -27,7 +27,6 @@ export default class GoogleAccess {
 
   // recursively call with the nextPageToken until !response.data.items
   async getCompletedTasks(params) {
-    console.log(JSON.stringify(params));
     const { taskListId, completedMin, pageToken } = params;
     const response = await axios.get(`${BASE_URL}lists/${taskListId}/tasks`, {
       headers: this.getDefaultHeaders(),

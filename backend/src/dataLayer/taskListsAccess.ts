@@ -64,7 +64,6 @@ export default class TaskListsAccess {
     if (existing) {
       return existing;
     } else {
-      console.log('taskList creating :', taskList);
       await this.createTaskList(taskList)
       return taskList
     }

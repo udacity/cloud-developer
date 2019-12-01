@@ -12,7 +12,6 @@ export const handler: ScheduledHandler = async () => {
 
   try {
     const googleIdentities = await auth0Accessor.getGoogleIdentities();
-    console.log('googleIdentities :', googleIdentities);
 
     if (!googleIdentities.length) {
       logger.warn('No Google identities found for users, skipping tasks sync')

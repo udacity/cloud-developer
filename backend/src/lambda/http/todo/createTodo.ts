@@ -40,7 +40,7 @@ export const handler: APIGatewayProxyHandler = async (
     const item = await todosClient.createTodo({
       userId,
       todoId,
-      createdAt: new Date().toString(),
+      createdAt: new Date().toISOString(),
       done: false,
       attachmentUrl: `https://${bucketName}.s3.amazonaws.com/${todoId}`,
       ...newTodo
