@@ -2,9 +2,9 @@ import 'source-map-support/register'
 
 import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
 
-import TodosAccess from '../../dataLayer/todosAccess'
-import { createLogger } from '../../utils/logger'
-import { getUserId } from '../utils'
+import TodosAccess from '../../../dataLayer/todosAccess'
+import { createLogger } from '../../../utils/logger'
+import { getUserId } from '../../utils'
 
 const todosClient = new TodosAccess()
 const logger = createLogger('deleteTodo')
@@ -33,7 +33,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
       },
       body: "",
     }
-  } catch(error) {
+  } catch (error) {
     logger.error("Delete attempt failed", {
       todoId,
       error,

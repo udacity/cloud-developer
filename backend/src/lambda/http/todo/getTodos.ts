@@ -5,9 +5,9 @@ import {
   APIGatewayProxyHandler
 } from 'aws-lambda'
 
-import TodosAccess from '../../dataLayer/todosAccess'
-import { getUserId } from '../utils'
-import { createLogger } from '../../utils/logger'
+import TodosAccess from '../../../dataLayer/todosAccess'
+import { getUserId } from '../../utils'
+import { createLogger } from '../../../utils/logger'
 
 const todosClient = new TodosAccess()
 const logger = createLogger('getTodos')
