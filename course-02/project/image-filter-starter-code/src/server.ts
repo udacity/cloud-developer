@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import { runInNewContext } from 'vm';
 
 (async () => {
 
@@ -33,10 +34,40 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   
   // Root Endpoint
   // Displays a simple message to the user
+  app.get( "/filteredimage", async ( req, res, next ) => {
+
+    let imageUrl = req.query.image_url;
+
+    if(!imageUrl){
+      return res.status(400).send({ message: 'No Url' });
+    }
+    else{
+      var request = require('request');
+      request({method: 'HEAD', uri:imageUrl}, function (error, response, body) {
+        if (error || response.statusCode !== 200) {
+          return res.status(400).send({ message: 'Bad Url' });
+        }else{
+          next()
+        }
+      })
+    }
+    //res.send("try GET /filteredimage?image_url={{}}")
+  }, async ( req, res ) => {
+    let imageUrl = req.query.image_url;
+    const filteredpath = await filterImageFromURL(imageUrl);
+
+    res.sendfile(filteredpath, function (err){
+      if(err){
+        res.status(500).send({ message: 'Error returning image'});
+      }else{
+        deleteLocalFiles([filteredpath]);
+      }
+    });
+  });
+  
   app.get( "/", async ( req, res ) => {
     res.send("try GET /filteredimage?image_url={{}}")
   } );
-  
 
   // Start the Server
   app.listen( port, () => {
