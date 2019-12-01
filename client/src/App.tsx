@@ -8,14 +8,14 @@ import { LogIn } from './components/LogIn'
 import { NotFound } from './components/NotFound'
 import { Todos } from './components/Todos'
 
-export interface AppProps {}
+export interface AppProps { }
 
 export interface AppProps {
   auth: Auth
   history: any
 }
 
-export interface AppState {}
+export interface AppState { }
 
 export default class App extends Component<AppProps, AppState> {
   constructor(props: AppProps) {
@@ -88,8 +88,17 @@ export default class App extends Component<AppProps, AppState> {
 
     return (
       <Switch>
+        {/* TODO: rewards page */}
         <Route
           path="/"
+          exact
+          render={props => {
+            return <Todos {...props} auth={this.props.auth} />
+          }}
+        />
+
+        <Route
+          path="/todos"
           exact
           render={props => {
             return <Todos {...props} auth={this.props.auth} />
@@ -102,6 +111,13 @@ export default class App extends Component<AppProps, AppState> {
           render={props => {
             return <EditTodo {...props} auth={this.props.auth} />
           }}
+        />
+
+        {/* TODO: reward edit page */}
+        <Route
+          path="/rewards/:rewardId/edit"
+          exact
+          render={props => <EditTodo {...props} auth={this.props.auth} />}
         />
 
         <Route component={NotFound} />

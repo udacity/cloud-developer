@@ -40,7 +40,7 @@ export default class GoogleAccess {
       })
     })
 
-    const { items } = response.data;
+    const { items = [] } = response.data;
     const { nextPageToken } = response.data;
     if (nextPageToken) {
       // TOOD: hmm this could stack overflow technically

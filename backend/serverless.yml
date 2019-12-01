@@ -61,7 +61,7 @@ custom:
       port: 8000
       inMemory: true
       migrate: true
-      seed: true
+      # seed: true
     stages:
       - dev # https://github.com/99xt/serverless-dynamodb-local/issues/225#issuecomment-498023248
     seed:

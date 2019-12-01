@@ -6,6 +6,7 @@ import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 
 import { TaskList } from '../models/TaskList'
 import { UpdateTaskListRequest } from '../requests/UpdateTaskListRequest'
+import * as helpers from './helpers';
 
 export default class TaskListsAccess {
   constructor(
@@ -63,6 +64,7 @@ export default class TaskListsAccess {
     if (existing) {
       return existing;
     } else {
+      console.log('taskList creating :', taskList);
       await this.createTaskList(taskList)
       return taskList
     }
@@ -74,7 +76,10 @@ export default class TaskListsAccess {
     updatedTaskList: UpdateTaskListRequest
   ): Promise<void> {
     const { title, syncedAt } = updatedTaskList
-    const UpdateExpression = `SET ${title ? 'title = :title' : ''} ${syncedAt ? ', #syncedAt = :syncedAt,' : ''}`;
+    const ExpressionAttributeValues = {
+      ':title': title,
+      ':syncedAt': syncedAt,
+    }
 
     await this.docClient
       .update({
@@ -83,11 +88,8 @@ export default class TaskListsAccess {
           userId,
           taskListId
         },
-        UpdateExpression,
-        ExpressionAttributeValues: {
-          ':title': title,
-          ':syncedAt': syncedAt,
-        },
+        UpdateExpression: helpers.setUpdates(ExpressionAttributeValues),
+        ExpressionAttributeValues,
       })
       .promise()
   }
@@ -113,7 +115,7 @@ function createDynamoDBClient() {
       region: "localhost",
       accessKeyId: "MOCK_ACCESS_KEY_ID",
       secretAccessKey: "MOCK_SECRET_ACCESS_KEY",
-      endpoint: "http://dynamo:8000"
+      endpoint: "http://localhost:8000"
     });
   }
 

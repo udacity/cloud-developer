@@ -1,11 +1,12 @@
 import * as AWS from 'aws-sdk'
-import * as AWSXRay from 'aws-xray-sdk'
-import { DocumentClient } from 'aws-sdk/clients/dynamodb'
+// import * as AWSXRay from 'aws-xray-sdk'
+import { DocumentClient, WriteRequests, PutItemInputAttributeMap } from 'aws-sdk/clients/dynamodb'
 
-const XAWS = AWSXRay.captureAWS(AWS)
+// const XAWS = AWSXRay.captureAWS(AWS)
 
 import { TodoItem } from '../models/TodoItem'
 import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
+import * as helpers from './helpers'
 
 export default class TodosAccess {
   constructor(
@@ -41,21 +42,30 @@ export default class TodosAccess {
     return todo
   }
 
-  async createTodos(todos: TodoItem[] = []): Promise<any> {
+  async createTodos(todos: PutItemInputAttributeMap[] = []): Promise<void> {
     if (!todos.length) return
-    // TODO: there must be a cheaper/more efficient way to do this right?!
-    const writes = todos.map(todo => ({
+    const writes: WriteRequests = todos.map(todo => ({
       PutRequest: {
         Item: todo
       }
     }))
-    await this.docClient
+    const batches = helpers.chunk(writes);
+    await Promise.all(batches.map(batch => this._writeBatch(batch)))
+  }
+
+  async _writeBatch(writes: WriteRequests = []): Promise<void> {
+    const result = await this.docClient
       .batchWrite({
         RequestItems: {
           [this.todosTable]: writes,
         },
       })
       .promise();
+
+    const unprocessedTodos = result.UnprocessedItems[this.todosTable]
+    if (unprocessedTodos) {
+      await this._writeBatch(unprocessedTodos)
+    }
   }
 
   async updateTodo(
@@ -103,9 +113,10 @@ function createDynamoDBClient() {
       region: "localhost",
       accessKeyId: "MOCK_ACCESS_KEY_ID",
       secretAccessKey: "MOCK_SECRET_ACCESS_KEY",
-      endpoint: "http://dynamo:8000"
+      endpoint: "http://localhost:8000"
     });
   }
 
-  return new XAWS.DynamoDB.DocumentClient()
+  // return new XAWS.DynamoDB.DocumentClient()
+  return new AWS.DynamoDB.DocumentClient()
 }

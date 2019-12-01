@@ -9,6 +9,12 @@ import { createLogger } from '../utils/logger'
 import { GoogleTaskList, TaskList } from '../models/TaskList'
 import { TodoItem } from '../models/TodoItem';
 
+/**
+ * For one google accountm, grabs their tasklists and
+ * - store the new completed tasks since their last sync
+ * - update their balance
+ * - set their last sync to the latest completed task or current time if no new tasks
+ */
 export default class TaskSynchronizer {
   googleAccessor: GoogleAccessor
   taskListAccessor: TaskListAccessor
@@ -57,26 +63,24 @@ export default class TaskSynchronizer {
       completedMin: syncedAt,
       taskListId
     })
-    console.log('newGoogleTasks :', newGoogleTasks.length, newGoogleTasks);
-    const newTasks = newGoogleTasks.map(this.googleTaskToTodoItem)
+    console.log('newGoogleTasks :', newGoogleTasks.length);
+
+    const newTasks = newGoogleTasks.map(googleTask => this.googleTaskToTodoItem(googleTask))
+    const newSyncedAt = this.getNewSyncedAt(newTasks)
     await Promise.all([
       this.todoAccessor.createTodos(newTasks),
-      this.userAccessor.incrementBalance(this.userId, newTasks.length)
+      this.userAccessor.incrementBalance(this.userId, newTasks.length),
+      this.taskListAccessor.updateTaskList(this.userId, taskListId, { syncedAt: newSyncedAt })
+      // TODO: can also increment a newCompletedCountSinceLastLogin type feature
     ])
-    await this.taskListAccessor.updateTaskList(this.userId, taskListId, {
-      // TODO: this might be incorrect sometimes? If there are duplicates, this might be the cause
-      syncedAt: newTasks[0].completed
-    })
-    // TODO: can also increment a newCompletedCountSinceLastLogin type feature
   }
 
   googleTaskToTodoItem(task: any): TodoItem {
     return {
       userId: this.userId,
       todoId: task.id,
-      createdAt: new Date().toString(),
+      createdAt: new Date().toISOString(),
       name: task.title,
-      dueDate: task.due,
       done: task.status === 'completed',
       completedAt: task.completed
     }
@@ -91,6 +95,14 @@ export default class TaskSynchronizer {
     // "due": "2019-11-27T00:00:00.000Z",
     // "completed": "2019-11-28T07:18:05.000Z",
     // "hidden": true
+  }
+
+  getNewSyncedAt(tasks: TodoItem[]) {
+    // first one may not be the latest one? If there are duplicates, this might be the cause
+    const completedAt = tasks.length ? new Date(tasks[0].completedAt) : new Date()
+    // TODO: this will probably fuck up if at 999 milliseconds
+    completedAt.setMilliseconds(completedAt.getMilliseconds() + 1)
+    return completedAt.toISOString()
   }
 }
 

@@ -41,7 +41,7 @@ export default class UserAccess {
         Key: {
           userId: userId,
         },
-        UpdateExpression: 'set balance = :balance',
+        UpdateExpression: 'SET balance = :balance',
         ExpressionAttributeValues: {
           ':balance': updatedUser.balance,
         }
@@ -72,7 +72,7 @@ function createDynamoDBClient() {
       region: "localhost",
       accessKeyId: "MOCK_ACCESS_KEY_ID",
       secretAccessKey: "MOCK_SECRET_ACCESS_KEY",
-      endpoint: "http://dynamo:8000"
+      endpoint: "http://localhost:8000"
     });
   }
 
