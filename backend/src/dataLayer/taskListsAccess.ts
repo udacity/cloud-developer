@@ -88,7 +88,7 @@ export default class TaskListsAccess {
           userId,
           taskListId
         },
-        UpdateExpression: helpers.setUpdates(ExpressionAttributeValues),
+        UpdateExpression: helpers.getUpdateExpression(ExpressionAttributeValues),
         ExpressionAttributeValues,
       })
       .promise()
