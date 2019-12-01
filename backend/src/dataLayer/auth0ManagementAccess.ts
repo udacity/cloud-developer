@@ -1,5 +1,7 @@
 import { ManagementClient } from 'auth0'
 
+const GOOGLE_PROVIDER = 'google-oauth2'
+
 export default class Auth0ManagementAccess {
   auth0: ManagementClient;
 
@@ -15,7 +17,11 @@ export default class Auth0ManagementAccess {
     })
   }
 
-  async getUsers() {
-    return this.auth0.getUsers();
+  async getGoogleIdentities() {
+    const users = await this.auth0.getUsers();
+    return (users || [])
+      .map(user => user.identities)
+      .reduce((ids, val) => ids.concat(val), [])
+      .filter(id => id.provider === GOOGLE_PROVIDER);
   }
 }
