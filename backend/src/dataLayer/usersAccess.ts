@@ -50,7 +50,6 @@ export default class UserAccess {
   }
 
   async incrementBalance(userId: User['userId'], additionalBalance: number): Promise<void> {
-    // TODO: see if there's a way to do this in one query
     const user = await this.getUser(userId)
     if (!user) {
       // TODO: maybe create user on sign up? Creating the user here is hard to maintain, since not all info for user

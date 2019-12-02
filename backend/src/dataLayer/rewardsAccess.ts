@@ -52,7 +52,7 @@ export default class RewardsAccess {
     const ExpressionAttributeValues = {
       ':name': updatedReward.name,
       ':redeemed': updatedReward.redeemed,
-      ':redeemedAt': updatedReward.redeemedAt,
+      ':redeemedAt': updatedReward.redeemed ? (new Date()).toISOString() : undefined,
     }
     const UpdateExpression = helpers.getUpdateExpression(ExpressionAttributeValues, ExpressionAttributeNames)
 

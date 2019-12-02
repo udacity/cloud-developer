@@ -1,6 +1,6 @@
 import * as winston from 'winston'
 
-import GoogleAccessor from '../dataLayer/googleAccess'
+import GoogleTaskAccessor from '../dataLayer/googleTaskAccess'
 import TaskListAccessor from '../dataLayer/taskListsAccess'
 import TodoAccessor from '../dataLayer/todosAccess'
 import UserAccessor from '../dataLayer/usersAccess'
@@ -16,19 +16,19 @@ import { TodoItem } from '../models/TodoItem';
  * - set their last sync to the latest completed task or current time if no new tasks
  */
 export default class TaskSynchronizer {
-  googleAccessor: GoogleAccessor
+  googleTaskAccessor: GoogleTaskAccessor
   taskListAccessor: TaskListAccessor
   todoAccessor: TodoAccessor
   userAccessor: UserAccessor
   userId: string; // id of user whose tasks are being updated
   logger: winston.Logger
 
-  constructor(userId: string, googleAccessToken: string) {
-    if (!userId || !googleAccessToken) {
-      throw new Error(`Missing params for TaskSynchronizer, userId ${userId}, googleAccessToken ${googleAccessToken}`)
+  constructor(userId: string, googleTaskAccessToken: string) {
+    if (!userId || !googleTaskAccessToken) {
+      throw new Error(`Missing params for TaskSynchronizer, userId ${userId}, googleTaskAccessToken ${googleTaskAccessToken}`)
     }
     this.userId = userId;
-    this.googleAccessor = new GoogleAccessor(googleAccessToken);
+    this.googleTaskAccessor = new GoogleTaskAccessor(googleTaskAccessToken);
     this.taskListAccessor = new TaskListAccessor()
     this.todoAccessor = new TodoAccessor()
     this.userAccessor = new UserAccessor()
@@ -37,13 +37,13 @@ export default class TaskSynchronizer {
 
   async perform() {
     // TODO: how to handle errors for each step better?
-    try {
-      const googleTaskLists = await this.googleAccessor.getTaskLists();
-      const taskLists = await this.getTaskListsForGoogleTaskLists(googleTaskLists);
-      await Promise.all(taskLists.map(({ taskListId, syncedAt }) => this.syncCompletedTasksForTaskList(taskListId, syncedAt)))
-    } catch (err) {
-      this.logger.error(`Failed to sync completed tasks for user ${this.userId}`, err)
-    }
+    const googleTaskLists = await this.googleTaskAccessor.getTaskLists();
+    const taskLists = await this.getTaskListsForGoogleTaskLists(googleTaskLists);
+    const newTasksPerList = await Promise.all(taskLists.map(taskList => this.getNewCompletedGoogleTasks(taskList)))
+    console.log('newTasksPerList :', newTasksPerList);
+    const additionalBalance = newTasksPerList.reduce((total, tasks) => total + tasks.length, 0)
+    await this.userAccessor.incrementBalance(this.userId, additionalBalance)
+    // TODO: can also increment a newCompletedCountSinceLastLogin type feature
   }
 
   async getTaskListsForGoogleTaskLists(googleTaskLists: GoogleTaskList[]) {
@@ -56,20 +56,19 @@ export default class TaskSynchronizer {
     ))
   }
 
-  async syncCompletedTasksForTaskList(taskListId: TaskList['taskListId'], syncedAt: TaskList['syncedAt']) {
-    const newGoogleTasks = await this.googleAccessor.getCompletedTasks({
+  async getNewCompletedGoogleTasks(taskList: TaskList): Promise<TodoItem[]> {
+    const { syncedAt, taskListId } = taskList;
+    const newGoogleTasks = await this.googleTaskAccessor.getCompletedTasks({
       completedMin: syncedAt,
       taskListId
     })
-
     const newTasks = newGoogleTasks.map(googleTask => this.googleTaskToTodoItem(googleTask))
     const newSyncedAt = this.getNewSyncedAt(newTasks)
     await Promise.all([
       this.todoAccessor.createTodos(newTasks),
-      this.userAccessor.incrementBalance(this.userId, newTasks.length),
       this.taskListAccessor.updateTaskList(this.userId, taskListId, { syncedAt: newSyncedAt })
-      // TODO: can also increment a newCompletedCountSinceLastLogin type feature
     ])
+    return newTasks
   }
 
   googleTaskToTodoItem(task: any): TodoItem {
@@ -98,7 +97,7 @@ export default class TaskSynchronizer {
     // first one may not be the latest one? If there are duplicates, this might be the cause
     const completedAt = tasks.length ? new Date(tasks[0].completedAt) : new Date()
     // TODO: this will probably fuck up if at 999 milliseconds
-    completedAt.setMilliseconds(completedAt.getMilliseconds() + 1)
+    completedAt.setSeconds(completedAt.getSeconds() + 1)
     return completedAt.toISOString()
   }
 }

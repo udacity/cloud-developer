@@ -10,7 +10,7 @@ export function getUpdateExpression(
       const key = attr.slice(1);
       const index = aliases.indexOf(key);
       const alias = index > -1 ? aliases[index] : key;
-      return values[attr] && `${alias} = ${attr}`
+      return values[attr] !== undefined && `${alias} = ${attr}`
     })
     .filter(v => !!v)
     .join(',')
