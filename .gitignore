@@ -37,3 +37,4 @@ venv/
 .vscode
 course-02/exercises/udacity-c2-restapi/udagram-aleks-dev KEY pass.txt
 aws-elastic-beanstalk-cli-setup
+aws-elastic-beanstalk-cli-setup
