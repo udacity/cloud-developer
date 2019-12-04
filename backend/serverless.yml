@@ -110,12 +110,57 @@ functions:
           cors: true
           authorizer: Auth
 
-  GenerateUploadUrl:
+  GenerateTodoUploadUrl:
     handler: src/lambda/http/todo/generateUploadUrl.handler
     events:
       - http:
           method: post
           path: todos/{todoId}/attachment
+          cors: true
+          authorizer: Auth
+
+  GetRewards:
+    handler: src/lambda/http/reward/getRewards.handler
+    events:
+      - http:
+          method: get
+          path: rewards
+          cors: true
+          authorizer: Auth
+
+  CreateReward:
+    handler: src/lambda/http/reward/createReward.handler
+    events:
+      - http:
+          method: post
+          path: rewards
+          cors: true
+          authorizer: Auth
+
+  UpdateReward:
+    handler: src/lambda/http/reward/updateReward.handler
+    events:
+      - http:
+          method: patch
+          path: rewards/{rewardId}
+          cors: true
+          authorizer: Auth
+
+  DeleteReward:
+    handler: src/lambda/http/reward/deleteReward.handler
+    events:
+      - http:
+          method: delete
+          path: rewards/{rewardId}
+          cors: true
+          authorizer: Auth
+
+  GenerateUploadUrl:
+    handler: src/lambda/http/reward/generateUploadUrl.handler
+    events:
+      - http:
+          method: post
+          path: rewards/{rewardId}/attachment
           cors: true
           authorizer: Auth
 

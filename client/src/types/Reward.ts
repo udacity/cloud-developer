@@ -3,6 +3,7 @@ export interface Reward {
   createdAt: string
   name: string
   redeemed: boolean
+  cost: number
   redeemedAt?: string
   attachmentUrl?: string
 }
