@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { filterImageFromURL, deleteLocalFiles } from '../../../../../src/util/util';
+import { filterImageFromURL, deleteLocalFiles } from '../../../../util/util';
 import validator from 'validator';
 
 const router: Router = Router();
