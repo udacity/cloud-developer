@@ -1,12 +1,10 @@
-import * as AWS from 'aws-sdk'
-import { DocumentClient } from 'aws-sdk/clients/dynamodb'
-
 import { User } from '../models/User'
 import { UpdateUserRequest } from '../requests/UpdateUserRequest'
+import createDynamoDBClient from './dynamoDBAccess'
 
 export default class UserAccess {
   constructor(
-    private readonly docClient: DocumentClient = createDynamoDBClient(),
+    private readonly docClient = createDynamoDBClient(),
     private readonly usersTable = process.env.USERS_TABLE,
   ) { }
 
@@ -62,18 +60,4 @@ export default class UserAccess {
       await this.updateUser(userId, { balance: balance + additionalBalance })
     }
   }
-}
-
-function createDynamoDBClient() {
-  if (process.env.IS_OFFLINE) {
-    console.log('Creating a local DynamoDB instance')
-    return new AWS.DynamoDB.DocumentClient({
-      region: "localhost",
-      accessKeyId: "MOCK_ACCESS_KEY_ID",
-      secretAccessKey: "MOCK_SECRET_ACCESS_KEY",
-      endpoint: "http://localhost:8000"
-    });
-  }
-
-  return new AWS.DynamoDB.DocumentClient()
 }

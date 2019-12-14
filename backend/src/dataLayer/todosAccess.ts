@@ -1,16 +1,13 @@
-import * as AWS from 'aws-sdk'
-// import * as AWSXRay from 'aws-xray-sdk'
-import { DocumentClient, WriteRequests, PutItemInputAttributeMap } from 'aws-sdk/clients/dynamodb'
-
-// const XAWS = AWSXRay.captureAWS(AWS)
+import { WriteRequests, PutItemInputAttributeMap } from 'aws-sdk/clients/dynamodb'
 
 import { TodoItem } from '../models/TodoItem'
 import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 import * as helpers from './helpers'
+import createDynamoDBClient from './dynamoDBAccess'
 
 export default class TodosAccess {
   constructor(
-    private readonly docClient: DocumentClient = createDynamoDBClient(),
+    private readonly docClient = createDynamoDBClient(),
     private readonly todosTable = process.env.TODOS_TABLE,
     private readonly index = process.env.TODOS_INDEX
   ) { }
@@ -104,19 +101,4 @@ export default class TodosAccess {
       })
       .promise()
   }
-}
-
-function createDynamoDBClient() {
-  if (process.env.IS_OFFLINE) {
-    console.log('Creating a local DynamoDB instance')
-    return new AWS.DynamoDB.DocumentClient({
-      region: "localhost",
-      accessKeyId: "MOCK_ACCESS_KEY_ID",
-      secretAccessKey: "MOCK_SECRET_ACCESS_KEY",
-      endpoint: "http://localhost:8000"
-    });
-  }
-
-  // return new XAWS.DynamoDB.DocumentClient()
-  return new AWS.DynamoDB.DocumentClient()
 }

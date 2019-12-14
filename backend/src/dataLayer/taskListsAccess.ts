@@ -1,16 +1,11 @@
-import * as AWS from 'aws-sdk'
-// import * as AWSXRay from 'aws-xray-sdk'
-import { DocumentClient } from 'aws-sdk/clients/dynamodb'
-
-// const XAWS = AWSXRay.captureAWS(AWS)
-
 import { TaskList } from '../models/TaskList'
 import { UpdateTaskListRequest } from '../requests/UpdateTaskListRequest'
 import * as helpers from './helpers';
+import createDynamoDBClient from './dynamoDBAccess'
 
 export default class TaskListsAccess {
   constructor(
-    private readonly docClient: DocumentClient = createDynamoDBClient(),
+    private readonly docClient = createDynamoDBClient(),
     private readonly taskListsTable = process.env.TASK_LISTS_TABLE,
     private readonly index = process.env.TASK_LISTS_INDEX
   ) { }
@@ -104,20 +99,4 @@ export default class TaskListsAccess {
       })
       .promise()
   }
-}
-
-function createDynamoDBClient() {
-  if (process.env.IS_OFFLINE) {
-    console.log('Creating a local DynamoDB instance')
-    // return new XAWS.DynamoDB.DocumentClient({
-    return new AWS.DynamoDB.DocumentClient({
-      region: "localhost",
-      accessKeyId: "MOCK_ACCESS_KEY_ID",
-      secretAccessKey: "MOCK_SECRET_ACCESS_KEY",
-      endpoint: "http://localhost:8000"
-    });
-  }
-
-  // return new XAWS.DynamoDB.DocumentClient()
-  return new AWS.DynamoDB.DocumentClient()
 }

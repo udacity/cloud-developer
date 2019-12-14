@@ -4,6 +4,7 @@ import { Grid, Menu, Segment } from 'semantic-ui-react'
 
 import Auth from './auth/Auth'
 import { EditTodo } from './components/EditTodo'
+import { EditReward } from './components/EditReward'
 import { LogIn } from './components/LogIn'
 import { NotFound } from './components/NotFound'
 import { Todos } from './components/Todos'
@@ -19,18 +20,11 @@ export interface AppProps {
 export interface AppState { }
 
 export default class App extends Component<AppProps, AppState> {
-  constructor(props: AppProps) {
-    super(props)
-
-    this.handleLogin = this.handleLogin.bind(this)
-    this.handleLogout = this.handleLogout.bind(this)
-  }
-
-  handleLogin() {
+  handleLogin = () => {
     this.props.auth.login()
   }
 
-  handleLogout() {
+  handleLogout = () => {
     this.props.auth.logout()
   }
 
@@ -89,7 +83,6 @@ export default class App extends Component<AppProps, AppState> {
 
     return (
       <Switch>
-        {/* TODO: rewards page */}
         <Route
           path="/"
           exact
@@ -114,11 +107,10 @@ export default class App extends Component<AppProps, AppState> {
           }}
         />
 
-        {/* TODO: reward edit page */}
         <Route
           path="/rewards/:rewardId/edit"
           exact
-          render={props => <EditTodo {...props} auth={this.props.auth} />}
+          render={props => <EditReward {...props} auth={this.props.auth} />}
         />
 
         <Route component={NotFound} />

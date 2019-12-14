@@ -16,23 +16,15 @@ export default class Auth {
 
   constructor(history) {
     this.history = history
-
-    this.login = this.login.bind(this);
-    this.logout = this.logout.bind(this);
-    this.handleAuthentication = this.handleAuthentication.bind(this);
-    this.isAuthenticated = this.isAuthenticated.bind(this);
-    this.getAccessToken = this.getAccessToken.bind(this);
-    this.getIdToken = this.getIdToken.bind(this);
-    this.renewSession = this.renewSession.bind(this);
   }
 
-  login() {
+  login = () => {
     this.auth0.authorize({
       accessType: 'offline', // Auth0 will store the refresh token in Management API
     });
   }
 
-  handleAuthentication() {
+  handleAuthentication = () => {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         console.log('authResult :', authResult);
@@ -47,15 +39,15 @@ export default class Auth {
     });
   }
 
-  getAccessToken() {
+  getAccessToken = () => {
     return this.accessToken;
   }
 
-  getIdToken() {
+  getIdToken = () => {
     return this.idToken;
   }
 
-  setSession(authResult) {
+  setSession = (authResult) => {
     // Set isLoggedIn flag in localStorage
     localStorage.setItem('isLoggedIn', 'true');
 
@@ -69,7 +61,7 @@ export default class Auth {
     this.history.replace('/');
   }
 
-  renewSession() {
+  renewSession = () => {
     this.auth0.checkSession({}, (err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
@@ -81,7 +73,7 @@ export default class Auth {
     });
   }
 
-  logout() {
+  logout = () => {
     // Remove tokens and expiry time
     this.accessToken = null;
     this.idToken = null;
@@ -98,7 +90,7 @@ export default class Auth {
     this.history.replace('/');
   }
 
-  isAuthenticated() {
+  isAuthenticated = () => {
     // Check whether the current time is past the
     // access token's expiry time
     let expiresAt = this.expiresAt;

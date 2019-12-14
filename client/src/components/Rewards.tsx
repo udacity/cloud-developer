@@ -54,7 +54,8 @@ export class Rewards extends React.PureComponent<RewardsProps, RewardsState> {
         rewards: [...this.state.rewards, newReward],
         newRewardName: ''
       })
-    } catch {
+    } catch (err) {
+      console.log('err :', err);
       alert('Reward creation failed')
     }
   }
@@ -104,7 +105,7 @@ export class Rewards extends React.PureComponent<RewardsProps, RewardsState> {
   render() {
     return (
       <div>
-        <Header as="h1">REWARDs</Header>
+        <Header as="h1">Rewards</Header>
 
         {this.renderCreateRewardInput()}
 
@@ -122,12 +123,12 @@ export class Rewards extends React.PureComponent<RewardsProps, RewardsState> {
               color: 'teal',
               labelPosition: 'left',
               icon: 'add',
-              content: 'New task',
+              content: 'New reward',
               onClick: this.onRewardCreate
             }}
             fluid
             actionPosition="left"
-            placeholder="To change the world..."
+            placeholder="Treat yo self"
             onChange={this.handleNameChange}
           />
         </Grid.Column>
@@ -150,7 +151,7 @@ export class Rewards extends React.PureComponent<RewardsProps, RewardsState> {
     return (
       <Grid.Row>
         <Loader indeterminate active inline="centered">
-          Loading REWARDs
+          Loading Rewards
         </Loader>
       </Grid.Row>
     )
