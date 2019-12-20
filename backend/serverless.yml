@@ -199,13 +199,22 @@ functions:
           cors: true
           authorizer: Auth
 
+  SyncTasks:
+    handler: src/lambda/http/account/syncTasks.handler
+    events:
+      - http:
+          method: post
+          path: accounts/syncTasks
+          cors: true
+          authorizer: Auth
+
   PollTasks:
     handler: src/lambda/cron/pollTasks.handler
     events:
       - schedule:
           enabled: false
           name: pollTasks
-          description: "Polling for new completed tasks at a set interval."
+          description: 'Polling for new completed tasks at a set interval.'
           rate: rate(1 minute)
 
 resources:
@@ -331,9 +340,9 @@ resources:
         CorsConfiguration:
           CorsRules:
             - AllowedOrigins:
-                - "*"
+                - '*'
               AllowedHeaders:
-                - "*"
+                - '*'
               AllowedMethods:
                 - GET
                 - PUT
@@ -347,11 +356,11 @@ resources:
       Properties:
         PolicyDocument:
           Id: MyPolicy
-          Version: "2012-10-17"
+          Version: '2012-10-17'
           Statement:
             - Sid: PublicReadForGetBucketObjects
               Effect: Allow
-              Principal: "*"
+              Principal: '*'
               Action: s3:GetObject
-              Resource: "arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*"
+              Resource: 'arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*'
         Bucket: !Ref AttachmentsBucket

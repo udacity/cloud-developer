@@ -20,21 +20,20 @@ export default class Auth {
 
   login = () => {
     this.auth0.authorize({
-      accessType: 'offline', // Auth0 will store the refresh token in Management API
-      prompt: 'consent'
+      accessType: 'offline' // Auth0 will store the refresh token in Management API
+      // prompt: 'consent'
     })
   }
 
   handleAuthentication = () => {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
-        console.log('authResult :', authResult)
-        console.log('Access token: ', authResult.accessToken)
-        console.log('id token: ', authResult.idToken)
+        // console.log('authResult :', authResult)
+        // console.log('Access token: ', authResult.accessToken)
+        // console.log('id token: ', authResult.idToken)
         this.setSession(authResult)
       } else if (err) {
         this.history.replace('/')
-        console.log(err)
         alert(`Error: ${err.error}. Check the console for further details.`)
       }
     })

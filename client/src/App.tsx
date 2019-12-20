@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import { Link, Route, Router, Switch } from 'react-router-dom'
-import { Grid, Menu, Segment } from 'semantic-ui-react'
+import { Grid, Loader, Menu, Segment } from 'semantic-ui-react'
 
 import Auth from './auth/Auth'
 import { EditTodo } from './components/EditTodo'
@@ -9,76 +9,66 @@ import { LogIn } from './components/LogIn'
 import { NotFound } from './components/NotFound'
 import { Todos } from './components/Todos'
 import { Rewards } from './components/Rewards'
+import { provideAccount, useAccount } from './state/accountState'
 
-export interface AppProps { }
+export interface AppProps {}
 
 export interface AppProps {
   auth: Auth
   history: any
 }
 
-export interface AppState { }
+const App: React.FunctionComponent<AppProps> = ({ children, ...props }) => {
+  const { account, handleSyncTasks } = useAccount()
+  const { auth } = props
 
-export default class App extends Component<AppProps, AppState> {
-  handleLogin = () => {
-    this.props.auth.login()
-  }
-
-  handleLogout = () => {
-    this.props.auth.logout()
-  }
-
-  render() {
-    return (
-      <div>
-        <Segment style={{ padding: '8em 0em' }} vertical>
-          <Grid container stackable verticalAlign="middle">
-            <Grid.Row>
-              <Grid.Column width={16}>
-                <Router history={this.props.history}>
-                  {this.generateMenu()}
-
-                  {this.generateCurrentPage()}
-                </Router>
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        </Segment>
-      </div>
-    )
-  }
-
-  generateMenu() {
-    return (
-      <Menu>
-        <Menu.Item name="home">
-          <Link to="/">Home</Link>
-        </Menu.Item>
-
-        <Menu.Menu position="right">{this.logInLogOutButton()}</Menu.Menu>
-      </Menu>
-    )
-  }
-
-  logInLogOutButton() {
-    if (this.props.auth.isAuthenticated()) {
-      return (
-        <Menu.Item name="logout" onClick={this.handleLogout}>
-          Log Out
-        </Menu.Item>
-      )
-    } else {
-      return (
-        <Menu.Item name="login" onClick={this.handleLogin}>
-          Log In
-        </Menu.Item>
-      )
+  useEffect(() => {
+    if (auth.getIdToken()) {
+      console.log('Calling handleSyncTasks')
+      handleSyncTasks(auth.getIdToken())
     }
-  }
+  }, [auth])
 
-  generateCurrentPage() {
-    if (!this.props.auth.isAuthenticated()) {
-      return <LogIn auth={this.props.auth} />
+  const handleLogin = () => auth.login()
+
+  const handleLogout = () => auth.logout()
+
+  const generateMenu = () => (
+    <Menu>
+      <Menu.Item name="home">
+        <Link to="/">Home</Link>
+      </Menu.Item>
+
+      <Menu.Menu position="right">{logInLogOutButton()}</Menu.Menu>
+    </Menu>
+  )
+
+  const logInLogOutButton = () =>
+    auth.isAuthenticated() ? (
+      <Menu.Item name="logout" onClick={handleLogout}>
+        Log Out
+      </Menu.Item>
+    ) : (
+      <Menu.Item name="login" onClick={handleLogin}>
+        Log In
+      </Menu.Item>
+    )
+
+  const generateLoader = () => (
+    <Grid.Row>
+      <Loader indeterminate active inline="centered">
+        Syncing your tasks...
+      </Loader>
+    </Grid.Row>
+  )
+
+  const generateCurrentPage = () => {
+    if (!auth.isAuthenticated()) {
+      return <LogIn auth={auth} />
+    }
+
+    if (account.syncingTasks) {
+      return generateLoader()
     }
 
     return (
@@ -86,35 +76,48 @@ export default class App extends Component<AppProps, AppState> {
         <Route
           path="/"
           exact
-          render={props => {
-            return <Rewards {...props} auth={this.props.auth} />
-          }}
+          render={routeProps => <Rewards {...routeProps} auth={auth} />}
         />
 
         <Route
           path="/todos"
           exact
-          render={props => {
-            return <Todos {...props} auth={this.props.auth} />
-          }}
+          render={routeProps => <Todos {...routeProps} auth={auth} />}
         />
 
         <Route
           path="/todos/:todoId/edit"
           exact
-          render={props => {
-            return <EditTodo {...props} auth={this.props.auth} />
-          }}
+          render={routeProps => <EditTodo {...routeProps} auth={auth} />}
         />
 
         <Route
           path="/rewards/:rewardId/edit"
           exact
-          render={props => <EditReward {...props} auth={this.props.auth} />}
+          render={routeProps => <EditReward {...routeProps} auth={auth} />}
         />
 
         <Route component={NotFound} />
       </Switch>
     )
   }
+
+  return (
+    <div>
+      <Segment style={{ padding: '8em 0em' }} vertical>
+        <Grid container stackable verticalAlign="middle">
+          <Grid.Row>
+            <Grid.Column width={16}>
+              <Router history={props.history}>
+                {generateMenu()}
+                {generateCurrentPage()}
+              </Router>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Segment>
+    </div>
+  )
 }
+
+export default provideAccount(App)
