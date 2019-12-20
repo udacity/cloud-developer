@@ -1,4 +1,3 @@
-import dateFormat from 'dateformat'
 import { History } from 'history'
 import update from 'immutability-helper'
 import * as React from 'react'
@@ -14,7 +13,12 @@ import {
   Loader
 } from 'semantic-ui-react'
 
-import { createReward, deleteReward, getRewards, patchReward } from '../api/rewards-api'
+import {
+  createReward,
+  deleteReward,
+  getRewards,
+  patchReward
+} from '../api/rewards-api'
 import Auth from '../auth/Auth'
 import { Reward } from '../types/Reward'
 
@@ -47,7 +51,7 @@ export class Rewards extends React.PureComponent<RewardsProps, RewardsState> {
   onRewardCreate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
     try {
       const newReward = await createReward(this.props.auth.getIdToken(), {
-        name: this.state.newRewardName,
+        name: this.state.newRewardName
         // TODO: have state for reward cost
       })
       this.setState({
@@ -55,7 +59,7 @@ export class Rewards extends React.PureComponent<RewardsProps, RewardsState> {
         newRewardName: ''
       })
     } catch (err) {
-      console.log('err :', err);
+      console.log('err :', err)
       alert('Reward creation failed')
     }
   }
@@ -64,10 +68,12 @@ export class Rewards extends React.PureComponent<RewardsProps, RewardsState> {
     try {
       await deleteReward(this.props.auth.getIdToken(), rewardId)
       this.setState({
-        rewards: this.state.rewards.filter(reward => reward.rewardId != rewardId)
+        rewards: this.state.rewards.filter(
+          reward => reward.rewardId != rewardId
+        )
       })
     } catch (e) {
-      console.log('e :', e);
+      console.log('e :', e)
       alert('Reward deletion failed')
     }
   }
@@ -85,7 +91,7 @@ export class Rewards extends React.PureComponent<RewardsProps, RewardsState> {
         })
       })
     } catch (e) {
-      console.log('e :', e);
+      console.log('e :', e)
       alert('Reward update failed')
     }
   }
@@ -194,7 +200,12 @@ export class Rewards extends React.PureComponent<RewardsProps, RewardsState> {
                 </Button>
               </Grid.Column>
               {reward.attachmentUrl && (
-                <Image src={reward.attachmentUrl} size="small" wrapped />
+                <Image
+                  src={reward.attachmentUrl}
+                  size="small"
+                  wrapped
+                  onError={(i: any) => (i.target.src = '')}
+                />
               )}
               <Grid.Column width={16}>
                 <Divider />

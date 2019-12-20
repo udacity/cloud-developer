@@ -66,8 +66,8 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
       this.setState({
         todos: this.state.todos.filter(todo => todo.todoId != todoId)
       })
-    } catch(e) {
-      console.log('e :', e);
+    } catch (e) {
+      console.log('e :', e)
       alert('Todo deletion failed')
     }
   }
@@ -85,8 +85,8 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
           [pos]: { done: { $set: !todo.done } }
         })
       })
-    } catch(e) {
-      console.log('e :', e);
+    } catch (e) {
+      console.log('e :', e)
       alert('Todo update failed')
     }
   }
@@ -195,7 +195,12 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
                 </Button>
               </Grid.Column>
               {todo.attachmentUrl && (
-                <Image src={todo.attachmentUrl} size="small" wrapped />
+                <Image
+                  src={todo.attachmentUrl}
+                  size="small"
+                  wrapped
+                  onError={(i: any) => (i.target.src = '')}
+                />
               )}
               <Grid.Column width={16}>
                 <Divider />
