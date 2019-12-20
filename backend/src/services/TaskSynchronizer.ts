@@ -39,14 +39,26 @@ export default class TaskSynchronizer {
 
   async perform() {
     // TODO: how to handle errors for each step better?
+    this.logger.info(`TaskSynchronizer performing for user ${this.userId}`);
     const googleTaskLists = await this.googleTaskAccessor.getTaskLists();
+    this.logger.info(
+      `TaskSynchronizer retrieved googled task lists`,
+      googleTaskLists
+    );
     const taskLists = await this.getTaskListsForGoogleTaskLists(
+      googleTaskLists
+    );
+    this.logger.info(
+      `TaskSynchronizer retrieved task lists for google task lists`,
       googleTaskLists
     );
     const newTasksPerList = await Promise.all(
       taskLists.map(taskList => this.getNewCompletedGoogleTasks(taskList))
     );
-    console.log('newTasksPerList :', newTasksPerList);
+    this.logger.info(
+      'TaskSynchronizer retrieved new tasks for task lists',
+      newTasksPerList
+    );
     const additionalBalance = newTasksPerList.reduce(
       (total, tasks) => total + tasks.length,
       0

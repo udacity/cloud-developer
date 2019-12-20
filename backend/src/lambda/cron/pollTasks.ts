@@ -10,7 +10,7 @@ const logger = createLogger('pollTasks');
 export const handler: ScheduledHandler = async () => {
   logger.info(`Running pollTasks at ${new Date()}`);
   const users = await auth0Accessor.getUsers();
-  console.log('users :', users);
+  logger.info(`Syncing tasks for users`, users);
   await Promise.all(
     users.map(user => {
       const service = new TaskSynchronizerWithRefresh(user);
