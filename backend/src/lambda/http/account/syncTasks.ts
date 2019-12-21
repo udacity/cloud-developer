@@ -7,7 +7,7 @@ import {
 } from 'aws-lambda';
 
 import Auth0Accessor from '../../../dataLayer/auth0ManagementAccess';
-// import TaskSynchronizerWithRefresh from '../../../services/TaskSynchronizerWithRefresh';
+import TaskSynchronizerWithRefresh from '../../../services/TaskSynchronizerWithRefresh';
 import { getUserId } from '../../utils';
 import { createLogger } from '../../../utils/logger';
 
@@ -32,14 +32,13 @@ export const handler: APIGatewayProxyHandler = async (
 
   logger.info(`Syncing tasks for ${userId}`);
   const user = await auth0Accessor.getUser({ id: userId });
-  // const service = new TaskSynchronizerWithRefresh(user);
-  // const res = await service.perform();
+  const service = new TaskSynchronizerWithRefresh(user);
+  const res = await service.perform();
   return {
     statusCode: 200,
     headers: {
       'Access-Control-Allow-Origin': '*'
     },
-    // body: JSON.stringify(res)
-    body: JSON.stringify(user)
+    body: JSON.stringify(res)
   };
 };
