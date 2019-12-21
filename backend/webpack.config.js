@@ -10,7 +10,7 @@ module.exports = {
   },
   externals: [
     {
-      // formidable: 'commonjs formidable',
+      formidable: 'commonjs formidable',
     },
   ],
   // externals: [nodeExternals()],
