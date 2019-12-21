@@ -9,9 +9,12 @@ module.exports = {
     errorDetails: true
   },
   externals: [
-    {
-      formidable: 'commonjs formidable',
-    },
+    // {
+    //   formidable: 'commonjs formidable',
+    // },
+  ],
+  plugins: [
+    new webpack.DefinePlugin({ "global.GENTLY": false })
   ],
   // externals: [nodeExternals()],
   devtool: 'source-map',
