@@ -1,5 +1,4 @@
 import express from 'express';
-import urlExists from 'url-exists';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
@@ -38,6 +37,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   app.get("/filteredimage", async ( req, res) => {
     const image_url = req.query.image_url;
+    var urlExists = require('url-exists');
 
     const promise = new Promise((resolve, reject) => {
         urlExists(image_url, function(err, exists) {
