@@ -17,29 +17,29 @@
   "license": "ISC",
   "dependencies": {
     "@types/bcrypt": "^3.0.0",
-    "@types/jsonwebtoken": "^8.3.2",
-    "aws-sdk": "^2.429.0",
-    "bcrypt": "^3.0.6",
-    "body-parser": "^1.18.3",
+    "@types/jsonwebtoken": "^8.3.5",
+    "aws-sdk": "^2.594.0",
+    "bcrypt": "^3.0.7",
+    "body-parser": "^1.19.0",
     "email-validator": "^2.0.4",
-    "express": "^4.16.4",
+    "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "pg": "^7.9.0",
+    "pg": "^7.15.1",
     "reflect-metadata": "^0.1.13",
-    "sequelize": "^5.3.5",
-    "sequelize-typescript": "^0.6.9"
+    "sequelize": "^5.21.3",
+    "sequelize-typescript": "^0.6.11"
   },
   "devDependencies": {
-    "@types/bluebird": "^3.5.26",
-    "@types/express": "^4.16.1",
-    "@types/node": "^11.11.6",
-    "@types/sequelize": "^4.27.44",
-    "@types/validator": "^10.9.0",
+    "@types/bluebird": "^3.5.29",
+    "@types/express": "^4.17.2",
+    "@types/node": "^11.15.3",
+    "@types/sequelize": "^4.28.8",
+    "@types/validator": "^10.11.3",
     "chai": "^4.2.0",
-    "chai-http": "^4.2.1",
-    "mocha": "^6.1.4",
-    "ts-node-dev": "^1.0.0-pre.32",
-    "tslint": "^5.14.0",
-    "typescript": "^3.3.4000"
+    "chai-http": "^4.3.0",
+    "mocha": "^6.2.2",
+    "ts-node-dev": "^1.0.0-pre.44",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.3"
   }
 }
