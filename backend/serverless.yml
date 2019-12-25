@@ -42,6 +42,7 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
+        - dynamodb:BatchWriteItem
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
     - Effect: Allow
       Action:
@@ -55,6 +56,7 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
+        - dynamodb:BatchWriteItem
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TASK_LISTS_TABLE}
     - Effect: Allow
       Action:
@@ -68,6 +70,7 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
+        - dynamodb:BatchWriteItem
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.REWARDS_TABLE}
     - Effect: Allow
       Action:
@@ -81,6 +84,7 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
+        - dynamodb:BatchWriteItem
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}
     - Effect: Allow
       Action:
