@@ -118,6 +118,13 @@ import { Car, cars as cars_list } from './cars';
                     .send(`Inputs make, type, model, cost, id are required`);
         }
 
+        // validate if a car object already exists with the same id
+        const car = cars.filter(car0 => car0.id == id);
+        if(car && car.length > 0){
+          return res.status(400)
+                    .send(`A car object already exists with this id, ${id}`);
+        }
+
         // create new car instance
         const new_car: Car = {
           make: make, type: type, model: model, cost: cost, id: id
