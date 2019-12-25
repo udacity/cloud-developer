@@ -2,6 +2,7 @@ import express, { Router, Request, Response } from 'express';
 import bodyParser from 'body-parser';
 
 import { Car, cars as cars_list } from './cars';
+import { parse } from 'path';
 
 (async () => {
   let cars:Car[]  = cars_list;
@@ -70,21 +71,25 @@ import { Car, cars as cars_list } from './cars';
 
   // @TODO Add an endpoint to GET a list of cars
   // it should be filterable by make with a query paramater
-  app.get( "/cars/", ( req: Request, res: Response ) => {
-    let { make } = req.query;
+app.get("/cars", (req: Request, res: Response) => {
+  let { make } = req.query;
 
-    let cars_list = cars;
+  let cars_list = cars;
 
-    // filtering by optional parameter
-    if(make) {
-      cars_list = cars_list.filter(car => car.make === make);
-    }
+  //filter only if make value is provided
+  if(make){
+    cars_list = cars.filter(car => car.make === make);
+  }
 
-    // sending JSON response
+  //check if cars_list is empty
+  if(cars_list && cars_list.length === 0){
     return res.status(200)
-        .send(cars_list);
+            .send(`no cars found for ${make}`);
+  }
 
-  });
+  return res.status(200)
+              .send(cars_list);
+});
 
   // @TODO Add an endpoint to get a specific car
   // it should require id
