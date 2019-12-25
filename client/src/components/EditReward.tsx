@@ -1,12 +1,12 @@
 import * as React from 'react'
 import { Form, Button } from 'semantic-ui-react'
 import Auth from '../auth/Auth'
-import { getUploadUrl, uploadFile } from '../api/rewards-api'
+import { getReward, getUploadUrl, uploadFile } from '../api/rewards-api'
 
 enum UploadState {
   NoUpload,
   FetchingPresignedUrl,
-  UploadingFile,
+  UploadingFile
 }
 
 interface EditRewardProps {
@@ -19,6 +19,7 @@ interface EditRewardProps {
 }
 
 interface EditRewardState {
+  rewardCost: number
   file: any
   uploadState: UploadState
 }
@@ -26,10 +27,32 @@ interface EditRewardState {
 export class EditReward extends React.PureComponent<
   EditRewardProps,
   EditRewardState
-  > {
+> {
   state: EditRewardState = {
+    rewardCost: 0,
     file: undefined,
     uploadState: UploadState.NoUpload
+  }
+
+  async componentDidMount() {
+    const reward = await getReward(
+      this.props.auth.getIdToken(),
+      this.props.match.params.rewardId
+    )
+
+    this.setState({
+      rewardCost: reward.cost
+    })
+  }
+
+  handleRewardCostChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target
+    const asNumber = Number(value)
+    if (!isNaN(asNumber)) {
+      this.setState({
+        rewardCost: asNumber
+      })
+    }
   }
 
   handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +74,10 @@ export class EditReward extends React.PureComponent<
       }
 
       this.setUploadState(UploadState.FetchingPresignedUrl)
-      const uploadUrl = await getUploadUrl(this.props.auth.getIdToken(), this.props.match.params.rewardId)
+      const uploadUrl = await getUploadUrl(
+        this.props.auth.getIdToken(),
+        this.props.match.params.rewardId
+      )
 
       this.setUploadState(UploadState.UploadingFile)
       await uploadFile(uploadUrl, this.state.file)
@@ -76,8 +102,12 @@ export class EditReward extends React.PureComponent<
         <h1>Upload new image</h1>
 
         <Form onSubmit={this.handleSubmit}>
-          <Form.Field>
-            <label>File</label>
+          <Form.Field
+            label="Reward cost"
+            onChange={this.handleRewardCostChange}
+            control="input"
+          />
+          <Form.Field label="File">
             <input
               type="file"
               accept="image/*"
@@ -93,11 +123,14 @@ export class EditReward extends React.PureComponent<
   }
 
   renderButton() {
-
     return (
       <div>
-        {this.state.uploadState === UploadState.FetchingPresignedUrl && <p>Uploading image metadata</p>}
-        {this.state.uploadState === UploadState.UploadingFile && <p>Uploading file</p>}
+        {this.state.uploadState === UploadState.FetchingPresignedUrl && (
+          <p>Uploading image metadata</p>
+        )}
+        {this.state.uploadState === UploadState.UploadingFile && (
+          <p>Uploading file</p>
+        )}
         <Button
           loading={this.state.uploadState !== UploadState.NoUpload}
           type="submit"

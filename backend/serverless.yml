@@ -167,6 +167,15 @@ functions:
           cors: true
           authorizer: Auth
 
+  GetReward:
+    handler: src/lambda/http/reward/getReward.handler
+    events:
+      - http:
+          method: get
+          path: rewards/{rewardId}
+          cors: true
+          authorizer: Auth
+
   CreateReward:
     handler: src/lambda/http/reward/createReward.handler
     events:

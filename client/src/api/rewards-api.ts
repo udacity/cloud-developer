@@ -17,6 +17,19 @@ export async function getRewards(idToken: string): Promise<Reward[]> {
   return response.data.items
 }
 
+export async function getReward(
+  idToken: string,
+  rewardId: string
+): Promise<Reward> {
+  const response = await Axios.get(`${apiEndpoint}/rewards/${rewardId}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${idToken}`
+    }
+  })
+  return response.data.reward
+}
+
 export async function createReward(
   idToken: string,
   newReward: CreateRewardRequest

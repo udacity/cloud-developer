@@ -1,3 +1,4 @@
 export interface CreateRewardRequest {
-  name: string
+  name: string,
+  cost: number
 }

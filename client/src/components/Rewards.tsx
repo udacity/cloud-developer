@@ -2,13 +2,13 @@ import { History } from 'history'
 import update from 'immutability-helper'
 import React, { useEffect, useState } from 'react'
 import {
+  Form,
   Button,
   Checkbox,
   Divider,
   Grid,
   Header,
   Icon,
-  Input,
   Image,
   Loader
 } from 'semantic-ui-react'
@@ -28,18 +28,13 @@ interface RewardsProps {
   history: History
 }
 
-interface RewardsState {
-  rewards: Reward[]
-  newRewardName: string
-  loadingRewards: boolean
-}
-
 export const Rewards: React.FunctionComponent<RewardsProps> = props => {
   const { account } = useAccount()
   const { balance, syncingTasks } = account
 
   const [rewards, setRewards] = useState<Reward[]>([])
   const [newRewardName, setNewRewardName] = useState('')
+  const [newRewardCost, setNewRewardCost] = useState(0)
   const [loadingRewards, setLoadingRewards] = useState(true)
 
   useEffect(() => {
@@ -61,22 +56,29 @@ export const Rewards: React.FunctionComponent<RewardsProps> = props => {
     setNewRewardName(event.target.value)
   }
 
+  const handleCostChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target
+    const asNumber = Number(value)
+    if (!isNaN(asNumber)) {
+      setNewRewardCost(Number(value))
+    }
+  }
+
   const onEditButtonClick = (rewardId: string) => {
     const { history } = props
     history.push(`/rewards/${rewardId}/edit`)
   }
 
-  const onRewardCreate = async (
-    event: React.ChangeEvent<HTMLButtonElement>
-  ) => {
+  const onRewardCreate = async () => {
     const { auth } = props
     try {
       const newReward = await createReward(auth.getIdToken(), {
-        name: newRewardName
-        // TODO: have state for reward cost
+        name: newRewardName,
+        cost: newRewardCost
       })
       setRewards([...rewards, newReward])
       setNewRewardName('')
+      setNewRewardCost(0)
     } catch (err) {
       console.log('err :', err)
       alert('Reward creation failed')
@@ -99,7 +101,7 @@ export const Rewards: React.FunctionComponent<RewardsProps> = props => {
     try {
       const reward = rewards[pos]
       await patchReward(auth.getIdToken(), reward.rewardId, {
-        name: reward.name,
+        ...reward,
         redeemed: !reward.redeemed
       })
       setRewards(
@@ -182,31 +184,47 @@ export const Rewards: React.FunctionComponent<RewardsProps> = props => {
     </div>
   )
 
-  return (
-    <div>
-      {syncingTasks
-        ? renderLoading('Checking your balance...')
-        : renderHeader()}
+  const renderCreateRewardForm = () => {
+    return (
       <Grid.Row>
         <Grid.Column width={16}>
-          <Input
-            action={{
-              color: 'teal',
-              labelPosition: 'left',
-              icon: 'add',
-              content: 'New reward',
-              onClick: onRewardCreate
-            }}
-            fluid
-            actionPosition="left"
-            placeholder="Treat yo self"
-            onChange={handleNameChange}
-          />
+          <Form>
+            <Form.Field
+              label="Reward name"
+              placeholder="Treat yo self"
+              onChange={handleNameChange}
+              control="input"
+            />
+            <Form.Field
+              label="Reward cost"
+              onChange={handleCostChange}
+              control="input"
+            />
+            <Form.Button
+              type="submit"
+              icon
+              labelPosition="left"
+              onClick={onRewardCreate}
+              color="teal"
+            >
+              <Icon name="add" />
+              New reward
+            </Form.Button>
+          </Form>
         </Grid.Column>
         <Grid.Column width={16}>
           <Divider />
         </Grid.Column>
       </Grid.Row>
+    )
+  }
+
+  return (
+    <div>
+      {syncingTasks
+        ? renderLoading('Checking your balance...')
+        : renderHeader()}
+      {renderCreateRewardForm()}
       {loadingRewards
         ? renderLoading('Loading rewards...')
         : renderRewardsList()}

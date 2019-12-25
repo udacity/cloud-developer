@@ -25,6 +25,20 @@ export default class RewardsAccess {
     return result.Items as Reward[]
   }
 
+  async getReward(userId: Reward['userId'], rewardId: Reward['rewardId']): Promise<Reward> {
+    const result = await this.docClient
+      .get({
+        TableName: this.rewardsTable,
+        Key: {
+          userId: userId,
+          rewardId: rewardId
+        }
+      })
+      .promise()
+
+    return result.Item as Reward
+  }
+
   async createReward(reward: Reward): Promise<Reward> {
     await this.docClient
       .put({
