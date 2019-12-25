@@ -1,6 +1,6 @@
 import { History } from 'history'
 import update from 'immutability-helper'
-import * as React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Button,
   Checkbox,
@@ -21,6 +21,7 @@ import {
 } from '../api/rewards-api'
 import Auth from '../auth/Auth'
 import { Reward } from '../types/Reward'
+import { useAccount } from '../state/accountState'
 
 interface RewardsProps {
   auth: Auth
@@ -33,145 +34,102 @@ interface RewardsState {
   loadingRewards: boolean
 }
 
-export class Rewards extends React.PureComponent<RewardsProps, RewardsState> {
-  state: RewardsState = {
-    rewards: [],
-    newRewardName: '',
-    loadingRewards: true
+export const Rewards: React.FunctionComponent<RewardsProps> = props => {
+  const { account } = useAccount()
+  const { balance, syncingTasks } = account
+
+  const [rewards, setRewards] = useState<Reward[]>([])
+  const [newRewardName, setNewRewardName] = useState('')
+  const [loadingRewards, setLoadingRewards] = useState(true)
+
+  useEffect(() => {
+    async function loadRewards() {
+      const { auth } = props
+      try {
+        const rewards = await getRewards(auth.getIdToken())
+        setRewards(rewards)
+        setLoadingRewards(false)
+      } catch (e) {
+        alert(`Failed to fetch rewards: ${e.message}`)
+      }
+    }
+
+    loadRewards()
+  }, [])
+
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewRewardName(event.target.value)
   }
 
-  handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ newRewardName: event.target.value })
+  const onEditButtonClick = (rewardId: string) => {
+    const { history } = props
+    history.push(`/rewards/${rewardId}/edit`)
   }
 
-  onEditButtonClick = (rewardId: string) => {
-    this.props.history.push(`/rewards/${rewardId}/edit`)
-  }
-
-  onRewardCreate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
+  const onRewardCreate = async (
+    event: React.ChangeEvent<HTMLButtonElement>
+  ) => {
+    const { auth } = props
     try {
-      const newReward = await createReward(this.props.auth.getIdToken(), {
-        name: this.state.newRewardName
+      const newReward = await createReward(auth.getIdToken(), {
+        name: newRewardName
         // TODO: have state for reward cost
       })
-      this.setState({
-        rewards: [...this.state.rewards, newReward],
-        newRewardName: ''
-      })
+      setRewards([...rewards, newReward])
+      setNewRewardName('')
     } catch (err) {
       console.log('err :', err)
       alert('Reward creation failed')
     }
   }
 
-  onRewardDelete = async (rewardId: string) => {
+  const onRewardDelete = async (rewardId: string) => {
+    const { auth } = props
     try {
-      await deleteReward(this.props.auth.getIdToken(), rewardId)
-      this.setState({
-        rewards: this.state.rewards.filter(
-          reward => reward.rewardId != rewardId
-        )
-      })
+      await deleteReward(auth.getIdToken(), rewardId)
+      setRewards(rewards.filter(reward => reward.rewardId != rewardId))
     } catch (e) {
       console.log('e :', e)
       alert('Reward deletion failed')
     }
   }
 
-  onRewardCheck = async (pos: number) => {
+  const onRewardCheck = async (pos: number) => {
+    const { auth } = props
     try {
-      const reward = this.state.rewards[pos]
-      await patchReward(this.props.auth.getIdToken(), reward.rewardId, {
+      const reward = rewards[pos]
+      await patchReward(auth.getIdToken(), reward.rewardId, {
         name: reward.name,
         redeemed: !reward.redeemed
       })
-      this.setState({
-        rewards: update(this.state.rewards, {
+      setRewards(
+        update(rewards, {
           [pos]: { redeemed: { $set: !reward.redeemed } }
         })
-      })
+      )
     } catch (e) {
       console.log('e :', e)
       alert('Reward update failed')
     }
   }
 
-  async componentDidMount() {
-    try {
-      const rewards = await getRewards(this.props.auth.getIdToken())
-      this.setState({
-        rewards,
-        loadingRewards: false
-      })
-    } catch (e) {
-      alert(`Failed to fetch rewards: ${e.message}`)
-    }
-  }
+  const renderLoading = (loadingMsg: string) => (
+    <Grid.Row>
+      <Loader indeterminate active inline="centered">
+        {loadingMsg}
+      </Loader>
+    </Grid.Row>
+  )
 
-  render() {
-    return (
-      <div>
-        <Header as="h1">Rewards</Header>
-
-        {this.renderCreateRewardInput()}
-
-        {this.renderRewards()}
-      </div>
-    )
-  }
-
-  renderCreateRewardInput() {
-    return (
-      <Grid.Row>
-        <Grid.Column width={16}>
-          <Input
-            action={{
-              color: 'teal',
-              labelPosition: 'left',
-              icon: 'add',
-              content: 'New reward',
-              onClick: this.onRewardCreate
-            }}
-            fluid
-            actionPosition="left"
-            placeholder="Treat yo self"
-            onChange={this.handleNameChange}
-          />
-        </Grid.Column>
-        <Grid.Column width={16}>
-          <Divider />
-        </Grid.Column>
-      </Grid.Row>
-    )
-  }
-
-  renderRewards() {
-    if (this.state.loadingRewards) {
-      return this.renderLoading()
-    }
-
-    return this.renderRewardsList()
-  }
-
-  renderLoading() {
-    return (
-      <Grid.Row>
-        <Loader indeterminate active inline="centered">
-          Loading Rewards
-        </Loader>
-      </Grid.Row>
-    )
-  }
-
-  renderRewardsList() {
+  const renderRewardsList = () => {
     return (
       <Grid padded>
-        {this.state.rewards.map((reward, pos) => {
+        {rewards.map((reward, pos) => {
           return (
             <Grid.Row key={reward.rewardId}>
               <Grid.Column width={1} verticalAlign="middle">
                 <Checkbox
-                  onChange={() => this.onRewardCheck(pos)}
+                  onChange={() => onRewardCheck(pos)}
                   checked={reward.redeemed}
                 />
               </Grid.Column>
@@ -185,7 +143,7 @@ export class Rewards extends React.PureComponent<RewardsProps, RewardsState> {
                 <Button
                   icon
                   color="blue"
-                  onClick={() => this.onEditButtonClick(reward.rewardId)}
+                  onClick={() => onEditButtonClick(reward.rewardId)}
                 >
                   <Icon name="pencil" />
                 </Button>
@@ -194,7 +152,7 @@ export class Rewards extends React.PureComponent<RewardsProps, RewardsState> {
                 <Button
                   icon
                   color="red"
-                  onClick={() => this.onRewardDelete(reward.rewardId)}
+                  onClick={() => onRewardDelete(reward.rewardId)}
                 >
                   <Icon name="delete" />
                 </Button>
@@ -216,4 +174,42 @@ export class Rewards extends React.PureComponent<RewardsProps, RewardsState> {
       </Grid>
     )
   }
+
+  const renderHeader = () => (
+    <div>
+      <Header as="h1">Rewards</Header>
+      <p>Balance: {balance}</p>
+    </div>
+  )
+
+  return (
+    <div>
+      {syncingTasks
+        ? renderLoading('Checking your balance...')
+        : renderHeader()}
+      <Grid.Row>
+        <Grid.Column width={16}>
+          <Input
+            action={{
+              color: 'teal',
+              labelPosition: 'left',
+              icon: 'add',
+              content: 'New reward',
+              onClick: onRewardCreate
+            }}
+            fluid
+            actionPosition="left"
+            placeholder="Treat yo self"
+            onChange={handleNameChange}
+          />
+        </Grid.Column>
+        <Grid.Column width={16}>
+          <Divider />
+        </Grid.Column>
+      </Grid.Row>
+      {loadingRewards
+        ? renderLoading('Loading rewards...')
+        : renderRewardsList()}
+    </div>
+  )
 }

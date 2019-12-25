@@ -30,14 +30,14 @@ export default class TaskSynchronizerWithRefresh {
 
     let taskSynchronizer = new TaskSynchronizer(this.userId, access_token);
     try {
-      await taskSynchronizer.perform();
+      return taskSynchronizer.perform();
     } catch (err) {
       if (err.response && err.response.status === 401) {
         logger.info(`Refreshing access token for user ${this.userId}`);
         const googleAccessor = new GoogleAccessor(refresh_token);
         const accessToken = await googleAccessor.refreshAccessToken();
         taskSynchronizer = new TaskSynchronizer(this.userId, accessToken);
-        return await taskSynchronizer.perform();
+        return taskSynchronizer.perform();
       }
       throw err;
     }
