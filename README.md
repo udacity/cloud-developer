@@ -1,4 +1,4 @@
 # cloud-developer
 Adriano Torres
 
-This repoo contains content for Udacity's cloud developer nanodegree program.
+This repo contains content for Udacity's cloud developer nanodegree program.
