@@ -17,7 +17,7 @@ import {
   createReward,
   deleteReward,
   getRewards,
-  patchReward
+  redeemReward
 } from '../api/rewards-api'
 import Auth from '../auth/Auth'
 import { Reward } from '../types/Reward'
@@ -29,7 +29,7 @@ interface RewardsProps {
 }
 
 export const Rewards: React.FunctionComponent<RewardsProps> = props => {
-  const { account, handleSyncTasks } = useAccount()
+  const { account, handleSyncTasks, handleNewBalance } = useAccount()
   const { balance, syncingTasks } = account
 
   const [rewards, setRewards] = useState<Reward[]>([])
@@ -104,18 +104,23 @@ export const Rewards: React.FunctionComponent<RewardsProps> = props => {
   const onRewardCheck = async (pos: number) => {
     try {
       const reward = rewards[pos]
-      await patchReward(auth.getIdToken(), reward.rewardId, {
-        redeemed: !reward.redeemed
-      })
+      setLoadingRewards(true)
+      const newBalance = await redeemReward(
+        auth.getIdToken(),
+        reward.rewardId,
+        !reward.redeemed
+      )
       setRewards(
         update(rewards, {
           [pos]: { redeemed: { $set: !reward.redeemed } }
         })
       )
+      handleNewBalance(newBalance)
     } catch (e) {
       console.log('e :', e)
       alert('Reward update failed')
     }
+    setLoadingRewards(false)
   }
 
   const renderLoading = (loadingMsg: string) => (
@@ -129,53 +134,63 @@ export const Rewards: React.FunctionComponent<RewardsProps> = props => {
   const renderRewardsList = () => {
     return (
       <Grid padded>
-        {rewards.map((reward, pos) => {
-          return (
-            <Grid.Row key={reward.rewardId}>
-              <Grid.Column width={1} verticalAlign="middle">
-                <Checkbox
-                  onChange={() => onRewardCheck(pos)}
-                  checked={reward.redeemed}
-                />
-              </Grid.Column>
-              <Grid.Column width={10} verticalAlign="middle">
-                {reward.name}
-              </Grid.Column>
-              <Grid.Column width={3} floated="right">
-                {reward.cost}
-              </Grid.Column>
-              <Grid.Column width={1} floated="right">
-                <Button
-                  icon
-                  color="blue"
-                  onClick={() => onEditButtonClick(reward.rewardId)}
+        {rewards
+          .sort(a => (a.redeemed ? 1 : -1))
+          .map((reward, pos) => {
+            return (
+              <Grid.Row key={reward.rewardId}>
+                <Grid.Column width={1} verticalAlign="middle">
+                  <Checkbox
+                    onChange={() => onRewardCheck(pos)}
+                    checked={reward.redeemed}
+                  />
+                </Grid.Column>
+                <Grid.Column
+                  width={reward.redeemed ? 3 : 10}
+                  verticalAlign="middle"
                 >
-                  <Icon name="pencil" />
-                </Button>
-              </Grid.Column>
-              <Grid.Column width={1} floated="right">
-                <Button
-                  icon
-                  color="red"
-                  onClick={() => onRewardDelete(reward.rewardId)}
-                >
-                  <Icon name="delete" />
-                </Button>
-              </Grid.Column>
-              {reward.attachmentUrl && (
-                <Image
-                  src={reward.attachmentUrl}
-                  size="small"
-                  wrapped
-                  onError={(i: any) => (i.target.src = '')}
-                />
-              )}
-              <Grid.Column width={16}>
-                <Divider />
-              </Grid.Column>
-            </Grid.Row>
-          )
-        })}
+                  {reward.name}
+                </Grid.Column>
+                {reward.redeemed && (
+                  <Grid.Column width={7} verticalAlign="middle">
+                    Redeemed <Icon name="trophy" />
+                  </Grid.Column>
+                )}
+                <Grid.Column width={3} floated="right">
+                  {reward.cost}
+                </Grid.Column>
+                <Grid.Column width={1} floated="right">
+                  <Button
+                    icon
+                    color="blue"
+                    onClick={() => onEditButtonClick(reward.rewardId)}
+                  >
+                    <Icon name="pencil" />
+                  </Button>
+                </Grid.Column>
+                <Grid.Column width={1} floated="right">
+                  <Button
+                    icon
+                    color="red"
+                    onClick={() => onRewardDelete(reward.rewardId)}
+                  >
+                    <Icon name="delete" />
+                  </Button>
+                </Grid.Column>
+                {reward.attachmentUrl && (
+                  <Image
+                    src={reward.attachmentUrl}
+                    size="small"
+                    wrapped
+                    onError={(i: any) => (i.target.src = '')}
+                  />
+                )}
+                <Grid.Column width={16}>
+                  <Divider />
+                </Grid.Column>
+              </Grid.Row>
+            )
+          })}
       </Grid>
     )
   }

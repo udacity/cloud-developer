@@ -203,6 +203,15 @@ functions:
           cors: true
           authorizer: Auth
 
+  RedeemReward:
+    handler: src/lambda/http/reward/redeemReward.handler
+    events:
+      - http:
+          method: post
+          path: rewards/{rewardId}/redeem
+          cors: true
+          authorizer: Auth
+
   GenerateUploadUrl:
     handler: src/lambda/http/reward/generateUploadUrl.handler
     events:

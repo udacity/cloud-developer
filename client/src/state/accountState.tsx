@@ -12,7 +12,8 @@ interface AccountState {
 enum AccountStateActions {
   TASKS_SYNC_START,
   TASKS_SYNC_SUCCESS,
-  TASKS_SYNC_FAILURE
+  TASKS_SYNC_FAILURE,
+  NEW_BALANCE
 }
 
 interface Action {
@@ -35,9 +36,19 @@ const accountStateReducer: Reducer<AccountState, Action> = (
     case AccountStateActions.TASKS_SYNC_START:
       return { ...state, syncingTasks: true, syncTasksError: null }
     case AccountStateActions.TASKS_SYNC_SUCCESS:
-      return { ...state, syncingTasks: false, syncTasksError: null, ...action.value }
+      return {
+        ...state,
+        syncingTasks: false,
+        syncTasksError: null,
+        ...action.value
+      }
     case AccountStateActions.TASKS_SYNC_FAILURE:
       return { ...state, syncingTasks: false, syncTasksError: action.value }
+    case AccountStateActions.NEW_BALANCE:
+      return {
+        ...state,
+        balance: action.value
+      }
     default:
       return state
   }
@@ -46,9 +57,11 @@ const accountStateReducer: Reducer<AccountState, Action> = (
 const Account = createContext<{
   account: AccountState
   handleSyncTasks: any
+  handleNewBalance: any
 }>({
   account: initialAccountState,
-  handleSyncTasks: () => {}
+  handleSyncTasks: () => {},
+  handleNewBalance: () => {}
 })
 
 const AccountStateProvider: React.FunctionComponent = ({ children }) => {
@@ -67,11 +80,16 @@ const AccountStateProvider: React.FunctionComponent = ({ children }) => {
     }
   }
 
+  const handleNewBalance = (balance: AccountState['balance']) => {
+    dispatch({ type: AccountStateActions.NEW_BALANCE, value: balance })
+  }
+
   return (
     <Account.Provider
       value={{
         account,
-        handleSyncTasks
+        handleSyncTasks,
+        handleNewBalance
       }}
     >
       {children}
