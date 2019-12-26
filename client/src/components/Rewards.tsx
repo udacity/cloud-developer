@@ -101,7 +101,6 @@ export const Rewards: React.FunctionComponent<RewardsProps> = props => {
     try {
       const reward = rewards[pos]
       await patchReward(auth.getIdToken(), reward.rewardId, {
-        ...reward,
         redeemed: !reward.redeemed
       })
       setRewards(

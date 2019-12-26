@@ -1,31 +1,34 @@
-import { Reward } from '../models/Reward'
-import { UpdateRewardRequest } from '../requests/UpdateRewardRequest'
-import * as helpers from './helpers'
-import createDynamoDBClient from './dynamoDBAccess'
+import { Reward } from "../models/Reward";
+import { UpdateRewardRequest } from "../requests/UpdateRewardRequest";
+import * as helpers from "./helpers";
+import createDynamoDBClient from "./dynamoDBAccess";
 
 export default class RewardsAccess {
   constructor(
     private readonly docClient = createDynamoDBClient(),
     private readonly rewardsTable = process.env.REWARDS_TABLE,
     private readonly index = process.env.REWARDS_INDEX
-  ) { }
+  ) {}
 
   async getRewards(userId: string): Promise<Reward[]> {
     const result = await this.docClient
       .query({
         TableName: this.rewardsTable,
         IndexName: this.index,
-        KeyConditionExpression: 'userId = :userId',
+        KeyConditionExpression: "userId = :userId",
         ExpressionAttributeValues: {
-          ':userId': userId
+          ":userId": userId
         }
       })
-      .promise()
+      .promise();
 
-    return result.Items as Reward[]
+    return result.Items as Reward[];
   }
 
-  async getReward(userId: Reward['userId'], rewardId: Reward['rewardId']): Promise<Reward> {
+  async getReward(
+    userId: Reward["userId"],
+    rewardId: Reward["rewardId"]
+  ): Promise<Reward> {
     const result = await this.docClient
       .get({
         TableName: this.rewardsTable,
@@ -34,9 +37,9 @@ export default class RewardsAccess {
           rewardId: rewardId
         }
       })
-      .promise()
+      .promise();
 
-    return result.Item as Reward
+    return result.Item as Reward;
   }
 
   async createReward(reward: Reward): Promise<Reward> {
@@ -45,25 +48,37 @@ export default class RewardsAccess {
         TableName: this.rewardsTable,
         Item: reward
       })
-      .promise()
+      .promise();
 
-    return reward
+    return reward;
   }
 
   async updateReward(
-    userId: Reward['userId'],
-    rewardId: Reward['rewardId'],
+    userId: Reward["userId"],
+    rewardId: Reward["rewardId"],
     updatedReward: UpdateRewardRequest
   ): Promise<void> {
     const ExpressionAttributeNames = {
       "#name": "name"
-    }
+    };
     const ExpressionAttributeValues = {
-      ':name': updatedReward.name,
-      ':redeemed': updatedReward.redeemed,
-      ':redeemedAt': updatedReward.redeemed ? (new Date()).toISOString() : undefined,
-    }
-    const UpdateExpression = helpers.getUpdateExpression(ExpressionAttributeValues, ExpressionAttributeNames)
+      ":name": updatedReward.name,
+      ":redeemed": updatedReward.redeemed,
+      ":cost": updatedReward.cost,
+      ":redeemedAt": updatedReward.redeemed
+        ? new Date().toISOString()
+        : undefined
+    };
+    Object.keys(ExpressionAttributeValues).forEach(
+      key =>
+        ExpressionAttributeValues[key] === undefined &&
+        delete ExpressionAttributeValues[key]
+    );
+
+    const UpdateExpression = helpers.getUpdateExpression(
+      ExpressionAttributeValues,
+      ExpressionAttributeNames
+    );
 
     await this.docClient
       .update({
@@ -76,10 +91,13 @@ export default class RewardsAccess {
         ExpressionAttributeNames,
         ExpressionAttributeValues
       })
-      .promise()
+      .promise();
   }
 
-  async deleteReward(userId: Reward['userId'], rewardId: Reward['rewardId']): Promise<void> {
+  async deleteReward(
+    userId: Reward["userId"],
+    rewardId: Reward["rewardId"]
+  ): Promise<void> {
     await this.docClient
       .delete({
         TableName: this.rewardsTable,
@@ -88,6 +106,6 @@ export default class RewardsAccess {
           rewardId: rewardId
         }
       })
-      .promise()
+      .promise();
   }
 }
