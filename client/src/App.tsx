@@ -9,7 +9,7 @@ import { LogIn } from './components/LogIn'
 import { NotFound } from './components/NotFound'
 import { Todos } from './components/Todos'
 import { Rewards } from './components/Rewards'
-import { provideAccount, useAccount } from './state/accountState'
+import { provideAccount } from './state/accountState'
 
 export interface AppProps {}
 
@@ -19,15 +19,7 @@ export interface AppProps {
 }
 
 const App: React.FunctionComponent<AppProps> = ({ children, ...props }) => {
-  const { account, handleSyncTasks } = useAccount()
   const { auth } = props
-
-  useEffect(() => {
-    if (auth.getIdToken()) {
-      console.log('Calling handleSyncTasks')
-      handleSyncTasks(auth.getIdToken())
-    }
-  }, [auth])
 
   const handleLogin = () => auth.login()
 
@@ -54,21 +46,9 @@ const App: React.FunctionComponent<AppProps> = ({ children, ...props }) => {
       </Menu.Item>
     )
 
-  const generateLoader = () => (
-    <Grid.Row>
-      <Loader indeterminate active inline="centered">
-        Syncing your tasks...
-      </Loader>
-    </Grid.Row>
-  )
-
   const generateCurrentPage = () => {
     if (!auth.isAuthenticated()) {
       return <LogIn auth={auth} />
-    }
-
-    if (account.syncingTasks) {
-      return generateLoader()
     }
 
     return (

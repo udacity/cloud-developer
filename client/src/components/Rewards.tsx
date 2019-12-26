@@ -29,7 +29,7 @@ interface RewardsProps {
 }
 
 export const Rewards: React.FunctionComponent<RewardsProps> = props => {
-  const { account } = useAccount()
+  const { account, handleSyncTasks } = useAccount()
   const { balance, syncingTasks } = account
 
   const [rewards, setRewards] = useState<Reward[]>([])
@@ -37,9 +37,16 @@ export const Rewards: React.FunctionComponent<RewardsProps> = props => {
   const [newRewardCost, setNewRewardCost] = useState(0)
   const [loadingRewards, setLoadingRewards] = useState(true)
 
+  const { auth } = props
+
+  useEffect(() => {
+    if (auth.getIdToken()) {
+      handleSyncTasks(auth.getIdToken())
+    }
+  }, [auth])
+
   useEffect(() => {
     async function loadRewards() {
-      const { auth } = props
       try {
         const rewards = await getRewards(auth.getIdToken())
         setRewards(rewards)
@@ -70,7 +77,6 @@ export const Rewards: React.FunctionComponent<RewardsProps> = props => {
   }
 
   const onRewardCreate = async () => {
-    const { auth } = props
     try {
       const newReward = await createReward(auth.getIdToken(), {
         name: newRewardName,
@@ -86,7 +92,6 @@ export const Rewards: React.FunctionComponent<RewardsProps> = props => {
   }
 
   const onRewardDelete = async (rewardId: string) => {
-    const { auth } = props
     try {
       await deleteReward(auth.getIdToken(), rewardId)
       setRewards(rewards.filter(reward => reward.rewardId != rewardId))
@@ -97,7 +102,6 @@ export const Rewards: React.FunctionComponent<RewardsProps> = props => {
   }
 
   const onRewardCheck = async (pos: number) => {
-    const { auth } = props
     try {
       const reward = rewards[pos]
       await patchReward(auth.getIdToken(), reward.rewardId, {
@@ -220,10 +224,14 @@ export const Rewards: React.FunctionComponent<RewardsProps> = props => {
 
   return (
     <div>
-      {syncingTasks
-        ? renderLoading('Checking your balance...')
-        : renderHeader()}
-      {renderCreateRewardForm()}
+      {syncingTasks ? (
+        renderLoading('Checking your balance...')
+      ) : (
+        <>
+          {renderHeader()}
+          {renderCreateRewardForm()}
+        </>
+      )}
       {loadingRewards
         ? renderLoading('Loading rewards...')
         : renderRewardsList()}
