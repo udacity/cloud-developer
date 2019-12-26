@@ -94,22 +94,25 @@ export class EditReward extends React.PureComponent<
 
         this.setEditState(EditState.UploadingFile)
         await uploadFile(uploadUrl, this.state.file)
-
-        alert('File was uploaded!')
       }
     } catch (e) {
       alert('Could not upload a file: ' + e.message)
-    } finally {
-      this.setEditState(EditState.NoEdit)
     }
 
-    await patchReward(
-      this.props.auth.getIdToken(),
-      this.props.match.params.rewardId,
-      {
-        cost: this.state.cost
-      }
-    )
+    if (this.state.cost !== this.state.originalCost) {
+      await patchReward(
+        this.props.auth.getIdToken(),
+        this.props.match.params.rewardId,
+        {
+          cost: this.state.cost
+        }
+      )
+      this.setState(prevState => {
+        return { originalCost: prevState.cost }
+      })
+    }
+    this.setEditState(EditState.NoEdit)
+    alert('Reward was updated!')
   }
 
   setEditState(editState: EditState) {

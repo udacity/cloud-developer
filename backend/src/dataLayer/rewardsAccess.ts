@@ -74,11 +74,6 @@ export default class RewardsAccess {
         ExpressionAttributeValues[key] === undefined &&
         delete ExpressionAttributeValues[key]
     );
-    Object.values(ExpressionAttributeNames).forEach(
-      value =>
-        ExpressionAttributeValues[`:${value}`] === undefined &&
-        delete ExpressionAttributeNames[`#${value}`]
-    );
 
     const UpdateExpression = helpers.getUpdateExpression(
       ExpressionAttributeValues,
@@ -93,7 +88,9 @@ export default class RewardsAccess {
           rewardId: rewardId
         },
         UpdateExpression,
-        ExpressionAttributeNames,
+        ExpressionAttributeNames: !!ExpressionAttributeValues[":name"]
+          ? ExpressionAttributeNames
+          : undefined,
         ExpressionAttributeValues
       })
       .promise();
