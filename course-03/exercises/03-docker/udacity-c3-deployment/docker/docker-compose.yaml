@@ -1,7 +1,7 @@
 version: "3"
 services:
   reverseproxy:
-      image: aleks-dev/reverseproxy
+      image: aleksdev/udacity-c3-docker-nginx
       ports:
           - 8080:8080
       restart: always
@@ -9,7 +9,7 @@ services:
         - backend-user
         - backend-feed     
   backend-user:
-    image: aleks-dev/udacity-c3-restapi-user
+    image: aleksdev/udacity-c3-restapi-user
     volumes:
       - $HOME/.aws:/root/.aws
     environment:
@@ -23,7 +23,7 @@ services:
       JWT_SECRET: $JWT_SECRET
       URL: "http://localhost:8100"
   backend-feed:
-    image: aleks-dev/udacity-c3-restapi-feed
+    image: aleksdev/udacity-c3-restapi-feed
     volumes:
       - $HOME/.aws:/root/.aws
     environment:
@@ -37,6 +37,6 @@ services:
       JWT_SECRET: $JWT_SECRET
       URL: "http://localhost:8100"
   frontend:
-    image: aleks-dev/udacity-c3-frontend:local
+    image: aleksdev/udacity-c3-frontend
     ports:
       - "8100:80"
