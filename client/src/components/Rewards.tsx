@@ -102,8 +102,13 @@ export const Rewards: React.FunctionComponent<RewardsProps> = props => {
   }
 
   const onRewardCheck = async (pos: number) => {
+    const reward = rewards[pos]
+
+    if (balance === null || reward.cost > balance) {
+      return alert('This reward costs too much')
+    }
+
     try {
-      const reward = rewards[pos]
       setLoadingRewards(true)
       const newBalance = await redeemReward(
         auth.getIdToken(),
@@ -197,59 +202,65 @@ export const Rewards: React.FunctionComponent<RewardsProps> = props => {
 
   const renderHeader = () => (
     <div>
-      <Header as="h1">Rewards</Header>
-      <p>Balance: {balance}</p>
+      <Header as="h1">Account Balance</Header>
+      <Header.Subheader>{balance} points</Header.Subheader>
     </div>
   )
 
   const renderCreateRewardForm = () => {
     return (
-      <Grid.Row>
-        <Grid.Column width={16}>
-          <Form>
-            <Form.Field
-              label="Reward name"
-              placeholder="Treat yo self"
-              onChange={handleNameChange}
-              control="input"
-            />
-            <Form.Field
-              label="Reward cost"
-              onChange={handleCostChange}
-              control="input"
-            />
-            <Form.Button
-              type="submit"
-              icon
-              labelPosition="left"
-              onClick={onRewardCreate}
-              color="teal"
-            >
-              <Icon name="add" />
-              New reward
-            </Form.Button>
-          </Form>
-        </Grid.Column>
-        <Grid.Column width={16}>
+      <>
+        <Grid.Row width={16}>
           <Divider />
-        </Grid.Column>
-      </Grid.Row>
+          <Header as="h2">Rewards</Header>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column width={16}>
+            <Form>
+              <Form.Field
+                label="Reward name"
+                placeholder="Treat yo self"
+                onChange={handleNameChange}
+                control="input"
+              />
+              <Form.Field
+                label="Reward cost"
+                onChange={handleCostChange}
+                control="input"
+              />
+              <Form.Button
+                type="submit"
+                icon
+                labelPosition="left"
+                onClick={onRewardCreate}
+                color="teal"
+              >
+                <Icon name="add" />
+                New reward
+              </Form.Button>
+            </Form>
+          </Grid.Column>
+          <Grid.Column width={16}>
+            <Divider />
+          </Grid.Column>
+        </Grid.Row>
+      </>
     )
   }
 
   return (
     <div>
-      {syncingTasks ? (
-        renderLoading('Checking your balance...')
+      {syncingTasks
+        ? renderLoading('Checking your balance...')
+        : renderHeader()}
+      {loadingRewards ? (
+        renderLoading('Loading rewards...')
       ) : (
         <>
-          {renderHeader()}
           {renderCreateRewardForm()}
+          {renderRewardsList()}
         </>
       )}
-      {loadingRewards
-        ? renderLoading('Loading rewards...')
-        : renderRewardsList()}
     </div>
   )
 }
