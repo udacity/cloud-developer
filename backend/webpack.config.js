@@ -1,5 +1,6 @@
 const path = require('path')
 const slsw = require('serverless-webpack')
+const webpack = require('webpack')
 // var nodeExternals = require('webpack-node-externals')
 
 module.exports = {
@@ -8,6 +9,14 @@ module.exports = {
   stats: {
     errorDetails: true
   },
+  externals: [
+    // {
+    //   formidable: 'commonjs formidable',
+    // },
+  ],
+  plugins: [
+    new webpack.DefinePlugin({ "global.GENTLY": false })
+  ],
   // externals: [nodeExternals()],
   devtool: 'source-map',
   resolve: {

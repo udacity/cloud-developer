@@ -2,19 +2,19 @@ import 'source-map-support/register'
 
 import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
 
-import TodosAccess from '../../dataLayer/todosAccess'
-import { createLogger } from '../../utils/logger'
-import { getUserId } from '../utils'
+import RewardsAccess from '../../../dataLayer/rewardsAccess'
+import { createLogger } from '../../../utils/logger'
+import { getUserId } from '../../utils'
 
-const todosClient = new TodosAccess()
-const logger = createLogger('deleteTodo')
+const rewardsClient = new RewardsAccess()
+const logger = createLogger('deleteReward')
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  const todoId = event.pathParameters.todoId
+  const rewardId = event.pathParameters.rewardId
   const userId = getUserId(event)
 
-  if (!todoId) {
-    logger.error("Delete missing todoId")
+  if (!rewardId) {
+    logger.error("Delete missing rewardId")
     return {
       statusCode: 200,
       headers: {
@@ -25,7 +25,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   }
 
   try {
-    await todosClient.deleteTodo(userId, todoId)
+    await rewardsClient.deleteReward(userId, rewardId)
     return {
       statusCode: 204,
       headers: {
@@ -33,9 +33,9 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
       },
       body: "",
     }
-  } catch(error) {
+  } catch (error) {
     logger.error("Delete attempt failed", {
-      todoId,
+      rewardId,
       error,
     })
     return {

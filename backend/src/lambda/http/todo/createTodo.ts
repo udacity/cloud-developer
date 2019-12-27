@@ -7,10 +7,10 @@ import {
 } from 'aws-lambda'
 import { v4 } from 'uuid'
 
-import { CreateTodoRequest } from '../../requests/CreateTodoRequest'
-import TodosAccess from '../../dataLayer/todosAccess'
-import { getUserId } from '../utils'
-import { createLogger } from '../../utils/logger'
+import { CreateTodoRequest } from '../../../requests/CreateTodoRequest'
+import TodosAccess from '../../../dataLayer/todosAccess'
+import { getUserId } from '../../utils'
+import { createLogger } from '../../../utils/logger'
 
 const todosClient = new TodosAccess()
 const logger = createLogger('createTodo')
@@ -30,7 +30,7 @@ export const handler: APIGatewayProxyHandler = async (
       statusCode: 401,
       headers: {
         'Access-Control-Allow-Origin': '*'
-      },  
+      },
       body: 'unauthorized request'
     }
   }
@@ -40,7 +40,7 @@ export const handler: APIGatewayProxyHandler = async (
     const item = await todosClient.createTodo({
       userId,
       todoId,
-      createdAt: new Date().toString(),
+      createdAt: new Date().toISOString(),
       done: false,
       attachmentUrl: `https://${bucketName}.s3.amazonaws.com/${todoId}`,
       ...newTodo
@@ -58,7 +58,7 @@ export const handler: APIGatewayProxyHandler = async (
       statusCode: 422,
       headers: {
         'Access-Control-Allow-Origin': '*'
-      },      
+      },
       body: 'Could not create todo'
     }
   }

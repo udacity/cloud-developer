@@ -1,12 +1,15 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import { Link, Route, Router, Switch } from 'react-router-dom'
-import { Grid, Menu, Segment } from 'semantic-ui-react'
+import { Grid, Loader, Menu, Segment } from 'semantic-ui-react'
 
 import Auth from './auth/Auth'
 import { EditTodo } from './components/EditTodo'
+import { EditReward } from './components/EditReward'
 import { LogIn } from './components/LogIn'
 import { NotFound } from './components/NotFound'
 import { Todos } from './components/Todos'
+import { Rewards } from './components/Rewards'
+import { provideAccount } from './state/accountState'
 
 export interface AppProps {}
 
@@ -15,75 +18,37 @@ export interface AppProps {
   history: any
 }
 
-export interface AppState {}
+const App: React.FunctionComponent<AppProps> = ({ children, ...props }) => {
+  const { auth } = props
 
-export default class App extends Component<AppProps, AppState> {
-  constructor(props: AppProps) {
-    super(props)
+  const handleLogin = () => auth.login()
 
-    this.handleLogin = this.handleLogin.bind(this)
-    this.handleLogout = this.handleLogout.bind(this)
-  }
+  const handleLogout = () => auth.logout()
 
-  handleLogin() {
-    this.props.auth.login()
-  }
+  const generateMenu = () => (
+    <Menu>
+      <Menu.Item name="home">
+        <Link to="/">Home</Link>
+      </Menu.Item>
 
-  handleLogout() {
-    this.props.auth.logout()
-  }
+      <Menu.Menu position="right">{logInLogOutButton()}</Menu.Menu>
+    </Menu>
+  )
 
-  render() {
-    return (
-      <div>
-        <Segment style={{ padding: '8em 0em' }} vertical>
-          <Grid container stackable verticalAlign="middle">
-            <Grid.Row>
-              <Grid.Column width={16}>
-                <Router history={this.props.history}>
-                  {this.generateMenu()}
-
-                  {this.generateCurrentPage()}
-                </Router>
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        </Segment>
-      </div>
+  const logInLogOutButton = () =>
+    auth.isAuthenticated() ? (
+      <Menu.Item name="logout" onClick={handleLogout}>
+        Log Out
+      </Menu.Item>
+    ) : (
+      <Menu.Item name="login" onClick={handleLogin}>
+        Log In
+      </Menu.Item>
     )
-  }
 
-  generateMenu() {
-    return (
-      <Menu>
-        <Menu.Item name="home">
-          <Link to="/">Home</Link>
-        </Menu.Item>
-
-        <Menu.Menu position="right">{this.logInLogOutButton()}</Menu.Menu>
-      </Menu>
-    )
-  }
-
-  logInLogOutButton() {
-    if (this.props.auth.isAuthenticated()) {
-      return (
-        <Menu.Item name="logout" onClick={this.handleLogout}>
-          Log Out
-        </Menu.Item>
-      )
-    } else {
-      return (
-        <Menu.Item name="login" onClick={this.handleLogin}>
-          Log In
-        </Menu.Item>
-      )
-    }
-  }
-
-  generateCurrentPage() {
-    if (!this.props.auth.isAuthenticated()) {
-      return <LogIn auth={this.props.auth} />
+  const generateCurrentPage = () => {
+    if (!auth.isAuthenticated()) {
+      return <LogIn auth={auth} />
     }
 
     return (
@@ -91,21 +56,48 @@ export default class App extends Component<AppProps, AppState> {
         <Route
           path="/"
           exact
-          render={props => {
-            return <Todos {...props} auth={this.props.auth} />
-          }}
+          render={routeProps => <Rewards {...routeProps} auth={auth} />}
+        />
+
+        <Route
+          path="/todos"
+          exact
+          render={routeProps => <Todos {...routeProps} auth={auth} />}
         />
 
         <Route
           path="/todos/:todoId/edit"
           exact
-          render={props => {
-            return <EditTodo {...props} auth={this.props.auth} />
-          }}
+          render={routeProps => <EditTodo {...routeProps} auth={auth} />}
+        />
+
+        <Route
+          path="/rewards/:rewardId/edit"
+          exact
+          render={routeProps => <EditReward {...routeProps} auth={auth} />}
         />
 
         <Route component={NotFound} />
       </Switch>
     )
   }
+
+  return (
+    <div>
+      <Segment style={{ padding: '8em 0em' }} vertical>
+        <Grid container stackable verticalAlign="middle">
+          <Grid.Row>
+            <Grid.Column width={16}>
+              <Router history={props.history}>
+                {generateMenu()}
+                {generateCurrentPage()}
+              </Router>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Segment>
+    </div>
+  )
 }
+
+export default provideAccount(App)

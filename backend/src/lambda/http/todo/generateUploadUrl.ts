@@ -2,7 +2,7 @@ import 'source-map-support/register'
 
 import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
 import * as AWS from 'aws-sdk'
-import { createLogger } from '../../utils/logger'
+import { createLogger } from '../../../utils/logger'
 
 const logger = createLogger('generateUploadUrl')
 

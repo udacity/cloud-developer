@@ -2,10 +2,10 @@ import 'source-map-support/register'
 
 import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda'
 
-import { UpdateTodoRequest } from '../../requests/UpdateTodoRequest'
-import TodosAccess from '../../dataLayer/todosAccess'
-import { createLogger } from '../../utils/logger'
-import { getUserId } from '../utils'
+import { UpdateTodoRequest } from '../../../requests/UpdateTodoRequest'
+import TodosAccess from '../../../dataLayer/todosAccess'
+import { createLogger } from '../../../utils/logger'
+import { getUserId } from '../../utils'
 
 const todosClient = new TodosAccess()
 const logger = createLogger('updateTodo')
@@ -38,7 +38,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
       },
       body: "",
     }
-  } catch(error) {
+  } catch (error) {
     logger.error("Update attempt failed", {
       todoId,
       updatedTodo,

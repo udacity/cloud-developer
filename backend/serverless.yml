@@ -8,10 +8,11 @@ plugins:
   - serverless-iam-roles-per-function
   - serverless-dynamodb-local
   - serverless-offline
+  - serverless-dotenv-plugin
 
 provider:
   name: aws
-  runtime: nodejs8.10
+  runtime: nodejs12.x
 
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
@@ -22,7 +23,12 @@ provider:
     AWS_XRAY_CONTEXT_MISSING: LOG_ERROR
     # DynamoDB
     TODOS_TABLE: Todos-${self:provider.stage}
-    INDEX_NAME: UserIdTodoIdIndex
+    TODOS_INDEX: UserIdTodoIdIndex
+    TASK_LISTS_TABLE: TaskLists-${self:provider.stage}
+    TASK_LISTS_INDEX: UserIdTaskListIdIndex
+    REWARDS_TABLE: Rewards-${self:provider.stage}
+    REWARDS_INDEX: UserIdRewardIdIndex
+    USERS_TABLE: Users-${self:provider.stage}
     # S3 stuff
     IMAGES_S3_BUCKET: todo-images-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
@@ -36,11 +42,50 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
+        - dynamodb:BatchWriteItem
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
     - Effect: Allow
       Action:
         - dynamodb:Query
-      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.INDEX_NAME}
+      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.TODOS_INDEX}
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:BatchWriteItem
+      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TASK_LISTS_TABLE}
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TASK_LISTS_TABLE}/index/${self:provider.environment.TASK_LISTS_INDEX}
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:BatchWriteItem
+      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.REWARDS_TABLE}
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.REWARDS_TABLE}/index/${self:provider.environment.REWARDS_INDEX}
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:BatchWriteItem
+      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}
     - Effect: Allow
       Action:
         - s3:PutObject
@@ -55,7 +100,7 @@ custom:
       port: 8000
       inMemory: true
       migrate: true
-      seed: true
+      # seed: true
     stages:
       - dev # https://github.com/99xt/serverless-dynamodb-local/issues/225#issuecomment-498023248
     seed:
@@ -69,7 +114,7 @@ functions:
     handler: src/lambda/auth/auth0Authorizer.handler
 
   GetTodos:
-    handler: src/lambda/http/getTodos.handler
+    handler: src/lambda/http/todo/getTodos.handler
     events:
       - http:
           method: get
@@ -78,7 +123,7 @@ functions:
           authorizer: Auth
 
   CreateTodo:
-    handler: src/lambda/http/createTodo.handler
+    handler: src/lambda/http/todo/createTodo.handler
     events:
       - http:
           method: post
@@ -87,7 +132,7 @@ functions:
           authorizer: Auth
 
   UpdateTodo:
-    handler: src/lambda/http/updateTodo.handler
+    handler: src/lambda/http/todo/updateTodo.handler
     events:
       - http:
           method: patch
@@ -96,7 +141,7 @@ functions:
           authorizer: Auth
 
   DeleteTodo:
-    handler: src/lambda/http/deleteTodo.handler
+    handler: src/lambda/http/todo/deleteTodo.handler
     events:
       - http:
           method: delete
@@ -104,14 +149,95 @@ functions:
           cors: true
           authorizer: Auth
 
-  GenerateUploadUrl:
-    handler: src/lambda/http/generateUploadUrl.handler
+  GenerateTodoUploadUrl:
+    handler: src/lambda/http/todo/generateUploadUrl.handler
     events:
       - http:
           method: post
           path: todos/{todoId}/attachment
           cors: true
           authorizer: Auth
+
+  GetRewards:
+    handler: src/lambda/http/reward/getRewards.handler
+    events:
+      - http:
+          method: get
+          path: rewards
+          cors: true
+          authorizer: Auth
+
+  GetReward:
+    handler: src/lambda/http/reward/getReward.handler
+    events:
+      - http:
+          method: get
+          path: rewards/{rewardId}
+          cors: true
+          authorizer: Auth
+
+  CreateReward:
+    handler: src/lambda/http/reward/createReward.handler
+    events:
+      - http:
+          method: post
+          path: rewards
+          cors: true
+          authorizer: Auth
+
+  UpdateReward:
+    handler: src/lambda/http/reward/updateReward.handler
+    events:
+      - http:
+          method: patch
+          path: rewards/{rewardId}
+          cors: true
+          authorizer: Auth
+
+  DeleteReward:
+    handler: src/lambda/http/reward/deleteReward.handler
+    events:
+      - http:
+          method: delete
+          path: rewards/{rewardId}
+          cors: true
+          authorizer: Auth
+
+  RedeemReward:
+    handler: src/lambda/http/reward/redeemReward.handler
+    events:
+      - http:
+          method: post
+          path: rewards/{rewardId}/redeem
+          cors: true
+          authorizer: Auth
+
+  GenerateUploadUrl:
+    handler: src/lambda/http/reward/generateUploadUrl.handler
+    events:
+      - http:
+          method: post
+          path: rewards/{rewardId}/attachment
+          cors: true
+          authorizer: Auth
+
+  SyncTasks:
+    handler: src/lambda/http/account/syncTasks.handler
+    events:
+      - http:
+          method: post
+          path: accounts/syncTasks
+          cors: true
+          authorizer: Auth
+
+  PollTasks:
+    handler: src/lambda/cron/pollTasks.handler
+    events:
+      - schedule:
+          enabled: true
+          name: pollTasks
+          description: 'Polling for new completed tasks at a set interval.'
+          rate: rate(1 minute)
 
 resources:
   Resources:
@@ -140,6 +266,8 @@ resources:
     #     ValidateRequestBody: true
     #     ValidateRequestParameters: false
 
+    # TODO: schema seems inefficient. Might be better to have a users table that stores all other tables as a property.
+    # It would have a HASH PK of userId and use query() to fetch other properties. Not sure if that's better.
     TodosTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -156,7 +284,7 @@ resources:
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.TODOS_TABLE}
         LocalSecondaryIndexes:
-          - IndexName: ${self:provider.environment.INDEX_NAME}
+          - IndexName: ${self:provider.environment.TODOS_INDEX}
             KeySchema:
               - AttributeName: userId
                 KeyType: HASH
@@ -165,14 +293,75 @@ resources:
             Projection:
               ProjectionType: ALL # What attributes will be copied to an index
 
+    TaskListsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: taskListId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+          - AttributeName: taskListId
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:provider.environment.TASK_LISTS_TABLE}
+        LocalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.TASK_LISTS_INDEX}
+            KeySchema:
+              - AttributeName: userId
+                KeyType: HASH
+              - AttributeName: taskListId
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL # What attributes will be copied to an index
+
+    RewardsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: rewardId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+          - AttributeName: rewardId
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:provider.environment.REWARDS_TABLE}
+        LocalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.REWARDS_INDEX}
+            KeySchema:
+              - AttributeName: userId
+                KeyType: HASH
+              - AttributeName: rewardId
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL # What attributes will be copied to an index
+
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:provider.environment.USERS_TABLE}
+
     AttachmentsBucket:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: ${self:provider.environment.IMAGES_S3_BUCKET}
         CorsConfiguration:
           CorsRules:
-            -
-              AllowedOrigins:
+            - AllowedOrigins:
                 - '*'
               AllowedHeaders:
                 - '*'
@@ -189,11 +378,11 @@ resources:
       Properties:
         PolicyDocument:
           Id: MyPolicy
-          Version: "2012-10-17"
+          Version: '2012-10-17'
           Statement:
             - Sid: PublicReadForGetBucketObjects
               Effect: Allow
               Principal: '*'
               Action: s3:GetObject
-              Resource: "arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*"
+              Resource: 'arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*'
         Bucket: !Ref AttachmentsBucket
