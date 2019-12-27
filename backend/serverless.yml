@@ -234,7 +234,7 @@ functions:
     handler: src/lambda/cron/pollTasks.handler
     events:
       - schedule:
-          enabled: false
+          enabled: true
           name: pollTasks
           description: 'Polling for new completed tasks at a set interval.'
           rate: rate(1 minute)
