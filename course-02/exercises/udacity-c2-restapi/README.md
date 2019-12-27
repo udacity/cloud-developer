@@ -17,6 +17,7 @@ A basic Ionic client web application which consumes the RestAPI Backend.
 This project uses NPM to manage software dependencies. NPM Relies on the package.json file located in the root of this repository. After cloning, open your terminal and run:
 ```bash
 npm install
+xcode-select --install ## ran this command to fix installation issues
 ```
 >_tip_: **npm i** is shorthand for **npm install**
 
@@ -35,5 +36,15 @@ To run the server locally in developer mode, open terminal and run:
 npm run dev
 ```
 
+## How to install npm dependencies
+```
+npm i bcrypt --save
+npm i --save-dev @types/bcrypt
+```
+
+## Useful references
+```
+https://scotch.io/tutorials/getting-started-with-node-express-and-postgres-using-sequelize
+```
 Developer mode runs off the TypeScript source. Any saves will reset the server and run the latest version of the codebase. 
 

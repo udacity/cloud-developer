@@ -16,16 +16,39 @@ router.get('/', async (req: Request, res: Response) => {
     res.send(items);
 });
 
-//@TODO
 //Add an endpoint to GET a specific resource by Primary Key
+router.get('/:id', async (req: Request, res: Response) => {
+    let { id } = req.params;
+
+    let item = await FeedItem.findByPk(id);
+    if(!item){
+        res.status(400)
+            .send(`No item found in DB for id: ${id}`);
+    }
+
+    res.send(item);
+});
 
 // update a specific resource
 router.patch('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
-        //@TODO try it yourself
-        res.send(500).send("not implemented")
-});
+        let { id } = req.params;
+
+        let existingItem = await FeedItem.findByPk(id);
+
+        if(!existingItem){
+            res.status(400)
+            .send(`No item found in DB for id: ${id}`);
+        }
+        console.log(`Item found for : ${id}`);
+
+        return existingItem.update(
+            {caption: req.body.caption,
+            fileName: req.body.url}
+        ).then(() => res.status(200).send(existingItem))
+        .catch((error) => res.status(400).send(error));
+    });
 
 
 // Get a signed url to put a new item in the bucket
@@ -34,6 +57,7 @@ router.get('/signed-url/:fileName',
     async (req: Request, res: Response) => {
     let { fileName } = req.params;
     const url = AWS.getPutSignedUrl(fileName);
+    console.log(`returned url= ${url}`);
     res.status(201).send({url: url});
 });
 
