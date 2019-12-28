@@ -28,7 +28,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "npm ci && react-scripts build && mv _redirects dist",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
