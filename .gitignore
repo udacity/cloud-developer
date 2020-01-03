@@ -121,3 +121,6 @@ course-03/exercises/udacity-c3-frontend/e2e/src/app.po.ts
 course-03/exercises/udacity-c3-frontend/e2e/src/app.e2e-spec.ts
 course-03/exercises/udacity-c3-frontend/e2e/protractor.conf.js
 course-03/exercises/udacity-c3-frontend/angular.json
+aws-elastic-beanstalk-cli-setup
+course-03/exercises/04-k8s/aws-secret-original.yaml
+course-03/exercises/04-k8s/env-secret-original.yaml

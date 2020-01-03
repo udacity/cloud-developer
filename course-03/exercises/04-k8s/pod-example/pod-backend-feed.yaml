@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-backend-feed
+spec:
+  containers:
+  - image: aleksdev/udacity-c3-restapi-feed
+    name: pod-backend-feed
+    imagePullPolicy: Always          
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "1024Mi"
+        cpu: "500m"       
+    ports:
+    - containerPort: 8080
+  restartPolicy: Always
