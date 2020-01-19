@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import {filterImageFromURL, deleteLocalFiles, isUrl} from './util/util';
 
 (async () => {
 
@@ -28,6 +28,20 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
+  app.get('/filteredimage', async (req, res) => {
+    const { image_url } = req.query;
+
+    if(!isUrl(image_url))
+      res.status(400).send('image_url is required or malformed');
+
+    await filterImageFromURL(image_url)
+        .then(filePath => {
+          const filesToDelete = [filePath];
+          res.on('finish', () => deleteLocalFiles(filesToDelete));
+          res.sendFile(filePath);
+        })
+        .catch(err => res.status(400).send('Unexpected error ' + err));
+  });
 
   //! END @TODO1
   
