@@ -40,7 +40,7 @@ import {filterImageFromURL, deleteLocalFiles, isUrl} from './util/util';
           res.on('finish', () => deleteLocalFiles(filesToDelete));
           res.sendFile(filePath);
         })
-        .catch(err => res.status(400).send('Unexpected error ' + err));
+        .catch(err => res.status(422).send('Unexpected error ' + err));
   });
 
   //! END @TODO1
