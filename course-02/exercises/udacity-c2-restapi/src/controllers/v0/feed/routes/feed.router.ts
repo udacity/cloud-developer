@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { FeedItem } from '../models/FeedItem';
 import { requireAuth } from '../../users/routes/auth.router';
 import * as AWS from '../../../../aws';
+import { integer } from 'aws-sdk/clients/cloudfront';
 
 const router: Router = Router();
 
@@ -18,13 +19,36 @@ router.get('/', async (req: Request, res: Response) => {
 
 //@TODO
 //Add an endpoint to GET a specific resource by Primary Key
+router.get('/:id', async (req: Request, res: Response) => {
+    let  id  = Number(req.params.id);
+    if(!id){
+        res.status(400).send("Id bad formatted");
+    }
+    const item = await FeedItem.findByPk(id);
+    if(!item){
+        res.status(404).send("Item not found");
+    }
+
+    res.status(200).send(item);
+});
 
 // update a specific resource
 router.patch('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
+        let  id  = Number(req.params.id);
         //@TODO try it yourself
-        res.send(500).send("not implemented")
+        if(!id){
+            res.status(400).send("bad item");
+        }
+        FeedItem.update(req.body,{returning: true,where: {id:id}}).then(function([ rowsUpdate, [udatedFeed] ]) {
+            if(!udatedFeed){
+                res.status(404).send('No record found');
+            }
+            res.status(200).send(udatedFeed);
+          }).catch(function(error) {
+            res.status(500).send(error);
+          }) 
 });
 
 

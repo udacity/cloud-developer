@@ -49,12 +49,12 @@ import { Car, cars as cars_list } from './cars';
     return res.status(200)
               .send(`Welcome to the Cloud, ${name}!`);
   } );
-
+ 
   // Post a greeting to a specific person
   // to demonstrate req.body
   // > try it by posting {"name": "the_name" } as 
   // an application/json body to {{host}}/persons
-  app.post( "/persons", 
+  app.post( "/persons/", 
     async ( req: Request, res: Response ) => {
 
       const { name } = req.body;
@@ -70,13 +70,62 @@ import { Car, cars as cars_list } from './cars';
 
   // @TODO Add an endpoint to GET a list of cars
   // it should be filterable by make with a query paramater
+  app.get( "/cars/", ( req: Request, res: Response ) => {
+    let { make } = req.query;
+    console.log(`Make received: ${make}`)
+    if ( !make ) {
+      return res.status(200)
+                .send(cars);
+    }
+
+    let filterdCars:Car[] = [];
+    for(let car of cars){
+      if(car.make == make){
+        filterdCars.push(car);
+      }
+    }
+    if(filterdCars.length == 0){
+      return res.status(404)
+      .send(`No car found for make ${make}!`);
+    }
+    return res.status(200)
+              .send(filterdCars);
+  } );
+
 
   // @TODO Add an endpoint to get a specific car
   // it should require id
   // it should fail gracefully if no matching car is found
+  app.get( "/cars/:id", ( req: Request, res: Response ) => {
+    let { id } = req.params;
+    console.log(`id received: ${id}`)
+    for(let car of cars){
+      if(car.id == id){
+        return res.status(200)
+        .send(car);
+      }
+    }
+    return res.status(404)
+              .send(`No car found with id ${id}`);
+  } );
 
   /// @TODO Add an endpoint to post a new car to our list
   // it should require id, type, model, and cost
+
+  app.post( "/cars/", 
+  async ( req: Request, res: Response ) => {
+
+    const  car :Car = req.body;
+    if(!car){
+      return res.status(406)
+      .send(`Data badly formatted for car in body ${req.body}`);
+    }
+    car.id = 366;
+    cars.push(car);
+    return res.status(201)
+    .send(car);
+
+} );
 
   // Start the Server
   app.listen( port, () => {

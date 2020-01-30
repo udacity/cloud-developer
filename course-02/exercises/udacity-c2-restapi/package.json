@@ -11,7 +11,7 @@
     "clean": "rm -rf www/ || true",
     "build": "npm run clean && tsc && cp -rf src/config www/config && cp .npmrc www/.npmrc && cp package.json www/package.json && cd www && zip -r Archive.zip . && cd ..",
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  }, 
   "keywords": [],
   "author": "Gabriel Ruttner",
   "license": "ISC",
@@ -26,7 +26,7 @@
     "jsonwebtoken": "^8.5.1",
     "pg": "^7.11.0",
     "reflect-metadata": "^0.1.13",
-    "sequelize": "^5.10.0",
+    "sequelize": "^5.21.3",
     "sequelize-typescript": "^0.6.11"
   },
   "devDependencies": {
