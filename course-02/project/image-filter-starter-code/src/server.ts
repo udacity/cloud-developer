@@ -1,7 +1,6 @@
-import express from 'express';
+import express, { Request, Response } from "express";
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
-import {url} from "inspector";
 
 (async () => {
 
@@ -27,13 +26,12 @@ import {url} from "inspector";
     // RETURNS
     //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
-    app.get("/filteredimage", async (req, res) => {
+
+    app.get("/filteredimage", async (req: Request, res: Response) => {
         const image_url = req.query.image_url
         if (typeof image_url == "undefined") {
             return res.status(422).send({'message': "URL required as query parameter "});
         }
-
-
         const filteredPath: string = await filterImageFromURL(image_url);
         res.sendFile(filteredPath, async (err) => {
             if (err) {
@@ -42,8 +40,6 @@ import {url} from "inspector";
                 await deleteLocalFiles([filteredPath]);
             }
         });
-
-
     });
 
 
