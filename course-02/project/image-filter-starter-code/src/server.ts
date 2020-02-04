@@ -1,6 +1,9 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import url from 'url';
+var validUrl = require('valid-url');
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import { clearScreenDown } from 'readline';
 
 (async () => {
 
@@ -30,17 +33,40 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   /**************************************************************************** */
 
   //! END @TODO1
-  
+
+
   // Root Endpoint
   // Displays a simple message to the user
   app.get( "/", async ( req, res ) => {
     res.send("try GET /filteredimage?image_url={{}}")
   } );
   
+  app.get( "/filteredimage", async ( req, res ) => {
+    console.log("Begin image filter")
+    let  url  = req.query.image_url;
+    let imagePath:string;
+    if(!validUrl.isUri(url)){
+      res.status(400).send('Not a valid url: '+url)
+    }
+    filterImageFromURL(url).then(function(imagePath){
+      console.log("sending succesnfull response")
+      
+      res.status(200).sendFile(imagePath,function(err){
+        if(err){res.status(500).send("error sending image");}
+        console.log("deleting local image");
+        deleteLocalFiles([imagePath]);
+      });
+    }).catch(function(err){
+      res.status(500).send("Error: "+err)
+    }) 
+
+  } );
+
 
   // Start the Server
   app.listen( port, () => {
       console.log( `server running http://localhost:${ port }` );
       console.log( `press CTRL+C to stop server` );
   } );
+
 })();
