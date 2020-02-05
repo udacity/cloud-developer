@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import { filterImageFromURL, deleteLocalFiles } from './util/util';
+import fs from 'fs';
 
 (async () => {
 
@@ -9,7 +10,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   // Set the network port
   const port = process.env.PORT || 8082;
-  
+
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
 
@@ -30,17 +31,42 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   /**************************************************************************** */
 
   //! END @TODO1
-  
+
   // Root Endpoint
+  //sample URL https://images.pexels.com/photos/296282/pexels-photo-296282.jpeg?auto=compress&cs=tinysrgb&h=350
   // Displays a simple message to the user
-  app.get( "/", async ( req, res ) => {
-    res.send("try GET /filteredimage?image_url={{}}")
-  } );
-  
+  app.get("/filteredimage", async (req, res) => {
+
+    let { image_url } = req.query;
+    if (image_url != undefined && image_url != "") {
+
+      filterImageFromURL(image_url).then((response) => {
+        res.sendFile(response,()=>{
+          console.log("Done!")
+          deleteLocalFiles([response]);
+        });
+        
+      }).catch((err) => {
+        console.error(err)
+        res.status(500).send("Unexpected error occured")
+      }).finally(() => {
+        console.log("Image filtered")
+      })
+
+    } else {
+      res.status(422).send("Image URL is not defined in query string")
+    }
+  });
+
+  app.get("/", async (req, res) => {
+    res.send("Filter Image")
+  })
+
+
 
   // Start the Server
-  app.listen( port, () => {
-      console.log( `server running http://localhost:${ port }` );
-      console.log( `press CTRL+C to stop server` );
-  } );
+  app.listen(port, () => {
+    console.log(`server running http://localhost:${port}`);
+    console.log(`press CTRL+C to stop server`);
+  });
 })();
