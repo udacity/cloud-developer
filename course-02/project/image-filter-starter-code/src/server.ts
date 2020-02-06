@@ -1,4 +1,5 @@
-import express from 'express';
+import {Request,Response} from 'express';
+import express from 'express'
 import bodyParser from 'body-parser';
 import { filterImageFromURL, deleteLocalFiles } from './util/util';
 import fs from 'fs';
@@ -35,9 +36,10 @@ import fs from 'fs';
   // Root Endpoint
   //sample URL https://images.pexels.com/photos/296282/pexels-photo-296282.jpeg?auto=compress&cs=tinysrgb&h=350
   // Displays a simple message to the user
-  app.get("/filteredimage", async (req, res) => {
+  app.get("/filteredimage", async (req:Request, res:Response) => {
 
-    let { image_url } = req.query;
+    let image_url:string  = req.query.image_url;
+    
     if (image_url != undefined && image_url != "") {
 
       filterImageFromURL(image_url).then((response) => {
@@ -45,7 +47,6 @@ import fs from 'fs';
           console.log("Done!")
           deleteLocalFiles([response]);
         });
-        
       }).catch((err) => {
         console.error(err)
         res.status(500).send("Unexpected error occured")
@@ -58,7 +59,7 @@ import fs from 'fs';
     }
   });
 
-  app.get("/", async (req, res) => {
+  app.get("/", async (req:Request, res:Response) => {
     res.send("Filter Image")
   })
 
