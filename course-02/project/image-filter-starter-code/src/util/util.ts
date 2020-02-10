@@ -45,7 +45,7 @@ export async function deleteLocalFiles(){
         if (error) {
           return console.log('Unable to scan directory: ' + error);
         }
-        for( let file of files) {
+        for(let file of files) {
             fs.unlinkSync(`${__dirname}/tmp/${file}`);
         }
     });
