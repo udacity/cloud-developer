@@ -38,11 +38,9 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
                 .send(`image_url is required`);
     }
 
-    var file: string;
     const filteredImage = filterImageFromURL(image_url);
 
     filteredImage.then(value => {
-      file = value;
       return res.status(200).sendFile(value);
     }).catch((error) => {
       return res.status(400).send(error.message);
