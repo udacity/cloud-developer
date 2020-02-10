@@ -1,6 +1,5 @@
 import { Router, Request, Response } from 'express';
 import { FeedItem } from '../models/FeedItem';
-import { requireAuth } from '../../users/routes/auth.router';
 import * as AWS from '../../../../aws';
 import { integer } from 'aws-sdk/clients/cloudfront';
 
@@ -33,8 +32,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 });
 
 // update a specific resource
-router.patch('/:id', 
-    requireAuth, 
+router.patch('/:id',  
     async (req: Request, res: Response) => {
         let  id  = Number(req.params.id);
         //@TODO try it yourself
@@ -54,7 +52,7 @@ router.patch('/:id',
 
 // Get a signed url to put a new item in the bucket
 router.get('/signed-url/:fileName', 
-    requireAuth, 
+     
     async (req: Request, res: Response) => {
     let { fileName } = req.params;
     const url = AWS.getPutSignedUrl(fileName);
@@ -64,8 +62,7 @@ router.get('/signed-url/:fileName',
 // Post meta data and the filename after a file is uploaded 
 // NOTE the file name is they key name in the s3 bucket.
 // body : {caption: string, fileName: string};
-router.post('/', 
-    requireAuth, 
+router.post('/',  
     async (req: Request, res: Response) => {
     const caption = req.body.caption;
     const fileName = req.body.url;
