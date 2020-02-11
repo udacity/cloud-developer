@@ -17,7 +17,6 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   // GET /filteredimage?image_url={{URL}}
   // endpoint to filter an image from a public url.
   // IT SHOULD
-  //    1
   //    1. validate the image_url query
   //    2. call filterImageFromURL(image_url) to filter the image
   //    3. send the resulting file in the response
@@ -29,6 +28,24 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   /**************************************************************************** */
 
+
+  app.get("/filteredimage", async (req, res) => {
+    const queryStrings = req.query;
+    const image_url = queryStrings.image_url;
+    if (!image_url) {
+      return res.status(500).send({message: 'Missing image_url as param'});
+    }
+
+    try {
+      const results = await filterImageFromURL(image_url);
+      res.send(results);
+      deleteLocalFiles([results]);
+    } catch (e) {
+      // throws error if filterImageFromUrl fails
+      console.log('err', e);
+      return res.status(500).send({message: 'Failed to filter and fetch image from url'});
+    }
+  });
   //! END @TODO1
   
   // Root Endpoint
