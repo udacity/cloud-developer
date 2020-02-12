@@ -6,12 +6,47 @@
 	},
 	"item": [
 		{
-			"name": "http://localhost:8082/filteredimage?image_url=https://timedotcom.files.wordpress.com/2019/03/kitten-report.jpg",
+			"name": "http://localhost:8082/filteredimage/auth?image_url=https://img.theepochtimes.com/assets/uploads/2020/02/04/Deaf-Pup-i-700x420.jpg",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJpYXQiOjE1ODE0MDI4MzR9.IagyaHcxXoKt7DFl423SRurLRq5rVMVGvP2k8LNb-uw",
+							"type": "string"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://{{HOST}}/filteredimage/auth?image_url=https://img.theepochtimes.com/assets/uploads/2020/02/04/Deaf-Pup-i-700x420.jpg",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"filteredimage",
+						"auth"
+					],
+					"query": [
+						{
+							"key": "image_url",
+							"value": "https://img.theepochtimes.com/assets/uploads/2020/02/04/Deaf-Pup-i-700x420.jpg"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8082/filteredimage?image_url=https://img.theepochtimes.com/assets/uploads/2020/02/04/Deaf-Pup-i-700x420.jpg",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{HOST}}/filteredimage?image_url=https://timedotcom.files.wordpress.com/2019/03/kitten-report.jpg",
+					"raw": "http://{{HOST}}/filteredimage?image_url=https://img.theepochtimes.com/assets/uploads/2020/02/04/Deaf-Pup-i-700x420.jpg",
 					"protocol": "http",
 					"host": [
 						"{{HOST}}"
@@ -22,7 +57,7 @@
 					"query": [
 						{
 							"key": "image_url",
-							"value": "https://timedotcom.files.wordpress.com/2019/03/kitten-report.jpg"
+							"value": "https://img.theepochtimes.com/assets/uploads/2020/02/04/Deaf-Pup-i-700x420.jpg"
 						}
 					]
 				}
