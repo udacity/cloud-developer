@@ -36,3 +36,7 @@ services:
       AWS_MEDIA_BUCKET: $AWS_MEDIA_BUCKET
       JWT_SECRET: $JWT_SECRET
       URL: "http://localhost:8100"
+  frontend:
+    image: zearaujo25/udacity-frontend
+    ports:
+      - "8100:80"
