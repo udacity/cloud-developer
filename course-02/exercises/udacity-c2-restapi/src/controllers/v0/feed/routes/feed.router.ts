@@ -18,13 +18,29 @@ router.get('/', async (req: Request, res: Response) => {
 
 //@TODO
 //Add an endpoint to GET a specific resource by Primary Key
+router.get('/:id', 
+    requireAuth, 
+    async (req: Request, res: Response) => {
+        //@TODO try it yourself
+        let { id } = req.params
+        const item = await FeedItem.findByPk(id);
+        //res.send({"test":"test by wei!"})
+        res.send(item)
+});
 
 // update a specific resource
 router.patch('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
+        const caption = req.body.caption;
+        console.log(caption);
         //@TODO try it yourself
-        res.send(500).send("not implemented")
+        let { id } = req.params
+        const item = await FeedItem.findByPk(id);
+        item.caption = caption
+        const saved_item = await item.save();
+        res.status(201).send(saved_item);
+        //res.status(500).send("not implemented")
 });
 
 
