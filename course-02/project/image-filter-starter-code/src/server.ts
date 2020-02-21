@@ -41,10 +41,13 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
    
   async (req, res) => {
   let fileName: string  = req.query.image_url;
+  let localfiles: Array<string> =[];
   let filteredImageString: Promise<string> = filterImageFromURL(fileName);
   filteredImageString.then(function(result){
-   
+    localfiles.push(result)
     res.status(200).send({url: result});
+
+    deleteLocalFiles(localfiles)
   }).catch(error=>{
     res.status(422).send({result: "An Error occure"});
   })
