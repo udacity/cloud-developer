@@ -5,6 +5,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 //import { FilterImageFromURLRouter } from './util/util';
 
 import { Router, Request, Response } from 'express';
+import urlExists from 'url-exists';
 //import { requireAuth } from './users/routes/auth.router';
 
 //const router: Router = Router();
@@ -58,13 +59,19 @@ app.get('/filteredimage/',
       //console.log( `==> start` );
       let { image_url } = req.query;
       //let { image_url } = req.params;
-      filterImageFromURL(image_url).then(outputpath=>{res.status(200).sendFile(outputpath, function(err) {
-            if (! err) {
-              let list_delete : string[] = [outputpath]
-              deleteLocalFiles(list_delete);
-            }
-          })
-        });
+      urlExists(image_url,function (err, exists) {
+        if (exists) {
+          filterImageFromURL(image_url).then(outputpath=>{res.status(200).sendFile(outputpath, function(err) {
+                if (! err) {
+                  let list_delete : string[] = [outputpath]
+                  deleteLocalFiles(list_delete);
+                }
+              })
+            });
+        }else{
+          res.status(422).send( `URL Not Exists: ${image_url}` );
+        }
+      })
   });
 
   // Start the Server
