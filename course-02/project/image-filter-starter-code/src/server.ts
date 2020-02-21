@@ -53,7 +53,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
     deleteLocalFiles(localfiles)
   }).catch(error=>{
-    res.status(422).send({result: "An Error occure"});
+    res.status(422).send({result: "An Error Occured"});
   })
  
   
