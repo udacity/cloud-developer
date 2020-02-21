@@ -2,7 +2,7 @@
   "name": "udacity-c2-image-filter",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "start": "node ./www/server.js",
     "tsc": "tsc",
@@ -33,6 +33,6 @@
   "dependencies": {
     "express": "^4.17.1",
     "jimp": "^0.6.4",
-    "url-exists": "^1.0.3"
+    "url-exists-promise": "^1.0.2"
   }
 }
