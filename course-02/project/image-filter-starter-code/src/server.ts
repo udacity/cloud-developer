@@ -40,6 +40,10 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   app.get('/filteredimage', 
    
   async (req, res) => {
+
+    if(!req.query.image_url){
+      res.status(422).send({result: "An Error: no file path is provide"});
+    }
   let fileName: string  = req.query.image_url;
   let localfiles: Array<string> =[];
   let filteredImageString: Promise<string> = filterImageFromURL(fileName);
@@ -55,9 +59,12 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   
 });
 
+
   // Start the Server
   app.listen( port, () => {
       console.log( `server running http://localhost:${ port }` );
       console.log( `press CTRL+C to stop server` );
   } );
-})();
+  
+})
+();
