@@ -7,10 +7,10 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 import { Router, Request, Response } from 'express';
 //import urlExists from 'url-exists';
 //import { urlExists } from 'url-exists';
-import { urlExists } from 'url-exists-promise';
-//import { requireAuth } from './users/routes/auth.router';
 
-//const router: Router = Router();
+//import isUrl from 'is-url';
+import isUrl from 'is-url';
+import { urlExists } from 'url-exists-promise';
 
 (async () => {
 
@@ -48,29 +48,29 @@ import { urlExists } from 'url-exists-promise';
     next();
   });
 
-  //app.use('/filteredimage/', router)
-
   app.get( "/", async ( req, res ) => {
     res.send( "GET /filteredimage?image_url={{URL}}" );
   });
 
 app.get('/filteredimage/',
-  //app.get('/filteredimage/:image_url',
-      //requireAuth,
       async (req: Request, res: Response) => {
       //console.log( `==> start` );
       let { image_url } = req.query;
       //let { image_url } = req.params;
 
-      urlExists(image_url)
-        .then(exists=>filterImageFromURL(image_url).then(outputpath=>{res.status(200).sendFile(outputpath, function(err) {
-              if (! err) {
-                let list_delete : string[] = [outputpath]
-                deleteLocalFiles(list_delete);
-              }
-            })
-          }))
-        .catch(err=>res.status(422).send( `URL Not Exists: ${image_url}` ))
+      if (! isUrl(image_url)) {
+        res.status(422).send( `URL Invalid: "${image_url}"` )
+      }else{
+        urlExists(image_url)
+          .then(exists=>filterImageFromURL(image_url).then(outputpath=>{res.status(200).sendFile(outputpath, function(err) {
+                if (! err) {
+                  let list_delete : string[] = [outputpath]
+                  deleteLocalFiles(list_delete);
+                }
+              })
+            }))
+          .catch(err=>res.status(422).send( `URL Not Exists: ${image_url}` ))
+      }
   });
 
   // Start the Server
@@ -79,5 +79,3 @@ app.get('/filteredimage/',
       console.log( `press CTRL+C to stop server` );
   } );
 })();
-
-//export const FilterImageFromURLRouter , DeleteLocalFilesRouter : Router = router;
