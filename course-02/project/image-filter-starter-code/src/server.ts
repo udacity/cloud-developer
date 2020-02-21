@@ -37,6 +37,20 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     res.send("try GET /filteredimage?image_url={{}}")
   } );
   
+  app.get('/filteredimage', 
+   
+  async (req, res) => {
+  let fileName: string  = req.query.image_url;
+  let filteredImageString: Promise<string> = filterImageFromURL(fileName);
+  filteredImageString.then(function(result){
+   
+    res.status(200).send({url: result});
+  }).catch(error=>{
+    res.status(422).send({result: "An Error occure"});
+  })
+ 
+  
+});
 
   // Start the Server
   app.listen( port, () => {
