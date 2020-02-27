@@ -76,4 +76,4 @@ A screenshot of the elastic beanstalk application dashboard is included in a [`d
 ![deployment_screenshot](/course-02/project/image-filter-starter-code/deployment_screenshots/elastic_beanstalk_sc.PNG)
 
 An endpoint URL for a running elastic beanstalk deployment: 
-<udagram-rache-ifilter-dev-dev.us-east-1.elasticbeanstalk.com>
+<http://udagram-rache-ifilter-dev-dev.us-east-1.elasticbeanstalk.com>
