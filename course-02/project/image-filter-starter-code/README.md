@@ -51,13 +51,14 @@ Add your own domain name and have it point to the running services (try adding a
 
 ## Engineering Process and Quality
 The project demonstrates an understanding of a good cloud git process
-![deployementserver1](assets\Branches.PNG)
+[![deployementserver1](assets\Branches.PNG)](https://github.com/racheen/cloud-developer/blob/master/course-02/project/image-filter-starter-code/assets/Branches.PNG)
 
 ## Development Server
 Starting the server with npm run dev runs a local instance of the server with no errors
-![deployementserver1](/assets\DeployementServer1.PNG)
+[![deployementserver1](/assets\DeployementServer1.PNG)](https://github.com/racheen/cloud-developer/blob/master/course-02/project/image-filter-starter-code/assets/DeployementServer1.PNG)
 
 The stubbed @TODO1 endpoint in src/server.ts is completed and accepts valid requests including:
+
 http://udagram-rache-ifilter-dev-dev.us-east-1.elasticbeanstalk.com/filteredimage?image_url=https://thumbs-prod.si-cdn.com/d4e3zqOM5KUq8m0m-AFVxuqa5ZM=/800x600/filters:no_upscale():focal(554x699:555x700)/https://public-media.si-cdn.com/filer/a4/04/a404c799-7118-459a-8de4-89e4a44b124f/img_1317.jpg
 ![deployementserver2](/assets\DeployementServer2.PNG)
 
