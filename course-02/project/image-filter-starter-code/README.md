@@ -46,3 +46,30 @@ Prevent requests without valid authentication headers.
 
 Add your own domain name and have it point to the running services (try adding a subdomain name to point to the processing server)
 > !NOTE: Domain names are not included in AWS’ free tier and will incur a cost.
+
+# PROJECT SPECIFICATION: Engineering Full Stack Apps in the Cloud
+
+## Engineering Process and Quality
+The project demonstrates an understanding of a good cloud git process
+![deployementserver1](assets\Branches.PNG)
+
+## Development Server
+Starting the server with npm run dev runs a local instance of the server with no errors
+![deployementserver1](/assets\DeployementServer1.PNG)
+
+The stubbed @TODO1 endpoint in src/server.ts is completed and accepts valid requests including:
+http://udagram-rache-ifilter-dev-dev.us-east-1.elasticbeanstalk.com/filteredimage?image_url=https://thumbs-prod.si-cdn.com/d4e3zqOM5KUq8m0m-AFVxuqa5ZM=/800x600/filters:no_upscale():focal(554x699:555x700)/https://public-media.si-cdn.com/filer/a4/04/a404c799-7118-459a-8de4-89e4a44b124f/img_1317.jpg
+![deployementserver2](/assets\DeployementServer2.PNG)
+
+Successful responses have a 200 code, at least one error code for caught errors
+
+![deployementserver3](/assets\DeployementServer3.PNG)
+![deployementserver3](/assets\DeployementServer4.PNG)
+
+## Elastic Beanstalk Deployment
+A screenshot of the elastic beanstalk application dashboard is included in a [`deployment_screenshot`](https://github.com/racheen/cloud-developer/tree/master/course-02/project/image-filter-starter-code/deployment_screenshots/elastic_beanstalk_sc.PNG) directory
+
+![deployment_screenshot](/deployment_screenshots\elastic_beanstalk_sc.PNG)
+
+An endpoint URL for a running elastic beanstalk deployment: 
+udagram-rache-ifilter-dev-dev.us-east-1.elasticbeanstalk.com
