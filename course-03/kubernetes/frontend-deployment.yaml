@@ -2,18 +2,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    service: reverseproxy
-  name: reverseproxy
+    service: frontend
+  name: frontend
 spec:
   replicas: 2
   template:
     metadata:
       labels:
         service: reverseproxy
-        version: v2
+
     spec:
       containers:
-      - image: zearaujo25/udacity-restapi-nginx
+      - image: zearaujo25/udacity-frontend 
         name: reverseproxy
         imagePullPolicy: Always          
         resources:
