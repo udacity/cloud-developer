@@ -9,12 +9,12 @@ spec:
   template:
     metadata:
       labels:
-        service: reverseproxy
+        service: frontend
 
     spec:
       containers:
       - image: zearaujo25/udacity-frontend 
-        name: reverseproxy
+        name: frontend
         imagePullPolicy: Always          
         resources:
           requests:
@@ -28,4 +28,4 @@ spec:
       restartPolicy: Always
   selector:
     matchLabels:
-      service: reverseproxy
+      service: frontend

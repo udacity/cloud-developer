@@ -2,19 +2,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    service: reverseproxy
-  name: reverseproxy
+    service: backend-user
+  name: backend-user
 spec:
   replicas: 2
   template:
     metadata:
       labels:
-        service: reverseproxy
+        service: backend-user
 
     spec:
       containers:
       - image: zearaujo25/udacity-restapi-user 
-        name: reverseproxy
+        name: backend-user
         imagePullPolicy: Always          
         resources:
           requests:
@@ -28,4 +28,4 @@ spec:
       restartPolicy: Always
   selector:
     matchLabels:
-      service: reverseproxy
+      service: backend-user
