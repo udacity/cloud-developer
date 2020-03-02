@@ -1,0 +1,31 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  labels:
+    service: backend-feed
+  name: backend-feed
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        service: backend-feed
+
+    spec:
+      containers:
+      - image: zearaujo25/udacity-restapi-feed
+        name: backend-feed
+        imagePullPolicy: Always          
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "1024Mi"
+            cpu: "500m"       
+        ports:
+        - containerPort: 8080
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      service: backend-feed
