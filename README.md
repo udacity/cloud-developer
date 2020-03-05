@@ -1,2 +1,3 @@
 # cloud-developer
-content for Udacity's cloud developer nanodegree
+
+Projects and exercises part of Udacity's cloud developer nanodegree
