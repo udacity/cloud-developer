@@ -7,7 +7,7 @@ metadata:
 spec:
   ports:
     - name: "8100"
-      port: 8100    
-      targetPort: 8100
+      port: 80    
+      targetPort: 80
   selector:
     Service: frontend
