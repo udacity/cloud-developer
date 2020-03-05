@@ -24,7 +24,7 @@ spec:
             memory: "1024Mi"
             cpu: "500m"       
         ports:
-        - containerPort: 8080
+        - containerPort: 80
       restartPolicy: Always
   selector:
     matchLabels:

@@ -36,3 +36,5 @@ node_modules
 venv/
 .vscode
 *kubeconfig
+config.yaml
+*secret*.yaml
