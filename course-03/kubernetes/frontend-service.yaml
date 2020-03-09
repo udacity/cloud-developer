@@ -2,12 +2,12 @@ kind: Service
 apiVersion: v1
 metadata:
   labels:
-    Service: frontend
+    service: frontend
   name: frontend
 spec:
   ports:
-    - name: "8100"
+    - name: "80"
       port: 80    
       targetPort: 80
   selector:
-    Service: frontend
+    service: frontend
