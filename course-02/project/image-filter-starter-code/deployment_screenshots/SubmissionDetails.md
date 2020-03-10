@@ -20,3 +20,4 @@ NOTE:
 2. As I am a Java developer and NOT a Node developer, I was not able to implement below points - 
     a. Catch when wrong url is provided.
     b. delete tmp file when response is send.
+3. Credits: Image in test has been taken from - https://www.gstatic.com/webp/gallery/1.jpg
