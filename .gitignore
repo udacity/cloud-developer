@@ -35,3 +35,6 @@ UserInterfaceState.xcuserstate
 node_modules
 venv/
 .vscode
+test.jpg
+.gitignore
+.gitignore
