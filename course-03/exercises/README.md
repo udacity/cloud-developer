@@ -67,4 +67,4 @@ Alternatively, update the `${deployment}.yaml` (e.g. uncomment code in `backend-
 
 ## Travis CI/CD
 1. See `.travis.yml`
-2. Screenshot: TBA
+2. Screenshot: https://share.getcloudapp.com/WnuNkwY6
