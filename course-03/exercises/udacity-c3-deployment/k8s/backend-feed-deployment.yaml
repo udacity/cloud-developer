@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
@@ -6,13 +6,20 @@ metadata:
   name: backend-feed
 spec:
   replicas: 3
+  # strategy:
+  # type: RollingUpdate
+  # rollingUpdate:
+  #   maxUnavailable: 25%
+  selector:
+    matchLabels:
+      service: backend-feed
   template:
     metadata:
       labels:
         service: backend-feed
     spec:
       containers:
-      - image: scheele/udacity-restapi-feed
+      - image: cenjennifer/udacity-restapi-feed
         name: backend-feed
         imagePullPolicy: Always  
         resources:

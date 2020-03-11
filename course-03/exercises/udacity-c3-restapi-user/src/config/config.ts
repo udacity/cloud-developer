@@ -11,10 +11,10 @@ export const config = {
     "url": process.env.URL
   },
   "prod": {
-    "username": "",
-    "password": "",
-    "database": "udagram_prod",
-    "host": "",
+    "username": process.env.POSTGRESS_USERNAME,
+    "password": process.env.POSTGRESS_PASSWORD,
+    "database": process.env.POSTGRESS_DB,
+    "host": process.env.POSTGRESS_HOST,
     "dialect": "postgres"
   },
   "jwt": {

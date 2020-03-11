@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
@@ -6,13 +6,16 @@ metadata:
   name: backend-user
 spec:
   replicas: 2
+  selector:
+    matchLabels:
+      service: backend-user
   template:
     metadata:
       labels:
         service: backend-user
     spec:
       containers:
-      - image: scheele/udacity-restapi-user
+      - image: cenjennifer/udacity-restapi-user
         name: backend-user 
         imagePullPolicy: Always  
         resources:
@@ -53,6 +56,14 @@ spec:
             secretKeyRef:
               name: env-secret
               key: POSTGRESS_USERNAME
+        volumeMounts:
+        - name: aws-secret
+          mountPath: "/root/.aws/"
+          readOnly: true        
       restartPolicy: Always
+      volumes:
+      - name: aws-secret
+        secret:
+          secretName: aws-secret      
 
 
