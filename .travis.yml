@@ -20,6 +20,5 @@ before_install:
 
 install:
   - docker-compose -f course-03/udacity-c2-dockercompose/docker-compose.yaml build --parallel  
-  - cd ../udacity-c2-restapi-feed
-  - docker build -t zearaujo25/udacity-restapi-feed
+  - docker build course-03/udacity-c2-restapi-feed -t zearaujo25/udacity-restapi-feed
   - docker push zearaujo25/udacity-restapi-feed
