@@ -14,8 +14,11 @@ before_install:
   - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
   - chmod +x ./kubectl
   - sudo mv ./kubectl /usr/local/bin/kubectl
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin 
 
 
 
 install:
   - docker-compose -f course-03/udacity-c2-dockercompose/docker-compose.yaml build --parallel  
+  - docker build course-03/udacity-c2-restapi-feed -t zearaujo25/udacity-restapi-feed
+  - docker push zearaujo25/udacity-restapi-feed
