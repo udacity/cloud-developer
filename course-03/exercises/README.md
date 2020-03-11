@@ -1,53 +1,70 @@
-# Udagram Image Filtering Microservice
-
-Udagram is a simple cloud application developed alongside the Udacity Cloud Engineering Nanodegree. It allows users to register and log into a web client, post photos to the feed, and process photos using an image filtering microservice.
-
-The project is split into three parts:
-1. [The Simple Frontend](/udacity-c3-frontend)
-A basic Ionic client web application which consumes the RestAPI Backend. 
-2. [The RestAPI Feed Backend](/udacity-c3-restapi-feed), a Node-Express feed microservice.
-3. [The RestAPI User Backend](/udacity-c3-restapi-user), a Node-Express user microservice.
-
-## Getting Setup
-
-> _tip_: this frontend is designed to work with the RestAPI backends). It is recommended you stand up the backend first, test using Postman, and then the frontend should integrate.
-
-### Installing Node and NPM
-This project depends on Nodejs and Node Package Manager (NPM). Before continuing, you must download and install Node (NPM is included) from [https://nodejs.com/en/download](https://nodejs.org/en/download/).
-
-### Installing Ionic Cli
-The Ionic Command Line Interface is required to serve and build the frontend. Instructions for installing the CLI can be found in the [Ionic Framework Docs](https://ionicframework.com/docs/installation/cli).
-
-### Installing project dependencies
-
-This project uses NPM to manage software dependencies. NPM Relies on the package.json file located in the root of this repository. After cloning, open your terminal and run:
-```bash
-npm install
-```
->_tip_: **npm i** is shorthand for **npm install**
-
-### Setup Backend Node Environment
-You'll need to create a new node server. Open a new terminal within the project directory and run:
-1. Initialize a new project: `npm init`
-2. Install express: `npm i express --save`
-3. Install typescript dependencies: `npm i ts-node-dev tslint typescript  @types/bluebird @types/express @types/node --save-dev`
-4. Look at the `package.json` file from the RestAPI repo and copy the `scripts` block into the auto-generated `package.json` in this project. This will allow you to use shorthand commands like `npm run dev`
+# Refactor Udagram App into Microservices and Deploy
 
 
-### Configure The Backend Endpoint
-Ionic uses enviornment files located in `./src/enviornments/enviornment.*.ts` to load configuration variables at runtime. By default `environment.ts` is used for development and `enviornment.prod.ts` is used for produciton. The `apiHost` variable should be set to your server url either locally or in the cloud.
+## Public Docker Images
+https://hub.docker.com/r/cenjennifer/udacity-frontend
+https://hub.docker.com/r/cenjennifer/udacity-restapi-feed
+https://hub.docker.com/r/cenjennifer/udacity-restapi-user
+https://hub.docker.com/r/cenjennifer/reverseproxy
 
-***
-### Running the Development Server
-Ionic CLI provides an easy to use development server to run and autoreload the frontend. This allows you to make quick changes and see them in real time in your browser. To run the development server, open terminal and run:
+## Set the following environment variables
+To run in k8: add them in env-config.yaml and env-secret.yaml / aws-secret.yaml (values in base64) - note that these values aren’t committed to GitHub
+To run locally: add them in `~/.profile` & source ~/.profile
 
-```bash
-ionic serve
-```
+      POSTGRESS_USERNAME: $POSTGRESS_USERNAME
+      POSTGRESS_PASSWORD: $POSTGRESS_PASSWORD 
+      POSTGRESS_DB: $POSTGRESS_DB 
+      POSTGRESS_HOST: $POSTGRESS_HOST 
+      AWS_REGION: $AWS_REGION 
+      AWS_PROFILE: $AWS_PROFILE 
+      AWS_BUCKET: $AWS_BUCKET
+      JWT_SECRET: $JWT_SECRET
+      URL: "http://localhost:8100"
 
-### Building the Static Frontend Files
-Ionic CLI can build the frontend into static HTML/CSS/JavaScript files. These files can be uploaded to a host to be consumed by users on the web. Build artifacts are located in `./www`. To build from source, open terminal and run:
-```bash
-ionic build
-```
-***
+## Repository
+https://github.com/cenjennifer/cloud-developer/tree/master/course-03/exercises
+
+## Screenshots
+App Running: https://share.getcloudapp.com/4gumPbmO
+`kubectl get nodes`: https://share.getcloudapp.com/E0uqjPPw
+`kubectl get pods`: https://share.getcloudapp.com/2NuBPxlP
+`kubectl get service & port-forward`: https://share.getcloudapp.com/JruWnvqE 
+
+## Running on K8 cluster on AWS using Kubeone:
+1. https://github.com/kubermatic/kubeone/blob/master/docs/quickstart-aws.md
+2. When Kubeone with k8 cluster is set up and all the files are updated with the appropriate environment variables, cd into k8s directory and execute the following (in the same order):
+    1. `kubectl apply env-configmap.yaml`
+    2. `kubectl apply -f env-secret.yaml`
+    3. `kubectl apply -f aws-secret.yaml`
+    4. `kubectl apply -f backend-feed-deployment.yaml`
+    5. `kubectl apply -f backend-feed-service.yaml`
+    6. `kubectl apply -f backend-user-deployment.yaml`
+    7. `kubectl apply -f backend-user-service.yaml`
+    8. `kubectl apply -f frontend-deployment.yaml`
+    9. `kubectl apply -f frontend-service.yaml`
+    10. `kubectl apply -f reverseproxy-deployment.yaml`
+    11. `kubectl apply -f reverseproxy-service.yaml`
+3. Port-forwarding 8080 (reverse proxy for services) and 8100 (frontend)
+	`kubectl port-forward service/frontend 8100:8100 &
+  	  kubectl port-forward service/reverseproxy 8080:8080 &`
+
+## Running locally using docker-compose
+1. `cd course-03/exercises/udacity-c3-deployment/docker`
+2. Build images: `docker-compose -f docker-compose-build.yaml build --parallel`
+3. Push images up to registry: `docker-compose -f docker-compose-build.yaml push`
+4. Run the images in docker container: `docker-compose up`
+
+## Rolling Updates
+1. Create a image with new tag: https://share.getcloudapp.com/WnuNkdQL 
+2. Update the deployment file associated to that image with the updated info
+3. `kubectl apply -f ${deployment}.yaml`: https://share.getcloudapp.com/JruWnXkW 
+
+You should see the replica set for that service scaling down and new replicas get created with the changes from the new tagged image. No downtime should be encountered.
+
+Screenshot of backend-feed pods being recreated with new tag: https://share.getcloudapp.com/xQugj94z
+
+Alternatively, update the `${deployment}.yaml` (e.g. uncomment code in `backend-feed-deployment.yaml` to include a rollingUpdate strategy
+
+## Travis CI/CD
+1. See `.travis.yml`
+2. Screenshot: TBA
