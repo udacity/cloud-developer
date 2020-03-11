@@ -1,5 +1,7 @@
 import AWS = require('aws-sdk');
 import { config } from './config/config';
+import { url } from 'inspector';
+import { integer } from 'aws-sdk/clients/cloudfront';
 
 const c = config.dev;
 
@@ -13,6 +15,21 @@ export const s3 = new AWS.S3({
   params: {Bucket: c.aws_media_bucket}
 });
 
+function getPublicUrl(key:String,urlType:string,expireInSeconds:integer):Promise<string> {
+  return new Promise((resolve, reject) => {
+        s3.getSignedUrl(urlType, {
+          Bucket:  c.aws_media_bucket,
+          Key: key,
+          Expires: expireInSeconds
+      }, (error:Error, url:string) => {
+          if (error) {
+              reject(String(error));
+          } else {
+              resolve(url);
+          }
+      });
+  });
+}
 
 /* getGetSignedUrl generates an aws signed url to retreive an item
  * @Params
@@ -20,17 +37,22 @@ export const s3 = new AWS.S3({
  * @Returns:
  *    a url as a string
  */
-export function getGetSignedUrl( key: string ): string{
+export function  getGetSignedUrl( key: string ): Promise<string>{
 
   const signedUrlExpireSeconds = 60 * 5
 
-    const url = s3.getSignedUrl('getObject', {
-        Bucket: c.aws_media_bucket,
-        Key: key,
-        Expires: signedUrlExpireSeconds
-      });
+    // const url = s3.getSignedUrl('getObject', {
+    //     Bucket: c.aws_media_bucket,
+    //     Key: key,
+    //     Expires: signedUrlExpireSeconds
+    //   });
+     
 
-    return url;
+      const url =  getPublicUrl(key,'getObject',signedUrlExpireSeconds);
+    
+      return url;
+    
+
 }
 
 /* getPutSignedUrl generates an aws signed url to put an item
