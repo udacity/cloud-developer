@@ -16,6 +16,7 @@ export const s3 = new AWS.S3({
 });
 
 function getPublicUrl(key:String,urlType:string,expireInSeconds:integer):Promise<string> {
+  
   return new Promise((resolve, reject) => {
         s3.getSignedUrl(urlType, {
           Bucket:  c.aws_media_bucket,
@@ -28,7 +29,7 @@ function getPublicUrl(key:String,urlType:string,expireInSeconds:integer):Promise
               resolve(url);
           }
       });
-  });
+  }); 
 }
 
 /* getGetSignedUrl generates an aws signed url to retreive an item
@@ -47,10 +48,8 @@ export function  getGetSignedUrl( key: string ): Promise<string>{
     //     Expires: signedUrlExpireSeconds
     //   });
      
-
-      const url =  getPublicUrl(key,'getObject',signedUrlExpireSeconds);
     
-      return url;
+      return getPublicUrl(key,'getObject',signedUrlExpireSeconds);
     
 
 }

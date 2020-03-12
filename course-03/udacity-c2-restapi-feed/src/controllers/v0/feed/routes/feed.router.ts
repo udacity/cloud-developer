@@ -7,16 +7,19 @@ const router: Router = Router();
 
 // Get all feed items
 router.get('/', async (req: Request, res: Response) => {
-    const items = await FeedItem.findAndCountAll({order: [['id', 'DESC']]});
-    items.rows.map((item) => {
+    var items = await FeedItem.findAndCountAll({order: [['id', 'DESC']]});
+    var promises =items.rows.map((item) => {
             if(item.url) {
-                async () =>{
-                    item.url = await AWS.getGetSignedUrl(item.url);
+                return AWS.getGetSignedUrl(item.url).then((url)=>{
+                    item.url = url
+                    return item
+                });
                 }
                 
             }
-    });
-    res.send(items);
+    )
+    Promise.all(promises).then((newItems)=>{res.send(newItems)})
+    
 });
 
 //@TODO
