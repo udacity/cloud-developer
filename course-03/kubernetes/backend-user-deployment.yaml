@@ -27,7 +27,7 @@ spec:
         - containerPort: 8080
         volumeMounts:
           - name: aws-credential
-            mountPath: ~/.aws
+            mountPath: "/root/.aws/"
         env:
         - name: URL
           valueFrom:
