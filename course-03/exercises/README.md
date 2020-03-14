@@ -85,9 +85,13 @@ Github Repo: https://github.com/racheen/cloud-developer/tree/master/course-03/ex
 
 Docker Hub Images: 
 ![dockerhub](/course-03/exercises/assets/dockerhub.PNG)
+
 Frontend - https://hub.docker.com/repository/docker/racheen/udacity-frontend
+
 RestApi Feed - https://hub.docker.com/repository/docker/racheen/udacity-restapi-feed
+
 RestApi User - https://hub.docker.com/repository/docker/racheen/udacity-restapi-user
+
 Reverse Proxy - https://hub.docker.com/repository/docker/racheen/reverseproxy
 
 ### Screenshot of kubectl get pod which shows all running containers
