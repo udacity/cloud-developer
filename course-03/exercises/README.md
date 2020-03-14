@@ -51,3 +51,40 @@ Ionic CLI can build the frontend into static HTML/CSS/JavaScript files. These fi
 ionic build
 ```
 ***
+
+## Project Requirements
+
+### Setup docker images
+
+1. Build the images: `docker-compose -f docker-compose-build.yaml build --parallel`
+2. Push the images: `docker-compose -f docker-compose-build.yaml push`
+3. Run the container: `docker-compose up`
+
+### Apply deployment, sevices and configurations
+
+Note: Do for each files in k8s
+
+```
+kubectl apply -f env-secret.yaml
+```
+
+### Screenshot of TravisCI which shows the successful build and deploy steps
+![travis1](/course-03/exercises/assets/travis1.PNG)
+![travis2](/course-03/exercises/assets/travis.PNG)
+
+### The public GitHub repo and the docker hub images
+
+Github Repo: https://github.com/racheen/cloud-developer/tree/master/course-03/exercises
+
+Docker Hub Images: 
+![dockerhub](/course-03/exercises/assets/dockerhub.PNG)
+Frontend - https://hub.docker.com/repository/docker/racheen/udacity-frontend
+RestApi Feed - https://hub.docker.com/repository/docker/racheen/udacity-restapi-feed
+RestApi User - https://hub.docker.com/repository/docker/racheen/udacity-restapi-user
+Reverse Proxy - https://hub.docker.com/repository/docker/racheen/reverseproxy
+
+### Screenshot of kubectl get pod which shows all running containers
+![get_pod](/course-03/exercises/assets/getpod.PNG)
+
+### Application Screenshot
+![application](/course-03/exercises/assets/application.PNG)
