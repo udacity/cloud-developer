@@ -5,7 +5,7 @@ metadata:
     service: backend-feed
   name: backend-feed
 spec:
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
@@ -25,6 +25,9 @@ spec:
             cpu: "500m"       
         ports:
         - containerPort: 8080
+        volumeMounts:
+          - name: aws-credential
+            mountPath: "/root/.aws/"
         env:
         - name: URL
           valueFrom:
@@ -72,6 +75,10 @@ spec:
               name: env-secret
               key: POSTGRESS_PASSWORD
       restartPolicy: Always
+      volumes:
+        - name: aws-credential
+          secret:
+            secretName: aws-credential
   selector:
     matchLabels:
       service: backend-feed

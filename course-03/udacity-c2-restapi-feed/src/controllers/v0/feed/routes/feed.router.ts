@@ -7,13 +7,19 @@ const router: Router = Router();
 
 // Get all feed items
 router.get('/', async (req: Request, res: Response) => {
-    const items = await FeedItem.findAndCountAll({order: [['id', 'DESC']]});
-    items.rows.map((item) => {
+    var items = await FeedItem.findAndCountAll({order: [['id', 'DESC']]});
+    var promises =items.rows.map((item) => {
             if(item.url) {
-                item.url = AWS.getGetSignedUrl(item.url);
+                return AWS.getGetSignedUrl(item.url).then((url)=>{
+                    item.url = url
+                    return item
+                });
+                }
+                
             }
-    });
-    res.send(items);
+    )
+    Promise.all(promises).then((newItems)=>{res.send(newItems)})
+    
 });
 
 //@TODO
@@ -84,7 +90,7 @@ router.post('/',
 
     const saved_item = await item.save();
 
-    saved_item.url = AWS.getGetSignedUrl(saved_item.url);
+    saved_item.url = await AWS.getGetSignedUrl(saved_item.url);
     res.status(201).send(saved_item);
 });
 
