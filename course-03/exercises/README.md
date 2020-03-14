@@ -67,6 +67,13 @@ Note: Do for each files in k8s
 ```
 kubectl apply -f env-secret.yaml
 ```
+### Deploy application
+```
+kubectl port-forward service/reverseproxy 8080:8080
+```
+```
+kubectl port-forward service/frontend 8100:8100
+```
 
 ### Screenshot of TravisCI which shows the successful build and deploy steps
 ![travis1](/course-03/exercises/assets/travis1.PNG)
