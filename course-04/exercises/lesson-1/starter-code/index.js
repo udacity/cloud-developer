@@ -16,7 +16,7 @@ exports.handler = async (event) => {
 
   const startTime = timeInMs()
   try {
-    await axios.get(URL)
+    await axios.get(url)
     requestWasSuccessful = true
   } catch (e) {
     requestWasSuccessful = false
@@ -30,7 +30,7 @@ exports.handler = async (event) => {
   await cloudwatch.putMetricData({
     MetricData: [
       {
-        MetricName: 'MetricName', // Use different metric names for different values, e.g. 'Latency' and 'Successful'
+        MetricName: 'Success', // Use different metric names for different values, e.g. 'Latency' and 'Successful'
         Dimensions: [
           {
             Name: 'ServiceName',
@@ -55,11 +55,11 @@ exports.handler = async (event) => {
             Value: serviceName
           }
         ],
-        Unit: 'Miliseconds',
+        Unit: 'Milliseconds',
         Value: totalTime
       }
     ],
-    Namespace: 'Udacity/Serverless'
+    Namespace: 'Udacity/Serveless'
   }).promise()
 }
 
