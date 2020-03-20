@@ -8,7 +8,7 @@ plugins:
 
 provider:
   name: aws
-  runtime: nodejs8.10
+  runtime: nodejs12.x
 
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
@@ -18,9 +18,9 @@ provider:
     IMAGES_TABLE: Images-${self:provider.stage}
     IMAGE_ID_INDEX: ImageIdIndex
     CONNECTIONS_TABLE: Connections-${self:provider.stage}
-    IMAGES_S3_BUCKET: serverless-udagram-images-${self:provider.stage}
+    IMAGES_S3_BUCKET: serverless-udagram-images-38${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
-    THUMBNAILS_S3_BUCKET: serverless-udagram-thumbnail-${self:provider.stage}
+    THUMBNAILS_S3_BUCKET: serverless-udagram-thumbnail-38${self:provider.stage}
     AUTH_0_SECRET_ID: Auth0Secret-${self:provider.stage}
     AUTH_0_SECRET_FIELD: auth0Secret
 
@@ -193,7 +193,7 @@ resources:
         ResponseParameters:
           gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
           gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST'"
+          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST,PUT'"
         ResponseType: DEFAULT_4XX
         RestApiId:
           Ref: ApiGatewayRestApi
