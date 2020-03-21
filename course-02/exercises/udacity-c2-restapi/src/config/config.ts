@@ -1,7 +1,7 @@
 export const config = {
   dev: {
     username: "udagramnakitadev",
-    password: "wb%3MD][hx=2",
+    password: "udagramnakitadev",
     database: "udagramnstrange",
     host: "udagramnstrange.cj6xemhpolby.us-west-1.rds.amazonaws.com",
     dialect: "postgres",
