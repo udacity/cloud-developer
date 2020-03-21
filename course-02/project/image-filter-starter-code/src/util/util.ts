@@ -39,8 +39,18 @@ export async function filterImageFromURL(inputURL: string): Promise<string>{
 // useful to cleanup after tasks
 // INPUTS
 //    files: Array<string> an array of absolute paths to files
-export async function deleteLocalFiles(files:Array<string>){
+export async function deleteLocalFiles(files:Array<string>): Promise<any>{
+    const promises = new Array();
     for( let file of files) {
-        fs.unlinkSync(file);
+        promises.push(new Promise( async (resolve, reject) => {
+            fs.unlink(file, (err) => {
+                if (err) {
+                    resolve(file) // TODO log for future deleting task
+                    return
+                }
+                resolve();
+            });
+        }));
     }
+    return Promise.all(promises);
 }
