@@ -1,125 +1,98 @@
 import 'source-map-support/register'
-
+import * as AWS  from 'aws-sdk'
 import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
-import {TodoItem} from "../../models/TodoItem";
-import * as uuid from 'uuid';
-import { parseUserId } from '../../auth/utils'
+import { getUserId } from '../utils'
+import { createLogger } from '../../utils/logger'
+import { TodoItem } from '../../models/TodoItem'
+
+const logger = createLogger('generateUpload')
 
 const s3BucketName = process.env.S3_BUCKET_NAME
+const todosTable = process.env.TODOS_TABLE
+const s3 = new AWS.S3({
+  signatureVersion: 'v4'
+})
+const docClient = new AWS.DynamoDB.DocumentClient()
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  const authorization = event.headers.Authorization;
-  const split = authorization.split(' ');
-  const jwtToken = split[1];
+  console.log('Generate URL ', event);
     
   const todoId = event.pathParameters.todoId
+  const userId = getUserId(event);
 
-  const attachmentId = uuid.v4();
-  const URL = await generateUploadUrl(attachmentId);
+  const url = await generateUploadUrl(todoId);
 
-  const newItem = await createAttachmentItem(todoId, attachmentId, event, jwtToken);
-  const Attachments = await getToDoAttachment(todoId);
+  
+  try {
+    const result = await docClient.query({
+      TableName: todosTable,
+      KeyConditionExpression: 'todoId = :todoId and userId = :userId',
+      ExpressionAttributeValues: {
+        ':todoId': todoId,
+        ':userId': userId
+      }
+    }).promise()
+  
+    const items = result.Items;
+    const item = items[0] as TodoItem;
+  
+    const newItem = {
+      ...item,
+      attachmentUrl: `https://${s3BucketName}.s3.amazonaws.com/${todoId}`
+    }
+    
+    await docClient.update({
+      TableName: todosTable,
+      Key: {
+        todoId: todoId,
+        userId: userId,
+      },
+      UpdateExpression: "set done=:done, attachmentUrl=:attachmentUrl, dueDate=:dueDate, #nname=:name",
+      ExpressionAttributeValues:{
+        ":done": newItem.done,
+        ":name": newItem.name,
+        ":dueDate": newItem.dueDate,
+        ':userId' : newItem.userId,
+        ':attachmentUrl': newItem.attachmentUrl
+      },
+      ExpressionAttributeNames: {
+        '#nname': 'name' // caused hidden errors due to reserved word
+      },
+      ConditionExpression: 'userId = :userId',
+    }).promise()
 
-  return {
-    statusCode: 200,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': true
-    },
-    body: JSON.stringify({
-      uploadUrl: URL,
-      attachmentUrl: Attachments,
-      newItem: newItem
-    })
-  };
+    logger.info('upload url generated:', url);
+
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true
+      },
+      body: JSON.stringify({
+        uploadUrl: url
+      })
+    }
+  } catch (e) {
+    logger.error('failed to create upload url', e);
+    return {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
+      body: JSON.stringify({
+        error: e
+      })
+    }
+  }
   // TODO: Return a presigned URL to upload a file for a TODO item with the provided id
   // DONE
 }
 
-async function createAttachmentItem(todoId: string, attachmentId: string, event: any, jwtToken: string) {
-  const newAttachment = await createAttachment(todoId, attachmentId, event, jwtToken);
-  const attachmentURL = `${s3BucketName}.s3.amazonaws.com/${attachmentId}`;
-  await updateItemAttachment(todoId, attachmentURL, jwtToken);
-  
-  return newAttachment;
-}
-
-async function createAttachment(todoId: string, attachmentId: string, event: any, jwtToken: string) {
-  console.log("Creating new Attachment todo");
-  
-  const timestamp = new Date().toISOString();
-  const newAttach = JSON.parse(event.body);
-  const newItem = {
-      todoId,
-      timestamp,
-      attachmentId,
-      userId: parseUserId(jwtToken),
-      ...newAttach,
-  };
-
-  const attachmentItem = {
-      ...newItem,
-      attachmentUrl: `https://${this.s3BucketName}.s3.amazonaws.com/${newItem.attachmentId}`
-  };
-  const params = {
-      TableName: this.attachmentTable,
-      Item: attachmentItem,
-  };
-
-  await this.docClient.put(params).promise();
-
-  return attachmentItem as TodoItem;
-}
-
-async function updateItemAttachment(todoId: string, attachmentUrl: any, jwtToken: any) {
-  console.log('Start update todo to add attachment');
-  
-  const userId = parseUserId(jwtToken);
-  const item = await this.getToDo(todoId, userId);
-  const updatedItem = {
-    todoId: todoId,
-    userId: userId,
-    createdAt: item.createdAt,
-    name: item.name,
-    dueDate:item.dueDate,
-    done: item.done,
-    attachmentUrl: attachmentUrl
-  };
-  console.log('updatedItem', updatedItem);
-  await this.docClient.put({
-    TableName: this.todoTable,
-    Item: updatedItem
-  }).promise();
-  console.log("upload completed!");
-
-  return updatedItem as TodoItem;
-}
-
-async function getToDoAttachment(todoId: string) {
-  const params = {
-    TableName: this.attachmentTable,
-    KeyConditionExpression: 'todoId = :todoId',
-    ExpressionAttributeValues: {
-        ':todoId': todoId
-    },
-    ScanIndexForward: false
-  };
-
-  const result = await this.docClient.query(params).promise();
-  console.log(result);
-  return result.Items;
-}
-
 async function generateUploadUrl(todoId: string): Promise<string> {
-  console.log("Generating URL");
-
-  const url = this.s3Client.getSignedUrl('putObject', {
-    Bucket: this.s3BucketName,
+  return s3.getSignedUrl('putObject', {
+    Bucket: s3BucketName,
     Key: todoId,
-    Expires: 1000,
+    Expires: 30000,
   });
-  
-  console.log('Bucket url', url);
-
-  return url as string;
 }

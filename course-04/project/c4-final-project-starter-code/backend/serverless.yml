@@ -17,7 +17,6 @@ provider:
   environment:
     PROJECT_NAME: udacity-project-serverless-application
     TODOS_TABLE: udacity-project-serverless-application-${self:provider.stage}
-    ATTACHMENT_TABLE: udacity-project-serverless-application-attachment-${self:provider.stage}
     S3_BUCKET_NAME: udacity-project-serverless-application-38${self:provider.stage}
 
 custom:
@@ -153,6 +152,10 @@ functions:
           - s3:*
           - dynamodb:*
         Resource: arn:aws:s3:::${self:provider.environment.S3_BUCKET_NAME}/*
+      - Effect: Allow
+        Action:
+          - dynamodb:*
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
 resources:
   Resources:
@@ -183,21 +186,6 @@ resources:
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.TODOS_TABLE}
-    AttachmentTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        AttributeDefinitions:
-          - AttributeName: todoId
-            AttributeType: S
-          - AttributeName: timestamp
-            AttributeType: S
-        KeySchema:
-          - AttributeName: todoId
-            KeyType: HASH
-          - AttributeName: timestamp
-            KeyType: RANGE
-        BillingMode: PAY_PER_REQUEST
-        TableName: ${self:provider.environment.ATTACHMENT_TABLE}
     
     onlyBody:
       Type: "AWS::ApiGateway::RequestValidator"
@@ -225,3 +213,16 @@ resources:
                 - HEAD
                 - DELETE
               MaxAge: 30000
+    BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        PolicyDocument:
+          Id: MyPolicy
+          Version: "2012-10-17"
+          Statement:
+            - Sid: PublicReadForGetBucketObjects
+              Effect: Allow
+              Principal: '*'
+              Action: 's3:GetObject'
+              Resource: 'arn:aws:s3:::${self:provider.environment.S3_BUCKET_NAME}/*'
+        Bucket: !Ref AttachmentsBucket
