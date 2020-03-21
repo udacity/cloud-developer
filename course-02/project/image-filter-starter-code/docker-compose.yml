@@ -1,0 +1,29 @@
+version: '3'
+services:
+    node:
+        container_name: ulab
+        build: .
+        image: udacity-c2-server:latest
+        working_dir: /home/node/app
+        user: node
+        env_file:
+            - env-vars.env
+        expose:
+            - "8082"
+        ports:
+            - "8082:8082"
+        volumes: 
+            - ./:/home/node/app
+            - ../../../aws_config:/home/node/.aws
+        command: "npm run dev"
+
+# docker exec -it <container name> /bin/bash
+# command: "tail -f /dev/null"
+
+####
+##tip: Sequelize dependencies are included in the project's package.json file. If you're starting a new project, you will need to install these dependencies ##using NPM. Sequelize docs has clear instructions for setting it up in a new project: http://docs.sequelizejs.com/manual/getting-started.
+####
+
+####
+##tip: AWS SDK dependencies are included in the project's package.json file. If you're starting a new project, you will need to install these dependencies using ##NPM. AWS offers clear instructions for setting it up in a new project: https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/installing-jssdk.html.
+####
