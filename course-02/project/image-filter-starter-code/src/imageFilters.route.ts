@@ -36,7 +36,7 @@ router.get('/', async (req: Request, res: Response) => {
   try {
     filteredPath = await filterImageFromURL(image_url);
   } catch (error) {
-    res.status(500).send({ message: 'An error ocurred', error});
+    res.status(500).send({ message: 'An error occurred', error});
   }
   
   // 3. send the resulting file in the response
