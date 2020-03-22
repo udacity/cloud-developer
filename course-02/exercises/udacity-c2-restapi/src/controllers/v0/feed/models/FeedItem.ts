@@ -18,6 +18,7 @@ export class FeedItem extends Model<FeedItem> {
   @Column
   public url!: string;
 
+  @PrimaryKey
   @Column
   public id: number;
 
