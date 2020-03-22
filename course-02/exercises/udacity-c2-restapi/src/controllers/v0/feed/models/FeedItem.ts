@@ -1,5 +1,14 @@
-import {Table, Column, Model, HasMany, PrimaryKey, CreatedAt, UpdatedAt, ForeignKey} from 'sequelize-typescript';
-import { User } from '../../users/models/User';
+import {
+  Table,
+  Column,
+  Model,
+  HasMany,
+  PrimaryKey,
+  CreatedAt,
+  UpdatedAt,
+  ForeignKey
+} from "sequelize-typescript";
+import { User } from "../../users/models/User";
 
 @Table
 export class FeedItem extends Model<FeedItem> {
@@ -8,6 +17,9 @@ export class FeedItem extends Model<FeedItem> {
 
   @Column
   public url!: string;
+
+  @Column
+  public id: number;
 
   @Column
   @CreatedAt

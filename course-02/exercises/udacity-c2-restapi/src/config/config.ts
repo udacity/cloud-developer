@@ -1,13 +1,13 @@
 export const config = {
   dev: {
-    username: "udagramnakitadev",
-    password: "udagramnakitadev",
-    database: "udagramnstrange",
-    host: "udagramnstrange.cj6xemhpolby.us-west-1.rds.amazonaws.com",
+    username: process.env.POSTGRES_USERNAME,
+    password: process.env.POSTGRES_PASSWORD,
+    database: process.env.POSTGRES_DATABASE,
+    host: process.env.POSTGRES_HOST,
     dialect: "postgres",
-    aws_region: "us-west-1",
-    aws_profile: "default",
-    aws_media_bucket: "udagram-ruttner-dev"
+    aws_region: process.env.AWS_REGION,
+    aws_profile: process.env.AWS_PROFILE,
+    aws_media_bucket: process.env._MEDIA_BUCKET
   },
   prod: {
     username: "",
