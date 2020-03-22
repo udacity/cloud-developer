@@ -13,16 +13,16 @@ import { filterImageFromURL, deleteLocalFiles } from "./util/util";
   app.use(bodyParser.json());
 
   // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
-
-  app.get("/filteredimage?image_url={{URL}}", async (req, res) => {
-    let { imageUrl } = req.params;
+  app.get("/filteredimage", async (req, res) => {
+    const { image_url: imageUrl } = req.query;
+    console.log("Console log URL:", imageUrl);
     if (!imageUrl) {
       return res.status(400).send(`image url is required`);
     }
-    console.log(imageUrl);
+
     const filteredImageUrl = await filterImageFromURL(imageUrl);
     res.status(200).sendFile(filteredImageUrl);
-    deleteLocalFiles([filteredImageUrl]);
+    // await deleteLocalFiles([filteredImageUrl]);
   });
 
   // GET /filteredimage?image_url={{URL}}

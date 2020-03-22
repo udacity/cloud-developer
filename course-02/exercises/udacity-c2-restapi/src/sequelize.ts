@@ -5,9 +5,9 @@ const c = config.dev;
 
 export const sequelize = new Sequelize(
   "postgres://postgres:postgres@udagramnstrange.cj6xemhpolby.us-west-1.rds.amazonaws.com/udagramnstrange"
-  // {
-  //   dialect: "postgres"
-  // }
+  {
+    dialect: "postgres"
+  }
 );
 
 // // Instantiate new Sequelize instance!
