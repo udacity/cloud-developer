@@ -1,4 +1,5 @@
 export const config = {
+  // Moved these to the ~/.profileå
   dev: {
     username: process.env.POSTGRES_USERNAME,
     password: process.env.POSTGRES_PASSWORD,
