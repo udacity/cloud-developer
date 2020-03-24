@@ -67,6 +67,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
         } else {
           // 4. deletes any files on the server on finish of the response
           deleteLocalFiles([image_path]);
+          res.status(200)
         }
       });
 
