@@ -1,6 +1,7 @@
-import express from 'express';
+import express, { Router, Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+
 
 (async () => {
 
@@ -26,7 +27,21 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //    image_url: URL of a publicly accessible image
   // RETURNS
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
+  app.get("/filteredimage", async ( req , res )=> {
+    let url = req.query.image_url;
+    //console.log(url);
+    if (!url ){
+      return res.status(400)
+                  .send(`URL is required`);
+    }
 
+    const imgLoc = await filterImageFromURL(url);
+    //console.log(imgLoc);
+    res.status(200).sendFile(imgLoc, function(){
+      deleteLocalFiles([imgLoc]);
+    });
+
+  });
   /**************************************************************************** */
 
   //! END @TODO1
