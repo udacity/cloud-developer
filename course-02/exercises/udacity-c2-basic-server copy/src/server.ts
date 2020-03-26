@@ -63,52 +63,21 @@ import { Car, cars as cars_list } from './cars';
         return res.status(400)
                   .send(`name is required`);
       }
+
       return res.status(200)
                 .send(`Welcome to the Cloud, ${name}!`);
   } );
 
   // @TODO Add an endpoint to GET a list of cars
   // it should be filterable by make with a query paramater
-  app.get("/cars/",(req:Request,res:Response)=>{
-    
-    return res.status(200).send(cars)
-  });
+
   // @TODO Add an endpoint to get a specific car
   // it should require id
   // it should fail gracefully if no matching car is found
-  app.get("/cars/:id",(req:Request,res:Response)=>{
-    let { id } = req.params;
-    let found_car :boolean =  false;
-    let car_index:number;
-    for(let i:number = 0 ;i< cars.length;i++)
-    {
-     
-      if(cars[i].id == id)
-      {
-        found_car =true;
-        car_index = i;
-      }
-    }
 
-    if(found_car == true)
-    return res.status(200).send(cars[car_index])
-    else 
-    return res.status(404).send('The car with this id is not found')
-  });
   /// @TODO Add an endpoint to post a new car to our list
   // it should require id, type, model, and cost
-  app.post("/cars",async(req : Request, res : Response)=>{
-    const { id, type, model, cost, make  }  = req.body;
-    
-    if(!id || !type || !model || !cost || !make)
-      {return res.status(400).send('missing id, type, model, cost and make they are required');}
 
-    const new_car : Car = {make : make, type : type, model : model, cost : cost, id : id};
-      
-    cars.push(new_car)  ;
-    return res.status(200).send('completed post request');
-
-  });
   // Start the Server
   app.listen( port, () => {
       console.log( `server running http://localhost:${ port }` );
