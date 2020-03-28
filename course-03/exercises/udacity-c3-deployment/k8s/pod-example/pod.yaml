@@ -4,9 +4,9 @@ metadata:
   name: pod-example
 spec:
   containers:
-  - image: scheele/reverseproxy
+  - image: webedhmb/reverseproxy
     name: reverseproxy
-    imagePullPolicy: Always          
+    imagePullPolicy: Always
     resources:
       requests:
         memory: "64Mi"

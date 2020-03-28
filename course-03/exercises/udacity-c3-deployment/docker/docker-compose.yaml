@@ -21,7 +21,7 @@ services:
    AWS_PROFILE: ${AWS_PROFILE} 
    AWS_MEDIA_BUCKET: ${AWS_MEDIA_BUCKET}
    JWT_SECRET: ${JWT_SECRET}
-   URL: "http://localhost:8100"
+   URL: ${URL}
  backend-feed:
   image: webedhmb/udacity-restapi-feed
   volumes:
@@ -35,7 +35,7 @@ services:
    AWS_PROFILE: ${AWS_PROFILE} 
    AWS_MEDIA_BUCKET: ${AWS_MEDIA_BUCKET}
    JWT_SECRET: ${JWT_SECRET}
-   URL: "http://localhost:8100"
+   URL: ${URL}
  frontend:
   image: webedhmb/udacity-frontend
   ports:
