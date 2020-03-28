@@ -1,40 +1,42 @@
 version: "3"
 services:
-  reverseproxy:
-      image: scheele/reverseproxy
-      ports:
-          - 8080:8080
-      restart: always
-      depends_on:
-        - backend-user
-        - backend-feed     
-  backend-user:
-    image: scheele/udacity-restapi-user
-    environment:
-      POSTGRESS_USERNAME: $POSTGRESS_USERNAME
-      POSTGRESS_PASSWORD: $POSTGRESS_PASSWORD 
-      POSTGRESS_DB: $POSTGRESS_DB 
-      POSTGRESS_HOST: $POSTGRESS_HOST 
-      AWS_REGION: $AWS_REGION 
-      AWS_PROFILE: $AWS_PROFILE 
-      AWS_BUCKET: $AWS_BUCKET
-      JWT_SECRET: $JWT_SECRET
-      URL: "http://localhost:8100"
-  backend-feed:
-    image: scheele/udacity-restapi-feed
-    volumes:
-      - $HOME/.aws:/root/.aws
-    environment:
-      POSTGRESS_USERNAME: $POSTGRESS_USERNAME
-      POSTGRESS_PASSWORD: $POSTGRESS_PASSWORD 
-      POSTGRESS_DB: $POSTGRESS_DB 
-      POSTGRESS_HOST: $POSTGRESS_HOST 
-      AWS_REGION: $AWS_REGION 
-      AWS_PROFILE: $AWS_PROFILE 
-      AWS_BUCKET: $AWS_BUCKET
-      JWT_SECRET: $JWT_SECRET
-      URL: "http://localhost:8100"
-  frontend:
-    image: scheele/udacity-frontend:local
-    ports:
-      - "8100:80"
+ reverseproxy:
+   image: webedhmb/reverseproxy
+   ports:
+     - 8080:8080
+   restart: always
+   depends_on:
+    - backend-user
+    - backend-feed   
+ backend-user:
+  image: webedhmb/udacity-restapi-user
+  volumes:
+   - $HOME/.aws:/root/.aws
+  environment:
+   POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+   POSTGRES_PASSWORD: ${POSTGRES_PASSWORD} 
+   POSTGRES_DATABASE: ${POSTGRES_DATABASE} 
+   POSTGRES_HOST: ${POSTGRES_HOST} 
+   AWS_REGION: ${AWS_REGION} 
+   AWS_PROFILE: ${AWS_PROFILE} 
+   AWS_MEDIA_BUCKET: ${AWS_MEDIA_BUCKET}
+   JWT_SECRET: ${JWT_SECRET}
+   URL: "http://localhost:8100"
+ backend-feed:
+  image: webedhmb/udacity-restapi-feed
+  volumes:
+   - $HOME/.aws:/root/.aws
+  environment:
+   POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+   POSTGRES_PASSWORD: ${POSTGRES_PASSWORD} 
+   POSTGRES_DATABASE: ${POSTGRES_DATABASE} 
+   POSTGRES_HOST: ${POSTGRES_HOST} 
+   AWS_REGION: ${AWS_REGION} 
+   AWS_PROFILE: ${AWS_PROFILE} 
+   AWS_MEDIA_BUCKET: ${AWS_MEDIA_BUCKET}
+   JWT_SECRET: ${JWT_SECRET}
+   URL: "http://localhost:8100"
+ frontend:
+  image: webedhmb/udacity-frontend
+  ports:
+   - "8100:80"

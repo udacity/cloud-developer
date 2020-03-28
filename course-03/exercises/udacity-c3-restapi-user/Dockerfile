@@ -1,12 +1,14 @@
+# Set the base image
 FROM node:12
 # Create app directory
 WORKDIR /usr/src/app
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
+# Copy package.json AND package-lock.json
 COPY package*.json ./
+# Install all dependencies
 RUN npm ci 
-# Bundle app source
+# Copy the rest of the code
 COPY . .
+# Expose the port 
 EXPOSE 8080
-CMD [ "npm", "run", "prod" ]
+# Define the command that should be executed
+CMD [ "npm", "run", "dev" ]

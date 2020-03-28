@@ -1,18 +1,18 @@
 version: "3"
 services:
-  reverseproxy:
+ reverseproxy:
     build:
-      context: .
-    image: scheele/reverseproxy 
-  backend_user:
+        context: .
+    image: webedhmb/reverseproxy 
+ backend_user:
     build:
-      context: ../../udacity-c3-restapi-user
-    image: scheele/udacity-restapi-user
-  backend_feed:
+        context: ../../udacity-c3-restapi-user
+    image: webedhmb/udacity-restapi-user
+ backend_feed:
     build:
-      context: ../../udacity-c3-restapi-feed  
-    image: scheele/udacity-restapi-feed
-  frontend:
+        context: ../../udacity-c3-restapi-feed 
+    image: webedhmb/udacity-restapi-feed
+ frontend:
     build:
-      context: ../../udacity-c3-frontend  
-    image: scheele/udacity-frontend:local
+        context: ../../udacity-c3-frontend 
+    image: webedhmb/udacity-frontend
