@@ -5,7 +5,7 @@ metadata:
     service: frontend
   name: frontend
 spec:
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
@@ -13,7 +13,7 @@ spec:
         api: external        
     spec:
       containers:
-      - image: scheele/udacity-frontend:local
+      - image: roboshiba/udacity-c3-frontend
         name: frontend
         imagePullPolicy: Always          
         ports:
