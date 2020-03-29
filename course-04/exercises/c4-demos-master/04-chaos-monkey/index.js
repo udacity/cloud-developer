@@ -2,7 +2,7 @@
 
 const AWS = require('aws-sdk')
 var _ = require('lodash')
-const ec2 = new AWS.EC2({region: 'us-east-1'})
+const ec2 = new AWS.EC2({region: 'sa-east-1'})
 
 exports.handler = async (event) => {
   console.log('Processing event: ', event)
