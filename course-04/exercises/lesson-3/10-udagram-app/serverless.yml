@@ -49,6 +49,7 @@ provider:
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.GROUPS_TABLE}
     - Effect: Allow
       Action:
+        - dynamodb:PutItem
         - dynamodb:Query
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.IMAGES_TABLE}
     - Effect: Allow
@@ -96,8 +97,19 @@ functions:
           path: images/{imageId}
           cors: true
 
-resources:
+  CreateImage:
+    handler: src/lambda/http/createImage.handler
+    events:
+      - http:
+          method: post
+          path: groups/{groupId}/images
+          cors: true
+          reqValidatorName: RequestBodyValidator
+          request:
+            schema:
+              application/json: ${file(models/create-image-request.json)}
 
+resources:
   Resources:
     RequestBodyValidator:
       Type: AWS::ApiGateway::RequestValidator
