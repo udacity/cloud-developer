@@ -4,60 +4,293 @@ service:
 plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
+  - serverless-aws-documentation
+
+# NOTE: Optimize Video: https://classroom.udacity.com/nanodegrees/nd9990/parts/a46aa194-de1d-45fd-83ef-d83080ee8f3c/modules/826241f6-8d5f-436b-b01e-4ea8885d866d/lessons/3d133145-842e-4fbd-8e26-7c56a7b7eaba/concepts/98732da6-d3d5-444a-8124-743ed2ca7728
+# Decent followup post: https://knowledge.udacity.com/questions/64290
+# Seem to create memory issue even after increasing the max_old_space_size in npmrc - Might be due to the node v12
+# package:
+#   individually: true
 
 provider:
   name: aws
-  runtime: nodejs8.10
-
+  runtime: nodejs12.x
+  
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
+
+  environment:
+    # Had to change the index name b/c of changes made to dynamnodb schema: https://share.getcloudapp.com/E0uqQX8j
+    # https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/events?filteringText=&filteringStatus=active&viewNested=true&hideStacks=false&stackId=arn%3Aaws%3Acloudformation%3Aus-east-1%3A802043824398%3Astack%2Fserverless-todo-app-dev%2Fd3db83c0-7181-11ea-a82c-0eac0ccc6c9d
+    TODOS_TABLE: Todos-Table-${self:provider.stage} #renamed from Todos-${self:provider.stage}
+    TODOS_USER_INDEX: TodoUserIndex
+    TODO_ID_INDEX: TodoIdIndex
+    ATTACHMENTS_IMAGES_S3_BUCKET: serverless-todo-images-attachments-cenjennifer-${self:provider.stage}
+    SIGNED_URL_EXPIRATION: 300
+    AUTH_0_SECRET_ID: Auth0Secret-${self:provider.stage}
+    AUTH_0_SECRET_FIELD: auth0Secret
+
+custom:
+  # TODO: Check if adding webpack plugin will help here! Find video related to this!
+  documentation:
+    api:
+      info:
+        version: v1.0.0
+        title: Todos API
+        description: Serverless application for Todos
+    models:
+      - name: TodoCreateRequest
+        contentType: application/json
+        schema: ${file(src/models/create-todo-request.json)}
+      - name: TodoUpdateRequest
+        contentType: application/json
+        schema: ${file(src/models/update-todo-request.json)}
 
 functions:
 
   Auth:
     handler: src/lambda/auth/auth0Authorizer.handler
 
-  # TODO: Configure this function
   GetTodos:
     handler: src/lambda/http/getTodos.handler
     events:
       - http:
           method: get
           path: todos
+          # Question: What is the difference between defining cors here & in the response obj of each of the handlers
+          cors: true
+          # Recap video: https://classroom.udacity.com/nanodegrees/nd9990/parts/a46aa194-de1d-45fd-83ef-d83080ee8f3c/modules/826241f6-8d5f-436b-b01e-4ea8885d866d/lessons/742ea2a0-0573-4332-99c6-e716e22b60d7/concepts/2a38fbc3-c368-416c-a797-122b405a247f
+          authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        # Since user only has access to their own todos only able to access table with their associated index
+        # Recap: https://youtu.be/NuL_FT1DJH0 (4:18)
+        # https://classroom.udacity.com/nanodegrees/nd9990/parts/a46aa194-de1d-45fd-83ef-d83080ee8f3c/modules/826241f6-8d5f-436b-b01e-4ea8885d866d/lessons/f0d2e109-7647-4660-b88e-862551411d33/concepts/a6de72ca-d983-4083-946f-dbebebd21419
+        # Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.TODOS_USER_INDEX}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
-  # TODO: Configure this function
-  GetTodos:
   CreateTodo:
     handler: src/lambda/http/createTodo.handler
     events:
       - http:
           method: post
           path: todos
+          cors: true,
+          authorizer: Auth
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: Create a new todo
+            description: Create a new todo
+            requestModels:
+              'application/json': TodoCreateRequest
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+      # QUESTION: Do I want to put tracing right now?
+      # - Effect: Allow
+      #   Action:
+      #     - xray:PutTraceSegments
+      #     - xray:PutTelemetryRecords
+      #   Resource: '*'
 
-  # TODO: Configure this function
   UpdateTodo:
     handler: src/lambda/http/updateTodo.handler
     events:
       - http:
           method: patch
           path: todos/{todoId}
+          cors: true
+          authorizer: Auth
+          reqValidatorName: RequestBodyValidator
+          documentation: 
+            summary: Update a todo
+            description: Update a todo
+            requestModels: 
+             'application/json': TodoUpdateRequest
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.TODO_ID_INDEX}
+      # - Effect: Allow
+      #   Action:
+      #     - xray:PutTraceSegments
+      #     - xray:PutTelemetryRecords
+      #   Resource: '*'
 
-  # TODO: Configure this function
   DeleteTodo:
     handler: src/lambda/http/deleteTodo.handler
     events:
       - http:
           method: delete
           path: todos/{todoId}
+          cors: true
+          authorizer: Auth
+          documentation: 
+            summary: Delete a todo
+            description: Delete a todo
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:DeleteItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.TODO_ID_INDEX}
+      # - Effect: Allow
+      #   Action:
+      #     - xray:PutTraceSegments
+      #     - xray:PutTelemetryRecords
+      #   Resource: 
+      #     - '*'
 
-  # TODO: Configure this function
   GenerateUploadUrl:
     handler: src/lambda/http/generateUploadUrl.handler
     events:
       - http:
           method: post
           path: todos/{todoId}/attachment
+          cors: true
+          authorizer: Auth
+          documentation: 
+            summary: generate and add attachment url to todo
+            description: generate add attachment url to todo
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          # - dynamodb:UpdateItem
+          - dynamodb:PutItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.TODO_ID_INDEX}
+      - Effect: Allow
+        Action:
+          - s3:PutObject
+          # - s3:GetObject
+        Resource: arn:aws:s3:::${self:provider.environment.ATTACHMENTS_IMAGES_S3_BUCKET}/*
+      # - Effect: Allow
+      #   Action:
+      #     - xray:PutTraceSegments
+      #     - xray:PutTelemetryRecords
+      #   Resource: '*'
 
 resources:
   Resources:
-    # TODO: Add any necessary AWS resources
+    # Note: Video for refresher on validating request: 
+    # https://classroom.udacity.com/nanodegrees/nd9990/parts/a46aa194-de1d-45fd-83ef-d83080ee8f3c/modules/826241f6-8d5f-436b-b01e-4ea8885d866d/lessons/f0d2e109-7647-4660-b88e-862551411d33/concepts/d8997215-be7a-4cb4-8c3f-aa5d8f70b099
+    RequestBodyValidator:
+      Type: AWS::ApiGateway::RequestValidator
+      Properties:
+        Name: 'request-body-validator'
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        ValidateRequestBody: true
+        ValidateRequestParameters: false
+
+    # Recap: https://classroom.udacity.com/nanodegrees/nd9990/parts/a46aa194-de1d-45fd-83ef-d83080ee8f3c/modules/826241f6-8d5f-436b-b01e-4ea8885d866d/lessons/f5325d47-28ac-4b59-860e-1acf5f3837f7/concepts/00a3f6d5-d900-4a45-ab9b-cb39729e4344
+    AttachmentsBucket:
+      Type: AWS::S3::Bucket
+      # DependsOn: SNSTopicPolicy
+      Properties:
+        BucketName: ${self:provider.environment.ATTACHMENTS_IMAGES_S3_BUCKET}
+        # NotificationConfiguration:
+        #   TopicConfigurations:
+        #     - Event: s3:ObjectCreated:Put
+        #       Topic: !Ref ImagesTopic
+        CorsConfiguration:
+          CorsRules:
+            -
+              AllowedOrigins:
+                - '*'
+              AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - GET
+                - PUT
+                - POST
+                - DELETE
+                - HEAD
+              MaxAge: 3000
+
+    BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        PolicyDocument:
+          # QUESTION: Where does this policyId come from?
+          Id: MyPolicy 
+          Version: "2012-10-17"
+          Statement:
+            - Sid: PublicReadForGetBucketObjects
+              Effect: Allow
+              Principal: '*'
+              Action: 's3:GetObject'
+              Resource: 'arn:aws:s3:::${self:provider.environment.ATTACHMENTS_IMAGES_S3_BUCKET}/*'
+        Bucket: !Ref AttachmentsBucket
+    # TODO: Revisit suggested schema
+    # Decent followup post: https://knowledge.udacity.com/questions/63124
+    # TodosTable:
+    #   Type: AWS::DynamoDB::Table
+    #   Properties:
+    #     AttributeDefinitions:
+    #       - AttributeName: todoId
+    #         AttributeType: S
+    #       - AttributeName: userId
+    #         AttributeType: S
+    #     KeySchema:
+    #       - AttributeName: todoId
+    #         KeyType: HASH
+    #     BillingMode: PAY_PER_REQUEST
+    #     TableName: ${self:provider.environment.TODOS_TABLE}
+    #     GlobalSecondaryIndexes:
+    #       - IndexName: ${self:provider.environment.TODOS_USER_INDEX}
+    #         KeySchema:
+    #         - AttributeName: userId
+    #           KeyType: HASH
+    #         Projection:
+    #           ProjectionType: ALL
+    TodosTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: createdAt
+            AttributeType: S
+          - AttributeName: todoId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+          - AttributeName: createdAt
+            KeyType: RANGE
+        GlobalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.TODO_ID_INDEX}
+            KeySchema:
+            - AttributeName: todoId
+              KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:provider.environment.TODOS_TABLE}
+    # Recap Video: https://classroom.udacity.com/nanodegrees/nd9990/parts/a46aa194-de1d-45fd-83ef-d83080ee8f3c/modules/826241f6-8d5f-436b-b01e-4ea8885d866d/lessons/742ea2a0-0573-4332-99c6-e716e22b60d7/concepts/2a38fbc3-c368-416c-a797-122b405a247f
+    GatewayResponseDefault4XX:
+      Type: AWS::ApiGateway::GatewayResponse
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: ApiGatewayRestApi
