@@ -22,7 +22,7 @@ provider:
   environment:
     # Had to change the index name b/c of changes made to dynamnodb schema: https://share.getcloudapp.com/E0uqQX8j
     # https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/events?filteringText=&filteringStatus=active&viewNested=true&hideStacks=false&stackId=arn%3Aaws%3Acloudformation%3Aus-east-1%3A802043824398%3Astack%2Fserverless-todo-app-dev%2Fd3db83c0-7181-11ea-a82c-0eac0ccc6c9d
-    TODOS_TABLE: Todos-Table-${self:provider.stage} #renamed from Todos-${self:provider.stage}
+    TODOS_TABLE: Todos-${self:provider.stage} #renamed from Todos-${self:provider.stage}
     TODOS_USER_INDEX: TodoUserIndex
     TODO_ID_INDEX: TodoIdIndex
     ATTACHMENTS_IMAGES_S3_BUCKET: serverless-todo-images-attachments-cenjennifer-${self:provider.stage}
@@ -31,7 +31,6 @@ provider:
     AUTH_0_SECRET_FIELD: auth0Secret
 
 custom:
-  # TODO: Check if adding webpack plugin will help here! Find video related to this!
   documentation:
     api:
       info:
@@ -57,7 +56,6 @@ functions:
       - http:
           method: get
           path: todos
-          # Question: What is the difference between defining cors here & in the response obj of each of the handlers
           cors: true
           # Recap video: https://classroom.udacity.com/nanodegrees/nd9990/parts/a46aa194-de1d-45fd-83ef-d83080ee8f3c/modules/826241f6-8d5f-436b-b01e-4ea8885d866d/lessons/742ea2a0-0573-4332-99c6-e716e22b60d7/concepts/2a38fbc3-c368-416c-a797-122b405a247f
           authorizer: Auth
@@ -68,8 +66,7 @@ functions:
         # Since user only has access to their own todos only able to access table with their associated index
         # Recap: https://youtu.be/NuL_FT1DJH0 (4:18)
         # https://classroom.udacity.com/nanodegrees/nd9990/parts/a46aa194-de1d-45fd-83ef-d83080ee8f3c/modules/826241f6-8d5f-436b-b01e-4ea8885d866d/lessons/f0d2e109-7647-4660-b88e-862551411d33/concepts/a6de72ca-d983-4083-946f-dbebebd21419
-        # Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.TODOS_USER_INDEX}
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.TODOS_USER_INDEX}
 
   CreateTodo:
     handler: src/lambda/http/createTodo.handler
@@ -90,12 +87,6 @@ functions:
         Action:
           - dynamodb:PutItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
-      # QUESTION: Do I want to put tracing right now?
-      # - Effect: Allow
-      #   Action:
-      #     - xray:PutTraceSegments
-      #     - xray:PutTelemetryRecords
-      #   Resource: '*'
 
   UpdateTodo:
     handler: src/lambda/http/updateTodo.handler
@@ -115,16 +106,8 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:UpdateItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
-      - Effect: Allow
-        Action:
           - dynamodb:Query
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.TODO_ID_INDEX}
-      # - Effect: Allow
-      #   Action:
-      #     - xray:PutTraceSegments
-      #     - xray:PutTelemetryRecords
-      #   Resource: '*'
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
   DeleteTodo:
     handler: src/lambda/http/deleteTodo.handler
@@ -140,18 +123,9 @@ functions:
     iamRoleStatements:
       - Effect: Allow
         Action:
+          - dynamodb:Query
           - dynamodb:DeleteItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
-      - Effect: Allow
-        Action:
-          - dynamodb:Query
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.TODO_ID_INDEX}
-      # - Effect: Allow
-      #   Action:
-      #     - xray:PutTraceSegments
-      #     - xray:PutTelemetryRecords
-      #   Resource: 
-      #     - '*'
 
   GenerateUploadUrl:
     handler: src/lambda/http/generateUploadUrl.handler
@@ -167,23 +141,14 @@ functions:
     iamRoleStatements:
       - Effect: Allow
         Action:
-          # - dynamodb:UpdateItem
-          - dynamodb:PutItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
-      - Effect: Allow
-        Action:
+          - dynamodb:UpdateItem
           - dynamodb:Query
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.TODO_ID_INDEX}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
       - Effect: Allow
         Action:
           - s3:PutObject
           # - s3:GetObject
         Resource: arn:aws:s3:::${self:provider.environment.ATTACHMENTS_IMAGES_S3_BUCKET}/*
-      # - Effect: Allow
-      #   Action:
-      #     - xray:PutTraceSegments
-      #     - xray:PutTelemetryRecords
-      #   Resource: '*'
 
 resources:
   Resources:
@@ -201,13 +166,8 @@ resources:
     # Recap: https://classroom.udacity.com/nanodegrees/nd9990/parts/a46aa194-de1d-45fd-83ef-d83080ee8f3c/modules/826241f6-8d5f-436b-b01e-4ea8885d866d/lessons/f5325d47-28ac-4b59-860e-1acf5f3837f7/concepts/00a3f6d5-d900-4a45-ab9b-cb39729e4344
     AttachmentsBucket:
       Type: AWS::S3::Bucket
-      # DependsOn: SNSTopicPolicy
       Properties:
         BucketName: ${self:provider.environment.ATTACHMENTS_IMAGES_S3_BUCKET}
-        # NotificationConfiguration:
-        #   TopicConfigurations:
-        #     - Event: s3:ObjectCreated:Put
-        #       Topic: !Ref ImagesTopic
         CorsConfiguration:
           CorsRules:
             -
@@ -227,7 +187,6 @@ resources:
       Type: AWS::S3::BucketPolicy
       Properties:
         PolicyDocument:
-          # QUESTION: Where does this policyId come from?
           Id: MyPolicy 
           Version: "2012-10-17"
           Statement:
@@ -237,52 +196,28 @@ resources:
               Action: 's3:GetObject'
               Resource: 'arn:aws:s3:::${self:provider.environment.ATTACHMENTS_IMAGES_S3_BUCKET}/*'
         Bucket: !Ref AttachmentsBucket
-    # TODO: Revisit suggested schema
-    # Decent followup post: https://knowledge.udacity.com/questions/63124
-    # TodosTable:
-    #   Type: AWS::DynamoDB::Table
-    #   Properties:
-    #     AttributeDefinitions:
-    #       - AttributeName: todoId
-    #         AttributeType: S
-    #       - AttributeName: userId
-    #         AttributeType: S
-    #     KeySchema:
-    #       - AttributeName: todoId
-    #         KeyType: HASH
-    #     BillingMode: PAY_PER_REQUEST
-    #     TableName: ${self:provider.environment.TODOS_TABLE}
-    #     GlobalSecondaryIndexes:
-    #       - IndexName: ${self:provider.environment.TODOS_USER_INDEX}
-    #         KeySchema:
-    #         - AttributeName: userId
-    #           KeyType: HASH
-    #         Projection:
-    #           ProjectionType: ALL
+
     TodosTable:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
-          - AttributeName: userId
-            AttributeType: S
-          - AttributeName: createdAt
-            AttributeType: S
           - AttributeName: todoId
             AttributeType: S
-        KeySchema:
           - AttributeName: userId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: todoId
             KeyType: HASH
-          - AttributeName: createdAt
-            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:provider.environment.TODOS_TABLE}
         GlobalSecondaryIndexes:
-          - IndexName: ${self:provider.environment.TODO_ID_INDEX}
+          - IndexName: ${self:provider.environment.TODOS_USER_INDEX}
             KeySchema:
-            - AttributeName: todoId
+            - AttributeName: userId
               KeyType: HASH
             Projection:
               ProjectionType: ALL
-        BillingMode: PAY_PER_REQUEST
-        TableName: ${self:provider.environment.TODOS_TABLE}
+
     # Recap Video: https://classroom.udacity.com/nanodegrees/nd9990/parts/a46aa194-de1d-45fd-83ef-d83080ee8f3c/modules/826241f6-8d5f-436b-b01e-4ea8885d866d/lessons/742ea2a0-0573-4332-99c6-e716e22b60d7/concepts/2a38fbc3-c368-416c-a797-122b405a247f
     GatewayResponseDefault4XX:
       Type: AWS::ApiGateway::GatewayResponse

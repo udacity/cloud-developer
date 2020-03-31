@@ -44,11 +44,5 @@ export async function getTodoItem(todoId: string) {
 export async function addTodoAttachmentUrl(todoId: string) {
   const bucketName = process.env.ATTACHMENTS_IMAGES_S3_BUCKET;
   const attachmentUrl =  `https://${bucketName}.s3.amazonaws.com/${todoId}`;
-  const {Items} = await getTodoItem(todoId);
-  const newItem = {
-    attachmentUrl,
-    ...<TodoItem><unknown>Items[0]
-  }
-  // return todosAccess.addTodoAttachmentUrl(todoId, attachmentUrl);
-  return todosAccess.addTodoAttachmentUrl(newItem);
+  return todosAccess.addTodoAttachmentUrl(todoId, attachmentUrl);
 }

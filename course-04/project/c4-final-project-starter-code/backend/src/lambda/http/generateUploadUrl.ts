@@ -5,7 +5,6 @@ import * as AWS  from 'aws-sdk'
 import {createLogger} from '../../utils/logger'
 import {checkTodoExists, addTodoAttachmentUrl} from '../../businessLogic/todos';
 
-// QUESTION: Since attachmentUrl is part of the struct of a todo - is it better to just have 1 todos tables and just update it or associate todos to attachments in another table?
 const bucketName = process.env.ATTACHMENTS_IMAGES_S3_BUCKET;
 const urlExpiration = process.env.SIGNED_URL_EXPIRATION;
 
