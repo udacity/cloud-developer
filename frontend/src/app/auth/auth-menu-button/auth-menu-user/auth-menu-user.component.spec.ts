@@ -43,7 +43,7 @@ describe('AuthMenuUserPage', () => {
 
   // it('#dismiss() should hide the modal', () => {
   //     .........
-  //     expect(modalSpy.dismiss).toHaveBeenCalled(); 
+  //     expect(modalSpy.dismiss).toHaveBeenCalled();
   //     .........
   // });
 });
