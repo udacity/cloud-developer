@@ -1,4 +1,4 @@
-import express from 'express';
+import express, {Request, Response} from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
@@ -30,6 +30,25 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   /**************************************************************************** */
 
   //! END @TODO1
+
+  app.get("/filteredimage", async( req: Request, res: Response) => {
+    let { image_url } = req.query;
+
+    if (!image_url) {
+      return res.status(400).send(`Bad request. image_url query type required`);
+    }
+
+      let image: string = '';
+      try {
+        image = await filterImageFromURL(image_url);
+        res.on("finish", () => {
+          deleteLocalFiles([image]);
+        })
+        return res.status(200).sendFile(image);
+      } catch (error) {
+        return res.status(500).send(error);
+      }
+  });
   
   // Root Endpoint
   // Displays a simple message to the user
