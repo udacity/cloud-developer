@@ -5,19 +5,10 @@ import * as AWS from '../../../../aws';
 
 const router: Router = Router();
 
-router.options('/', async(req: Request, res: Response) => {
-    console.log('Executing OPTIONS for /feed');
-    const items = await FeedItem.findAndCountAll({order: [['id', 'DESC']]});
-    items.rows.map((item) => {
-        if (item.url) {
-            item.url = AWS.getGetSignedUrl(item.url);
-        }
-    });
-    res.send(items);
-});
-
 // Get all feed items
-router.get('/', async (req: Request, res: Response) => {
+router.get('/',
+    requireAuth,
+    async (req: Request, res: Response) => {
     console.log('Executing GET for /feed');
     const items = await FeedItem.findAndCountAll({order: [['id', 'DESC']]});
     items.rows.map((item) => {
