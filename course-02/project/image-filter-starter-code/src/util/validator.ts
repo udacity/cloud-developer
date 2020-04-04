@@ -1,26 +1,33 @@
 import http = require('http');
 import https = require('https');
 
+export enum ValidatorConstants {
+    OK = 1,
+    NOT_AN_IMAGE = 2,
+    NOT_A_VALID_URL = 3
+}
+
 /**
  * provides a promise that validates and resolves the input url
  *
  * @param url the url to validate
  */
-export function validateImageUrl(url: string): Promise<boolean> {
+export function validateImageUrl(url: string): Promise<ValidatorConstants> {
     return new Promise(async (resolve, reject) => {
         try {
-            let response = null;
-            if (url.startsWith("https")) {
+            if (url.startsWith("https://")) {
                 https.get(url, {method: 'HEAD'}, res => {
                     resolve(verifyImageHeader(res));
                 });
-            } else {
+            } else if (url.startsWith("http://")) {
                 http.get(url, {method: 'HEAD'}, res => {
                     resolve(verifyImageHeader(res));
                 });
+            } else {
+                resolve(ValidatorConstants.NOT_A_VALID_URL);
             }
         } catch (err) {
-            resolve(false);
+            resolve(ValidatorConstants.NOT_A_VALID_URL);
         }
     });
 }
@@ -37,10 +44,10 @@ function verifyImageHeader(res: http.IncomingMessage) {
     const contentType = headers['content-type'];
     switch (typeof contentType) {
         case 'string' : {
-            return contentType.indexOf('image') !== -1;
+            return contentType.indexOf('image') !== -1 ? ValidatorConstants.OK : ValidatorConstants.NOT_AN_IMAGE;
         }
         default:
-            return false;
+            return ValidatorConstants.NOT_AN_IMAGE;
     }
 
 }
