@@ -4,9 +4,10 @@ import { config } from './config/config';
 const c = config.dev;
 
 //Configure AWS
-var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
-AWS.config.credentials = credentials;
-
+if(c.aws_profile !== "DEPLOYED") {
+  var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
+  AWS.config.credentials = credentials;
+}
 export const s3 = new AWS.S3({
   signatureVersion: 'v4',
   region: c.aws_region,
@@ -14,12 +15,12 @@ export const s3 = new AWS.S3({
 });
 
 
-/* getGetSignedUrl generates an aws signed url to retreive an item
- * @Params
- *    key: string - the filename to be put into the s3 bucket
- * @Returns:
- *    a url as a string
- */
+// /* getGetSignedUrl generates an aws signed url to retreive an item
+//  * @Params
+//  *    key: string - the filename to be put into the s3 bucket
+//  * @Returns:
+//  *    a url as a string
+//  */
 export function getGetSignedUrl( key: string ): string{
 
   const signedUrlExpireSeconds = 60 * 5
