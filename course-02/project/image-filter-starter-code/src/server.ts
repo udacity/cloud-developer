@@ -34,18 +34,23 @@ import validate from 'validate.js';
   app.get( "/filteredimage/", async ( req, res ) => {
     let { image_url } = req.query;
 
+    // validate that image_url is present and that it matches a valid url pattern
     if ( (validate.single(image_url, {presence: true, url: true})) ) {
       return res.status(400)
                 .send(`a valid URL as query param image_url is required`);
     }
 
-    res.send("image_url provided is valid!")
+    // filter image (possibly bad because there may not be an image here!)
+    const filtered_image = await filterImageFromURL(image_url);
+
+    // send filtered image as response, delete once response finished sending (or on error in response)
+    res.sendFile(filtered_image, () => deleteLocalFiles(Array.of(filtered_image)));
   })
   
   // Root Endpoint
   // Displays a simple message to the user
   app.get( "/", async ( req, res ) => {
-    res.send("try GET /filteredimage?image_url={{}}")
+    res.send("try GET /filteredimage?image_url={{}}");
   } );
   
 
