@@ -1,4 +1,4 @@
-import { add, divide } from './units';
+import { add, divide, multiply } from './units';
 
 import { expect } from 'chai';
 import 'mocha';
@@ -33,6 +33,19 @@ describe('divide', () => {
     expect(()=>{ divide(5,0) }).to.throw('div by 0')
   });
 
+});
+
+describe('multiply', () => {
+
+  it('should multiply 6 by 3', () => {
+    const result = multiply(6,3);
+    expect(result).to.equal(18);
+  });
+
+  it('should multiply 5 and 2', () => {
+    const result = multiply(5,2);
+    expect(result).to.equal(10);
+  });
 });
 
 // @TODO try creating a new describe block for the "concat" method
