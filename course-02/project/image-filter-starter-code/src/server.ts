@@ -38,7 +38,7 @@ import { filterImageFromURL, deleteLocalFiles } from './util/util';
     if (!myImageUrl) {
       return res.status(400).send({
         message:
-          'The url you are trying to use for this image does not work or is not complete.',
+          'The url you are trying to use for this image does not work or is not complete, please try again.',
       });
     }
 
@@ -53,7 +53,7 @@ import { filterImageFromURL, deleteLocalFiles } from './util/util';
       // if there is an error, returns a status of 422 (not processesable) and a message about a broken image or incomplete url
       return res.sendStatus(422).send({
         message:
-          'The url you are trying to use for this image does not work or is not complete.',
+          'The url you are trying to use for this image does not work or is not complete, please try again.',
       });
     }
   });
