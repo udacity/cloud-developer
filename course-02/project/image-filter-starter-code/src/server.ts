@@ -30,15 +30,39 @@ import { filterImageFromURL, deleteLocalFiles } from './util/util';
 
   //! END @TODO1
 
-  app.get('/filteredimage?image_url={{}}', async (req, res) => {
-    console.log('test');
+  app.get('/filteredimage', async (req, res) => {
+    // store a users imageUrl as myImageUrl, provided in query paramaters
+    const myImageUrl = req.query.imageUrl;
+
+    // if image has problems, a 400 will be returned with a message about a broken image or incomplete url
+    if (!myImageUrl) {
+      return res.status(400).send({
+        message:
+          'The url you are trying to use for this image does not work or is not complete.',
+      });
+    }
+
+    // if image is present, a new filteredImage is created using await filterImageFromURL imported from utils
+    // once the image is shown, it is deleted after to clear up space
+    try {
+      const filteredImageFromURL = await filterImageFromURL(myImageUrl);
+      res.sendFile(filteredImageFromURL, () =>
+        deleteLocalFiles([filteredImageFromURL])
+      );
+    } catch (error) {
+      // if there is an error, returns a status of 422 (not processesable) and a message about a broken image or incomplete url
+      return res.sendStatus(422).send({
+        message:
+          'The url you are trying to use for this image does not work or is not complete.',
+      });
+    }
   });
 
   // Root Endpoint
   // Displays a simple message to the user
-  app.get('/', async (req, res) => {
-    res.send('try GET /filteredimage?image_url={{}}');
-  });
+  // app.get('/', async (req, res) => {
+  //   res.send('try GET /filteredimage?image_url={{}}');
+  // });
 
   // Start the Server
   app.listen(port, () => {
