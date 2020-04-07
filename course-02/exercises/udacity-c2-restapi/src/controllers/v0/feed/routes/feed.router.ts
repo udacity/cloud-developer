@@ -18,13 +18,84 @@ router.get('/', async (req: Request, res: Response) => {
 
 //@TODO
 //Add an endpoint to GET a specific resource by Primary Key
+router.get('/:id', async (req: Request, res: Response) => {
+    //Dump request params in log. 
+    console.log(req.params);
+
+    //Get id query param in variable
+    let id = req.params.id;
+
+    // check ID is valid
+    if (!id) {
+        console.log('Id not passed');
+        return res.status(400).send({ message: 'ID is required or malformed' });
+    }
+
+    //Sequalize call to search with PK
+    const items = await FeedItem.findByPk(id);
+
+    //If the item is not present send 404
+    if (!items) {
+        return res.status(404).send({ message: 'Requested resource not found' });
+    }
+
+    //Add the AWS related data to get S3 content
+    if(items.url) {
+        items.url = AWS.getGetSignedUrl(items.url);
+    }
+    res.send(items);
+});
 
 // update a specific resource
 router.patch('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
-        //@TODO try it yourself
-        res.send(500).send("not implemented")
+        console.log('Patch request');
+        console.log(req.body);
+        console.log(req.params);
+
+        //Get id query param in variable
+        let id = req.params.id;
+        const caption = req.body.caption;
+        const url = req.body.url;
+
+        // check ID is valid
+        if (!id) {
+            console.log('Id not passed');
+            res.status(400).send({ message: 'ID is required or malformed' });
+        }
+
+        // check Caption is valid
+        if (!caption && !url) {
+            console.log('No data to update. Check your request');
+            res.status(400).send({ message: 'No data to update. Check your request' });
+        }
+        
+        //Sequalize call to search with PK
+        let items = await FeedItem.findByPk(id);
+
+        //If the item is not present send 404
+        if (!items) {
+            console.log('Requested resource for patching not found');
+            res.status(404).send({ message: 'Requested resource for patching not found' });
+        }
+        
+        //Update caption if provided
+        if (caption) {
+            items.caption = caption;
+        }
+
+        //Update file if provided
+        if (url) {
+            items.url = url;
+        }
+
+        if (caption || url) {
+            console.log('Finally making an update to the FeedItem');
+            items = await items.save();
+        }
+
+        res.status(200).send(items);
 });
 
 
