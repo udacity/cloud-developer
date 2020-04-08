@@ -632,6 +632,12 @@
 			"key": "host",
 			"value": "http://localhost:8080",
 			"type": "string"
+		},
+		{
+			"id": "3e3ea131-5328-4f50-8fe1-516e3995917d",
+			"key": "cloud",
+			"value": "http://udacity-c2-restapi-dev2.us-east-1.elasticbeanstalk.com",
+			"type": "string"
 		}
 	]
 }
