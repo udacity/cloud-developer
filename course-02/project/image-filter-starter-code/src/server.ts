@@ -49,7 +49,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     res.status(200).send({ImagePath: imagePath});
 
     //after processing clean up the local image
-    //await deleteLocalFiles(imagePathToDelete);
+    await deleteLocalFiles(imagePathToDelete);
   } );
   
   
