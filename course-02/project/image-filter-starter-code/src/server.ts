@@ -28,8 +28,30 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
+  app.get( "/filteredimage", async ( req, res ) => {
+    let {image_url} = req.query;
 
-  //! END @TODO1
+    if (!image_url)
+    {
+      return res.status(400).send({message: 'Image URL is required for this request'});
+    }
+    
+    console.log(image_url);
+
+    //process the image  using the Gimp API
+    let imagePath = await filterImageFromURL(image_url);
+
+    let imagePathToDelete: string[] = [];
+    console.log(imagePath);
+
+    imagePathToDelete.push((await imagePath));
+    
+    res.status(200).send({ImagePath: imagePath});
+
+    //after processing clean up the local image
+    //await deleteLocalFiles(imagePathToDelete);
+  } );
+  
   
   // Root Endpoint
   // Displays a simple message to the user

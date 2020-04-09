@@ -5,6 +5,7 @@ const c = config.postgres;
 const aws = config.aws;
 
 //Configure AWS
+console.log('Going to check for connection');
 if(aws.aws_profile !== "DEPLOYED") {
   var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
   AWS.config.credentials = credentials;

@@ -11,5 +11,9 @@ export const config = {
     "aws_profile": process.env.AWS_PROFILE,
     "aws_media_bucket": process.env.AWS_MEDIA_BUCKET,
     "storage":"memory"
+  },
+  "util": {
+    "saltRounds":10,
+    "secretKey": "AWS CLOUD TRYOUT"
   }
 }
