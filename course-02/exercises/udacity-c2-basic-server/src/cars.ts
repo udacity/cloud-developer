@@ -12,3 +12,15 @@ export const cars: Car[] = [
     { make: 'toyota', type: 'sedan', model: 'prius', cost: 22, id: 2 },
     { make: 'honda', type: 'sedan', model: 'civic', cost: 22, id: 3 }
    ]
+
+
+
+/**
+ * post car (in JSON):
+ * {
+ *     "make": "volkswagen",
+ *     "type": "sedan",
+ *     "model": "beetle",
+ *     "cost": 12500
+ * }
+ */
