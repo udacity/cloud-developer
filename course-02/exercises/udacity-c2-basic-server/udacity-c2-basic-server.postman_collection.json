@@ -42,7 +42,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:8082/cars/?make=toyota",
+							"raw": "http://localhost:8082/cars/toyota",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -50,13 +50,7 @@
 							"port": "8082",
 							"path": [
 								"cars",
-								""
-							],
-							"query": [
-								{
-									"key": "make",
-									"value": "toyota"
-								}
+								"toyota"
 							]
 						}
 					},
@@ -79,22 +73,22 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:8082/cars/2",
+							"raw": "http://localhost:8082/carid/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8082",
 							"path": [
-								"cars",
-								"2"
+								"carid",
+								"3"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "/cars",
+					"name": "newcar",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -110,14 +104,14 @@
 							"raw": "{ \"make\": \"ford\", \"type\": \"sedan\", \"model\": \"focus\", \"cost\": 12, \"id\": 9 }\n"
 						},
 						"url": {
-							"raw": "http://localhost:8082/cars",
+							"raw": "http://localhost:8082/newcar",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8082",
 							"path": [
-								"cars"
+								"newcar"
 							]
 						}
 					},

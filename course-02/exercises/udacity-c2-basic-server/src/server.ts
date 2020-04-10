@@ -1,10 +1,9 @@
 import express, { Router, Request, Response } from 'express';
-import bodyParser from 'body-parser';
-
-import { Car, cars as cars_list } from './cars';
+import bodyParser                             from 'body-parser';
+import { Car, cars as cars_list }             from './cars';
 
 (async () => {
-  let cars:Car[] = cars_list;
+  let cars: Car[] = cars_list;
 
   //Create an express applicaiton
   const app = express(); 
@@ -51,7 +50,6 @@ import { Car, cars as cars_list } from './cars';
   // GET all of the cars:
   app.get('/cars/', async (req: Request, res: Response) => {
     return res.status(200).send(cars);
-
   })
 
   // @TODO Add an endpoint to GET a list of cars
