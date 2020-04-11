@@ -31,18 +31,13 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
         return res.status(401).send({ message: 'No authorization headers.' });
     }
     
-
     const token_bearer = req.headers.authorization.split(' ');
-    if(token_bearer.length != 2){
-        return res.status(401).send({ message: 'Malformed token.' });
-    }
+    if (token_bearer.length != 2) return res.status(401).send({ message: 'Malformed token.' });
     
     const token = token_bearer[1];
 
     return jwt.verify(token, config.jwt.secret, (err, decoded) => {
-      if (err) {
-        return res.status(500).send({ auth: false, message: 'Failed to authenticate.' });
-      }
+      // if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate.' });
       return next();
     });
 }
@@ -62,22 +57,16 @@ router.post('/login', async (req: Request, res: Response) => {
     }
 
     // check email password valid
-    if (!password) {
-        return res.status(400).send({ auth: false, message: 'Password is required' });
-    }
+    if (!password) return res.status(400).send({ auth: false, message: 'Password is required' });
 
     const user = await User.findByPk(email);
     // check that user exists
-    if(!user) {
-        return res.status(401).send({ auth: false, message: 'Unauthorized' });
-    }
+    if(!user) return res.status(401).send({ auth: false, message: 'Unauthorized' });
 
     // check that the password matches
     const authValid = await comparePasswords(password, user.password_hash)
 
-    if(!authValid) {
-        return res.status(401).send({ auth: false, message: 'Unauthorized' });
-    }
+    if(!authValid) return res.status(401).send({ auth: false, message: 'Unauthorized' });
 
     // Generate JWT
     const jwt = generateJWT(user);
@@ -102,9 +91,7 @@ router.post('/', async (req: Request, res: Response) => {
     // find the user
     const user = await User.findByPk(email);
     // check that user doesn't exists
-    if(user) {
-        return res.status(422).send({ auth: false, message: 'User may already exist' });
-    }
+    if(user) return res.status(422).send({ auth: false, message: 'User may already exist' });
 
     const password_hash = await generatePassword(plainTextPassword);
 
