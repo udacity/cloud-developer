@@ -1,6 +1,7 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import { threadId } from 'worker_threads';
 
 (async () => {
 
@@ -28,9 +29,24 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
+  app.get("/filteredimage", async (req: Request, res: Response, next: Function) => {
+      const image_url: string = req.query.image_url;
+      if(!image_url){
+        res.status(400).send("Bad Request: Please send a valid image url");
+      }
 
+      try{
+        const filteredimage = await filterImageFromURL(image_url);  
+        res.status(200).sendFile(filteredimage, ()=>{
+          deleteLocalFiles([filteredimage])});
+      }catch(error){
+          console.log(error);
+          res.status(422).send("Unprocessable Entity: image at the specified url");
+      }
+      
+  });
   //! END @TODO1
-  
+
   // Root Endpoint
   // Displays a simple message to the user
   app.get( "/", async ( req, res ) => {
