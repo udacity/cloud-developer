@@ -18,13 +18,76 @@ router.get('/', async (req: Request, res: Response) => {
 
 //@TODO
 //Add an endpoint to GET a specific resource by Primary Key
+router.get('/:id', async (req: Request, res: Response) => {
+
+    let { id } = req.params;
+
+    if ( !id ) {
+        return res.status(400).send(`id is required`);
+    }
+
+    if (isNaN(id)) {
+        return res.status(400).send(`id should be a number`);
+    }
+    
+    const item = await FeedItem.findByPk(id);
+    
+    if (item===null)
+    {
+        return res.sendStatus(404);
+    }
+    else
+    {
+        if(item.url) {
+            item.url = AWS.getGetSignedUrl(item.url);
+        }
+
+        res.send(item);
+    }    
+});
 
 // update a specific resource
-router.patch('/:id', 
-    requireAuth, 
-    async (req: Request, res: Response) => {
-        //@TODO try it yourself
-        res.send(500).send("not implemented")
+router.patch('/:id', requireAuth, async (req: Request, res: Response) => {
+    
+    //@TODO try it yourself
+
+    let { id } = req.params;
+
+    if ( !id ) {
+        return res.status(400).send(`id is required`);
+    }
+
+    if (isNaN(id)) {
+        return res.status(400).send(`id should be a number`);
+    }
+
+    const caption = req.body.caption;
+
+    const fileName = req.body.url;
+
+    // check Caption is valid
+    if (!caption) {
+        return res.status(400).send({ message: 'Caption is required or malformed' });
+    }
+
+    // check Filename is valid
+    if (!fileName) {
+        return res.status(400).send({ message: 'File url is required' });
+    }
+    
+    const item = await FeedItem.findByPk(id);
+    
+    if (item===null)
+    {
+        return res.send(404);
+    }
+    else
+    {
+        item.caption = caption;
+        item.url = fileName;
+        item.save();
+        res.status(201).send(item);
+    } 
 });
 
 
