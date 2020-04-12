@@ -12,7 +12,6 @@ import {
 @Table
 export class User extends Model<User> {
   
-  @PrimaryKey
   @Column
   public email!: string;
 
