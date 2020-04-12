@@ -46,9 +46,9 @@ router.patch('/:id', requireAuth,
 
     const updatedEntriesNumber = await FeedItem.update(updateParams, { where: { 'id': id } })
     if (updatedEntriesNumber[0]) {
-      return res.status(200).send('The item is updated successfully');
+      return res.status(200).send('The item has been updated successfully');
     } else {
-      return res.status(404).send(`No item has been found with id: ${id}!`)
+      return res.status(404).send(`No item has been found with id: ${id}!`);
     }
 });
 
