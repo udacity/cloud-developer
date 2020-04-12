@@ -35,9 +35,22 @@ router.get('/:id', async (req: Request, res: Response) => {
 // PATCH (update) a specific resource
 router.patch('/:id', requireAuth,
   async (req: Request, res: Response) => {
-    res.status(500).send("not implemented")
-});
+    const { id } = req.params;
+    const updateParams = req.body;
+    const validUpdateFields = ['caption', 'url'];
+    const isValid = Object.keys(updateParams).every(param => {
+      return validUpdateFields.includes(param.toLowerCase());
+    });
+    const forbidden = `Only these fields: { ${validUpdateFields.join(', ')} } can be updated!`;
+    if (!isValid) return res.status(403).send(forbidden);
 
+    const updatedEntriesNumber = await FeedItem.update(updateParams, { where: { 'id': id } })
+    if (updatedEntriesNumber[0]) {
+      return res.status(200).send('The item is updated successfully');
+    } else {
+      return res.status(404).send(`No item has been found with id: ${id}!`)
+    }
+});
 
 // Get a signed url to put a new item in the bucket
 router.get('/signed-url/:fileName', requireAuth,
