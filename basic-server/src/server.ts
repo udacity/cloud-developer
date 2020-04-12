@@ -59,8 +59,8 @@ import { Car, cars as cars_list }             from './cars';
     const carsToShow: Car[] = cars.filter(car => ( car.make.toLowerCase() === make.toLowerCase() ));
     const carNumber: number = carsToShow.length;
     if (carNumber) {
-      const manufacturer = make[0].toUpperCase() + make.slice(1);
-      const responseMsg = `The number of cars from manufacturer ${manufacturer}: ${carNumber}`;
+      const manufacturer: string = make[0].toUpperCase() + make.slice(1);
+      const responseMsg: string = `The number of cars from manufacturer ${manufacturer}: ${carNumber}`;
       return res.status(200).send(responseMsg);
     } else {
       return res.status(400).send('No car with this type!');
@@ -84,7 +84,7 @@ import { Car, cars as cars_list }             from './cars';
   /// @TODO Add an endpoint to POST a new car to our list
   // it should require id, type, model, and cost
   app.post("/newcar", async (req: Request, res: Response) => {
-    const carsNumber = cars.length; 
+    const carsNumber: number = cars.length; 
     const newCar: Car = req.body;
     const newCarProperties: string[] = Object.keys(newCar);
 

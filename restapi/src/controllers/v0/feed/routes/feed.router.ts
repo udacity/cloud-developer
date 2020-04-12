@@ -37,8 +37,8 @@ router.patch('/:id', requireAuth,
   async (req: Request, res: Response) => {
     const { id } = req.params;
     const updateParams = req.body;
-    const validUpdateFields = ['caption', 'url'];
-    const isValid = Object.keys(updateParams).every(param => {
+    const validUpdateFields: Array<string> = ['caption', 'url'];
+    const isValid: boolean = Object.keys(updateParams).every(param => {
       return validUpdateFields.includes(param.toLowerCase());
     });
     const forbidden = `Only these fields: { ${validUpdateFields.join(', ')} } can be updated!`;
@@ -56,7 +56,7 @@ router.patch('/:id', requireAuth,
 router.get('/signed-url/:fileName', requireAuth,
   async (req: Request, res: Response) => {
     let { fileName } = req.params;
-    const url = AWS.getPutSignedUrl(fileName);
+    const url: string = AWS.getPutSignedUrl(fileName);
     res.status(201).send({ url: url });
 });
 

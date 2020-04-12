@@ -10,14 +10,14 @@ import * as EmailValidator           from 'email-validator';
 const router: Router = Router();
 
 async function generatePassword(plainTextPassword: string): Promise<string> {
-    const rounds = 10;
+    const rounds: number = 10;
     const salt = await bcrypt.genSalt(rounds);
     const hashValue = await bcrypt.hash(plainTextPassword, salt);
     return hashValue;
 }
 
 async function comparePasswords(plainTextPassword: string, hashValue: string): Promise<boolean> {
-    const isEqual = await bcrypt.compare(plainTextPassword, hashValue);
+    const isEqual: boolean = await bcrypt.compare(plainTextPassword, hashValue);
     return isEqual;
 }
 
@@ -34,7 +34,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
     const token_bearer = req.headers.authorization.split(' ');
     if (token_bearer.length != 2) return res.status(401).send({ message: 'Malformed token.' });
     
-    const token = token_bearer[1];
+    const token: string = token_bearer[1];
 
     return jwt.verify(token, config.jwt.secret, (err, decoded) => {
       if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate.' });
