@@ -91,17 +91,10 @@
 								"feed",
 								":id"
 							],
-							"query": [
-								{
-									"key": "id",
-									"value": "4",
-									"disabled": true
-								}
-							],
 							"variable": [
 								{
 									"key": "id",
-									"value": "3"
+									"value": "1"
 								}
 							]
 						},
@@ -174,7 +167,7 @@
 					]
 				},
 				{
-					"name": "/api/v0/user/auth valid registration",
+					"name": "/api/v0/users/auth valid registration",
 					"event": [
 						{
 							"listen": "test",
@@ -228,7 +221,7 @@
 					"response": []
 				},
 				{
-					"name": "/api/v0/user/auth invalid registration",
+					"name": "/api/v0/users/auth invalid registration",
 					"event": [
 						{
 							"listen": "test",
@@ -283,7 +276,7 @@
 					"response": []
 				},
 				{
-					"name": "/api/v0/user/auth/login valid",
+					"name": "/api/v0/users/auth/login valid",
 					"event": [
 						{
 							"listen": "test",
@@ -342,7 +335,7 @@
 					"response": []
 				},
 				{
-					"name": "/api/v0/user/auth/login invalid",
+					"name": "/api/v0/users/auth/login invalid",
 					"event": [
 						{
 							"listen": "test",
@@ -373,8 +366,8 @@
 							{
 								"key": "Content-Type",
 								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
+								"type": "text",
+								"value": "application/json"
 							}
 						],
 						"body": {
@@ -394,6 +387,67 @@
 								"login"
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v0/users/:id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "file",
+							"file": {}
+						},
+						"url": {
+							"raw": "{{host}}/api/v0/users/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v0",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Get a user with the given id"
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v0/users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "file",
+							"file": {}
+						},
+						"url": {
+							"raw": "{{host}}/api/v0/users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v0",
+								"users"
+							]
+						},
+						"description": "Get a user with the given id"
 					},
 					"response": []
 				}
@@ -542,7 +596,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"caption\": \"Hello\",\n    \"url\": \"test.jpg\"\n}"
+							"raw": "{\n    \"caption\": \"Cao\",\n    \"url\": \"best.jpg\"\n}"
 						},
 						"url": {
 							"raw": "{{host}}/api/v0/feed",
