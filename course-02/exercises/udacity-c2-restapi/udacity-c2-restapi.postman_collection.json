@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "90c44738-86d0-440c-ac60-dcb7b70fb9e8",
+		"_postman_id": "8e5780cb-779f-4eb1-a409-61afcf0ed27a",
 		"name": "udacity-c2-restapi",
 		"description": "Requests that should work!",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -37,10 +37,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "{{host}}/api/v0/feed",
 							"host": [
@@ -84,10 +80,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "{{host}}/api/v0/feed/:id",
 							"host": [
@@ -121,10 +113,6 @@
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{host}}/api/v0/feed/:id",
 									"host": [
@@ -409,7 +397,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Unauthorized",
@@ -456,7 +445,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Authorized",
@@ -516,7 +506,7 @@
 					"response": []
 				},
 				{
-					"name": "/api/v0/feed authorized Copy",
+					"name": "/api/v0/feed authorized",
 					"event": [
 						{
 							"listen": "test",
@@ -568,6 +558,96 @@
 						"description": "Post a new item to the feed"
 					},
 					"response": []
+				},
+				{
+					"name": "/api/v0/feed get signed_url",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1ad01629-c164-41ef-9d19-0a5fd13274af",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/api/v0/feed/signed-url/:fileName",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v0",
+								"feed",
+								"signed-url",
+								":fileName"
+							],
+							"variable": [
+								{
+									"key": "fileName",
+									"value": ""
+								}
+							]
+						},
+						"description": "Get a signed URL for a file"
+					},
+					"response": []
+				},
+				{
+					"name": "https://noiffion-udagram-bucket.s3.eu-central-1.amazonaws.com",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "image/jpeg",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": ""
+							}
+						},
+						"url": {
+							"raw": "https://noiffion-udagram-bucket.s3.eu-central-1.amazonaws.com",
+							"protocol": "https",
+							"host": [
+								"noiffion-udagram-bucket",
+								"s3",
+								"eu-central-1",
+								"amazonaws",
+								"com"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"auth": {
@@ -601,7 +681,8 @@
 						]
 					}
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"event": [
@@ -633,5 +714,6 @@
 			"value": "http://localhost:8080",
 			"type": "string"
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }
