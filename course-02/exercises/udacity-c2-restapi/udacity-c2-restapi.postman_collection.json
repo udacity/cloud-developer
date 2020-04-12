@@ -167,7 +167,7 @@
 					]
 				},
 				{
-					"name": "/api/v0/users/auth valid registration",
+					"name": "/api/v0/users/auth  ― valid registration",
 					"event": [
 						{
 							"listen": "test",
@@ -221,7 +221,7 @@
 					"response": []
 				},
 				{
-					"name": "/api/v0/users/auth invalid registration",
+					"name": "/api/v0/users/auth ― invalid registration",
 					"event": [
 						{
 							"listen": "test",
@@ -276,7 +276,7 @@
 					"response": []
 				},
 				{
-					"name": "/api/v0/users/auth/login valid",
+					"name": "/api/v0/users/auth/login ― valid",
 					"event": [
 						{
 							"listen": "test",
@@ -335,7 +335,7 @@
 					"response": []
 				},
 				{
-					"name": "/api/v0/users/auth/login invalid",
+					"name": "/api/v0/users/auth/login ― invalid",
 					"event": [
 						{
 							"listen": "test",
@@ -506,7 +506,7 @@
 			"name": "Authorized",
 			"item": [
 				{
-					"name": "/api/v0/feed invalid",
+					"name": "/api/v0/feed ― invalid",
 					"event": [
 						{
 							"listen": "test",
@@ -560,7 +560,7 @@
 					"response": []
 				},
 				{
-					"name": "/api/v0/feed authorized",
+					"name": "/api/v0/feed ― authorized",
 					"event": [
 						{
 							"listen": "test",
@@ -614,7 +614,7 @@
 					"response": []
 				},
 				{
-					"name": "/api/v0/feed get signed_url",
+					"name": "/api/v0/feed/signed-url/:fileName ― get signed_url",
 					"event": [
 						{
 							"listen": "test",
@@ -700,6 +700,42 @@
 								"com"
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v0/feed/:id ― patch feed",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"caption\": \"blabla\",\n\t\"url\": \"newUrl\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v0/feed/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v0",
+								"feed",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Update an the item with the given id"
 					},
 					"response": []
 				}
