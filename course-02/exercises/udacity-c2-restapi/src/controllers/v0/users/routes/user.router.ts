@@ -13,13 +13,13 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 
-router.get('/:id', async (req: Request, res: Response) => {
-    const { id } = req.params;
-    const item = await User.findByPk(id);
+router.get('/:email', async (req: Request, res: Response) => {
+    const { email } = req.params;
+    const item = await User.findByPk(email);
     if (item) {
       res.status(200).send(item);
     } else {
-      res.status(404).send(`There is no user with id: ${id}!`);
+      res.status(404).send(`There is no user with email: ${email}!`);
     }
 });
 
