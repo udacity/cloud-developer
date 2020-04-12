@@ -22,7 +22,7 @@ async function comparePasswords(plainTextPassword: string, hashValue: string): P
 }
 
 function generateJWT(user: User): string {
-    return jwt.sign(user, config.jwt.secret);
+    return jwt.sign(user.email, config.jwt.secret);
 }
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
@@ -37,7 +37,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
     const token = token_bearer[1];
 
     return jwt.verify(token, config.jwt.secret, (err, decoded) => {
-      //if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate.' });
+      if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate.' });
       return next();
     });
 }
@@ -91,11 +91,11 @@ router.post('/', async (req: Request, res: Response) => {
     // find the user
     const user = await User.findByPk(email);
     // check that user doesn't exists
-    if(user) return res.status(422).send({ auth: false, message: 'User may already exist' });
+    if (user) return res.status(422).send({ auth: false, message: 'User may already exist' });
 
     const password_hash = await generatePassword(plainTextPassword);
 
-    const newUser = await new User({
+    const newUser = new User({
         email: email,
         password_hash: password_hash
     });
