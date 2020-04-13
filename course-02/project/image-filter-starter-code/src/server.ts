@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
@@ -30,6 +30,32 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   /**************************************************************************** */
 
   //! END @TODO1
+
+  app.get('/filteredimage', async (req: Request, res: Response) => {
+    
+    // get image url
+    let { image_url } = req.query;
+
+    // validate image_url
+    if ( !image_url ) {
+      return res.status(400).send(`image_url is required`);
+    }
+    
+    // filter image
+    const filteredImagePath = await filterImageFromURL(image_url);
+
+    if (filteredImagePath==null) {
+      return res.status(422).send(`image could not be filtered`);
+    }
+    
+      // send file in resp
+    res.sendFile(filteredImagePath);
+    
+      // clean up
+    await new Promise(resolve => setTimeout(resolve, 500)); // delete file was not working unless I delayed.  Not sure why.
+    await deleteLocalFiles([filteredImagePath]);
+    
+  });
   
   // Root Endpoint
   // Displays a simple message to the user
