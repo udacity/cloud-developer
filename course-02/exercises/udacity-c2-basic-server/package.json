@@ -33,6 +33,8 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "express-validator": "^6.4.0",
+    "url": "^0.11.0"
   }
 }
