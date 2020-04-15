@@ -26,11 +26,12 @@
     "@ionic/angular": "^4.6.2",
     "core-js": "^2.6.9",
     "rxjs": "~6.3.3",
+    "tplib": "^1.0.22",
     "zone.js": "~0.8.29"
   },
   "devDependencies": {
-    "@angular-devkit/architect": "~0.12.3",
-    "@angular-devkit/build-angular": "^0.13.9",
+    "@angular-devkit/architect": "^0.901.1",
+    "@angular-devkit/build-angular": "^0.13.8",
     "@angular-devkit/core": "~7.2.3",
     "@angular-devkit/schematics": "~7.2.3",
     "@angular/cli": "^7.3.9",
