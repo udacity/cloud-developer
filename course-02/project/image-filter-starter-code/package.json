@@ -29,7 +29,11 @@
   },
   "dependencies": {
     "express": "^4.17.1",
+<<<<<<< HEAD
     "express-validator": "^6.4.0",
     "jimp": "^0.10.2"
+=======
+    "jimp": "^0.6.4"
+>>>>>>> parent of f106770... project first update
   }
 }
