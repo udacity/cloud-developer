@@ -9,6 +9,8 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   // Init the the check and validationResult from express validator 
   const { check, validationResult } = require('express-validator');
+  // Init file system
+  const fs = require('fs');
 
 
   // Set the network port
@@ -47,24 +49,31 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     {
       return res.status(422).json({ errors: errors.array() });
     }
-    const image_url /*: string[] */= req.query;
+    const {image_url} = req.query;
+    console.log(image_url);
     
-    //let filteredImagePath : string[];
-
-    //for(let i:number =0;i<image_url.length; i++)
     const filteredImagePath = await  filterImageFromURL(image_url);
+    if(filteredImagePath == "Invalid URL")
+    {
+      return res.status(404).send("Invalid URL Image is not found");
+    }
 
     res.status(200).sendFile(filteredImagePath);
-    const testFolder = '/tmp/';
-    const fs = require('fs');
+    res.on('finish', function(){
+      console.log('the response has been sent');
+      const tempFolder = __dirname +"\\util\\tmp\\";
 
-    fs.readdir(testFolder, (err: any, files: any[]) => {
-      files.forEach((file: any) => {
-        console.log(file);
+      const filesToDelete = fs.readdirSync(tempFolder);
+      let pathsToDelete : string[] = [];
+      for(let i : number = 0; i<filesToDelete.length; i++)
+      {
+        console.log(tempFolder + filesToDelete[i])
+        pathsToDelete.push(tempFolder + filesToDelete[i]);
+      }
+      deleteLocalFiles(pathsToDelete);
       });
-    });
-
-    deleteLocalFiles(fs);
+      
+      return
 
   });
 
