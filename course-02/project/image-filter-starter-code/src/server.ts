@@ -47,13 +47,24 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     {
       return res.status(422).json({ errors: errors.array() });
     }
-    let {image_url}= req.query;
+    const image_url /*: string[] */= req.query;
     
-    let filteredImagePath : string[];
-    filteredImagePath[0] = await  filterImageFromURL(image_url);
+    //let filteredImagePath : string[];
 
-    res.status(200).sendFile(filteredImagePath[0]);
-    deleteLocalFiles(filteredImagePath);
+    //for(let i:number =0;i<image_url.length; i++)
+    const filteredImagePath = await  filterImageFromURL(image_url);
+
+    res.status(200).sendFile(filteredImagePath);
+    const testFolder = '/tmp/';
+    const fs = require('fs');
+
+    fs.readdir(testFolder, (err: any, files: any[]) => {
+      files.forEach((file: any) => {
+        console.log(file);
+      });
+    });
+
+    deleteLocalFiles(fs);
 
   });
 
