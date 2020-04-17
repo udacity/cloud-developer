@@ -1,20 +1,23 @@
 {
 	"info": {
-		"_postman_id": "4bcf1909-8996-44b7-be35-b130ab03d12f",
+		"_postman_id": "fcb9a5ef-17b6-424d-9872-10805eda37a9",
 		"name": "cloud-cdnd-c2-final",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "http://localhost:8082/filteredimage?image_url=https://timedotcom.files.wordpress.com/2019/03/kitten-report.jpg",
+			"name": "http://image-filter-starter-code-dev2222.us-west-2.elasticbeanstalk.com/filteredimage?image_url=https://timedotcom.files.wordpress.com/2019/03/kitten-report.jpg",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{HOST}}/filteredimage?image_url=https://timedotcom.files.wordpress.com/2019/03/kitten-report.jpg",
+					"raw": "http://image-filter-starter-code-dev2222.us-west-2.elasticbeanstalk.com/filteredimage?image_url=https://timedotcom.files.wordpress.com/2019/03/kitten-report.jpg",
 					"protocol": "http",
 					"host": [
-						"{{HOST}}"
+						"image-filter-starter-code-dev2222",
+						"us-west-2",
+						"elasticbeanstalk",
+						"com"
 					],
 					"path": [
 						"filteredimage"
@@ -54,10 +57,11 @@
 	],
 	"variable": [
 		{
-			"id": "1df3d31a-de30-494b-a3d0-f1228dd8713c",
+			"id": "28eeb855-249c-4089-8adf-8e37d789148d",
 			"key": "HOST",
-			"value": "localhost:8082",
+			"value": "http://image-filter-starter-code-dev2222.us-west-2.elasticbeanstalk.com/",
 			"type": "string"
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }
