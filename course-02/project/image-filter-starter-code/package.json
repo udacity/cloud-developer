@@ -28,7 +28,11 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
+    "bluebird": "^3.7.2",
+    "download-file": "^0.1.5",
     "express": "^4.17.1",
-    "jimp": "^0.6.4"
+    "express-validator": "^6.4.0",
+    "jimp": "^0.10.2",
+    "url": "^0.11.0"
   }
 }
