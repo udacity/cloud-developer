@@ -47,7 +47,7 @@ import {filterImageFromURL, deleteTheTempFiles} from './util/util';
     const filteredPath = await filterImageFromURL(imageUrl);
     if(filteredPath =="An error has occured")
     {
-      res.status(400).send("Please check the url again");
+      res.status(422).send("Please check the image url again");
     }
     //res.status(201).send(filteredPath);
     res.sendFile(filteredPath); 
