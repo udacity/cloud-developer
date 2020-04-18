@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import {filterImageFromURL, deleteTheTempFiles} from './util/util';
 
 (async () => {
 
@@ -49,7 +49,22 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     res.send("try GET /filteredimage?image_url={{}}")
   } );
   
+  app.get("/filteredimage",async (req, res)=> {
+    const imageUrl = req.query.image_url;
 
+    if (!imageUrl){
+      res.status(400).send("Image Url cannot be empty");
+    }
+
+    const filteredPath = await filterImageFromURL(imageUrl);
+    console.log(filteredPath);
+    //res.status(201).send(filteredPath);
+    res.sendFile(filteredPath); 
+    deleteTheTempFiles();
+    
+  });
+
+  
   // Start the Server
   app.listen( port, () => {
       console.log( `server running http://localhost:${ port }` );

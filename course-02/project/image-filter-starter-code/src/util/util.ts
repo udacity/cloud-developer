@@ -38,7 +38,26 @@ catch(error )
 // INPUTS
 //    files: Array<string> an array of absolute paths to files
 export async function deleteLocalFiles(files:Array<string>){
+    const path = require('path');
     for( let file of files) {
-        fs.unlinkSync(file);
+        const directoryPath = path.join(__dirname, 'tmp', file);
+        fs.unlinkSync(directoryPath);
     }
 }
+
+
+export function deleteTheTempFiles(){
+    const path = require('path');
+    const fs = require('fs');
+    //joining path of directory 
+    const directoryPath = path.join(__dirname, 'tmp');
+    //passsing directoryPath and callback function
+    fs.readdir(directoryPath, function (err: string, files: any[]) {
+        //handling error
+        if (err) {
+            return console.log('Unable to scan directory: ' + err);
+        } 
+        //listing all files using forEach
+        deleteLocalFiles(files);
+    });
+  }
