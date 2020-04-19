@@ -376,7 +376,7 @@
 			}
 		}
 	],
-	"variable": [
+	"variables": [
 		{
 			"id": "0db39ab1-774e-4108-8078-7a4d7df27657",
 			"key": "endpoint",
