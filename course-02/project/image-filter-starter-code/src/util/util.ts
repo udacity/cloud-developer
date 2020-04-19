@@ -32,12 +32,8 @@ export async function filterImageFromURL(inputURL: string): Promise<string>{
 
     });
 }
-catch(error )
-{
-    console.log(error);
-    return Promise.resolve("steing");
-}
-}
+
+
 
 // deleteLocalFiles
 // helper function to delete files on the local disk

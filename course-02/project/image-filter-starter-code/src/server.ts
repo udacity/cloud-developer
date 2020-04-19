@@ -29,19 +29,7 @@ import {filterImageFromURL, deleteTheTempFiles} from './util/util';
 
   /**************************************************************************** */
 
-  //! END @TODO1
-  app.get('/filteredimage', async (req , res )=>{
-    const imageUrl = req.query.image_url;
-    if (!imageUrl){
-      res.status(400).send("Image url is needed and cannot be empty")
-    }
-    console.log("url isnide the method is "+imageUrl );
-    const filteredPath =  await filterImageFromURL(imageUrl);
-    
-    res.status(200).send(filteredPath);
 
-
-  })
   
   // Root Endpoint
   // Displays a simple message to the user
