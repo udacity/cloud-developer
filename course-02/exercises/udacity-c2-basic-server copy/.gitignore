@@ -35,5 +35,3 @@ UserInterfaceState.xcuserstate
 node_modules
 venv/
 .vscode
-course-02/exercises/udacity-c2-restapi/src/credentials.csv
-course-02/exercises/udacity-c2-restapi/src/udagram-dev.ppk
