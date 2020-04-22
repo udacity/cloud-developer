@@ -10,13 +10,16 @@ import * as EmailValidator from 'email-validator';
 
 const router: Router = Router();
 
-//async function generatePassword(plainTextPassword: string): Promise<string> {
-    //@TODO Use Bcrypt to Generated Salted Hashed Passwords
-// }
+async function generatePassword(plainTextPassword: string): Promise<string> {
+    const rounds = 10;
+    const salt = await bcrypt.genSalt(rounds);
 
-// async function comparePasswords(plainTextPassword: string, hash: string): Promise<boolean> {
-    //@TODO Use Bcrypt to Compare your password to your Salted Hashed Password
-// }
+    return bcrypt.hash(plainTextPassword, salt);
+}
+
+async function comparePasswords(plainTextPassword: string, hash: string): Promise<boolean> {
+    return bcrypt.compare(plainTextPassword, hash);
+}
 
 // function generateJWT(user: User): string {
     //@TODO Use jwt to create a new JWT Payload containing
@@ -105,8 +108,8 @@ router.post('/', async (req: Request, res: Response) => {
         return res.status(422).send({ auth: false, message: 'User may already exist' });
     }
 
-    // const password_hash = await generatePassword(plainTextPassword);
-    const password_hash = "password";
+    const password_hash = await generatePassword(plainTextPassword);
+    // const password_hash = "password";
 
     const newUser = await new User({
         email: email,
