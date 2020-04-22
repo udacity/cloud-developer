@@ -10,17 +10,17 @@ import * as EmailValidator from 'email-validator';
 
 const router: Router = Router();
 
-async function generatePassword(plainTextPassword: string): Promise<string> {
+//async function generatePassword(plainTextPassword: string): Promise<string> {
     //@TODO Use Bcrypt to Generated Salted Hashed Passwords
-}
+// }
 
-async function comparePasswords(plainTextPassword: string, hash: string): Promise<boolean> {
+// async function comparePasswords(plainTextPassword: string, hash: string): Promise<boolean> {
     //@TODO Use Bcrypt to Compare your password to your Salted Hashed Password
-}
+// }
 
-function generateJWT(user: User): string {
+// function generateJWT(user: User): string {
     //@TODO Use jwt to create a new JWT Payload containing
-}
+// }
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
     return next();
@@ -70,14 +70,16 @@ router.post('/login', async (req: Request, res: Response) => {
     }
 
     // check that the password matches
-    const authValid = await comparePasswords(password, user.password_hash)
+    // const authValid = await comparePasswords(password, user.password_hash)
+    const authValid = true;
 
     if(!authValid) {
         return res.status(401).send({ auth: false, message: 'Unauthorized' });
     }
 
     // Generate JWT
-    const jwt = generateJWT(user);
+    // const jwt = generateJWT(user);
+    const jwt = "jwt";
 
     res.status(200).send({ auth: true, token: jwt, user: user.short()});
 });
@@ -103,7 +105,8 @@ router.post('/', async (req: Request, res: Response) => {
         return res.status(422).send({ auth: false, message: 'User may already exist' });
     }
 
-    const password_hash = await generatePassword(plainTextPassword);
+    // const password_hash = await generatePassword(plainTextPassword);
+    const password_hash = "password";
 
     const newUser = await new User({
         email: email,
@@ -118,7 +121,8 @@ router.post('/', async (req: Request, res: Response) => {
     }
 
     // Generate JWT
-    const jwt = generateJWT(savedUser);
+    // const jwt = generateJWT(savedUser);
+    const jwt = "jwt";
 
     res.status(201).send({token: jwt, user: savedUser.short()});
 });
