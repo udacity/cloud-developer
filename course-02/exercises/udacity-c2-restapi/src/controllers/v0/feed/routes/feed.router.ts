@@ -16,21 +16,21 @@ router.get('/', async (req: Request, res: Response) => {
     res.send(items);
 });
 
-//@TODO
-//Add an endpoint to GET a specific resource by Primary Key
+// Add an endpoint to GET a specific resource by Primary Key
 router.get('/:id', async (req: Request, res: Response) => {
-    let {id} = req.params;
+    const {id} = req.params;
     const item = await FeedItem.findByPk(id);
     if (item.url) {
         item.url = AWS.getGetSignedUrl(item.url);
     }
     res.send(item);
 });
+
 // update a specific resource
 router.patch('/:id',
     requireAuth,
     async (req: Request, res: Response) => {
-        let {id} = req.params;
+        const {id} = req.params;
         res.send(await FeedItem.update(req.body, {where : { id: id }}));
 });
 
@@ -38,12 +38,12 @@ router.patch('/:id',
 router.get('/signed-url/:fileName',
     requireAuth,
     async (req: Request, res: Response) => {
-        let {fileName} = req.params;
+        const {fileName} = req.params;
         const url = AWS.getPutSignedUrl(fileName);
         res.status(201).send({url: url});
     });
 
-// Post meta data and the filename after a file is uploaded 
+// Post meta data and the filename after a file is uploaded
 // NOTE the file name is they key name in the s3 bucket.
 // body : {caption: string, fileName: string};
 router.post('/',
