@@ -7,6 +7,7 @@ import * as jwt from 'jsonwebtoken';
 import { NextFunction } from 'connect';
 
 import * as EmailValidator from 'email-validator';
+import { config } from '../../../../config/config';
 
 const router: Router = Router();
 
@@ -21,9 +22,9 @@ async function comparePasswords(plainTextPassword: string, hash: string): Promis
     return bcrypt.compare(plainTextPassword, hash);
 }
 
-// function generateJWT(user: User): string {
-    //@TODO Use jwt to create a new JWT Payload containing
-// }
+function generateJWT(user: User): string {
+    return jwt.sign(user, config.dev.jwt.secret);
+}
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
     return next();
@@ -80,8 +81,7 @@ router.post('/login', async (req: Request, res: Response) => {
     }
 
     // Generate JWT
-    // const jwt = generateJWT(user);
-    const jwt = "jwt";
+    const jwt = generateJWT(user);
 
     res.status(200).send({ auth: true, token: jwt, user: user.short()});
 });
@@ -122,8 +122,7 @@ router.post('/', async (req: Request, res: Response) => {
     }
 
     // Generate JWT
-    // const jwt = generateJWT(savedUser);
-    const jwt = "jwt";
+    const jwt = generateJWT(savedUser);
 
     res.status(201).send({token: jwt, user: savedUser.short()});
 });
