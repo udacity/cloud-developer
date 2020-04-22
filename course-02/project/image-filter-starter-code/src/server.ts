@@ -8,7 +8,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     const app = express();
 
     // Set the network port
-    const port = process.env.PORT || 8082;
+    const port = process.env.PORT || 8081;
 
     // Use the body parser middleware for post requests
     app.use(bodyParser.json());
@@ -34,15 +34,20 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
             return res.status(400).send("image_url must be supplied")
         }
 
-        const filePath = await filterImageFromURL(image_url);
+        try {
+            const filePath = await filterImageFromURL(image_url);
 
-        res.sendFile(filePath, function (err) {
-            if (err) {
-                res.status(500).send("An unexpected error was encountered while filtering the image.");
-            } else {
-                deleteLocalFiles([filePath]);
-            }
-        });
+            res.sendFile(filePath, function (err) {
+                if (err) {
+                    res.status(500).send("An unexpected error was encountered while filtering the image.");
+                } else {
+                    deleteLocalFiles([filePath]);
+                }
+            });
+        }
+        catch (e) {
+            res.status(500).send("An unexpected error was encountered while filtering the image.");
+        }
     });
     //! END @TODO1
 
