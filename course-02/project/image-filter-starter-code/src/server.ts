@@ -8,7 +8,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     const app = express();
 
     // Set the network port
-    const port = process.env.PORT || 8081;
+    const port = process.env.PORT || 8082;
 
     // Use the body parser middleware for post requests
     app.use(bodyParser.json());
@@ -46,7 +46,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
             });
         }
         catch (e) {
-            res.status(500).send("An unexpected error was encountered while filtering the image.");
+            res.status(500).send(e);
         }
     });
     //! END @TODO1
