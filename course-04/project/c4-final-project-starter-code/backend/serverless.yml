@@ -12,6 +12,10 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
 
+  tracing:
+    lambda: true
+    apiGateway: true
+
   environment:
     TODOS_TABLE: Todos-${self:provider.stage}
     INDEX_NAME: TodosIndex-${self:provider.stage}
@@ -28,6 +32,7 @@ provider:
         - dynamodb:Query
         - dynamodb:PutItem
         - dynamodb:GetItem
+        - dynamodb:DeleteItem
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
 functions:
@@ -45,13 +50,15 @@ functions:
           path: todos
           cors: true
 
-  # # TODO: Configure this function
-  # CreateTodo:
-  #   handler: src/lambda/http/createTodo.handler
-  #   events:
-  #     - http:
-  #         method: post
-  #         path: todos
+  # TODO: Configure this function
+  CreateTodo:
+    handler: src/lambda/http/createTodo.handler
+    events:
+      - http:
+          method: post
+          authorizer: Auth
+          path: todos
+          cors: true
 
   # # TODO: Configure this function
   # UpdateTodo:
@@ -60,14 +67,17 @@ functions:
   #     - http:
   #         method: patch
   #         path: todos/{todoId}
+        
 
-  # # TODO: Configure this function
-  # DeleteTodo:
-  #   handler: src/lambda/http/deleteTodo.handler
-  #   events:
-  #     - http:
-  #         method: delete
-  #         path: todos/{todoId}
+  # TODO: Configure this function
+  DeleteTodo:
+    handler: src/lambda/http/deleteTodo.handler
+    events:
+      - http:
+          method: delete
+          path: todos/{todoId}
+          authorizer: Auth
+          cors: true
 
   # # TODO: Configure this function
   # GenerateUploadUrl:
@@ -99,7 +109,7 @@ resources:
             AttributeType: S
           - AttributeName: createdAt
             AttributeType: S
-          - AttributeName: imageId
+          - AttributeName: todoId
             AttributeType: S
         KeySchema:
           - AttributeName: userId
@@ -113,7 +123,7 @@ resources:
             KeySchema:
               - AttributeName: userId
                 KeyType: HASH
-              - AttributeName: dueDate
+              - AttributeName: todoId
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL # What attributes will be copied to an index
