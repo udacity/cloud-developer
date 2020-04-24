@@ -3,5 +3,6 @@
  */
 export interface CreateTodoRequest {
   name: string
-  dueDate: string
+  dueDate: string,
+  attachmentUrl?: string
 }

@@ -42,7 +42,8 @@ export class TodosAccess {
     const items = result.Items
     return items as TodoItem[]
   }
-  async getTodo(todoId: string,userId: string): Promise<TodoItem> {
+
+  async getTodo(todoId: string, userId: string): Promise<TodoItem> {
     console.log('Getting all groups')
     const result = await this.docClient
       .query({
@@ -51,7 +52,7 @@ export class TodosAccess {
         KeyConditionExpression: 'todoId = :todoId AND userId = :userId',
         ExpressionAttributeValues: {
           ':todoId': todoId,
-          ':userId':userId
+          ':userId': userId
         }
       })
       .promise()
@@ -59,6 +60,7 @@ export class TodosAccess {
     const items = result.Items[0]
     return items as TodoItem
   }
+
   async createTodo(todo: TodoItem): Promise<TodoItem> {
     await this.docClient.put({
       TableName: this.todosTable,
@@ -67,7 +69,8 @@ export class TodosAccess {
 
     return todo
   }
-  async deleteTodo(todoItem:TodoItem): Promise<boolean> {
+
+  async deleteTodo(todoItem: TodoItem): Promise<boolean> {
     logger.info(`-----User to be deleted: ${todoItem.userId} -- todoId: ${todoItem.todoId}`)
     const result = await this.docClient.delete({
       TableName: this.todosTable,
@@ -75,9 +78,9 @@ export class TodosAccess {
         "userId": todoItem.userId,
         "createdAt": todoItem.createdAt
       },
-      ConditionExpression:"todoId = :todoId",
+      ConditionExpression: "todoId = :todoId",
       ExpressionAttributeValues: {
-          ":todoId":todoItem.todoId
+        ":todoId": todoItem.todoId
       }
     }).promise()
     if (result.$response.error)
@@ -85,6 +88,47 @@ export class TodosAccess {
 
     return true
   }
+
+
+  async updateTodo(todoItem:TodoItem): Promise<TodoItem> {
+    logger.info(`-----User to be updated: ${todoItem.userId} -- todoId: ${todoItem.todoId}`)
+
+      var expressionAttibutes = {
+        ":todoId": todoItem.todoId,
+        ":done": todoItem.done,
+        ":name": todoItem.name,
+        ":dueDate": todoItem.dueDate
+      }
+      var updateExpression = "set done = :done, dueDate=:dueDate, #n=:name"
+
+      if(todoItem.attachmentUrl !== undefined){
+        
+        expressionAttibutes[":attachmentUrl"] = todoItem.attachmentUrl
+        updateExpression += ', attachmentUrl = :attachmentUrl'
+      }else{
+        updateExpression += 'REMOVE attachmentUrl'
+      }
+      
+
+    const result = await this.docClient.update({
+      TableName: this.todosTable,
+      Key: {
+        "userId": todoItem.userId,
+        "createdAt": todoItem.createdAt
+      },
+      ConditionExpression: "todoId = :todoId",
+      UpdateExpression: updateExpression,
+      ExpressionAttributeValues: expressionAttibutes,
+      ExpressionAttributeNames:{
+        "#n": "name"
+      },
+      ReturnValues: "UPDATED_NEW"
+    }).promise()
+    if (result.$response.error)
+      throw new Error('Failed to update item: ' + todoItem)
+    return todoItem
+  }
+
 }
 
 function createDynamoDBClient() {

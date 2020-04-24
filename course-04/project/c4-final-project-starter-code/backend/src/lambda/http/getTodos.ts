@@ -11,7 +11,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   const jwtToken = split[1]
   const result = await getUserTodos(jwtToken)
 
-  if (result.length !== 0) {
+
     return {
       statusCode: 200,
       headers: {
@@ -19,13 +19,6 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
       },
       body: JSON.stringify({items :result})
     }
-  }
+  
 
-  return {
-    statusCode: 404,
-    headers: {
-      'Access-Control-Allow-Origin': '*'
-    },
-    body: ''
-  }
 }
