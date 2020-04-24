@@ -20,6 +20,57 @@ import { Car, cars as cars_list } from './cars';
     res.status(200).send("Welcome to the Cloud!");
   } );
 
+  /* Cars endppoints */
+  app.get( "/cars/", 
+  ( req: Request, res: Response ) => {
+    let { name } = req.query;
+
+    const filteredCars = (name) ? cars.filter(c => c.make === name) : cars;
+
+    return res.status(200)
+              .send(filteredCars);
+} );
+
+
+app.get( "/cars/:id", 
+( req: Request, res: Response ) => {
+  let { id } = req.params;
+
+  if ( !id ) {
+    return res.status(400)
+              .send(`id is required`);
+  }
+
+  const car = cars.filter(c => c.id === id);
+
+  return res.status(200)
+            .send();
+} );
+
+app.post( "/cars", 
+async ( req: Request, res: Response ) => {
+
+  let { make, type, model, cost, id } = req.body;
+
+  if ( !id || !type || !model || !cost ) {
+    return res.status(400)
+              .send(`id, type, model, cost is required`);
+  }
+
+  const newCar: Car = {
+      make: make, type: type, model: model, cost: cost, id: id
+  };
+
+  cars.push(newCar);
+
+  return res.status(201)
+            .send(newCar);
+} );
+
+
+  //////////////////////////
+
+
   // Get a greeting to a specific person 
   // to demonstrate routing parameters
   // > try it {{host}}/persons/:the_name
