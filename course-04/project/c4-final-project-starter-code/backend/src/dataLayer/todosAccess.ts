@@ -106,7 +106,7 @@ export class TodosAccess {
         expressionAttibutes[":attachmentUrl"] = todoItem.attachmentUrl
         updateExpression += ', attachmentUrl = :attachmentUrl'
       }else{
-        updateExpression += 'REMOVE attachmentUrl'
+        updateExpression += ' REMOVE attachmentUrl'
       }
       
 
