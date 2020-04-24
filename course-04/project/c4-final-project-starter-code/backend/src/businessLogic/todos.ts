@@ -10,6 +10,10 @@ const todosAccess = new TodosAccess()
 export async function getAllTodos(): Promise<TodoItem[]> {
   return todosAccess.getAllTodos()
 }
+export async function getUserTodos(jwtToken: string): Promise<TodoItem[]> {
+  const userId = parseUserId(jwtToken)
+  return todosAccess.getTodos(userId)
+}
 
 export async function createTodo(
   createTodoRequest: CreateTodoRequest,
@@ -29,8 +33,18 @@ export async function createTodo(
   })
 }
 
+export async function getTodo(
+  todoId: string,
+  jwtToken: string
+): Promise<TodoItem> {
+
+  const userId = parseUserId(jwtToken)
+
+  return await todosAccess.getTodo(todoId,userId)
+}
+
 export async function deleteTodo(
-  todoId: string
+  todoItem:TodoItem
 ): Promise<boolean> {
-  return await todosAccess.deleteTodo(todoId)
+  return await todosAccess.deleteTodo(todoItem)
 }

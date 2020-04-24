@@ -29,11 +29,16 @@ provider:
         - '*'
     - Effect: Allow
       Action:
+        - dynamodb:Scan
         - dynamodb:Query
         - dynamodb:PutItem
         - dynamodb:GetItem
         - dynamodb:DeleteItem
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.INDEX_NAME}
 
 functions:
 
