@@ -19,6 +19,8 @@ provider:
   environment:
     TODOS_TABLE: Todos-${self:provider.stage}
     INDEX_NAME: TodosIndex-${self:provider.stage}
+    TODO_IMAGES_S3_BUCKET: jose-serverless-todos-images-${self:provider.stage}
+    SIGNED_URL_EXPIRATION: 300
   
   
   iamRoleStatements:
@@ -40,6 +42,11 @@ provider:
       Action:
         - dynamodb:Query
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.INDEX_NAME}
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+        - s3:GetObject
+      Resource: arn:aws:s3:::${self:provider.environment.TODO_IMAGES_S3_BUCKET}/*
 
 functions:
 
@@ -87,13 +94,15 @@ functions:
           authorizer: Auth
           cors: true
 
-  # # TODO: Configure this function
-  # GenerateUploadUrl:
-  #   handler: src/lambda/http/generateUploadUrl.handler
-  #   events:
-  #     - http:
-  #         method: post
-  #         path: todos/{todoId}/attachment
+  # TODO: Configure this function
+  GenerateUploadUrl:
+    handler: src/lambda/http/generateUploadUrl.handler
+    events:
+      - http:
+          method: post
+          authorizer: Auth
+          path: todos/{todoId}/attachment
+          cors: true
 
 resources:
   Resources:
@@ -135,4 +144,36 @@ resources:
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL # What attributes will be copied to an index
+    AttachmentsBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.environment.TODO_IMAGES_S3_BUCKET}
+        CorsConfiguration:
+          CorsRules:
+            -
+              AllowedOrigins:
+                - '*'
+              AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - GET
+                - PUT
+                - POST
+                - DELETE
+                - HEAD
+              MaxAge: 3000
+
+    BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        PolicyDocument:
+          Id: MyPolicy
+          Version: "2012-10-17"
+          Statement:
+            - Sid: PublicReadForGetBucketObjects
+              Effect: Allow
+              Principal: '*'
+              Action: 's3:GetObject'
+              Resource: 'arn:aws:s3:::${self:provider.environment.TODO_IMAGES_S3_BUCKET}/*'
+        Bucket: !Ref AttachmentsBucket
 
