@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+data:
+  POSTGRESS_DB: udagrampushdev
+  POSTGRESS_HOST: udagrampushdev.c2bnvurt3qq9.us-east-1.rds.amazonaws.com 
+  AWS_REGION: us-east-1 
+  AWS_PROFILE: default 
+  AWS_BUCKET: udagram-push-dev
+  JWT_SECRET: helloworld
+  URL: "*" 
+metadata:
+  name: env-config
+  
