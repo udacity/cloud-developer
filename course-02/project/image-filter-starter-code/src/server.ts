@@ -37,10 +37,34 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     res.send("try GET /filteredimage?image_url={{}}")
   } );
   
+  app.get('/filteredimage', 
+   
+  async (req, res) => {
+
+    if(!req.query.image_url){
+      res.status(422).send({result: "An Error: no file path is provide"});
+    }
+  let fileName: string  = req.query.image_url;
+  let localfiles: Array<string> =[];
+  let filteredImageString: Promise<string> = filterImageFromURL(fileName);
+  filteredImageString.then(function(result){
+    localfiles.push(result)
+    res.status(200).send({url: result});
+
+    deleteLocalFiles(localfiles)
+  }).catch(error=>{
+    res.status(422).send({result: "An Error Occured"});
+  })
+ 
+  
+});
+
 
   // Start the Server
   app.listen( port, () => {
       console.log( `server running http://localhost:${ port }` );
       console.log( `press CTRL+C to stop server` );
   } );
-})();
+  
+})
+();
