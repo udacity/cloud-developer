@@ -17,14 +17,42 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 //@TODO
-//Add an endpoint to GET a specific resource by Primary Key
+router.get('/:id', async (req: Request, res: Response) => {
+      const { id } = req.params;
+
+        // check Id is valid
+        if (!id) {
+            return res.status(400).send({ message: 'id is required' });
+        }
+
+    const item = await FeedItem.findByPk(id);
+    res.send(item);
+});
 
 // update a specific resource
 router.patch('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
-        //@TODO try it yourself
-        res.send(500).send("not implemented")
+    const caption = req.body.caption;
+    const fileName = req.body.url;
+    const { id } = req.params;
+
+    if ( !id || !caption || !fileName ) {
+        return res.status(400).send({ message: 'id , caption, filename is required' });
+    }
+
+    const [numberOfAffectedRows, affectedRows] = await FeedItem.update({ 
+        caption: caption,
+        url: fileName
+      }, {
+        where: {id: id},
+        returning: true
+      })
+
+      if(numberOfAffectedRows > 0)      
+        res.status(200).send(affectedRows);
+    
+    res.status(404).send({ message: 'feed with id is not found!' });
 });
 
 
