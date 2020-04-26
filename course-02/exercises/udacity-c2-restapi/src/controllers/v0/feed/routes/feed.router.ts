@@ -23,7 +23,7 @@ router.get('/signed-url/:fileName',
         const {fileName} = req.params;
 
         if (!fileName) {
-            res.status(500).send({message: `fileName must not be empty`});
+            return res.status(500).send({message: `fileName must not be empty`});
         }
 
         const url = AWS.getPutSignedUrl(fileName);
@@ -37,7 +37,7 @@ router.get('/:id', async (req: Request, res: Response) => {
     try {
         const item = await FeedItem.findByPk(id);
         if (item) {
-            res.status(200).send(item);
+            return res.status(200).send(item);
         }
         res.status(204).send();
     } catch (error) {
@@ -51,7 +51,7 @@ router.patch('/:id',
     async (req: Request, res: Response) => {
         const id = req.params.id;
         if (!id) {
-            res.status(500).send({message: `No id given`});
+            return res.status(500).send({message: `No id given`});
         }
 
         try {
@@ -61,9 +61,9 @@ router.patch('/:id',
                 returning: true
             });
             if (updatedItems[0] === 0) {
-                res.status(500).send({message: `No matching item for id ${id} found`});
+                return res.status(500).send({message: `No matching item for id ${id} found`});
             } else if (updatedItems[0] > 1) {
-                res.status(500).send({message: `more than one item for id ${id} found`});
+                return res.status(500).send({message: `more than one item for id ${id} found`});
             }
 
             const saved_item = updatedItems[1][0];
@@ -103,13 +103,13 @@ function validateBody(input: any): object | never {
     }
 
     // check Filename is valid
-    if (!input.fileName) {
+    if (!input.url) {
         throw Error('File url is required');
     }
 
     return {
         caption: input.caption,
-        url: input.fileName
+        url: input.url
     };
 }
 
