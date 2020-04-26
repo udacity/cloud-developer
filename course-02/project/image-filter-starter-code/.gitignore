@@ -28,7 +28,7 @@ plugins/
 plugins/android.json
 plugins/ios.json
 $RECYCLE.BIN/
-
+.env
 .DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate
@@ -39,3 +39,4 @@ venv/
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+/deployment_screenshots/
