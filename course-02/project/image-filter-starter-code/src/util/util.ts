@@ -1,5 +1,7 @@
 import fs from 'fs';
-import Jimp = require('jimp');
+//import Jimp = require('jimp');
+//import * as Jimp from 'jimp';
+const Jimp = require('jimp');
 
 // filterImageFromURL
 // helper function to download, filter, and save the filtered image locally
@@ -9,16 +11,27 @@ import Jimp = require('jimp');
 // RETURNS
 //    an absolute path to a filtered image locally saved file
 export async function filterImageFromURL(inputURL: string): Promise<string>{
+    //console.log(`input URL ====> ${inputURL}`);
     return new Promise( async resolve => {
         const photo = await Jimp.read(inputURL);
+        //Jimp
+        //  .read(inputURL)
+        //  .then((image: any) =>{});
         const outpath = '/tmp/filtered.'+Math.floor(Math.random() * 2000)+'.jpg';
         await photo
         .resize(256, 256) // resize
         .quality(60) // set JPEG quality
         .greyscale() // set greyscale
-        .write(__dirname+outpath, (img)=>{
+        .write(__dirname+outpath, (img: any)=>{
             resolve(__dirname+outpath);
         });
+        //.write(outpath, (img)=>{
+        //    console.log(`outpath ====> ${outpath}`);
+        //    resolve(outpath);
+        //});
+        //console.log(`__dirname+outpath`);
+        //console.log(`photo ====> ${photo}`);
+        //console.log(`out path filtered ====> ${outpath}`);
     });
 }
 
@@ -28,6 +41,7 @@ export async function filterImageFromURL(inputURL: string): Promise<string>{
 // INPUTS
 //    files: Array<string> an array of absolute paths to files
 export async function deleteLocalFiles(files:Array<string>){
+    //console.log(`delete ====> ${files}`);
     for( let file of files) {
         fs.unlinkSync(file);
     }

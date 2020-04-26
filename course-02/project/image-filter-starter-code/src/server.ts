@@ -1,6 +1,16 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+//import { FilterImageFromURLRouter , DeleteLocalFilesRouter  } from './util/util';
+//import { FilterImageFromURLRouter } from './util/util';
+
+import { Router, Request, Response } from 'express';
+//import urlExists from 'url-exists';
+//import { urlExists } from 'url-exists';
+
+//import isUrl from 'is-url';
+import isUrl from 'is-url';
+import { urlExists } from 'url-exists-promise';
 
 (async () => {
 
@@ -9,7 +19,8 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   // Set the network port
   const port = process.env.PORT || 8082;
-  
+  //const port = process.env.PORT || 8081;
+
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
 
@@ -30,13 +41,37 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   /**************************************************************************** */
 
   //! END @TODO1
-  
-  // Root Endpoint
-  // Displays a simple message to the user
+  const router: Router = Router();
+  app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "http://localhost:8100");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    next();
+  });
+
   app.get( "/", async ( req, res ) => {
-    res.send("try GET /filteredimage?image_url={{}}")
-  } );
-  
+    res.send( "GET /filteredimage?image_url={{URL}}" );
+  });
+
+app.get('/filteredimage/',
+      async (req: Request, res: Response) => {
+      //console.log( `==> start` );
+      let { image_url } = req.query;
+      //let { image_url } = req.params;
+
+      if (! isUrl(image_url)) {
+        res.status(422).send( `URL Invalid: "${image_url}"` )
+      }else{
+        urlExists(image_url)
+          .then(exists=>filterImageFromURL(image_url).then(outputpath=>{res.status(200).sendFile(outputpath, function(err) {
+                if (! err) {
+                  let list_delete : string[] = [outputpath]
+                  deleteLocalFiles(list_delete);
+                }
+              })
+            }))
+          .catch(err=>res.status(422).send( `URL Not Exists: ${image_url}` ))
+      }
+  });
 
   // Start the Server
   app.listen( port, () => {
