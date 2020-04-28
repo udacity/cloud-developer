@@ -1,6 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import fs from 'fs';
+import mimetypes from 'mime-types';
+import {filterImageFromURL, deleteLocalFiles, isValidUrl} from './util/util';
 
 (async () => {
 
@@ -13,31 +15,42 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
 
-  // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
-  // GET /filteredimage?image_url={{URL}}
-  // endpoint to filter an image from a public url.
-  // IT SHOULD
-  //    1
-  //    1. validate the image_url query
-  //    2. call filterImageFromURL(image_url) to filter the image
-  //    3. send the resulting file in the response
-  //    4. deletes any files on the server on finish of the response
-  // QUERY PARAMATERS
-  //    image_url: URL of a publicly accessible image
-  // RETURNS
-  //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
+  // filteredimage Endpoint
+  // returns a filterimage
+  app.get( "/filteredimage/", async ( req , res ) => {
+    const { image_url } = req.query;
 
-  /**************************************************************************** */
+    // validate the image_url from req param.
+    if (!image_url) {
+        return res.status(400).send({ message: 'image_url is required' });
+    }
 
-  //! END @TODO1
+    //check if its a valid url aswell.
+    if(!isValidUrl(image_url)) {
+        return res.status(400).send({ message: 'image_url is not a correct url' });
+    }
+
+    //Get filter image.
+    const filterImagePath = await filterImageFromURL(image_url);
+    
+    //Parse the image extension for the correct header.
+    const fileNameSplited =  filterImagePath.split('.');
+    let fileNamExtension =  fileNameSplited[fileNameSplited.length-1];
+    
+    //Set header and send the filecontent
+    const mime = mimetypes.lookup(fileNamExtension);
+    res.set('Content-Type', (!mime) ? 'application/octet-stream' : mime);
+    fs.createReadStream(filterImagePath).pipe(res);
+    //Delete file
+    await deleteLocalFiles([ filterImagePath ]);
+  } );
   
   // Root Endpoint
   // Displays a simple message to the user
-  app.get( "/", async ( req, res ) => {
+  app.get( "/", async ( req , res ) => {
     res.send("try GET /filteredimage?image_url={{}}")
   } );
   
-
   // Start the Server
   app.listen( port, () => {
       console.log( `server running http://localhost:${ port }` );

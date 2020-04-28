@@ -32,3 +32,19 @@ export async function deleteLocalFiles(files:Array<string>){
         fs.unlinkSync(file);
     }
 }
+
+// isValidUrl
+// helper function to validate if input is a valid url
+// returns boolean if the url is valid
+// INPUTS
+//    url: string - a publicly url
+// RETURNS
+//    boolean if its a valid url or not.
+export function isValidUrl(url: string)  {
+    try {
+      new URL(url);
+    } catch (_) {
+      return false;  
+    }
+    return true;
+}
