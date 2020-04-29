@@ -1,5 +1,6 @@
 import AWS = require('aws-sdk');
 import { config } from './config/config';
+import { S3 } from 'aws-sdk';
 
 const c = config.dev;
 
@@ -13,6 +14,13 @@ export const s3 = new AWS.S3({
   region: c.aws_region,
   params: {Bucket: c.aws_media_bucket}
 });
+
+export async function UploadFile(filestream: any,name :string) : Promise<S3.ManagedUpload.SendData> {
+  var upload = new AWS.S3.ManagedUpload({
+    params: {Bucket: c.aws_media_bucket, Key: name, Body: filestream}
+  });
+  return upload.promise();
+}
 
 
 /* getGetSignedUrl generates an aws signed url to retreive an item

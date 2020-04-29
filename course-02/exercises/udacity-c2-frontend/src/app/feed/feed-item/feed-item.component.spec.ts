@@ -35,6 +35,13 @@ describe('FeedItemComponent', () => {
     expect(img[0].src).toEqual(feedItemMocks[0].url);
   });
 
+  it('should set the image Processed url to the feedItem', () => {
+    const app = fixture.nativeElement;
+    const img = app.querySelectorAll('ion-img');
+    expect(img.length).toEqual(1);
+    expect(img[0].src).toEqual(feedItemMocks[0].processedUrl);
+  });
+
   it('should display the caption', () => {
     const app = fixture.nativeElement;
     const paragraphs = app.querySelectorAll('p');

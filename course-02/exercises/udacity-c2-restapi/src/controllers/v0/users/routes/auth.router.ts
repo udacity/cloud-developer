@@ -4,7 +4,6 @@ import { User } from '../models/User';
 
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
-import jwt_decode from "jwt-decode";
 import { NextFunction } from 'connect';
 
 import * as EmailValidator from 'email-validator';
@@ -26,7 +25,9 @@ async function comparePasswords(plainTextPassword: string, hash: string): Promis
 }
 
 function generateJWT(user: User): string {
-    return jwt.sign(JSON.stringify(user) , config.jwt.secret);
+    return jwt.sign( { email: user.email }, config.jwt.secret, {
+        expiresIn: '365d'
+    });
 }
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
@@ -34,11 +35,8 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
          return res.status(401).send({ message: 'No authorization headers.' });
      }
 
-
-     const token_bearer = req.headers.authorization.split(' ');
-
+    const token_bearer = req.headers.authorization.split(' ');
     const token = token_bearer[1].split(',')[0];
-
 
      return jwt.verify(token , config.jwt.secret, (err, decoded) => {
        if (err) {
