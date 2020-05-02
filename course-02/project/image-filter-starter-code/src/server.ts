@@ -35,7 +35,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
             deleteLocalFiles([filteredImagePath]);
           }))
         .catch((err) => {
-          console.log(err);
+          console.log('Unable to filter image from URL', err);
           res.status(422)
             .send(`not able to process the specified image`);
         });
