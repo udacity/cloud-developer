@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+const fs = require("fs"); 
 
 (async () => {
 
@@ -28,6 +29,19 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
+  app.get( "/filteredimage", async ( req, res ) => {
+    filterImageFromURL(req.query.image_url)
+    .then((imgRes) => {
+      res.sendFile(imgRes)
+
+      if (fs.existsSync(imgRes)) {
+        setTimeout(() => {
+            deleteLocalFiles([imgRes])
+        }, 2000)
+      }
+    })
+    .catch((e) => console.log(e))
+  } );
 
   //! END @TODO1
   
