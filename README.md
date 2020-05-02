@@ -5,4 +5,4 @@ Sample request against endpoint - http://image-filter-starter-code-dev222222.us-
 
 Endpoint is at http://image-filter-starter-code-dev222222.us-east-1.elasticbeanstalk.com/filteredimage?image_url= and you can paste your own url to an image accessible on the internet.
 
-
+ElasticBeanstalk screenshot - https://github.com/chenbensong/cloud-developer/blob/dev/course-02/project/image-filter-starter-code/eb-screenshot.png
