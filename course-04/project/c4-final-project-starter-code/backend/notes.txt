@@ -1,0 +1,6 @@
+
+sudo npm install serverless -g
+
+sls config credentials --provider aws --key xxxxxxx --secret xxxxxxxxxx --profile serverless
+
+sls deploy -v
