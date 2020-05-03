@@ -1,7 +1,7 @@
 import AWS = require('aws-sdk');
 import { config } from './config/config';
 
-const c = config.dev;
+const c = config.aws;
 
 //Configure AWS
 if(c.aws_profile !== "DEPLOYED") {
