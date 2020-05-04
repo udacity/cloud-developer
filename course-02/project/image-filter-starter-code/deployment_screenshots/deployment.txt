@@ -1,3 +1,7 @@
+Hi, 
+
+I was updated my repo after project submission. I'm creating new branches and updatin this file for pull requests and udacity re-subbitting project.
+
 Deployment url : http://udacity-lesson-media-dev.us-east-2.elasticbeanstalk.com/
 
 Test url : http://udacity-lesson-media-dev.us-east-2.elasticbeanstalk.com/filteredimage?image_url=https://avatars3.githubusercontent.com/u/7307888?s=460%26u=b218c912ea19fc3af21cc15ede9f625992ee0fac%26v=4.jpg
