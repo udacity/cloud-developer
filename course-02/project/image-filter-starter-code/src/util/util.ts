@@ -32,3 +32,6 @@ export async function deleteLocalFiles(files:Array<string>){
         fs.unlinkSync(file);
     }
 }
+export async function deleteLocalFile(file:string){
+        fs.unlinkSync(file);
+}

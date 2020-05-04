@@ -1,6 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import {filterImageFromURL, deleteLocalFiles, deleteLocalFile} from './util/util';
+import {findTsconfig} from "tslint/lib/files/resolution";
+
 
 (async () => {
 
@@ -12,6 +14,8 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
+
+  let fileSystem = require('fs');
 
   // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
   // GET /filteredimage?image_url={{URL}}
@@ -26,7 +30,26 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //    image_url: URL of a publicly accessible image
   // RETURNS
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
+  app.get("/filteredimage", async (req, res) => {
+    let image_url = req.query.image_url
+    
+    if(!image_url){
+      res.sendStatus(400).send("try GET /filteredimage?image_url={{??}}")
+    }
 
+    let path = await filterImageFromURL(image_url)
+
+    if(!path){
+      res.sendStatus(400).send("Error getting image!")
+    }
+
+    res.sendFile(path)
+
+    res.on("close",function () {
+      deleteLocalFile(path)
+    })
+
+  })
   /**************************************************************************** */
 
   //! END @TODO1
