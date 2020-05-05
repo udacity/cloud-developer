@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles, deleteLocalFile} from './util/util';
 import {findTsconfig} from "tslint/lib/files/resolution";
+import { Request, Response } from "express";
 
 
 (async () => {
@@ -30,14 +31,14 @@ import {findTsconfig} from "tslint/lib/files/resolution";
   //    image_url: URL of a publicly accessible image
   // RETURNS
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
-  app.get("/filteredimage", async (req, res) => {
-    let image_url = req.query.image_url
+  app.get("/filteredimage", async (req: Request, res: Response) => {
+    let image_url:string = req.query.image_url
     
     if(!image_url){
       res.sendStatus(400).send("try GET /filteredimage?image_url={{??}}")
     }
 
-    let path = await filterImageFromURL(image_url)
+    let path:string = await filterImageFromURL(image_url)
 
     if(!path){
       res.sendStatus(400).send("Error getting image!")

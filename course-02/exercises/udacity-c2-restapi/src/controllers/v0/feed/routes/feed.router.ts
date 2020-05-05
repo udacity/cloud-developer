@@ -16,15 +16,45 @@ router.get('/', async (req: Request, res: Response) => {
     res.send(items);
 });
 
-//@TODO
 //Add an endpoint to GET a specific resource by Primary Key
+router.get('/:id',
+    requireAuth,
+    async (req: Request, res: Response) => {
+        let {id} = req.params;
+        const feedItem = await FeedItem.findByPk(id);
 
+        if(!feedItem){
+            return res.status(400).send({ message: 'Item not found' });
+        }
+
+        if(feedItem.url) {
+            feedItem.url = AWS.getGetSignedUrl(feedItem.url);
+        }
+        return res.status(200).send(feedItem)
+    }
+    );
 // update a specific resource
 router.patch('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
-        //@TODO try it yourself
-        res.send(500).send("not implemented")
+        let {id} = req.params;
+        const caption = req.body.caption;
+        const fileName = req.body.url;
+
+        // check Caption is valid
+        if (!caption) {
+            return res.status(400).send({ message: 'Caption is required or malformed' });
+        }
+        // check Filename is valid
+        if (!fileName) {
+            return res.status(400).send({ message: 'File url is required' });
+        }
+
+        let newVar = await FeedItem.update({caption:caption, url:fileName}, {where:{id:id}});
+        console.log(newVar)
+
+
+            res.status(200).send("sucess")
 });
 
 
