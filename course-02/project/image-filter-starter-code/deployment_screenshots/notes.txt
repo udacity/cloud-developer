@@ -1,0 +1,5 @@
+Elastic Beanstalk Deployment URL:
+http://image-filter-starter-code-dev.eu-central-1.elasticbeanstalk.com
+
+with GET request by filteredimage query param:
+http://image-filter-starter-code-dev.eu-central-1.elasticbeanstalk.com/filteredimage?image_url=https://s.turkcell.com.tr/SiteAssets/Bireysel/Servis/render/gorseller/hesabim_4/hesabim_4_279x209.png
