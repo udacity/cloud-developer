@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
@@ -30,6 +30,24 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   /**************************************************************************** */
 
   //! END @TODO1
+
+  app.get( "/filteredimage/", ( req: Request, res: Response ) => {
+   
+
+    let { image_url } = req.query;
+    var local_url = '';
+    var urls :string[];
+
+    if ( !image_url ) {
+      return res.status(400).send("Image URL required!")
+    }
+
+    filterImageFromURL(image_url).then(local_url => {
+      res.status(200).sendFile(local_url, () => { deleteLocalFiles([local_url]); });
+      }
+    );    
+    
+  });
   
   // Root Endpoint
   // Displays a simple message to the user
