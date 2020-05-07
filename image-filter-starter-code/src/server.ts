@@ -12,6 +12,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
+  let filtered_imgs: string[] = []
 
   // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
   // GET /filteredimage?image_url={{URL}}
@@ -33,13 +34,12 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
       return res.status(400)
       .send("please include a valid url")
     }
-    let filtered_imgs: string[]
 
     filterImageFromURL(image_url).then( (imgpath) => {
       res.status(200)
       .sendFile(`${imgpath}`)
       filtered_imgs.push(imgpath)
-    }).finally( () => {console.log("it worked")})
+    })
     // res.status(200).sendFile(`./util/tmp/*`)
 
   } );
