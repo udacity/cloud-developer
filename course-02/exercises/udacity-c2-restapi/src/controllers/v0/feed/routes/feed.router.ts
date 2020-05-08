@@ -18,15 +18,45 @@ router.get('/', async (req: Request, res: Response) => {
 
 //@TODO
 //Add an endpoint to GET a specific resource by Primary Key
+router.get('/:id', async (req: Request, res: Response) => {
+    let { id } = req.params;
+
+    if (!id) {
+        return res.status(400).send('ID is required');
+    }
+
+    const item = await FeedItem.findByPk(id);
+    res.send(item);
+});
 
 // update a specific resource
 router.patch('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
         //@TODO try it yourself
-        res.send(500).send("not implemented")
-});
+        let { id } = req.params;
+        const newCaption = req.body.caption;
+        const newUrl = req.body.url;
 
+        if (!id) {
+            return res.status(400).send('ID is required');
+        }
+        if (!newCaption) {
+            return res.status(400).send({message: 'Caption is required or malformed'});
+        }
+        if (!newUrl) {
+            return res.status(400).send({message: 'File url is required'});
+        }
+        const item: FeedItem = await FeedItem.findByPk(id);
+        item.url = newUrl;
+        item.caption = newCaption;
+        item.update({url: newUrl, caption: newCaption}).then(() => {
+            console.log('Updated');
+        });
+        res.status(201).send(item);
+    // res.send(500).send("not implemented")
+    });
+    
 
 // Get a signed url to put a new item in the bucket
 router.get('/signed-url/:fileName', 
