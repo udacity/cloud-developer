@@ -28,12 +28,12 @@ import { filterImageFromURL, deleteLocalFiles } from './util/util';
         if (!error) {
           res.status(200);
         }
-        res.status(500).send("Some error occured.");
+        res.status(500);
       });
     }
     catch (e) {
       let result = (e as Error).message;
-      res.status(500).send(e);
+      res.status(500);
     }
   });
 
