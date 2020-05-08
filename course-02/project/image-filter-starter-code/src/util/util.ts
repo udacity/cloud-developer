@@ -32,3 +32,14 @@ export async function deleteLocalFiles(files:Array<string>){
         fs.unlinkSync(file);
     }
 }
+
+export async function getImageFromURL(inputURL: string): Promise<string> {
+    try {
+        const photo = await Jimp.read(inputURL)
+        const outpath = '/tmp/origin.jpg'
+        photo.write(__dirname + outpath)
+        return __dirname + outpath
+    } catch {
+        return "Fail"
+    }
+}
