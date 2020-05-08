@@ -18,4 +18,4 @@ before_install:
 
 
 install:
-  - docker-compose -f course-03/exercises/udacity-c3-deployment/docker/docker-compose-build.yaml build --parallel 
+  - docker-compose -f nd9990-c3-microservices-v1/lesson-6-Independent-Releases-and-Deployment/exercise/udacity-c3-deployment/docker/docker-compose-build.yaml build --parallel 
