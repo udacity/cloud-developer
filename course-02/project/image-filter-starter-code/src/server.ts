@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import {filterImageFromURL, deleteLocalFiles, getImageFromURL} from './util/util';
+import fs from 'fs'
 
 (async () => {
 
@@ -37,21 +38,27 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
       if ( !image_url ) {
         res.status(400).send(`image_url is required`)
       }
-      console.log("image_url= " + image_url)
-      const filteredImage = await filterImageFromURL(image_url)
+      
+      const originImage = await getImageFromURL(image_url)
 
-      res.status(200).sendFile(filteredImage, function(err) {
-        if (err) {
-          console.error("Error sending filtered image to user\n" + err)
-        } else {
-          console.log("Filtered image send with success")
-          try {
-            deleteLocalFiles(Array(filteredImage))
-          } catch (err) {
-            console.error("Error cleaning up filtered image on server\n" + err)
+      if ( originImage === "Fail" ) {
+        console.error("Couldn't download image from provided link")
+        res.status(400).send(`Couldn't download ${image_url} please verify that link is correct`)
+      } else {
+        const filteredImage = await filterImageFromURL(image_url)
+        res.status(200).sendFile(filteredImage, function(err) {
+          if (err) {
+            console.error("Error sending filtered image to user\n" + err)
+          } else {
+            console.log("Filtered image send with success")
+            try {
+              deleteLocalFiles(Array(filteredImage, originImage))
+            } catch (err) {
+              console.error("Error cleaning up filtered image on server\n" + err)
+            }
           }
-        }
-      })
+        })
+      }
     }
   )
   
