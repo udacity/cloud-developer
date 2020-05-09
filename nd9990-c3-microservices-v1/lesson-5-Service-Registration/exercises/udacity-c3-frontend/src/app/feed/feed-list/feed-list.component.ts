@@ -1,5 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, OnDestroy } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FeedItem } from '../models/feed-item.model';
 import { FeedProviderService } from '../services/feed.provider.service';
 import { Subscription } from 'rxjs';
@@ -8,7 +7,6 @@ import { Subscription } from 'rxjs';
   selector: 'app-feed-list',
   templateUrl: './feed-list.component.html',
   styleUrls: ['./feed-list.component.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FeedListComponent implements OnInit, OnDestroy {
   @Input() feedItems: FeedItem[];

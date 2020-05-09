@@ -40,14 +40,14 @@ export class AuthRegisterComponent implements OnInit {
 
     if (!this.registerForm.valid) { return; }
 
-    const newuser: User = {
+    const newUser: User = {
       email: this.registerForm.controls.email.value,
       name: this.registerForm.controls.name.value
     };
 
-    this.auth.register(newuser, this.registerForm.controls.password.value)
-              .then((user) => {
-                this.modal.dismiss();
+    this.auth.register(newUser, this.registerForm.controls.password.value)
+              .then(async () => {
+                await this.modal.dismiss();
               })
              .catch((e) => {
               this.error = e.statusText;

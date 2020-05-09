@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from 'src/app/api/api.service';
-
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { FeedProviderService } from '../services/feed.provider.service';
-
 import { LoadingController, ModalController } from '@ionic/angular';
-
 
 @Component({
   selector: 'app-feed-upload',
@@ -40,29 +36,24 @@ export class FeedUploadComponent implements OnInit {
   }
 
   selectImage(event) {
-    const file = event.srcElement.files;
+    const file = event.target.files;
 
     if (!file) {
       return;
     }
     this.file = file[0];
     this.setPreviewDataUrl(this.file);
-
   }
 
-  onSubmit($event) {
+  async onSubmit($event) {
     $event.preventDefault();
-    this.loadingController.create();
+    await this.loadingController.create();
 
     if (!this.uploadForm.valid || !this.file) { return; }
     this.feed.uploadFeedItem(this.uploadForm.controls.caption.value, this.file)
-      .then((result) => {
-        this.modalController.dismiss();
-        this.loadingController.dismiss();
+      .then(async () => {
+        await this.modalController.dismiss();
+        await this.loadingController.dismiss();
       });
-  }
-
-  cancel() {
-    this.modalController.dismiss();
   }
 }

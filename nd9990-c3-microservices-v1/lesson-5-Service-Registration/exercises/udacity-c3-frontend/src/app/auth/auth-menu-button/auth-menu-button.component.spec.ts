@@ -3,6 +3,7 @@ import { AuthMenuButtonComponent } from './auth-menu-button.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ModalController } from '@ionic/angular';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 
 describe('AuthMenuButtonPage', () => {
@@ -25,6 +26,7 @@ describe('AuthMenuButtonPage', () => {
           useValue: modalCtrlSpy
         }
       ],
+      imports: [HttpClientTestingModule],
       declarations: [ AuthMenuButtonComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })

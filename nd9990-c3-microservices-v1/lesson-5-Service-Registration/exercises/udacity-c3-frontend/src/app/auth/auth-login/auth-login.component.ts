@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
-
 import { ModalController } from '@ionic/angular';
-
 import { AuthService } from '../services/auth.service';
-import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-auth-login',
@@ -39,7 +36,7 @@ export class AuthLoginComponent implements OnInit {
     this.auth.login(
         this.loginForm.controls.email.value,
         this.loginForm.controls.password.value)
-      .then((user) => {
+      .then(() => {
         this.modal.dismiss();
       })
       .catch((e) => {

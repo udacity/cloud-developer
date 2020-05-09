@@ -4,6 +4,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FeedListComponent } from './feed-list.component';
 import { FeedProviderService } from '../services/feed.provider.service';
 import { feedItemMocks } from '../models/feed-item.model';
+import {RouterTestingModule} from '@angular/router/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('FeedListComponent', () => {
   let component: FeedListComponent;
@@ -13,6 +15,7 @@ describe('FeedListComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ FeedListComponent ],
+      imports: [ RouterTestingModule, HttpClientTestingModule ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
@@ -23,7 +26,7 @@ describe('FeedListComponent', () => {
 
     // SET UP SPIES AND MOCKS
     feedProvider = fixture.debugElement.injector.get(FeedProviderService);
-    // spyOn(feedProvider, 'fetch').and.returnValue(Promise.resolve(feedItemMocks));
+    spyOn(feedProvider, 'getFeed').and.returnValue(Promise.resolve(feedItemMocks));
 
     component = fixture.componentInstance;
     fixture.detectChanges();

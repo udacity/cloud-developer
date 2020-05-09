@@ -3,7 +3,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FeedItemComponent } from './feed-item.component';
 import { feedItemMocks } from '../models/feed-item.model';
-import { FeedProviderService } from '../services/feed.provider.service';
 
 describe('FeedItemComponent', () => {
   let component: FeedItemComponent;

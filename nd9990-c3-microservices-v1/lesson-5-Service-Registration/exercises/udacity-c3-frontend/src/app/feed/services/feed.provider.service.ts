@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FeedItem, feedItemMocks } from '../models/feed-item.model';
+import { FeedItem} from '../models/feed-item.model';
 import { BehaviorSubject } from 'rxjs';
 
 import { ApiService } from '../../api/api.service';
@@ -27,13 +27,3 @@ export class FeedProviderService {
   }
 
 }
-
-// async getFeed() {
-//   const url = `${API_HOST}/feed`;
-
-//   const req = this.http.get(url, this.httpOptions).pipe(
-//     map(this.extractData));
-//     // catchError(this.handleError));
-//   const resp = <any> (await req.toPromise());
-//   return resp.rows;
-// }

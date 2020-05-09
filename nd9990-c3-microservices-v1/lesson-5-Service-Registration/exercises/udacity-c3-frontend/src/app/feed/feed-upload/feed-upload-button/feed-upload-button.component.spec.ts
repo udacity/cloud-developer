@@ -2,6 +2,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FeedUploadButtonComponent } from './feed-upload-button.component';
+import {IonicModule} from '@ionic/angular';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('FeedUploadButtonPage', () => {
   let component: FeedUploadButtonComponent;
@@ -10,6 +12,7 @@ describe('FeedUploadButtonPage', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ FeedUploadButtonComponent ],
+      imports: [IonicModule, HttpClientTestingModule],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();

@@ -18,8 +18,6 @@ export class AppComponent {
     }
   ];
 
-  public appName = environment.appName;
-
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
