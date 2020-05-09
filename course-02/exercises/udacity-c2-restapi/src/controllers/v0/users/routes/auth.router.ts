@@ -22,13 +22,11 @@ async function generatePassword(plainTextPassword: string): Promise<string> {
 }
 
 async function comparePasswords(plainTextPassword: string, hash: string): Promise<boolean> {
-    const compare = await bcrypt.compare(plainTextPassword,hash);
-    return compare;
+    return await bcrypt.compare(plainTextPassword,hash);;
 }
 
 function generateJWT(user: User): string {
-    //@TODO Use jwt to create a new JWT Payload containing
-    return jwt.sign(user,config.jwt.secret);
+    return jwt.sign(user.toJSON(),config.jwt.secret);
 }
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
