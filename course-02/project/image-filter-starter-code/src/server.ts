@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
 (async () => {
-
+  // test
   // Init the Express application
   const app = express();
 
