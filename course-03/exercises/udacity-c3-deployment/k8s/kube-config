@@ -16,4 +16,4 @@ users:
 - name: docker-desktop
   user:
     client-certificate-data:
-    client-key-data: 
+    client-key-data:
