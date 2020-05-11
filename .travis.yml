@@ -39,5 +39,6 @@ install:
   - "kubectl apply -f course-03/exercises/udacity-c3-deployment/k8s/backend-user-deployment.yaml"
   - "kubectl apply -f course-03/exercises/udacity-c3-deployment/k8s/frontend-deployment.yaml"
   - "kubectl apply -f course-03/exercises/udacity-c3-deployment/k8s/reverseproxy-deployment.yaml"
+  - "kubectl get pod"
 language: minimal
 services: docker
