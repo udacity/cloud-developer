@@ -51,7 +51,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
       .then( image => {
           res.sendFile(image, function (error) {
           if (error) {
-            res.status(400).send('Error sending file');
+            res.status(422).send('Error sending file');
           } else {
             try {
               const img_arr = [image];
@@ -62,8 +62,8 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
           }
         });
       }).catch(error => {
-        res.status(400)
-              .send('exception :' +error);
+        res.status(422)
+              .send('exception :' +error + " : probably file doesn't exist at URL");
       });
   } );
 
