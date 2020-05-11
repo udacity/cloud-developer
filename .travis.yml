@@ -12,7 +12,7 @@ before_install:
   - "curl -Lo minikube https://storage.googleapis.com/minikube/releases/v1.8.1/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/"
   - "mkdir -p $HOME/.kube $HOME/.minikube"
   - "touch $KUBECONFIG"
-  - "sudo minikube start --profile=minikube --vm-driver=none --kubernetes-version=v1.18.1"
+  - "minikube start --vm-driver=docker --kubernetes-version=v1.18.2"
   - "minikube update-context --profile=minikube"
   - "sudo chown -R travis: /home/travis/.minikube/"
   - "eval \"$(minikube docker-env --profile=minikube)\" && export DOCKER_CLI='docker'"
