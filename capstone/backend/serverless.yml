@@ -48,12 +48,13 @@ functions:
       - http:
           method: get
           # authorizer: Auth
-          path: todos
+          path: appointments
           cors: true
     iamRoleStatements:
         - Effect: Allow
           Action:
             - dynamodb:Query
+            - dynamodb:Scan
           Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}
         - Effect: Allow
           Action:

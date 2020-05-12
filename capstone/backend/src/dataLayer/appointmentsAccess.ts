@@ -2,35 +2,35 @@ import * as AWS from 'aws-sdk'
 import * as AWSXRay from 'aws-xray-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 import { createLogger } from '../utils/logger'
-const logger = createLogger('deleteAccess')
+const logger = createLogger('appointmentAccess')
 
 const XAWS = AWSXRay.captureAWS(AWS)
 
-import { TodoItem } from '../models/TodoItem'
+import { AppointmentItem } from '../models/AppointmentItem'
 
-export class TodosAccess {
+export class AppointmentsAccess {
 
   constructor(
     private readonly docClient: DocumentClient = createDynamoDBClient(),
-    private readonly todosTable = process.env.TODOS_TABLE,
+    private readonly appointmentsTable = process.env.APPOINTMENTS_TABLE,
     private readonly indexName = process.env.INDEX_NAME) {
   }
 
-  async getAllAppointments(): Promise<TodoItem[]> {
-    console.log('Getting all groups')
+  async getAllAppointments(): Promise<AppointmentItem[]> {
+    logger.info('Getting all Appointments')
 
     const result = await this.docClient.scan({
-      TableName: this.todosTable
+      TableName: this.appointmentsTable
     }).promise()
 
     const items = result.Items
-    return items as TodoItem[]
+    return items as AppointmentItem[]
   }
-  async getAppointments(userId: string): Promise<TodoItem[]> {
+  async getAppointments(userId: string): Promise<AppointmentItem[]> {
     console.log('Getting all groups')
     const result = await this.docClient
       .query({
-        TableName: this.todosTable,
+        TableName: this.appointmentsTable,
         IndexName: this.indexName,
         KeyConditionExpression: 'userId = :userId',
         ExpressionAttributeValues: {
@@ -40,94 +40,94 @@ export class TodosAccess {
       .promise()
 
     const items = result.Items
-    return items as TodoItem[]
+    return items as AppointmentItem[]
   }
 
-  async getTodo(todoId: string, userId: string): Promise<TodoItem> {
+  async getAppointment(appointmentId: string, userId: string): Promise<AppointmentItem> {
     console.log('Getting all groups')
     const result = await this.docClient
       .query({
-        TableName: this.todosTable,
+        TableName: this.appointmentsTable,
         IndexName: this.indexName,
-        KeyConditionExpression: 'todoId = :todoId AND userId = :userId',
+        KeyConditionExpression: 'appointmentId = :appointmentId AND userId = :userId',
         ExpressionAttributeValues: {
-          ':todoId': todoId,
+          ':todoId': appointmentId,
           ':userId': userId
         }
       })
       .promise()
 
     const items = result.Items[0]
-    return items as TodoItem
+    return items as AppointmentItem
   }
 
-  async createTodo(todo: TodoItem): Promise<TodoItem> {
-    await this.docClient.put({
-      TableName: this.todosTable,
-      Item: todo
-    }).promise()
+  // async createTodo(todo: AppointmentItem): Promise<AppointmentItem> {
+  //   await this.docClient.put({
+  //     TableName: this.appointmentsTable,
+  //     Item: todo
+  //   }).promise()
 
-    return todo
-  }
+  //   return todo
+  // }
 
-  async deleteTodo(todoItem: TodoItem): Promise<boolean> {
-    logger.info(`-----User to be deleted: ${todoItem.userId} -- todoId: ${todoItem.todoId}`)
-    const result = await this.docClient.delete({
-      TableName: this.todosTable,
-      Key: {
-        "userId": todoItem.userId,
-        "createdAt": todoItem.createdAt
-      },
-      ConditionExpression: "todoId = :todoId",
-      ExpressionAttributeValues: {
-        ":todoId": todoItem.todoId
-      }
-    }).promise()
-    if (result.$response.error)
-      throw new Error('Failed to delete item: ' + result.$response.data)
+  // async deleteTodo(todoItem: AppointmentItem): Promise<boolean> {
+  //   logger.info(`-----User to be deleted: ${todoItem.userId} -- todoId: ${todoItem.appointmentId}`)
+  //   const result = await this.docClient.delete({
+  //     TableName: this.appointmentsTable,
+  //     Key: {
+  //       "userId": todoItem.userId,
+  //       "createdAt": todoItem.createdAt
+  //     },
+  //     ConditionExpression: "todoId = :todoId",
+  //     ExpressionAttributeValues: {
+  //       ":todoId": todoItem.appointmentId
+  //     }
+  //   }).promise()
+  //   if (result.$response.error)
+  //     throw new Error('Failed to delete item: ' + result.$response.data)
 
-    return true
-  }
+  //   return true
+  // }
 
 
-  async updateTodo(todoItem:TodoItem): Promise<TodoItem> {
-    logger.info(`-----User to be updated: ${todoItem.userId} -- todoId: ${todoItem.todoId}`)
+  // async updateTodo(todoItem:AppointmentItem): Promise<AppointmentItem> {
+  //   logger.info(`-----User to be updated: ${todoItem.userId} -- todoId: ${todoItem.appointmentId}`)
 
-      var expressionAttibutes = {
-        ":todoId": todoItem.todoId,
-        ":done": todoItem.done,
-        ":name": todoItem.name,
-        ":dueDate": todoItem.dueDate
-      }
-      var updateExpression = "set done = :done, dueDate=:dueDate, #n=:name"
+  //     var expressionAttibutes = {
+  //       ":todoId": todoItem.appointmentId,
+  //       ":done": todoItem.done,
+  //       ":name": todoItem.name,
+  //       ":appointmentDate": todoItem.dueDate
+  //     }
+  //     var updateExpression = "set done = :done, dueDate=:dueDate, #n=:name"
 
-      if(todoItem.attachmentUrl !== undefined){
+  //     if(todoItem.attachmentUrl !== undefined){
         
-        expressionAttibutes[":attachmentUrl"] = todoItem.attachmentUrl
-        updateExpression += ', attachmentUrl = :attachmentUrl'
-      }else{
-        updateExpression += ' REMOVE attachmentUrl'
-      }
+  //       expressionAttibutes[":attachmentUrl"] = todoItem.attachmentUrl
+  //       updateExpression += ', attachmentUrl = :attachmentUrl'
+  //     }else{
+  //       updateExpression += ' REMOVE attachmentUrl'
+  //     }
       
 
-    const result = await this.docClient.update({
-      TableName: this.todosTable,
-      Key: {
-        "userId": todoItem.userId,
-        "createdAt": todoItem.createdAt
-      },
-      ConditionExpression: "todoId = :todoId",
-      UpdateExpression: updateExpression,
-      ExpressionAttributeValues: expressionAttibutes,
-      ExpressionAttributeNames:{
-        "#n": "name"
-      },
-      ReturnValues: "UPDATED_NEW"
-    }).promise()
-    if (result.$response.error)
-      throw new Error('Failed to update item: ' + todoItem)
-    return todoItem
-  }
+  //   const result = await this.docClient.update({
+  //     TableName: this.appointmentsTable,
+  //     Key: {
+  //       "userId": todoItem.userId,
+  //       "createdAt": todoItem.createdAt
+  //     },
+  //     ConditionExpression: "todoId = :todoId",
+  //     UpdateExpression: updateExpression,
+  //     ExpressionAttributeValues: expressionAttibutes,
+  //     ExpressionAttributeNames:{
+  //       "#n": "name"
+  //     },
+  //     ReturnValues: "UPDATED_NEW"
+  //   }).promise()
+  //   if (result.$response.error)
+  //     throw new Error('Failed to update item: ' + todoItem)
+  //   return todoItem
+  // }
 
 }
 

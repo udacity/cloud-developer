@@ -1,9 +1,9 @@
-export interface TodoItem {
+export interface AppointmentItem {
   userId: string
-  todoId: string
+  appointmentId: string
   createdAt: string
   name: string
-  dueDate: string
+  appointmentDate: string
   done: boolean
   attachmentUrl?: string
 }
