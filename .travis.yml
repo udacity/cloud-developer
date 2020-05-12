@@ -39,11 +39,6 @@ install:
   - "kubectl apply -f course-03/exercises/udacity-c3-deployment/k8s/backend-user-deployment.yaml"
   - "kubectl apply -f course-03/exercises/udacity-c3-deployment/k8s/frontend-deployment.yaml"
   - "kubectl apply -f course-03/exercises/udacity-c3-deployment/k8s/reverseproxy-deployment.yaml"
-  - "kubectl rollout status deployment backend-feed --timeout=120s"
-  - "kubectl wait --for=condition=available --timeout=120s deployment/backend-user"
-  - "kubectl wait --for=condition=available --timeout=120s deployment/frontend"
-  - "kubectl rollout status deployment reverseproxy --timeout=2m"
-  - "kubectl get pod"
 
 language: minimal
 services: docker
