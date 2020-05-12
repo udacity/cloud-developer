@@ -17,9 +17,9 @@ provider:
     lambda: true
 
   environment:
-    TODOS_TABLE: Todos-${self:provider.stage}
-    INDEX_NAME: TodosIndex-${self:provider.stage}
-    TODO_IMAGES_S3_BUCKET: jose-serverless-todos-images-${self:provider.stage}
+    APPOINTMENTS_TABLE: Appointments-${self:provider.stage}
+    INDEX_NAME: AppointmentsIndex-${self:provider.stage}
+    APPOINTMENTS_FILES_S3_BUCKET: jose-serverless-appointment-files-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
   
   
@@ -31,27 +31,9 @@ provider:
         - '*'
     - Effect: Allow
       Action:
-        - dynamodb:Scan
-        - dynamodb:Query
-        - dynamodb:PutItem
-        - dynamodb:GetItem
-        - dynamodb:DeleteItem
-        - dynamodb:UpdateItem
-      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
-    - Effect: Allow
-      Action:
-        - dynamodb:Query
-      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.INDEX_NAME}
-    - Effect: Allow
-      Action:
         - s3:PutObject
         - s3:GetObject
-      Resource: arn:aws:s3:::${self:provider.environment.TODO_IMAGES_S3_BUCKET}/*
-    - Effect: Allow
-      Action:
-        - xray:PutTraceSegments
-        - xray:PutTelemetryRecords
-      Resource: "*"
+      Resource: arn:aws:s3:::${self:provider.environment.APPOINTMENTS_FILES_S3_BUCKET}/*
 
 functions:
 
@@ -59,125 +41,125 @@ functions:
     handler: src/lambda/auth/auth0Authorizer.handler
 
   # TODO: Configure this function
-  GetTodos:
-    handler: src/lambda/http/getTodos.handler
+  GetAppointments:
+    handler: src/lambda/http/getAppointments.handler
     tracing: true
     events:
       - http:
           method: get
-          authorizer: Auth
+          # authorizer: Auth
           path: todos
           cors: true
     iamRoleStatements:
         - Effect: Allow
           Action:
             - dynamodb:Query
-          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}
         - Effect: Allow
           Action:
             - dynamodb:Query
-          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.INDEX_NAME}
+          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}/index/${self:provider.environment.INDEX_NAME}
         - Effect: Allow
           Action:
             - xray:PutTraceSegments
             - xray:PutTelemetryRecords
           Resource: "*"
 
-  # TODO: Configure this function
-  CreateTodo:
-    handler: src/lambda/http/createTodo.handler
-    tracing: true
-    events:
-      - http:
-          method: post
-          authorizer: Auth
-          path: todos
-          cors: true
-    iamRoleStatements:
-        - Effect: Allow
-          Action:
-            - dynamodb:PutItem
-          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
-        - Effect: Allow
-          Action:
-            - xray:PutTraceSegments
-            - xray:PutTelemetryRecords
-          Resource: "*"
+  # # TODO: Configure this function
+  # CreateTodo:
+  #   handler: src/lambda/http/createTodo.handler
+  #   tracing: true
+  #   events:
+  #     - http:
+  #         method: post
+  #         authorizer: Auth
+  #         path: todos
+  #         cors: true
+  #   iamRoleStatements:
+  #       - Effect: Allow
+  #         Action:
+  #           - dynamodb:PutItem
+  #         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}
+  #       - Effect: Allow
+  #         Action:
+  #           - xray:PutTraceSegments
+  #           - xray:PutTelemetryRecords
+  #         Resource: "*"
           
 
-  # TODO: Configure this function
-  UpdateTodo:
-    handler: src/lambda/http/updateTodo.handler
-    tracing: true
-    events:
-      - http:
-          method: patch
-          path: todos/{todoId}
-          authorizer: Auth
-          cors: true
-    iamRoleStatements:
-        - Effect: Allow
-          Action:
-            - dynamodb:Query
-            - dynamodb:UpdateItem
-          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
-        - Effect: Allow
-          Action:
-            - dynamodb:Query
-          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.INDEX_NAME}
-        - Effect: Allow
-          Action:
-            - xray:PutTraceSegments
-            - xray:PutTelemetryRecords
-          Resource: "*"
+  # # TODO: Configure this function
+  # UpdateTodo:
+  #   handler: src/lambda/http/updateTodo.handler
+  #   tracing: true
+  #   events:
+  #     - http:
+  #         method: patch
+  #         path: todos/{todoId}
+  #         authorizer: Auth
+  #         cors: true
+  #   iamRoleStatements:
+  #       - Effect: Allow
+  #         Action:
+  #           - dynamodb:Query
+  #           - dynamodb:UpdateItem
+  #         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}
+  #       - Effect: Allow
+  #         Action:
+  #           - dynamodb:Query
+  #         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}/index/${self:provider.environment.INDEX_NAME}
+  #       - Effect: Allow
+  #         Action:
+  #           - xray:PutTraceSegments
+  #           - xray:PutTelemetryRecords
+  #         Resource: "*"
 
-  # TODO: Configure this function
-  DeleteTodo:
-    handler: src/lambda/http/deleteTodo.handler
-    tracing: true
-    events:
-      - http:
-          method: delete
-          path: todos/{todoId}
-          authorizer: Auth
-          cors: true
-    iamRoleStatements:
-        - Effect: Allow
-          Action:
-            - dynamodb:Query
-            - dynamodb:DeleteItem
-          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
-        - Effect: Allow
-          Action:
-            - dynamodb:Query
-          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.INDEX_NAME}
-        - Effect: Allow
-          Action:
-            - xray:PutTraceSegments
-            - xray:PutTelemetryRecords
-          Resource: "*"
+  # # TODO: Configure this function
+  # DeleteTodo:
+  #   handler: src/lambda/http/deleteTodo.handler
+  #   tracing: true
+  #   events:
+  #     - http:
+  #         method: delete
+  #         path: todos/{todoId}
+  #         authorizer: Auth
+  #         cors: true
+  #   iamRoleStatements:
+  #       - Effect: Allow
+  #         Action:
+  #           - dynamodb:Query
+  #           - dynamodb:DeleteItem
+  #         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}
+  #       - Effect: Allow
+  #         Action:
+  #           - dynamodb:Query
+  #         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}/index/${self:provider.environment.INDEX_NAME}
+  #       - Effect: Allow
+  #         Action:
+  #           - xray:PutTraceSegments
+  #           - xray:PutTelemetryRecords
+  #         Resource: "*"
 
-  # TODO: Configure this function
-  GenerateUploadUrl:
-    handler: src/lambda/http/generateUploadUrl.handler
-    tracing: true
-    events:
-      - http:
-          method: post
-          authorizer: Auth
-          path: todos/{todoId}/attachment
-          cors: true
-    iamRoleStatements:
-        - Effect: Allow
-          Action:
-            - s3:PutObject
-            - s3:GetObject
-          Resource: arn:aws:s3:::${self:provider.environment.TODO_IMAGES_S3_BUCKET}/*
-        - Effect: Allow
-          Action:
-            - xray:PutTraceSegments
-            - xray:PutTelemetryRecords
-          Resource: "*"
+  # # TODO: Configure this function
+  # GenerateUploadUrl:
+  #   handler: src/lambda/http/generateUploadUrl.handler
+  #   tracing: true
+  #   events:
+  #     - http:
+  #         method: post
+  #         authorizer: Auth
+  #         path: todos/{todoId}/attachment
+  #         cors: true
+  #   iamRoleStatements:
+  #       - Effect: Allow
+  #         Action:
+  #           - s3:PutObject
+  #           - s3:GetObject
+  #         Resource: arn:aws:s3:::${self:provider.environment.APPOINTMENTS_FILES_S3_BUCKET}/*
+  #       - Effect: Allow
+  #         Action:
+  #           - xray:PutTraceSegments
+  #           - xray:PutTelemetryRecords
+  #         Resource: "*"
 
 resources:
   Resources:
@@ -193,7 +175,7 @@ resources:
           Ref: ApiGatewayRestApi
 
 
-    TodosTable:
+    AppointmentsTable:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
@@ -201,7 +183,7 @@ resources:
             AttributeType: S
           - AttributeName: createdAt
             AttributeType: S
-          - AttributeName: todoId
+          - AttributeName: appointmentId
             AttributeType: S
         KeySchema:
           - AttributeName: userId
@@ -209,46 +191,46 @@ resources:
           - AttributeName: createdAt
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
-        TableName: ${self:provider.environment.TODOS_TABLE}
+        TableName: ${self:provider.environment.APPOINTMENTS_TABLE}
         LocalSecondaryIndexes:
           - IndexName: ${self:provider.environment.INDEX_NAME}
             KeySchema:
               - AttributeName: userId
                 KeyType: HASH
-              - AttributeName: todoId
+              - AttributeName: appointmentId
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL # What attributes will be copied to an index
-    AttachmentsBucket:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: ${self:provider.environment.TODO_IMAGES_S3_BUCKET}
-        CorsConfiguration:
-          CorsRules:
-            -
-              AllowedOrigins:
-                - '*'
-              AllowedHeaders:
-                - '*'
-              AllowedMethods:
-                - GET
-                - PUT
-                - POST
-                - DELETE
-                - HEAD
-              MaxAge: 3000
+    # AttachmentsBucket:
+    #   Type: AWS::S3::Bucket
+    #   Properties:
+    #     BucketName: ${self:provider.environment.APPOINTMENTS_FILES_S3_BUCKET}
+    #     CorsConfiguration:
+    #       CorsRules:
+    #         -
+    #           AllowedOrigins:
+    #             - '*'
+    #           AllowedHeaders:
+    #             - '*'
+    #           AllowedMethods:
+    #             - GET
+    #             - PUT
+    #             - POST
+    #             - DELETE
+    #             - HEAD
+    #           MaxAge: 3000
 
-    BucketPolicy:
-      Type: AWS::S3::BucketPolicy
-      Properties:
-        PolicyDocument:
-          Id: MyPolicy
-          Version: "2012-10-17"
-          Statement:
-            - Sid: PublicReadForGetBucketObjects
-              Effect: Allow
-              Principal: '*'
-              Action: 's3:GetObject'
-              Resource: 'arn:aws:s3:::${self:provider.environment.TODO_IMAGES_S3_BUCKET}/*'
-        Bucket: !Ref AttachmentsBucket
+    # BucketPolicy:
+    #   Type: AWS::S3::BucketPolicy
+    #   Properties:
+    #     PolicyDocument:
+    #       Id: MyPolicy
+    #       Version: "2012-10-17"
+    #       Statement:
+    #         - Sid: PublicReadForGetBucketObjects
+    #           Effect: Allow
+    #           Principal: '*'
+    #           Action: 's3:GetObject'
+    #           Resource: 'arn:aws:s3:::${self:provider.environment.APPOINTMENTS_FILES_S3_BUCKET}/*'
+    #     Bucket: !Ref AttachmentsBucket
 

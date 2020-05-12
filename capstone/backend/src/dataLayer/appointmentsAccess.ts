@@ -16,7 +16,7 @@ export class TodosAccess {
     private readonly indexName = process.env.INDEX_NAME) {
   }
 
-  async getAllTodos(): Promise<TodoItem[]> {
+  async getAllAppointments(): Promise<TodoItem[]> {
     console.log('Getting all groups')
 
     const result = await this.docClient.scan({
@@ -26,7 +26,7 @@ export class TodosAccess {
     const items = result.Items
     return items as TodoItem[]
   }
-  async getTodos(userId: string): Promise<TodoItem[]> {
+  async getAppointments(userId: string): Promise<TodoItem[]> {
     console.log('Getting all groups')
     const result = await this.docClient
       .query({

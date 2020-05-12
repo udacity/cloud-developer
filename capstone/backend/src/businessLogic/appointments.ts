@@ -1,19 +1,19 @@
 import * as uuid from 'uuid'
 
 import { TodoItem } from '../models/TodoItem'
-import { TodosAccess } from '../dataLayer/todosAccess'
+import { TodosAccess } from '../dataLayer/appointmentsAccess'
 import { CreateTodoRequest } from '../requests/CreateTodoRequest'
 import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 import { parseUserId } from '../auth/utils'
 
 const todosAccess = new TodosAccess()
 
-export async function getAllTodos(): Promise<TodoItem[]> {
-  return todosAccess.getAllTodos()
+export async function getAllAppointments(): Promise<TodoItem[]> {
+  return todosAccess.getAllAppointments()
 }
-export async function getUserTodos(jwtToken: string): Promise<TodoItem[]> {
+export async function getUserAppointments(jwtToken: string): Promise<TodoItem[]> {
   const userId = parseUserId(jwtToken)
-  return todosAccess.getTodos(userId)
+  return todosAccess.getAppointments(userId)
 }
 
 export async function createTodo(
