@@ -49,7 +49,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
       filterImageFromURL(image_url)
       .then( image => {
-          res.sendFile(image, function (error) {
+          res.status(200).sendFile(image, function (error) {
           if (error) {
             res.status(422).send('Error sending file');
           } else {
