@@ -1,32 +1,34 @@
 import { apiEndpoint } from '../config'
-import { Todo } from '../types/Todo';
-import { CreateTodoRequest } from '../types/CreateTodoRequest';
+import { Appointment } from '../types/Appointment';
+import { CreateAppointmentRequest } from '../types/CreateAppointmentRequest';
 import Axios from 'axios'
 import { UpdateTodoRequest } from '../types/UpdateTodoRequest';
 
-export async function getTodos(idToken: string): Promise<Todo[]> {
-  console.log('Fetching todos')
+export async function getAppointments(idToken: string): Promise<Appointment[]> {
+  console.log('Fetching Appointments')
 
-  const response = await Axios.get(`${apiEndpoint}/todos`, {
+  const response = await Axios.get(`${apiEndpoint}/appointments`, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
     },
   })
-  console.log('Todos:', response.data)
+  console.log('Appointments:', response.data)
   return response.data.items
 }
 
-export async function createTodo(
+export async function createAppointment(
   idToken: string,
-  newTodo: CreateTodoRequest
-): Promise<Todo> {
-  const response = await Axios.post(`${apiEndpoint}/todos`,  JSON.stringify(newTodo), {
+  newAppointment: CreateAppointmentRequest
+): Promise<Appointment> {
+  const response = await Axios.post(`${apiEndpoint}/appointments`,  JSON.stringify(newAppointment), {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
     }
   })
+  console.log("response.data.item: ",response.data.item)
+  console.log("response.data: ",response.data)
   return response.data.item
 }
 

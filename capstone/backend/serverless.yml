@@ -47,7 +47,7 @@ functions:
     events:
       - http:
           method: get
-          # authorizer: Auth
+          authorizer: Auth
           path: appointments
           cors: true
     iamRoleStatements:
@@ -66,26 +66,26 @@ functions:
             - xray:PutTelemetryRecords
           Resource: "*"
 
-  # # TODO: Configure this function
-  # CreateTodo:
-  #   handler: src/lambda/http/createTodo.handler
-  #   tracing: true
-  #   events:
-  #     - http:
-  #         method: post
-  #         authorizer: Auth
-  #         path: todos
-  #         cors: true
-  #   iamRoleStatements:
-  #       - Effect: Allow
-  #         Action:
-  #           - dynamodb:PutItem
-  #         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}
-  #       - Effect: Allow
-  #         Action:
-  #           - xray:PutTraceSegments
-  #           - xray:PutTelemetryRecords
-  #         Resource: "*"
+  # TODO: Configure this function
+  CreateAppointment:
+    handler: src/lambda/http/createAppointment.handler
+    tracing: true
+    events:
+      - http:
+          method: post
+          authorizer: Auth
+          path: appointments
+          cors: true
+    iamRoleStatements:
+        - Effect: Allow
+          Action:
+            - dynamodb:PutItem
+          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}
+        - Effect: Allow
+          Action:
+            - xray:PutTraceSegments
+            - xray:PutTelemetryRecords
+          Resource: "*"
           
 
   # # TODO: Configure this function

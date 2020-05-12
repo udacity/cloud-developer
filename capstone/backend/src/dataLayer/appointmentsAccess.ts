@@ -61,14 +61,14 @@ export class AppointmentsAccess {
     return items as AppointmentItem
   }
 
-  // async createTodo(todo: AppointmentItem): Promise<AppointmentItem> {
-  //   await this.docClient.put({
-  //     TableName: this.appointmentsTable,
-  //     Item: todo
-  //   }).promise()
+  async createAppointment(appointment: AppointmentItem): Promise<AppointmentItem> {
+    await this.docClient.put({
+      TableName: this.appointmentsTable,
+      Item: appointment
+    }).promise()
 
-  //   return todo
-  // }
+    return appointment
+  }
 
   // async deleteTodo(todoItem: AppointmentItem): Promise<boolean> {
   //   logger.info(`-----User to be deleted: ${todoItem.userId} -- todoId: ${todoItem.appointmentId}`)

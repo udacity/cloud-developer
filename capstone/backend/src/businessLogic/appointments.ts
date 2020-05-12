@@ -1,8 +1,8 @@
-// import * as uuid from 'uuid'
+import * as uuid from 'uuid'
 
 import { AppointmentItem } from '../models/AppointmentItem'
 import { AppointmentsAccess } from '../dataLayer/appointmentsAccess'
-// import { CreateTodoRequest } from '../requests/CreateTodoRequest'
+import { CreateAppointmentRequest } from '../requests/CreateAppointmentRequest'
 // import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 import { parseUserId } from '../auth/utils'
 
@@ -16,24 +16,24 @@ export async function getUserAppointments(jwtToken: string): Promise<Appointment
   return todosAccess.getAppointments(userId)
 }
 
-// export async function createTodo(
-//   createTodoRequest: CreateTodoRequest,
-//   jwtToken: string
-// ): Promise<AppointmentItem> {
+export async function createAppointment(
+  createAppointmentRequest: CreateAppointmentRequest,
+  jwtToken: string
+): Promise<AppointmentItem> {
 
-//   const todoId = uuid.v4()
-//   const userId = parseUserId(jwtToken)
+  const todoId = uuid.v4()
+  const userId = parseUserId(jwtToken)
 
-//   return await todosAccess.createTodo({
-//     userId: userId,
-//     appointmentId: todoId ,
-//     createdAt:  new Date().toISOString(),
-//     name: createTodoRequest.name,
-//     dueDate: createTodoRequest.dueDate,
-//     attachmentUrl:createTodoRequest.attachmentUrl,
-//     done: false
-//   })
-// }
+  return await todosAccess.createAppointment({
+    userId: userId,
+    appointmentId: todoId ,
+    createdAt:  new Date().toISOString(),
+    name: createAppointmentRequest.name,
+    appointmentDate: createAppointmentRequest.appointmentDate,
+    attachmentUrl:createAppointmentRequest.attachmentUrl,
+    done: false
+  })
+}
 
 // export async function updateTodo(
 //   todoItem:AppointmentItem,

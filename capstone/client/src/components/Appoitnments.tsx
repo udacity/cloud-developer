@@ -14,49 +14,50 @@ import {
   Loader
 } from 'semantic-ui-react'
 
-import { createTodo, deleteTodo, getTodos, patchTodo } from '../api/todos-api'
+import { createAppointment, deleteTodo, getAppointments, patchTodo } from '../api/appointments-api'
 import Auth from '../auth/Auth'
-import { Todo } from '../types/Todo'
+import { Appointment } from '../types/Appointment'
 
 interface TodosProps {
   auth: Auth
   history: History
 }
 
-interface TodosState {
-  todos: Todo[]
-  newTodoName: string
-  loadingTodos: boolean
+interface AppointmentsState {
+  appointments: Appointment[]
+  newAppointmentName: string
+  loadingAppointments: boolean
 }
 
-export class Todos extends React.PureComponent<TodosProps, TodosState> {
-  state: TodosState = {
-    todos: [],
-    newTodoName: '',
-    loadingTodos: true
+export class Appointments extends React.PureComponent<TodosProps, AppointmentsState> {
+  state: AppointmentsState = {
+    appointments: [],
+    newAppointmentName: '',
+    loadingAppointments: true
   }
 
   handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ newTodoName: event.target.value })
+    this.setState({ newAppointmentName: event.target.value })
   }
 
   onEditButtonClick = (todoId: string) => {
     this.props.history.push(`/todos/${todoId}/edit`)
   }
 
-  onTodoCreate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
+  onAppointmentCreate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
     try {
       const dueDate = this.calculateDueDate()
-      const newTodo = await createTodo(this.props.auth.getIdToken(), {
-        name: this.state.newTodoName,
-        dueDate
+      const newAppointment = await createAppointment(this.props.auth.getIdToken(), {
+        name: this.state.newAppointmentName,
+        appointmentDate: dueDate
       })
+      console.log("----------newAppointment:",newAppointment)
       this.setState({
-        todos: [...this.state.todos, newTodo],
-        newTodoName: ''
+        appointments: [...this.state.appointments, newAppointment],
+        newAppointmentName: ''
       })
     } catch {
-      alert('Todo creation failed')
+      alert('Appointment creation failed')
     }
   }
 
@@ -64,7 +65,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     try {
       await deleteTodo(this.props.auth.getIdToken(), todoId)
       this.setState({
-        todos: this.state.todos.filter(todo => todo.todoId != todoId)
+        appointments: this.state.appointments.filter(todo => todo.appointmentId != todoId)
       })
     } catch {
       alert('Todo deletion failed')
@@ -73,14 +74,14 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
 
   onTodoCheck = async (pos: number) => {
     try {
-      const todo = this.state.todos[pos]
-      await patchTodo(this.props.auth.getIdToken(), todo.todoId, {
+      const todo = this.state.appointments[pos]
+      await patchTodo(this.props.auth.getIdToken(), todo.appointmentId, {
         name: todo.name,
-        dueDate: todo.dueDate,
+        dueDate: todo.appointmentDate,
         done: !todo.done
       })
       this.setState({
-        todos: update(this.state.todos, {
+        appointments: update(this.state.appointments, {
           [pos]: { done: { $set: !todo.done } }
         })
       })
@@ -91,10 +92,10 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
 
   async componentDidMount() {
     try {
-      const todos = await getTodos(this.props.auth.getIdToken())
+      const appointments = await getAppointments(this.props.auth.getIdToken())
       this.setState({
-        todos,
-        loadingTodos: false
+        appointments: appointments,
+        loadingAppointments: false
       })
     } catch (e) {
       alert(`Failed to fetch todos: ${e.message}`)
@@ -104,11 +105,11 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
   render() {
     return (
       <div>
-        <Header as="h1">TODOs</Header>
+        <Header as="h1">Appointments</Header>
 
         {this.renderCreateTodoInput()}
 
-        {this.renderTodos()}
+        {this.renderAppointments()}
       </div>
     )
   }
@@ -122,8 +123,8 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
               color: 'teal',
               labelPosition: 'left',
               icon: 'add',
-              content: 'New task',
-              onClick: this.onTodoCreate
+              content: 'New Appointment',
+              onClick: this.onAppointmentCreate
             }}
             fluid
             actionPosition="left"
@@ -138,47 +139,47 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     )
   }
 
-  renderTodos() {
-    if (this.state.loadingTodos) {
+  renderAppointments() {
+    if (this.state.loadingAppointments) {
       return this.renderLoading()
     }
 
-    return this.renderTodosList()
+    return this.renderAppointmentsList()
   }
 
   renderLoading() {
     return (
       <Grid.Row>
         <Loader indeterminate active inline="centered">
-          Loading TODOs
+          Loading Appointments
         </Loader>
       </Grid.Row>
     )
   }
 
-  renderTodosList() {
+  renderAppointmentsList() {
     return (
       <Grid padded>
-        {this.state.todos.map((todo, pos) => {
+        {this.state.appointments.map((appointment, pos) => {
           return (
-            <Grid.Row key={todo.todoId}>
+            <Grid.Row key={appointment.appointmentId}>
               <Grid.Column width={1} verticalAlign="middle">
                 <Checkbox
                   onChange={() => this.onTodoCheck(pos)}
-                  checked={todo.done}
+                  checked={appointment.done}
                 />
               </Grid.Column>
               <Grid.Column width={10} verticalAlign="middle">
-                {todo.name}
+                {appointment.name}
               </Grid.Column>
               <Grid.Column width={3} floated="right">
-                {todo.dueDate}
+                {appointment.appointmentDate}
               </Grid.Column>
               <Grid.Column width={1} floated="right">
                 <Button
                   icon
                   color="blue"
-                  onClick={() => this.onEditButtonClick(todo.todoId)}
+                  onClick={() => this.onEditButtonClick(appointment.appointmentId)}
                 >
                   <Icon name="pencil" />
                 </Button>
@@ -187,13 +188,13 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
                 <Button
                   icon
                   color="red"
-                  onClick={() => this.onTodoDelete(todo.todoId)}
+                  onClick={() => this.onTodoDelete(appointment.appointmentId)}
                 >
                   <Icon name="delete" />
                 </Button>
               </Grid.Column>
-              {todo.attachmentUrl && (
-                <Image src={todo.attachmentUrl} size="small" wrapped />
+              {appointment.attachmentUrl && (
+                <Image src={appointment.attachmentUrl} size="small" wrapped />
               )}
               <Grid.Column width={16}>
                 <Divider />
