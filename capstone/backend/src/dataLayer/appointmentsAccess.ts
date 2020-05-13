@@ -27,7 +27,7 @@ export class AppointmentsAccess {
     return items as AppointmentItem[]
   }
   async getAppointments(userId: string): Promise<AppointmentItem[]> {
-    console.log('Getting all groups')
+    logger.info('Getting all user appointments')
     const result = await this.docClient
       .query({
         TableName: this.appointmentsTable,
@@ -44,14 +44,14 @@ export class AppointmentsAccess {
   }
 
   async getAppointment(appointmentId: string, userId: string): Promise<AppointmentItem> {
-    console.log('Getting all groups')
+    logger.info('GEtting single Appointment')
     const result = await this.docClient
       .query({
         TableName: this.appointmentsTable,
         IndexName: this.indexName,
         KeyConditionExpression: 'appointmentId = :appointmentId AND userId = :userId',
         ExpressionAttributeValues: {
-          ':todoId': appointmentId,
+          ':appointmentId': appointmentId,
           ':userId': userId
         }
       })
@@ -70,24 +70,24 @@ export class AppointmentsAccess {
     return appointment
   }
 
-  // async deleteTodo(todoItem: AppointmentItem): Promise<boolean> {
-  //   logger.info(`-----User to be deleted: ${todoItem.userId} -- todoId: ${todoItem.appointmentId}`)
-  //   const result = await this.docClient.delete({
-  //     TableName: this.appointmentsTable,
-  //     Key: {
-  //       "userId": todoItem.userId,
-  //       "createdAt": todoItem.createdAt
-  //     },
-  //     ConditionExpression: "todoId = :todoId",
-  //     ExpressionAttributeValues: {
-  //       ":todoId": todoItem.appointmentId
-  //     }
-  //   }).promise()
-  //   if (result.$response.error)
-  //     throw new Error('Failed to delete item: ' + result.$response.data)
+  async deleteAppointment(appointmentItem: AppointmentItem): Promise<boolean> {
+    logger.info(`-----User to  delete: ${appointmentItem.userId} -- appointmentId: ${appointmentItem.appointmentId}`)
+    const result = await this.docClient.delete({
+      TableName: this.appointmentsTable,
+      Key: {
+        "userId": appointmentItem.userId,
+        "createdAt": appointmentItem.createdAt
+      },
+      ConditionExpression: "appointmentId = :appointmentId",
+      ExpressionAttributeValues: {
+        ":appointmentId": appointmentItem.appointmentId
+      }
+    }).promise()
+    if (result.$response.error)
+      throw new Error('Failed to delete item: ' + result.$response.data)
 
-  //   return true
-  // }
+    return true
+  }
 
 
   // async updateTodo(todoItem:AppointmentItem): Promise<AppointmentItem> {

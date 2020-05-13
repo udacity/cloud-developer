@@ -14,7 +14,7 @@ import {
   Loader
 } from 'semantic-ui-react'
 
-import { createAppointment, deleteTodo, getAppointments, patchTodo } from '../api/appointments-api'
+import { createAppointment, deleteAppointment, getAppointments, patchTodo } from '../api/appointments-api'
 import Auth from '../auth/Auth'
 import { Appointment } from '../types/Appointment'
 
@@ -61,11 +61,11 @@ export class Appointments extends React.PureComponent<TodosProps, AppointmentsSt
     }
   }
 
-  onTodoDelete = async (todoId: string) => {
+  onAppointmentDelete = async (appointmentId: string) => {
     try {
-      await deleteTodo(this.props.auth.getIdToken(), todoId)
+      await deleteAppointment(this.props.auth.getIdToken(), appointmentId)
       this.setState({
-        appointments: this.state.appointments.filter(todo => todo.appointmentId != todoId)
+        appointments: this.state.appointments.filter(appointment => appointment.appointmentId != appointmentId)
       })
     } catch {
       alert('Todo deletion failed')
@@ -188,7 +188,7 @@ export class Appointments extends React.PureComponent<TodosProps, AppointmentsSt
                 <Button
                   icon
                   color="red"
-                  onClick={() => this.onTodoDelete(appointment.appointmentId)}
+                  onClick={() => this.onAppointmentDelete(appointment.appointmentId)}
                 >
                   <Icon name="delete" />
                 </Button>

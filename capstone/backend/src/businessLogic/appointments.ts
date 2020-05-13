@@ -6,14 +6,14 @@ import { CreateAppointmentRequest } from '../requests/CreateAppointmentRequest'
 // import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 import { parseUserId } from '../auth/utils'
 
-const todosAccess = new AppointmentsAccess()
+const appointmentsAccess = new AppointmentsAccess()
 
 export async function getAllAppointments(): Promise<AppointmentItem[]> {
-  return todosAccess.getAllAppointments()
+  return appointmentsAccess.getAllAppointments()
 }
 export async function getUserAppointments(jwtToken: string): Promise<AppointmentItem[]> {
   const userId = parseUserId(jwtToken)
-  return todosAccess.getAppointments(userId)
+  return appointmentsAccess.getAppointments(userId)
 }
 
 export async function createAppointment(
@@ -24,7 +24,7 @@ export async function createAppointment(
   const todoId = uuid.v4()
   const userId = parseUserId(jwtToken)
 
-  return await todosAccess.createAppointment({
+  return await appointmentsAccess.createAppointment({
     userId: userId,
     appointmentId: todoId ,
     createdAt:  new Date().toISOString(),
@@ -50,18 +50,18 @@ export async function createAppointment(
 //   return await todosAccess.updateTodo(todoItem)
 // }
 
-// export async function getTodo(
-//   todoId: string,
-//   jwtToken: string
-// ): Promise<AppointmentItem> {
+export async function getAppointment(
+  appointmentId: string,
+  jwtToken: string
+): Promise<AppointmentItem> {
 
-//   const userId = parseUserId(jwtToken)
+  const userId = parseUserId(jwtToken)
 
-//   return await todosAccess.getAppointment(todoId,userId)
-// }
+  return await appointmentsAccess.getAppointment(appointmentId,userId)
+}
 
-// export async function deleteTodo(
-//   todoItem:AppointmentItem
-// ): Promise<boolean> {
-//   return await todosAccess.deleteTodo(todoItem)
-// }
+export async function deleteAppointment(
+  appointmentItem:AppointmentItem
+): Promise<boolean> {
+  return await appointmentsAccess.deleteAppointment(appointmentItem)
+}

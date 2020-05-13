@@ -114,31 +114,31 @@ functions:
   #           - xray:PutTelemetryRecords
   #         Resource: "*"
 
-  # # TODO: Configure this function
-  # DeleteTodo:
-  #   handler: src/lambda/http/deleteTodo.handler
-  #   tracing: true
-  #   events:
-  #     - http:
-  #         method: delete
-  #         path: todos/{todoId}
-  #         authorizer: Auth
-  #         cors: true
-  #   iamRoleStatements:
-  #       - Effect: Allow
-  #         Action:
-  #           - dynamodb:Query
-  #           - dynamodb:DeleteItem
-  #         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}
-  #       - Effect: Allow
-  #         Action:
-  #           - dynamodb:Query
-  #         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}/index/${self:provider.environment.INDEX_NAME}
-  #       - Effect: Allow
-  #         Action:
-  #           - xray:PutTraceSegments
-  #           - xray:PutTelemetryRecords
-  #         Resource: "*"
+  # TODO: Configure this function
+  DeleteTodo:
+    handler: src/lambda/http/deleteAppointment.handler
+    tracing: true
+    events:
+      - http:
+          method: delete
+          path: appointments/{appointmentId}
+          authorizer: Auth
+          cors: true
+    iamRoleStatements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:DeleteItem
+          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}/index/${self:provider.environment.INDEX_NAME}
+        - Effect: Allow
+          Action:
+            - xray:PutTraceSegments
+            - xray:PutTelemetryRecords
+          Resource: "*"
 
   # # TODO: Configure this function
   # GenerateUploadUrl:

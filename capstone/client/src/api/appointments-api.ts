@@ -45,11 +45,11 @@ export async function patchTodo(
   })
 }
 
-export async function deleteTodo(
+export async function deleteAppointment(
   idToken: string,
-  todoId: string
+  appointmentId: string
 ): Promise<void> {
-  await Axios.delete(`${apiEndpoint}/todos/${todoId}`, {
+  await Axios.delete(`${apiEndpoint}/appointments/${appointmentId}`, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
