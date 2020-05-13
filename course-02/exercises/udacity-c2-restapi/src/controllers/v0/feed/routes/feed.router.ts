@@ -18,13 +18,61 @@ router.get('/', async (req: Request, res: Response) => {
 
 //@TODO
 //Add an endpoint to GET a specific resource by Primary Key
+router.get("/:id",
+    requireAuth,
+    async (req: Request, res: Response) => {
+        let { id } = req.params
 
+        if ( !id ) {
+            res.status(400).send(`resource id is required`)
+        }
+
+        const feed = await FeedItem.findByPk(id)
+
+        if ( !feed ) {
+            res.status(404).send(`Feed with ${id} not found in the DB`)
+        } else {
+            res.status(200).send(feed)
+        }
+})
 // update a specific resource
 router.patch('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
         //@TODO try it yourself
-        res.send(500).send("not implemented")
+        //res.status(500).send("not implemented")
+
+        const { id } = req.params
+        //const caption = req.body.caption
+        const caption = req.body.caption
+        const fileName = req.body.url
+
+        if ( !id ) {
+            res.status(400).send({message: 'resource id is required'})
+        }
+        if ( !caption ) {
+            res.status(400).send({message: 'caption is required or malformed'})
+        }
+
+        if ( !fileName ) {
+            res.status(400).send({message: 'file url is require'})
+        }
+       
+        const feed = await FeedItem.findByPk(id)
+
+        if ( !feed ) {
+            res.status(404).send(`Couldn't find feed with ${id}`)
+        }
+
+        const [updateRows, updatedFeed] = await FeedItem.update( 
+            { caption: caption, url: fileName},
+            { returning: true, where: {id: id}}
+        )
+
+        const saved_url = AWS.getGetSignedUrl(updatedFeed[0].url)
+
+        res.status(201).send("Successfully updated, " + saved_url)
+
 });
 
 
