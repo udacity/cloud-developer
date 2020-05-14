@@ -28,6 +28,19 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
+  app.get( "/filteredimage?image_url={{URL}}", 
+  ( req: Request, res: Response ) => {
+    let { url } = req.params;
+
+    if ( !url ) {
+      return res.status(400)
+                .send(`url is required`);
+    }
+
+    return res.status(200)
+              .send(`Welcome to the Cloud, ${url}!`);
+} );
+
 
   //! END @TODO1
   
