@@ -14,7 +14,7 @@ import {
   Loader
 } from 'semantic-ui-react'
 
-import { createAppointment, deleteAppointment, getAppointments, patchTodo } from '../api/appointments-api'
+import { createAppointment, deleteAppointment, getAppointments, patchAppointment } from '../api/appointments-api'
 import Auth from '../auth/Auth'
 import { Appointment } from '../types/Appointment'
 
@@ -40,8 +40,8 @@ export class Appointments extends React.PureComponent<TodosProps, AppointmentsSt
     this.setState({ newAppointmentName: event.target.value })
   }
 
-  onEditButtonClick = (todoId: string) => {
-    this.props.history.push(`/todos/${todoId}/edit`)
+  onEditButtonClick = (appointmentId: string) => {
+    this.props.history.push(`/appointments/${appointmentId}/edit`)
   }
 
   onAppointmentCreate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
@@ -72,17 +72,17 @@ export class Appointments extends React.PureComponent<TodosProps, AppointmentsSt
     }
   }
 
-  onTodoCheck = async (pos: number) => {
+  onAppointmentCheck = async (pos: number) => {
     try {
-      const todo = this.state.appointments[pos]
-      await patchTodo(this.props.auth.getIdToken(), todo.appointmentId, {
-        name: todo.name,
-        dueDate: todo.appointmentDate,
-        done: !todo.done
+      const appointment = this.state.appointments[pos]
+      await patchAppointment(this.props.auth.getIdToken(), appointment.appointmentId, {
+        name: appointment.name,
+        appointmentDate: appointment.appointmentDate,
+        done: !appointment.done
       })
       this.setState({
         appointments: update(this.state.appointments, {
-          [pos]: { done: { $set: !todo.done } }
+          [pos]: { done: { $set: !appointment.done } }
         })
       })
     } catch {
@@ -128,7 +128,7 @@ export class Appointments extends React.PureComponent<TodosProps, AppointmentsSt
             }}
             fluid
             actionPosition="left"
-            placeholder="To change the world..."
+            placeholder="The next life you will save"
             onChange={this.handleNameChange}
           />
         </Grid.Column>
@@ -165,7 +165,7 @@ export class Appointments extends React.PureComponent<TodosProps, AppointmentsSt
             <Grid.Row key={appointment.appointmentId}>
               <Grid.Column width={1} verticalAlign="middle">
                 <Checkbox
-                  onChange={() => this.onTodoCheck(pos)}
+                  onChange={() => this.onAppointmentCheck(pos)}
                   checked={appointment.done}
                 />
               </Grid.Column>

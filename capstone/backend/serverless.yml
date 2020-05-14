@@ -88,34 +88,34 @@ functions:
           Resource: "*"
           
 
-  # # TODO: Configure this function
-  # UpdateTodo:
-  #   handler: src/lambda/http/updateTodo.handler
-  #   tracing: true
-  #   events:
-  #     - http:
-  #         method: patch
-  #         path: todos/{todoId}
-  #         authorizer: Auth
-  #         cors: true
-  #   iamRoleStatements:
-  #       - Effect: Allow
-  #         Action:
-  #           - dynamodb:Query
-  #           - dynamodb:UpdateItem
-  #         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}
-  #       - Effect: Allow
-  #         Action:
-  #           - dynamodb:Query
-  #         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}/index/${self:provider.environment.INDEX_NAME}
-  #       - Effect: Allow
-  #         Action:
-  #           - xray:PutTraceSegments
-  #           - xray:PutTelemetryRecords
-  #         Resource: "*"
+  # TODO: Configure this function
+  UpdateAppointment:
+    handler: src/lambda/http/updateTodo.handler
+    tracing: true
+    events:
+      - http:
+          method: patch
+          path: appointments/{appointmentId}
+          authorizer: Auth
+          cors: true
+    iamRoleStatements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:UpdateItem
+          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}/index/${self:provider.environment.INDEX_NAME}
+        - Effect: Allow
+          Action:
+            - xray:PutTraceSegments
+            - xray:PutTelemetryRecords
+          Resource: "*"
 
   # TODO: Configure this function
-  DeleteTodo:
+  DeleteAppointment:
     handler: src/lambda/http/deleteAppointment.handler
     tracing: true
     events:

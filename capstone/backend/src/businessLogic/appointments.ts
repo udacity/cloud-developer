@@ -3,7 +3,7 @@ import * as uuid from 'uuid'
 import { AppointmentItem } from '../models/AppointmentItem'
 import { AppointmentsAccess } from '../dataLayer/appointmentsAccess'
 import { CreateAppointmentRequest } from '../requests/CreateAppointmentRequest'
-// import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
+import { UpdateAppointmentRequest } from '../requests/UpdateAppointmentRequest'
 import { parseUserId } from '../auth/utils'
 
 const appointmentsAccess = new AppointmentsAccess()
@@ -35,20 +35,20 @@ export async function createAppointment(
   })
 }
 
-// export async function updateTodo(
-//   todoItem:AppointmentItem,
-//   updateTodoRequest: UpdateTodoRequest
-// ): Promise<AppointmentItem> {
+export async function updateAppointment(
+  appointmentItem:AppointmentItem,
+  updateTodoRequest: UpdateAppointmentRequest
+): Promise<AppointmentItem> {
 
 
-//   todoItem.name = updateTodoRequest.name
-//   todoItem.dueDate = updateTodoRequest.dueDate
-//   todoItem.done = updateTodoRequest.done
-//   if(updateTodoRequest !== undefined)
-//     todoItem.attachmentUrl = updateTodoRequest.attachmentUrl
+  appointmentItem.name = updateTodoRequest.name
+  appointmentItem.appointmentDate = updateTodoRequest.appointmentDate
+  appointmentItem.done = updateTodoRequest.done
+  if(updateTodoRequest !== undefined)
+    appointmentItem.attachmentUrl = updateTodoRequest.attachmentUrl
 
-//   return await todosAccess.updateTodo(todoItem)
-// }
+  return await appointmentsAccess.updateAppointment(appointmentItem)
+}
 
 export async function getAppointment(
   appointmentId: string,

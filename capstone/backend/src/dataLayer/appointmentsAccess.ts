@@ -90,44 +90,44 @@ export class AppointmentsAccess {
   }
 
 
-  // async updateTodo(todoItem:AppointmentItem): Promise<AppointmentItem> {
-  //   logger.info(`-----User to be updated: ${todoItem.userId} -- todoId: ${todoItem.appointmentId}`)
+  async updateAppointment(appointmentItem:AppointmentItem): Promise<AppointmentItem> {
+    logger.info(`-----User to  update: ${appointmentItem.userId} -- appointmentId: ${appointmentItem.appointmentId}`)
 
-  //     var expressionAttibutes = {
-  //       ":todoId": todoItem.appointmentId,
-  //       ":done": todoItem.done,
-  //       ":name": todoItem.name,
-  //       ":appointmentDate": todoItem.dueDate
-  //     }
-  //     var updateExpression = "set done = :done, dueDate=:dueDate, #n=:name"
+      var expressionAttibutes = {
+        ":appointmentId": appointmentItem.appointmentId,
+        ":done": appointmentItem.done,
+        ":name": appointmentItem.name,
+        ":appointmentDate": appointmentItem.appointmentDate
+      }
+      var updateExpression = "set done = :done, appointmentDate=:appointmentDate, #n=:name"
 
-  //     if(todoItem.attachmentUrl !== undefined){
+      if(appointmentItem.attachmentUrl !== undefined){
         
-  //       expressionAttibutes[":attachmentUrl"] = todoItem.attachmentUrl
-  //       updateExpression += ', attachmentUrl = :attachmentUrl'
-  //     }else{
-  //       updateExpression += ' REMOVE attachmentUrl'
-  //     }
+        expressionAttibutes[":attachmentUrl"] = appointmentItem.attachmentUrl
+        updateExpression += ', attachmentUrl = :attachmentUrl'
+      }else{
+        updateExpression += ' REMOVE attachmentUrl'
+      }
       
 
-  //   const result = await this.docClient.update({
-  //     TableName: this.appointmentsTable,
-  //     Key: {
-  //       "userId": todoItem.userId,
-  //       "createdAt": todoItem.createdAt
-  //     },
-  //     ConditionExpression: "todoId = :todoId",
-  //     UpdateExpression: updateExpression,
-  //     ExpressionAttributeValues: expressionAttibutes,
-  //     ExpressionAttributeNames:{
-  //       "#n": "name"
-  //     },
-  //     ReturnValues: "UPDATED_NEW"
-  //   }).promise()
-  //   if (result.$response.error)
-  //     throw new Error('Failed to update item: ' + todoItem)
-  //   return todoItem
-  // }
+    const result = await this.docClient.update({
+      TableName: this.appointmentsTable,
+      Key: {
+        "userId": appointmentItem.userId,
+        "createdAt": appointmentItem.createdAt
+      },
+      ConditionExpression: "appointmentId = :appointmentId",
+      UpdateExpression: updateExpression,
+      ExpressionAttributeValues: expressionAttibutes,
+      ExpressionAttributeNames:{
+        "#n": "name"
+      },
+      ReturnValues: "UPDATED_NEW"
+    }).promise()
+    if (result.$response.error)
+      throw new Error('Failed to update item: ' + appointmentItem)
+    return appointmentItem
+  }
 
 }
 

@@ -2,7 +2,7 @@ import { apiEndpoint } from '../config'
 import { Appointment } from '../types/Appointment';
 import { CreateAppointmentRequest } from '../types/CreateAppointmentRequest';
 import Axios from 'axios'
-import { UpdateTodoRequest } from '../types/UpdateTodoRequest';
+import { UpdateAppointmentRequest } from '../types/UpdateAppointmentRequest';
 
 export async function getAppointments(idToken: string): Promise<Appointment[]> {
   console.log('Fetching Appointments')
@@ -32,12 +32,12 @@ export async function createAppointment(
   return response.data.item
 }
 
-export async function patchTodo(
+export async function patchAppointment(
   idToken: string,
-  todoId: string,
-  updatedTodo: UpdateTodoRequest
+  appointmentId: string,
+  updatedAppointment: UpdateAppointmentRequest
 ): Promise<void> {
-  await Axios.patch(`${apiEndpoint}/todos/${todoId}`, JSON.stringify(updatedTodo), {
+  await Axios.patch(`${apiEndpoint}/appointments/${appointmentId}`, JSON.stringify(updatedAppointment), {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
