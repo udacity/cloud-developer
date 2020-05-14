@@ -59,9 +59,9 @@ export async function deleteAppointment(
 
 export async function getUploadUrl(
   idToken: string,
-  todoId: string
+  appointmentId: string
 ): Promise<string> {
-  const response = await Axios.post(`${apiEndpoint}/todos/${todoId}/attachment`, '', {
+  const response = await Axios.post(`${apiEndpoint}/appointments/${appointmentId}/attachment`, '', {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
