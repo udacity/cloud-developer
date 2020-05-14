@@ -28,17 +28,20 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
-  app.get( "/filteredimage?image_url={{URL}}", 
-  ( req: Request, res: Response ) => {
-    let { url } = req.params;
+  app.get( "/filteredimage/", ( req: Request, res: Response ) => {
+    let { image_url } = req.query;
 
-    if ( !url ) {
+    if ( !image_url ) {
       return res.status(400)
                 .send(`url is required`);
+    } else {
+      filterImageFromURL(image_url).then( (filteredpath) => 
+      console.log("asynchronous logging has val:", filteredpath));
+      return res.status(200)
+                .sendFile(filteredpath);
     }
 
-    return res.status(200)
-              .send(`Welcome to the Cloud, ${url}!`);
+    
 } );
 
 
