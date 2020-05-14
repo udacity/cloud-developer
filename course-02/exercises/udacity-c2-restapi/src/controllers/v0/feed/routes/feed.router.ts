@@ -16,16 +16,62 @@ router.get('/', async (req: Request, res: Response) => {
     res.send(items);
 });
 
-//@TODO
-//Add an endpoint to GET a specific resource by Primary Key
+router.get('/:id', async (req: Request, res: Response) => {
+    let { id } = req.params;
+
+    const item = await FeedItem.findOne({
+        where: {
+            id: id
+        }
+    });
+
+    if (!item) {
+        res.status(404).send("item not found");
+    }
+
+    if(item.url) {
+        item.url = AWS.getGetSignedUrl(item.url);
+    }
+
+    res.send(item);
+});
 
 // update a specific resource
 router.patch('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
-        //@TODO try it yourself
-        res.send(500).send("not implemented")
+        let {id} = req.params;
+        const caption = req.body.caption;
+        const fileName = req.body.url;
+
+        if (!caption) {
+            return res.status(400).send({ message: 'Caption is required or malformed' });
+        }
+
+        // check Filename is valid
+        if (!fileName) {
+            return res.status(400).send({ message: 'File url is required' });
+        }
+
+        const item = await FeedItem.findOne({
+            where: {
+                id: id
+            }
+        });
+
+        if (!item) {
+            res.status(404).send("item not found");
+        }
+
+        item.caption = caption;
+        item.url = fileName;
+        const savedItem = await item.save();
+
+        savedItem.url = AWS.getGetSignedUrl(savedItem.url);
+        res.status(200).send(savedItem);
 });
+
+
 
 
 // Get a signed url to put a new item in the bucket
