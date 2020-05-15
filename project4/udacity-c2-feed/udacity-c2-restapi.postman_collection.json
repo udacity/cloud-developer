@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "90c44738-86d0-440c-ac60-dcb7b70fb9e8",
-		"name": "udacity-c2-restapi",
+		"name": "udacity-c2-feed",
 		"description": "Requests that should work!",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
