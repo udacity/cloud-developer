@@ -2,9 +2,8 @@ import { APIGatewayProxyHandler, APIGatewayProxyEvent, APIGatewayProxyResult } f
 import 'source-map-support/register'
 import { createLogger } from '../../utils/logger'
 import { UpdateAppointmentRequest } from '../../requests/UpdateAppointmentRequest'
-import { updateAppointment, getAppointment, getAppointmentInDay } from '../../businessLogic/appointments'
+import { updateAppointment, getAppointment } from '../../businessLogic/appointments'
 const logger = createLogger('Update Logger')
-const maxAppointmentsIndDay =  +process.env.MAX_APPOINTMENTS_IN_DAY
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     logger.info("Processing event: "+event)
