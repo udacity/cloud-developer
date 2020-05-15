@@ -34,6 +34,15 @@ export async function createAppointment(
     done: false
   })
 }
+export async function getAppointmentInDay(
+  jwtToken: string,
+  appointmentDate: string
+): Promise<AppointmentItem[]> {
+
+  const userId = parseUserId(jwtToken)
+
+  return await appointmentsAccess.getAppointmentsInDay( userId,appointmentDate )
+}
 
 export async function updateAppointment(
   appointmentItem:AppointmentItem,

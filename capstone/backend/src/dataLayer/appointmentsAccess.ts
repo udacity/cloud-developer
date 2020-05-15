@@ -13,7 +13,8 @@ export class AppointmentsAccess {
   constructor(
     private readonly docClient: DocumentClient = createDynamoDBClient(),
     private readonly appointmentsTable = process.env.APPOINTMENTS_TABLE,
-    private readonly indexName = process.env.INDEX_NAME) {
+    private readonly indexName = process.env.INDEX_NAME, 
+    private readonly dateIndexName = process.env.DATE_INDEX_NAME){
   }
 
   async getAllAppointments(): Promise<AppointmentItem[]> {
@@ -42,6 +43,25 @@ export class AppointmentsAccess {
     const items = result.Items
     return items as AppointmentItem[]
   }
+
+  async getAppointmentsInDay(userId: string,appointmentDate:string): Promise<AppointmentItem[]> {
+    logger.info('GEtting appontments ind Day')
+    const result = await this.docClient
+      .query({
+        TableName: this.appointmentsTable,
+        IndexName: this.dateIndexName,
+        KeyConditionExpression: 'appointmentDate = :appointmentDate AND userId = :userId',
+        ExpressionAttributeValues: {
+          ':appointmentDate': appointmentDate,
+          ':userId': userId
+        }
+      })
+      .promise()
+
+    const items = result.Items
+    return items as AppointmentItem[]
+  }
+
 
   async getAppointment(appointmentId: string, userId: string): Promise<AppointmentItem> {
     logger.info('GEtting single Appointment')

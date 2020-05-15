@@ -19,8 +19,10 @@ provider:
   environment:
     APPOINTMENTS_TABLE: Appointments-${self:provider.stage}
     INDEX_NAME: AppointmentsIndex-${self:provider.stage}
+    DATE_INDEX_NAME: AppointmentsDatendex-${self:provider.stage}
     APPOINTMENTS_FILES_S3_BUCKET: jose-serverless-appointment-files-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
+    MAX_APPOINTMENTS_IN_DAY: 1
   
   
   iamRoleStatements:
@@ -86,11 +88,15 @@ functions:
             - xray:PutTraceSegments
             - xray:PutTelemetryRecords
           Resource: "*"
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}/index/${self:provider.environment.DATE_INDEX_NAME}
           
 
   # TODO: Configure this function
   UpdateAppointment:
-    handler: src/lambda/http/updateTodo.handler
+    handler: src/lambda/http/updateAppointment.handler
     tracing: true
     events:
       - http:
@@ -108,6 +114,10 @@ functions:
           Action:
             - dynamodb:Query
           Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}/index/${self:provider.environment.INDEX_NAME}
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}/index/${self:provider.environment.DATE_INDEX_NAME}
         - Effect: Allow
           Action:
             - xray:PutTraceSegments
@@ -186,6 +196,8 @@ resources:
             AttributeType: S
           - AttributeName: appointmentId
             AttributeType: S
+          - AttributeName: appointmentDate
+            AttributeType: S
         KeySchema:
           - AttributeName: userId
             KeyType: HASH
@@ -202,6 +214,15 @@ resources:
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL # What attributes will be copied to an index
+          - IndexName: ${self:provider.environment.DATE_INDEX_NAME}
+            KeySchema:
+              - AttributeName: userId
+                KeyType: HASH
+              - AttributeName: appointmentDate
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL # What attributes will be copied to an index
+  
     AttachmentsBucket:
       Type: AWS::S3::Bucket
       Properties:
