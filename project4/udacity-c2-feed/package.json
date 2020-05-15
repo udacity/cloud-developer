@@ -1,5 +1,5 @@
 {
-  "name": "udacity-c2-restapi",
+  "name": "udacity-c2-feed",
   "version": "1.0.0",
   "description": "",
   "main": "src/server.js",
@@ -13,7 +13,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "Gabriel Ruttner",
+  "author": "Gabriel Ruttner, Refactored by Mohamadou Ly",
   "license": "ISC",
   "dependencies": {
     "@types/bcrypt": "^3.0.0",
