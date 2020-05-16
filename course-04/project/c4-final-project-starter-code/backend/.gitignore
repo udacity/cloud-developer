@@ -10,3 +10,4 @@ jspm_packages
 
 # Local DynamoDb
 .dynamodb
+/lib/

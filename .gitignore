@@ -36,3 +36,5 @@ node_modules
 venv/
 .vscode
 course-02/exercises/udacity-c2-restapi/package-lock.json
+
+*.map
