@@ -6,4 +6,5 @@ cache:
     - node_modules
 script: 
     - npm install -g serverless
+    - cd course-04/project/c4-final-project-starter-code/backend
     - sls deploy
