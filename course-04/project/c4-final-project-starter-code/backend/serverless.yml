@@ -90,6 +90,10 @@ functions:
         Action:
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.USER_ID_INDEX}
+      - Effect: Allow
+        Action:
+          - s3:GetObject
+        Resource: arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*
 
   # TODO: Configure this function
   CreateTodo:
@@ -225,8 +229,8 @@ resources:
         GlobalSecondaryIndexes:
           - IndexName: ${self:provider.environment.USER_ID_INDEX}
             KeySchema:
-            - AttributeName: userId
-              KeyType: HASH
+              - AttributeName: userId
+                KeyType: HASH
             Projection:
               ProjectionType: ALL
 
@@ -244,6 +248,11 @@ resources:
       DependsOn: SNSTopicPolicy
       Properties:
         BucketName: ${self:provider.environment.IMAGES_S3_BUCKET}
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
         NotificationConfiguration:
           TopicConfigurations:
             - Event: s3:ObjectCreated:Put
@@ -261,20 +270,6 @@ resources:
                 - DELETE
                 - HEAD
               MaxAge: 3000
-
-    BucketPolicy:
-      Type: AWS::S3::BucketPolicy
-      Properties:
-        PolicyDocument:
-          Id: MyPolicy
-          Version: "2012-10-17"
-          Statement:
-            - Sid: PublicReadForGetBucketObjects
-              Effect: Allow
-              Principal: '*'
-              Action: 's3:GetObject'
-              Resource: 'arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*'
-        Bucket: !Ref AttachmentsBucket
 
     SNSTopicPolicy:
       Type: AWS::SNS::TopicPolicy

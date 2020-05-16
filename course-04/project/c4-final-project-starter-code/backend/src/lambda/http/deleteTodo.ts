@@ -1,6 +1,6 @@
 import 'source-map-support/register'
 
-import {APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler} from 'aws-lambda'
+import {APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult} from 'aws-lambda'
 import {getUserId} from "../utils";
 import {deleteTodo, getTodo} from "../../services/todoService";
 import {deleteImage} from "../../services/imageService";

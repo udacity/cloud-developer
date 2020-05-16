@@ -7,4 +7,6 @@ cache:
 script: 
     - npm install -g serverless
     - cd course-04/project/c4-final-project-starter-code/backend
+    - npm install
+    - export NODE_OPTIONS="--max-old-space-size=8192"
     - sls deploy

@@ -39,7 +39,7 @@ export class TodoRepository {
     async updateTodo(todoId: string, userId: string, todo: TodoUpdate): Promise<TodoUpdate> {
         await this.docClient.update({
             TableName: this.todoTable,
-            Key : {
+            Key: {
                 "todoId": todoId
             },
             UpdateExpression: "set #name = :name, dueDate = :dueDate, done = :done",
@@ -59,15 +59,15 @@ export class TodoRepository {
         return todo;
     }
 
-    async updateAttachmentUrl(todoId: string, userId: string, attachmentUrl: string): Promise<void> {
+    async updateHasUpload(todoId: string, userId: string): Promise<void> {
         await this.docClient.update({
             TableName: this.todoTable,
             Key: {
                 "todoId": todoId
             },
-            UpdateExpression: "set attachmentUrl = :attachmentUrl",
+            UpdateExpression: "set hasUpload = :hasUpload",
             ExpressionAttributeValues: {
-                ":attachmentUrl": attachmentUrl,
+                ":hasUpload": true,
                 ":userId": userId
             },
             ConditionExpression: "userId = :userId",

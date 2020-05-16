@@ -1,14 +1,12 @@
 import 'source-map-support/register'
 
-import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
+import {APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult} from 'aws-lambda'
 import {getUserId} from "../utils";
 import {getTodos} from "../../services/todoService";
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const userId = getUserId(event);
     const todoItems = await getTodos(userId);
-
-    todoItems.forEach(todoItem => delete todoItem.userId);
 
     return {
         statusCode: 200,

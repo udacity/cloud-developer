@@ -1,4 +1,5 @@
-import { decode } from 'jsonwebtoken';
+import {decode} from 'jsonwebtoken';
+
 /**
  * Parse a JWT token and return a user id
  * @param jwtToken JWT token to parse
@@ -8,4 +9,5 @@ export function parseUserId(jwtToken) {
     const decodedJwt = decode(jwtToken);
     return decodedJwt.sub;
 }
+
 //# sourceMappingURL=utils.js.map

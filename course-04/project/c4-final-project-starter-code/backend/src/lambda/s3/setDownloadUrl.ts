@@ -1,8 +1,9 @@
-import {SNSHandler, SNSEvent, S3Event} from 'aws-lambda'
+import {S3Event, SNSEvent, SNSHandler} from 'aws-lambda'
 import 'source-map-support/register'
 
 import {createLogger} from "../../utils/logger";
-import {updateAttachmentUrl} from "../../services/todoService";
+import {updateImageUploaded} from "../../services/todoService";
+
 const logger = createLogger("setDownloadUrl")
 
 export const handler: SNSHandler = async (event: SNSEvent) => {
@@ -24,6 +25,6 @@ async function processS3Event(s3Event: S3Event) {
         const index = key.indexOf('_');
         const todoId = key.substr(0, index)
         const userId = decodeURI(key.substr(index + 1))
-        await updateAttachmentUrl(todoId, userId, `https://${record.s3.bucket.name}.s3.amazonaws.com/${key}`);
+        await updateImageUploaded(todoId, userId);
     }
 }
