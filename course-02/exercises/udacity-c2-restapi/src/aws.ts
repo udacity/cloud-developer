@@ -2,10 +2,13 @@ import AWS = require('aws-sdk');
 import { config } from './config/config';
 
 const c = config.dev;
+const signedUrlExpireSeconds = 300
 
 //Configure AWS
-var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
-AWS.config.credentials = credentials;
+if(c.aws_profile !== "DEPLOYED") {
+    const credentials = new AWS.SharedIniFileCredentials({profile: c.aws_profile});
+    AWS.config.credentials = credentials;
+}
 
 export const s3 = new AWS.S3({
   signatureVersion: 'v4',
@@ -22,7 +25,7 @@ export const s3 = new AWS.S3({
  */
 export function getGetSignedUrl( key: string ): string{
 
-  const signedUrlExpireSeconds = 60 * 5
+
 
     const url = s3.getSignedUrl('getObject', {
         Bucket: c.aws_media_bucket,
@@ -35,7 +38,7 @@ export function getGetSignedUrl( key: string ): string{
 
 /* getPutSignedUrl generates an aws signed url to put an item
  * @Params
- *    key: string - the filename to be retreived from s3 bucket
+ *    key: string - the filename to be retrieved from s3 bucket
  * @Returns:
  *    a url as a string
  */
