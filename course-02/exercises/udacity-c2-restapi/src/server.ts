@@ -8,9 +8,12 @@ import bodyParser from 'body-parser';
 import { V0MODELS } from './controllers/v0/model.index';
 
 (async () => {
+  console.log("Initializing sequelize")
   await sequelize.addModels(V0MODELS);
   await sequelize.sync();
 
+  console.log("Initializing sequelize-complete")
+  console.log(process.env.UD_DB_HOSTNAME)
   const app = express();
   const port = process.env.PORT || 8080; // default port to listen
   
@@ -28,6 +31,7 @@ import { V0MODELS } from './controllers/v0/model.index';
   // Root URI call
   app.get( "/", async ( req, res ) => {
     res.send( "/api/v0/" );
+    // res.send( "Welcome" );
   } );
   
 
