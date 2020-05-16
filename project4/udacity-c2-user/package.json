@@ -1,5 +1,5 @@
 {
-  "name": "udacity-c2-restapi",
+  "name": "udacity-c2-user",
   "version": "1.0.0",
   "description": "",
   "main": "src/server.js",
@@ -14,6 +14,7 @@
   },
   "keywords": [],
   "author": "Gabriel Ruttner",
+  "refactored": "Mohamadou Ly",
   "license": "ISC",
   "dependencies": {
     "@types/bcrypt": "^3.0.0",
