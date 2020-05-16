@@ -1,44 +1,9 @@
---- 
-before_install: 
-  - "docker -v && docker-compose -v"
-  - "sudo rm /usr/local/bin/docker-compose"
-  - "curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose"
-  - "chmod +x docker-compose"
-  - "sudo mv docker-compose /usr/local/bin"
-  - "curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
-  - "chmod +x ./kubectl"
-  - "sudo mv ./kubectl /usr/local/bin/kubectl"
-  - "echo \"$DOCKER_PASSWORD\" | docker login -u \"$DOCKER_USERNAME\" --password-stdin"
-  - "curl -Lo minikube https://storage.googleapis.com/minikube/releases/v1.8.1/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/"
-  - "mkdir -p $HOME/.kube $HOME/.minikube"
-  - "touch $KUBECONFIG"
-  - "minikube start --vm-driver=docker --kubernetes-version=v1.18.2"
-  - "minikube update-context --profile=minikube"
-  - "sudo chown -R travis: /home/travis/.minikube/"
-  - "eval \"$(minikube docker-env --profile=minikube)\" && export DOCKER_CLI='docker'"
-env: 
-  global: 
-    - DOCKER_COMPOSE_VERSION=1.24.1
-    - CHANGE_MINIKUBE_NONE_USER=true
-    - MINIKUBE_WANTUPDATENOTIFICATION=false
-    - MINIKUBE_WANTREPORTERRORPROMPT=false
-    - MINIKUBE_HOME=$HOME
-    - CHANGE_MINIKUBE_NONE_USER=true
-    - KUBECONFIG=$HOME/.kube/config
-install: 
-  - "docker-compose -f course-03/exercises/udacity-c3-deployment/docker/docker-compose-build.yaml build --parallel"
-  - "docker-compose -f course-03/exercises/udacity-c3-deployment/docker/docker-compose-build.yaml push"
-  - "kubectl apply -f course-03/exercises/udacity-c3-deployment/k8s/backend-feed-service.yaml"
-  - "kubectl apply -f course-03/exercises/udacity-c3-deployment/k8s/backend-user-service.yaml"
-  - "kubectl apply -f course-03/exercises/udacity-c3-deployment/k8s/frontend-service.yaml"
-  - "kubectl apply -f course-03/exercises/udacity-c3-deployment/k8s/reverseproxy-service.yaml"
-  - "kubectl apply -f course-03/exercises/udacity-c3-deployment/k8s/aws-secret.yaml"
-  - "kubectl apply -f course-03/exercises/udacity-c3-deployment/k8s/env-configmap.yaml"
-  - "kubectl apply -f course-03/exercises/udacity-c3-deployment/k8s/env-secret.yaml"
-  - "kubectl apply -f course-03/exercises/udacity-c3-deployment/k8s/backend-feed-deployment.yaml"
-  - "kubectl apply -f course-03/exercises/udacity-c3-deployment/k8s/backend-user-deployment.yaml"
-  - "kubectl apply -f course-03/exercises/udacity-c3-deployment/k8s/frontend-deployment.yaml"
-  - "kubectl apply -f course-03/exercises/udacity-c3-deployment/k8s/reverseproxy-deployment.yaml"
-
-language: minimal
-services: docker
+language: node_js
+node_js:
+- 12
+cache:
+  directories:
+    - node_modules
+script: 
+    - npm install -g serverless
+    - sls deploy
