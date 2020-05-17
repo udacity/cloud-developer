@@ -4,7 +4,7 @@
   "description": "",
   "main": "./www/server.js",
   "scripts": {
-    "start": "node .",
+    "start": "rm -rf node_modules/ && npm install && node .",
     "tsc": "tsc",
     "dev": "ts-node-dev --respawn --transpileOnly ./src/server.ts",
     "prod": "tsc && node ./www/server.js",
@@ -23,6 +23,7 @@
     "body-parser": "^1.19.0",
     "email-validator": "^2.0.4",
     "express": "^4.17.1",
+    "http-status-codes": "^1.4.0",
     "jsonwebtoken": "^8.5.1",
     "pg": "^7.11.0",
     "reflect-metadata": "^0.1.13",

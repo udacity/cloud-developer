@@ -7,42 +7,49 @@ import * as jwt from 'jsonwebtoken';
 import { NextFunction } from 'connect';
 
 import * as EmailValidator from 'email-validator';
+import { config } from '../../../../config/config';
+import {UNAUTHORIZED} from 'http-status-codes'
 
 const router: Router = Router();
+const saltRounds = 10
 
 async function generatePassword(plainTextPassword: string): Promise<string> {
-    return plainTextPassword
+    const theSalt = await bcrypt.genSalt(saltRounds)
+    return await bcrypt.hash(plainTextPassword, theSalt)
 }
 
 async function comparePasswords(plainTextPassword: string, hash: string): Promise<boolean> {
-    return true
+    return await bcrypt.compare(plainTextPassword, hash)
 }
 
 function generateJWT(user: User): string {
-    return "todo"
+    return jwt.sign(user.password_hash, config.jwtsecret)
 }
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
     console.log("requireAuth called")
-    return next();
-    // if (!req.headers || !req.headers.authorization){
-    //     return res.status(401).send({ message: 'No authorization headers.' });
-    // }
+    // return next();
+    if (!req.headers || !req.headers.authorization){
+        console.log("No authorization header")
+        return res.status(401).send({ message: 'No authorization headers.' });
+    }
     
-
-    // const token_bearer = req.headers.authorization.split(' ');
-    // if(token_bearer.length != 2){
-    //     return res.status(401).send({ message: 'Malformed token.' });
-    // }
+    const token_bearer = req.headers.authorization.split(' ');
+    console.log("Authorization header:" + token_bearer)
+    if(token_bearer.length != 2){
+        console.log("Malformed token")
+        return res.status(401).send({ message: 'Malformed token.' });
+    }
     
-    // const token = token_bearer[1];
-
-    // return jwt.verify(token, "hello", (err, decoded) => {
-    //   if (err) {
-    //     return res.status(500).send({ auth: false, message: 'Failed to authenticate.' });
-    //   }
-    //   return next();
-    // });
+    const token = token_bearer[1];
+    console.log("token:" + token)
+    return jwt.verify(token, config.jwtsecret, (err, decoded) => {
+      if (err) {
+        console.log("Unauthorized")
+        return res.status(UNAUTHORIZED).send({ auth: false, message: 'Failed to authenticate.' });
+      }
+      return next();
+    });
 }
 
 router.get('/verification', 
@@ -72,7 +79,6 @@ router.post('/login', async (req: Request, res: Response) => {
 
     // check that the password matches
     const authValid = await comparePasswords(password, user.password_hash)
-
     if(!authValid) {
         return res.status(401).send({ auth: false, message: 'Unauthorized' });
     }

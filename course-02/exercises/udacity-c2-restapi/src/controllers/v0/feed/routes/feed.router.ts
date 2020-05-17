@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import { FeedItem } from '../models/FeedItem';
 import { requireAuth } from '../../users/routes/auth.router';
 import * as AWS from '../../../../aws';
-
+import {NOT_FOUND,BAD_REQUEST, INTERNAL_SERVER_ERROR, OK, NO_CONTENT} from 'http-status-codes'
 const router: Router = Router();
 
 // Get all feed items
@@ -16,15 +16,47 @@ router.get('/', async (req: Request, res: Response) => {
     res.send(items);
 });
 
-//@TODO
+
 //Add an endpoint to GET a specific resource by Primary Key
 
 // update a specific resource
 router.patch('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
-        //@TODO try it yourself
-        res.send(500).send("not implemented")
+        console.log(req.params)
+        let {id} = req.params
+
+        if(!id) {
+            return res.status(BAD_REQUEST).send("Id need to be specified")
+        }
+
+        const theFeed = await FeedItem.findAll({where: {id: id}})
+
+        if(!theFeed || theFeed.length == 0) {
+            return res.status(NOT_FOUND).send(`${id} not found`)
+        }
+
+        if(theFeed.length != 1) {
+            return res.status(INTERNAL_SERVER_ERROR).send('Encountered an unexpected error')
+        }
+
+        const fi = theFeed[0]
+        
+        let { caption, url} = req.body;
+
+        if(caption || url) {
+            if(caption) {
+                fi.caption = caption
+            }
+
+            if(url) {
+                fi.url = url
+            }
+
+            await fi.save()
+        }
+
+        res.status(NO_CONTENT).send(theFeed[0])
 });
 
 
@@ -32,9 +64,11 @@ router.patch('/:id',
 router.get('/signed-url/:fileName', 
     requireAuth, 
     async (req: Request, res: Response) => {
-    console.log("Getting signed url")
+    
     let { fileName } = req.params;
+    console.log("Getting signed url for: " + fileName)
     const url = AWS.getPutSignedUrl(fileName);
+    console.log(`Signed URL is ${url}`)
     res.status(201).send({url: url});
 });
 

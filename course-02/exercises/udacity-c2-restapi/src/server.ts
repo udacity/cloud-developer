@@ -9,11 +9,13 @@ import { V0MODELS } from './controllers/v0/model.index';
 
 (async () => {
   console.log("Initializing sequelize")
+  console.log(`DBName= ${process.env.UD_DB_HOSTNAME}`)
+
   await sequelize.addModels(V0MODELS);
   await sequelize.sync();
 
   console.log("Initializing sequelize-complete")
-  console.log(process.env.UD_DB_HOSTNAME)
+  
   const app = express();
   const port = process.env.PORT || 8080; // default port to listen
   
@@ -21,7 +23,14 @@ import { V0MODELS } from './controllers/v0/model.index';
 
   //CORS Should be restricted
   app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://localhost:8100");
+    console.log(`Origin = ${req.header('origin')}`)
+    if(req.header('origin') && req.header('origin').toLowerCase() === "http://d7iaxala64pno.cloudfront.net") {
+      res.header("Access-Control-Allow-Origin", "http://d7iaxala64pno.cloudfront.net");
+    }
+    else {
+      res.header("Access-Control-Allow-Origin", "http://localhost:8100");
+    }
+    
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     next();
   });
