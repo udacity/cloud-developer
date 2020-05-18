@@ -1,0 +1,13 @@
+Git repository = https://github.com/tochi3/cloud-developer/tree/master/course-02/project
+
+Screenshot of EB app dashboard is in deployment_screenshot folder
+
+Endpoint URL = http://image-filter-app-dev.us-east-2.elasticbeanstalk.com/
+
+Note:
+image used in project rubrik does not exist (not found):
+http://localhost:{{PORT}}/filteredimage?image_url=https://timedotcom.files.wordpress.com/2019/03/kitten-report.jpg 
+
+please use existing image, for example:
+
+http://image-filter-app-dev.us-east-2.elasticbeanstalk.com/filteredimage?image_url=https://www.draustria.com/wp-content/uploads/2017/06/pupy.jpg

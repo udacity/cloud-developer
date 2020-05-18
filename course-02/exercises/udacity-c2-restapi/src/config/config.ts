@@ -3,7 +3,7 @@ export const config = {
     "username": "",
     "password": "",
     "database": "",
-    "host": "",
+    "host": "aws resource id goes here",
     "dialect": "postgres",
     "aws_region": "us-east-2",
     "aws_profile": "default",
@@ -15,5 +15,8 @@ export const config = {
     "database": "udagram_prod",
     "host": "",
     "dialect": "postgres"
+  },
+  "jwt":{
+    "secret":"mysecret"
   }
 }
