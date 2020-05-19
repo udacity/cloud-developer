@@ -1,9 +1,10 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import {filterImageFromURL, deleteLocalFiles} from './util/util';
+
+import { FilterImageRouter } from './controllers/filterimage.router';
 
 (async () => {
-
+  // test
   // Init the Express application
   const app = express();
 
@@ -37,6 +38,8 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     res.send("try GET /filteredimage?image_url={{}}")
   } );
   
+  app.use('/filteredimage/', FilterImageRouter)
+
 
   // Start the Server
   app.listen( port, () => {

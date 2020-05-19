@@ -1,11 +1,24 @@
 import AWS = require('aws-sdk');
 import { config } from './config/config';
 
-const c = config.dev;
+var c = config.dev;
+const signedUrlExpireSeconds = 60 * 5
+if(config.environment_type === "PROD") {
+  console.log("Using prod setup")
+  c = config.prod
+}
+else {
+  console.log("Using dev setup")
+}
 
-//Configure AWS
-var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
-AWS.config.credentials = credentials;
+console.log(`Profile is ${c.aws_profile}`)
+
+if (c.aws_profile !== "DEPLOYED") {
+  console.log("Loading credentials from local file")
+    //Configure AWS
+    var credentials = new AWS.SharedIniFileCredentials({profile: c.aws_profile});
+    AWS.config.credentials = credentials;
+}
 
 export const s3 = new AWS.S3({
   signatureVersion: 'v4',
@@ -21,9 +34,6 @@ export const s3 = new AWS.S3({
  *    a url as a string
  */
 export function getGetSignedUrl( key: string ): string{
-
-  const signedUrlExpireSeconds = 60 * 5
-
     const url = s3.getSignedUrl('getObject', {
         Bucket: c.aws_media_bucket,
         Key: key,
@@ -40,9 +50,6 @@ export function getGetSignedUrl( key: string ): string{
  *    a url as a string
  */
 export function getPutSignedUrl( key: string ){
-
-    const signedUrlExpireSeconds = 60 * 5
-
     const url = s3.getSignedUrl('putObject', {
       Bucket: c.aws_media_bucket,
       Key: key,
