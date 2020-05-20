@@ -7,19 +7,26 @@ import * as jwt from 'jsonwebtoken';
 import { NextFunction } from 'connect';
 
 import * as EmailValidator from 'email-validator';
+import { config } from '../../../../config/config';
 
 const router: Router = Router();
 
 async function generatePassword(plainTextPassword: string): Promise<string> {
-    //@TODO Use Bcrypt to Generated Salted Hashed Passwords
+    const saltRounds = 10;
+    let salt = await bcrypt.genSalt(saltRounds);
+    return await bcrypt.hash(plainTextPassword, salt);
 }
 
 async function comparePasswords(plainTextPassword: string, hash: string): Promise<boolean> {
-    //@TODO Use Bcrypt to Compare your password to your Salted Hashed Password
+    return await bcrypt.compare(plainTextPassword, hash);
 }
 
-function generateJWT(user: User): string {
-    //@TODO Use jwt to create a new JWT Payload containing
+//function generateJWT(user: User): string {
+//    return jwt.sign(user, config.jwt.secret);
+//}
+
+ function generateJWT(user: User): string {
+    return jwt.sign(user.short(), "hello")
 }
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
@@ -82,7 +89,7 @@ router.post('/login', async (req: Request, res: Response) => {
     res.status(200).send({ auth: true, token: jwt, user: user.short()});
 });
 
-//register a new user
+//register a new user /api/v0/users/auth/
 router.post('/', async (req: Request, res: Response) => {
     const email = req.body.email;
     const plainTextPassword = req.body.password;
