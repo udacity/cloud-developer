@@ -6,10 +6,10 @@ const c = config.dev;
 //Configure AWS
 //var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
 //AWS.config.credentials = credentials;
-//if (c.aws_profile !== "DEPLOYED") {
-  var credentials = new AWS.SharedIniFileCredentials({ profile: c.aws_profile});
+if(c.aws_profile !== "DEPLOYED") {
+    var credentials = new AWS.SharedIniFileCredentials({ profile: 'default'});
   AWS.config.credentials = credentials;
-//}
+}
 
 export const s3 = new AWS.S3({
   signatureVersion: 'v4',
@@ -24,18 +24,24 @@ export const s3 = new AWS.S3({
  * @Returns:
  *    a url as a string
  */
-export function getGetSignedUrl( key: string ): string{
 
-  const signedUrlExpireSeconds = 60 * 5
-
-    const url = s3.getSignedUrl('getObject', {
-        Bucket: c.aws_media_bucket,
-        Key: key,
-        Expires: signedUrlExpireSeconds
-      });
-
-    return url;
+export function getGetSignedUrl( key:string ): string{
+  const param = { Bucket: c.aws_media_bucket, Key: key, Expires: 60 * 5 };
+  const url: string = s3.getSignedUrl('getObject', param );
+  return url;
 }
+//export function getGetSignedUrl( key: string ): string{
+
+//  const signedUrlExpireSeconds = 60 * 5
+
+//    const url = s3.getSignedUrl('getObject', {
+//        Bucket: c.aws_media_bucket,
+//        Key: key,
+//        Expires: signedUrlExpireSeconds
+//      });
+
+//    return url;
+//}
 
 /* getPutSignedUrl generates an aws signed url to put an item
  * @Params
@@ -43,15 +49,21 @@ export function getGetSignedUrl( key: string ): string{
  * @Returns:
  *    a url as a string
  */
-export function getPutSignedUrl( key: string ){
 
-    const signedUrlExpireSeconds = 60 * 5
-
-    const url = s3.getSignedUrl('putObject', {
-      Bucket: c.aws_media_bucket,
-      Key: key,
-      Expires: signedUrlExpireSeconds
-    });
-
-    return url;
+export function getPutSignedUrl( key:string ){
+  const param = { Bucket: c.aws_media_bucket, Key: key, Expires: 60 * 5 };
+  const url: string = s3.getSignedUrl('putObject', param );
+  return url;
 }
+//export function getPutSignedUrl( key: string ){
+
+//    const signedUrlExpireSeconds = 60 * 5
+
+//    const url = s3.getSignedUrl('putObject', {
+//      Bucket: c.aws_media_bucket,
+//      Key: key,
+//      Expires: signedUrlExpireSeconds
+//    });
+
+//    return url;
+//}
