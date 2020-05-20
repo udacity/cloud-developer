@@ -15,7 +15,7 @@ before_script:
 
 script:
   - docker --version # print the version for logging
-  - docker build -t mamadly/udacity-cloud-dev-frontend:frontend-v1
+  - docker build -t frontend ./project4/udacity-c2-frontend
   - docker tag frontend mamadly/udacity-cloud-dev-frontend:latest
 
 after_success:
