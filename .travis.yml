@@ -17,7 +17,16 @@ script:
   - docker --version # print the version for logging
   - docker build -t frontend ./project4/udacity-c2-frontend
   - docker tag frontend mamadly/udacity-cloud-dev-frontend:latest
+  - docker build -t user ./project4/udacity-c2-user
+  - docker tag user mamadly/udacity-cloud-dev-user:latest
+  - docker build -t feed ./project4/udacity-c2-feed
+  - docker tag feed mamadly/udacity-cloud-dev-feed:latest
+  - docker build -t reverse-proxy ./project4/udacity-c2-reverse-proxy
+  - docker tag reverse-proxy mamadly/udacity-cloud-dev-reverse-proxy:latest
 
 after_success:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker push mamadly-cloud-dev-frontend/
+  - docker push mamadly-cloud-dev-user/
+  - docker push mamadly-cloud-dev-feed/
+  - docker push mamadly-cloud-dev-reverse-proxy/
