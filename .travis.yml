@@ -21,7 +21,7 @@ script:
   - docker tag user mamadly/udacity-cloud-dev-user:latest
   - docker build -t feed ./project4/udacity-c2-feed
   - docker tag feed mamadly/udacity-cloud-dev-feed:latest
-  - docker build -t reverse-proxy ./project4/udacity-c2-reverse-proxy
+  - docker build -t reverse-proxy ./project4/reverse-proxy
   - docker tag reverse-proxy mamadly/udacity-cloud-dev-reverse-proxy:latest
 
 after_success:
