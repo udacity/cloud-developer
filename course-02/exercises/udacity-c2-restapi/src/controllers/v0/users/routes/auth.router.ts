@@ -7,24 +7,10 @@ import * as jwt from 'jsonwebtoken';
 import { NextFunction } from 'connect';
 
 import * as EmailValidator from 'email-validator';
-<<<<<<< HEAD
 import { config } from '../../../../config/config';
-
-||||||| c0483b7
-
-=======
-import { config } from '../../../../config/config';
->>>>>>> f-auth
 const router: Router = Router();
 
 async function generatePassword(plainTextPassword: string): Promise<string> {
-<<<<<<< HEAD
-    const saltRounds = 10;
-    let salt = await bcrypt.genSalt(saltRounds);
-    return await bcrypt.hash(plainTextPassword, salt);
-||||||| c0483b7
-    //@TODO Use Bcrypt to Generated Salted Hashed Passwords
-=======
     //@TODO Use Bcrypt to Generated Salted Hashed Passwords
     const rounds = 10;
     const salt  = await bcrypt.genSalt(rounds);
@@ -32,35 +18,16 @@ async function generatePassword(plainTextPassword: string): Promise<string> {
     return hash;
     //let salt = await bcrypt.genSalt(saltRounds);
     //return await bcrypt.hash(plainTextPassword, salt);
->>>>>>> f-auth
 }
 
 async function comparePasswords(plainTextPassword: string, hash: string): Promise<boolean> {
-<<<<<<< HEAD
-    return await bcrypt.compare(plainTextPassword, hash);
-||||||| c0483b7
-    //@TODO Use Bcrypt to Compare your password to your Salted Hashed Password
-=======
     //@TODO Use Bcrypt to Compare your password to your Salted Hashed Password
     return await bcrypt.compare(plainTextPassword, hash);
->>>>>>> f-auth
 }
 
-<<<<<<< HEAD
-//function generateJWT(user: User): string {
-//    return jwt.sign(user, config.jwt.secret);
-//}
-
- function generateJWT(user: User): string {
-    return jwt.sign(user.short(), "hello")
-||||||| c0483b7
-function generateJWT(user: User): string {
-    //@TODO Use jwt to create a new JWT Payload containing
-=======
 function generateJWT(user: User): string {
     //@TODO Use jwt to create a new JWT Payload containing
     return jwt.sign(user, config.jwt.secret);
->>>>>>> f-auth
 }
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
