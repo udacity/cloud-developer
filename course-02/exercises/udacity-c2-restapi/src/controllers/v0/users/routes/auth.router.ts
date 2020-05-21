@@ -7,48 +7,82 @@ import * as jwt from 'jsonwebtoken';
 import { NextFunction } from 'connect';
 
 import * as EmailValidator from 'email-validator';
+<<<<<<< HEAD
 import { config } from '../../../../config/config';
 
+||||||| c0483b7
+
+=======
+import { config } from '../../../../config/config';
+>>>>>>> f-auth
 const router: Router = Router();
 
 async function generatePassword(plainTextPassword: string): Promise<string> {
+<<<<<<< HEAD
     const saltRounds = 10;
     let salt = await bcrypt.genSalt(saltRounds);
     return await bcrypt.hash(plainTextPassword, salt);
+||||||| c0483b7
+    //@TODO Use Bcrypt to Generated Salted Hashed Passwords
+=======
+    //@TODO Use Bcrypt to Generated Salted Hashed Passwords
+    const rounds = 10;
+    const salt  = await bcrypt.genSalt(rounds);
+    const hash = await bcrypt.hash(plainTextPassword, salt);
+    return hash;
+    //let salt = await bcrypt.genSalt(saltRounds);
+    //return await bcrypt.hash(plainTextPassword, salt);
+>>>>>>> f-auth
 }
 
 async function comparePasswords(plainTextPassword: string, hash: string): Promise<boolean> {
+<<<<<<< HEAD
     return await bcrypt.compare(plainTextPassword, hash);
+||||||| c0483b7
+    //@TODO Use Bcrypt to Compare your password to your Salted Hashed Password
+=======
+    //@TODO Use Bcrypt to Compare your password to your Salted Hashed Password
+    return await bcrypt.compare(plainTextPassword, hash);
+>>>>>>> f-auth
 }
 
+<<<<<<< HEAD
 //function generateJWT(user: User): string {
 //    return jwt.sign(user, config.jwt.secret);
 //}
 
  function generateJWT(user: User): string {
     return jwt.sign(user.short(), "hello")
+||||||| c0483b7
+function generateJWT(user: User): string {
+    //@TODO Use jwt to create a new JWT Payload containing
+=======
+function generateJWT(user: User): string {
+    //@TODO Use jwt to create a new JWT Payload containing
+    return jwt.sign(user, config.jwt.secret);
+>>>>>>> f-auth
 }
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
     return next();
-    // if (!req.headers || !req.headers.authorization){
-    //     return res.status(401).send({ message: 'No authorization headers.' });
-    // }
+       if (!req.headers || !req.headers.authorization){
+        return res.status(401).send({ message: 'No authorization headers.' });
+    }
     
 
-    // const token_bearer = req.headers.authorization.split(' ');
-    // if(token_bearer.length != 2){
-    //     return res.status(401).send({ message: 'Malformed token.' });
-    // }
+    const token_bearer = req.headers.authorization.split(' ');
+    if(token_bearer.length != 2){
+        return res.status(401).send({ message: 'Malformed token.' });
+    }
     
-    // const token = token_bearer[1];
+    const token = token_bearer[1];
 
-    // return jwt.verify(token, "hello", (err, decoded) => {
-    //   if (err) {
-    //     return res.status(500).send({ auth: false, message: 'Failed to authenticate.' });
-    //   }
-    //   return next();
-    // });
+    return jwt.verify(token, "hello", (err, decoded) => {
+      if (err) {
+        return res.status(500).send({ auth: false, message: 'Failed to authenticate.' });
+      }
+      return next();
+    });
 }
 
 router.get('/verification', 
