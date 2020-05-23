@@ -1,4 +1,5 @@
-import express from 'express';
+import express from 'express'
+import { Router, Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
@@ -29,15 +30,39 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   /**************************************************************************** */
 
-  //! END @TODO1
-  
+//Option 1
+  app.get("/filteredimage", async (req: Request, res: Response) => {
+    let imageUrl = req.query.image_url;
+    if (!imageUrl) {
+      return res.status(400).send({message: "No image url, please add one!"});
+  }  
+    try {
+      let image = await filterImageFromURL(imageUrl)
+      res.status(200).sendFile(image)
+      res.on('finish', () => deleteLocalFiles([image]));
+    }  catch(err) {
+      res. status(400).send({ message: err})
+      }
+  })
+ 
+// Option 2 Test it out! 
+    // app.get("/filteredimage", async (req, res) => {
+//   let{image_url}=req/query;
+//   if(!image_url){return res.send("URL not provided")}
+  //})
+  // deletes any files on the server on finish to the response
+  //res.status(200).sendFile(filterImage, function(){
+    //deleteLocalFiles([filteredImage]);
+  //});
+
+ //! END @TODO1
   // Root Endpoint
   // Displays a simple message to the user
   app.get( "/", async ( req, res ) => {
     res.send("try GET /filteredimage?image_url={{}}")
   } );
-  
 
+  
   // Start the Server
   app.listen( port, () => {
       console.log( `server running http://localhost:${ port }` );
