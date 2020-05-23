@@ -14,7 +14,7 @@ spec:
         app: reverse-proxy
     spec:
       containers:
-      - image: mamadly/udacity-cloud-dev:reverse-proxy-v1
+      - image: mamadly/udacity-cloud-dev-reverse-proxy:reverse-proxy-v1
         name: reverse-proxy
         imagePullPolicy: Always
         resources:
