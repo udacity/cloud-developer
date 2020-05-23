@@ -1,7 +1,7 @@
 version: '2.0'
 services:
   backend-feed:
-    image: mamadly/udacity-cloud-dev:feed-v1
+    image: mamadly/udacity-cloud-dev-feed:feed-v1
     volumes:
     - $HOME/.aws:/root/.aws
     environment:
@@ -14,7 +14,7 @@ services:
       AWS_MEDIA_BUCKET: $AWS_MEDIA_BUCKET
       JWT_SECRET: $JWT_SECRET
   backend-user:
-    image: mamadly/udacity-cloud-dev:user-v1
+    image: mamadly/udacity-cloud-dev-user:user-v1
     environment:
       POSTGRESS_USERNAME: $POSTGRESS_USERNAME
       POSTGRESS_PASSWORD: $POSTGRESS_PASSWORD
@@ -25,11 +25,11 @@ services:
       AWS_MEDIA_BUCKET: $AWS_BUCKET
       JWT_SECRET: $JWT_SECRET
   frontend:
-    image: mamadly/udacity-cloud-dev:frontend-v2
+    image: mamadly/udacity-cloud-dev-frontend:frontend-v1
     ports:
       - "8100:8100"
   reverseproxy:
-    image: mamadly/udacity-cloud-dev:reverse-proxy-v1
+    image: mamadly/udacity-cloud-dev-reverse-proxy:reverse-proxy-v1
     ports:
       - "8080:8080"
     restart: always
