@@ -7,3 +7,14 @@ export interface TodoItem {
   done: boolean
   attachmentUrl?: string
 }
+
+
+export interface PostTodoItem{
+  
+  createdAt: string
+  name: string
+  dueDate: string
+  done: boolean
+  attachmentUrl?: string
+
+}

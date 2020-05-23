@@ -22,7 +22,7 @@
                 "dynamodb:PutItem"
             ],
             "Resource": [
-                "arn:aws:dynamodb:us-east-1:*:table/Groups"
+                "arn:aws:dynamodb:us-east-2:*:table/Groups"
             ]
         }
     ]
