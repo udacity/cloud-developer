@@ -7,12 +7,13 @@ plugins:
 
 provider:
   name: aws
-  runtime: nodejs8.10
+  runtime: nodejs12.x
 
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-2'}
   environment:
     ToDoTable: ToDoTable-${self:provider.stage}
+    IS_OFFLINE: false
 
   iamRoleStatements:
     - Effect: Allow
@@ -20,12 +21,14 @@ provider:
         - Dynamodb:Scan
         - Dynamodb:PutItem
         - Dynamodb:GetItem
+        - Dynamodb:UpdateItem
+        - Dynamodb:DeleteItem
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.ToDoTable}
 
 functions:
 
-  Auth:
-    handler: src/lambda/auth/auth0Authorizer.handler
+  # Auth:
+  #   handler: src/lambda/auth/auth0Authorizer.handler
 
   # TODO: Configure this function
   GetTodos:
@@ -47,20 +50,21 @@ functions:
           cors: true
 
   # TODO: Configure this function
-  # UpdateTodo:
-  #   handler: src/lambda/http/updateTodo.handler
-  #   events:
-  #     - http:
-  #         method: patch
-  #         path: todos/{todoId}
+  UpdateTodo:
+    handler: src/lambda/http/updateTodo.handler
+    events:
+      - http:
+          method: put
+          path: todos/{todoId}
+          cors: true
 
   # # TODO: Configure this function
-  # DeleteTodo:
-  #   handler: src/lambda/http/deleteTodo.handler
-  #   events:
-  #     - http:
-  #         method: delete
-  #         path: todos/{todoId}
+  DeleteTodo:
+    handler: src/lambda/http/deleteTodo.handler
+    events:
+      - http:
+          method: delete
+          path: todos/{todoId}
 
   # # TODO: Configure this function
   # GenerateUploadUrl:

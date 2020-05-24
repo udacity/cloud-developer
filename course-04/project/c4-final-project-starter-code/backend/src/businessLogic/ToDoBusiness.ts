@@ -1,7 +1,8 @@
 import {ToDoItem} from '../dataLayer/ToDoItem'
 import {TodoItem} from '../models/TodoItem'
-import {decode} from 'jsonwebtoken'
-import { JwtPayload } from '../auth/JwtPayload'
+import {TodoUpdate} from '../models/TodoUpdate'
+//import {decode} from 'jsonwebtoken'
+//import { JwtPayload } from '../auth/JwtPayload'
 import {CreateTodoRequest} from '../requests/CreateTodoRequest'
 import * as uuid from 'uuid'
 
@@ -12,14 +13,14 @@ export async function getAllToDOItems(): Promise<TodoItem[]>{
     return ToDoItemRepository.getAllToDOItems()
 }
 
-export async function postAllToDoItems(CreateTodoRequest : CreateTodoRequest , jwtToken ) : Promise <TodoItem> {
+export async function postAllToDoItems(CreateTodoRequest : CreateTodoRequest  ) : Promise <TodoItem> {
     
     var itemId = uuid.v4()
-    const userIdToken = decode(jwtToken) as JwtPayload
-    const userId= userIdToken.sub
+    //const userIdToken = decode(jwtToken) as JwtPayload
+    //const userId= userIdToken.sub
 
     const createTodoItem : TodoItem = {
-        userId: userId,
+        userId: uuid.v4(),
         todoId: itemId,
         createdAt:  new Date().toISOString(),
         name: CreateTodoRequest.name,
@@ -28,4 +29,13 @@ export async function postAllToDoItems(CreateTodoRequest : CreateTodoRequest , j
         
     }
   return  ToDoItemRepository.createAllToDoItems(createTodoItem);
+}
+
+export async function updateAllToDoItems(TodoUpdate : TodoUpdate, key : string) : Promise <TodoUpdate> {
+    return await ToDoItemRepository.updateToDoItem(TodoUpdate , key)
+    
+}
+
+export async function deleteAllToDoItems(key:string) {
+    await ToDoItemRepository.deleteToDoItem(key)
 }

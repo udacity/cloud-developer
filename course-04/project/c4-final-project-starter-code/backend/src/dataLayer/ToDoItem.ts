@@ -1,6 +1,10 @@
-import {TodoItem} from '../models/TodoItem'
+import {TodoItem } from '../models/TodoItem'
+import { TodoUpdate } from '../models/TodoUpdate'
 import * as AWS from 'aws-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
+
+//const util = require('aws-sdk/lib/util')
+//util.Buffer = require('some-buffer-implementation').Buffer
 
 export class ToDoItem{
 
@@ -34,6 +38,69 @@ export class ToDoItem{
       console.log(  result.$response.data )
       return TodoItem
 
+    }
+
+    async updateToDoItem(TodoUpdate : TodoUpdate , todo: string ): Promise<TodoUpdate> {
+        console.log('in update done', TodoUpdate.done)
+        console.log('in update due date ', TodoUpdate.dueDate)
+        console.log('in update name ', TodoUpdate.name)
+        console.log('todoId ', todo)
+        // var params = {
+        //     TableName: this.ToDoTable,
+        //     Key: {
+        //         todoId : todo 
+        //     },
+        //     UpdateExpression: "set name = :name",
+            
+        //     ExpressionAttributeValues:{
+        //         ":name": 'name'
+        //     },
+        //     ReturnValues:"UPDATED_NEW"
+        // };
+     console.log ('before update')
+    // this.docClient.update(params, function(err, data) {
+    //     if (err) {
+    //         console.error("Unable to update item. Error JSON:", JSON.stringify(err));
+    //     } else {
+    //         console.log("UpdateItem succeeded:", JSON.stringify(data));
+    //     }
+    // })
+
+      const result = await  this.docClient.update({
+          TableName: this.ToDoTable,
+          Key:{
+            todoId : todo
+          },
+          UpdateExpression: "set #ts = :nameofapp , dueDate = :dd, done =:d ",
+          ExpressionAttributeValues:{
+              ":nameofapp":TodoUpdate.name,
+              ":dd": TodoUpdate.dueDate,
+              ":d": TodoUpdate.done
+          },
+          ExpressionAttributeNames:{
+
+            "#ts": "name"
+
+        },
+          ReturnValues:"UPDATED_NEW"
+
+        }).promise()
+
+        console.log(  result.$response.data )
+       console.log( 'after promise')
+
+        return TodoUpdate
+    }
+
+    async deleteToDoItem(ToDo: string){
+       const result = await this.docClient.delete({
+            TableName: this.ToDoTable,
+            Key:{
+                todoId: ToDo
+            }
+        }).promise()
+
+        console.log(result.$response.data)
     }
 
 }

@@ -7,13 +7,13 @@ import { postAllToDoItems } from '../../businessLogic/ToDoBusiness'
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const newTodo: CreateTodoRequest = JSON.parse(event.body)
-  const authorization = event.headers.Authorization
+  // const authorization = event.headers.Authorization
 
-  const split = authorization.split(' ')
-  const jwtToken = split[1]
-console.log('before calling create group function');
+  // const split = authorization.split(' ')
+  // const jwtToken = split[1]
+console.log('before calling create to do function');
   
- const ToDoItems = await postAllToDoItems(newTodo, jwtToken)
+ const ToDoItems = await postAllToDoItems(newTodo)
  return{
   statusCode:201,
   headers:{
