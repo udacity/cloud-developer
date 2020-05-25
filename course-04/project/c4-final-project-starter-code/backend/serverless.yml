@@ -4,6 +4,11 @@ service:
 plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
+  # addin plugin so that each function uses the required environment and and all are generic
+  - serverless-iam-roles-per-function
+
+package:
+  individually: true 
 
 provider:
   name: aws
@@ -14,6 +19,7 @@ provider:
   environment:
     ToDoTable: ToDoTable-${self:provider.stage}
     IS_OFFLINE: false
+    AttachmentBucket: attachmentbucket-${self:provider.stage}
 
   iamRoleStatements:
     - Effect: Allow
@@ -24,6 +30,11 @@ provider:
         - Dynamodb:UpdateItem
         - Dynamodb:DeleteItem
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.ToDoTable}
+    - Effect: Allow
+      Action: 
+        - s3:PutObject 
+        - s3:GetObject 
+      Resource: arn:aws:s3:::${self:provider.environment.AttachmentBucket}/*
 
 functions:
 
@@ -38,6 +49,11 @@ functions:
           method: get
           path: todos
           cors: true
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - Dynamodb:GetItem
+      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.ToDoTable}
 
   # TODO: Configure this function
   
@@ -48,6 +64,11 @@ functions:
           method: post
           path: todos
           cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - Dynamodb:PutItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.ToDoTable}
 
   # TODO: Configure this function
   UpdateTodo:
@@ -57,6 +78,11 @@ functions:
           method: put
           path: todos/{todoId}
           cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - Dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.ToDoTable}
 
   # # TODO: Configure this function
   DeleteTodo:
@@ -65,14 +91,21 @@ functions:
       - http:
           method: delete
           path: todos/{todoId}
+          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - Dynamodb:DeleteItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.ToDoTable}
 
   # # TODO: Configure this function
-  # GenerateUploadUrl:
-  #   handler: src/lambda/http/generateUploadUrl.handler
-  #   events:
-  #     - http:
-  #         method: post
-  #         path: todos/{todoId}/attachment
+  GenerateUploadUrl:
+    handler: src/lambda/http/generateUploadUrl.handler
+    events:
+      - http:
+          method: post
+          path: todos/{todoId}/attachment
+          cors: true
 
 resources:
   Resources:
@@ -88,3 +121,48 @@ resources:
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
         TableName : ${self:provider.environment.ToDoTable}
+
+    # adding the bucket for images
+
+    AttachmentsBucket:
+      Type: AWS::S3::Bucket 
+      Properties:
+        BucketName: ${self:provider.environment.AttachmentBucket}
+       # NotificationConfiguration:
+          # the commented code is used to notify a lambda function where as the topic configuartion is used to notify a topic
+         # LambdaConfigurations:
+          #- Event: s3:ObjectCreated:*
+          #  Function: !GetAtt SendUploadNotificationsLambdaFunction.Arn 
+          # commenting the code for the notification to the topic
+          # TopicConfigurations:
+          #   - Event: s3:ObjectCreated:*
+          #     Topic: !Ref ImagesTopic
+        CorsConfiguration:
+          CorsRules:
+            -
+              AllowedOrigins:
+                - '*'
+              AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - GET 
+                - PUT 
+                - POST 
+                - DELETE
+                - HEAD 
+              MaxAge: 3000
+    
+    # add a bucket policy 
+    BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        PolicyDocument:
+          Id: MyPolicy
+          Version: "2012-10-17"
+          Statement:
+            - Sid: PublicReadForGetBucketObjects
+              Effect: Allow
+              Principal: '*'
+              Action: 's3:GetObject'
+              Resource: 'arn:aws:s3:::${self:provider.environment.AttachmentBucket}/*'
+        Bucket: !Ref AttachmentsBucket

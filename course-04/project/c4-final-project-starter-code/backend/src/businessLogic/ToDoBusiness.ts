@@ -6,6 +6,7 @@ import {TodoUpdate} from '../models/TodoUpdate'
 import {CreateTodoRequest} from '../requests/CreateTodoRequest'
 import * as uuid from 'uuid'
 
+var bucket_name = process.env.AttachmentBucket
 
 var ToDoItemRepository = new ToDoItem()
 
@@ -25,7 +26,8 @@ export async function postAllToDoItems(CreateTodoRequest : CreateTodoRequest  ) 
         createdAt:  new Date().toISOString(),
         name: CreateTodoRequest.name,
         dueDate: CreateTodoRequest.dueDate,
-        done: true
+        done: true,
+        attachmentUrl: `https://${bucket_name}.s3.amazonaws.com/${itemId}`
         
     }
   return  ToDoItemRepository.createAllToDoItems(createTodoItem);
