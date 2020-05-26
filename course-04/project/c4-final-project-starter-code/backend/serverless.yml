@@ -5,7 +5,6 @@ plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
   # addin plugin so that each function uses the required environment and and all are generic
-  - serverless-iam-roles-per-function
 
 package:
   individually: true 
@@ -21,25 +20,11 @@ provider:
     IS_OFFLINE: false
     AttachmentBucket: attachmentbucket-${self:provider.stage}
 
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - Dynamodb:Scan
-        - Dynamodb:PutItem
-        - Dynamodb:GetItem
-        - Dynamodb:UpdateItem
-        - Dynamodb:DeleteItem
-      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.ToDoTable}
-    - Effect: Allow
-      Action: 
-        - s3:PutObject 
-        - s3:GetObject 
-      Resource: arn:aws:s3:::${self:provider.environment.AttachmentBucket}/*
 
 functions:
 
-  # Auth:
-  #   handler: src/lambda/auth/auth0Authorizer.handler
+  #Auth:
+  #  handler: src/lambda/auth/auth0Authorizer.handler
 
   # TODO: Configure this function
   GetTodos:
@@ -49,11 +34,11 @@ functions:
           method: get
           path: todos
           cors: true
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - Dynamodb:GetItem
-      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.ToDoTable}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - Dynamodb:Scan
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.ToDoTable}
 
   # TODO: Configure this function
   
@@ -64,6 +49,7 @@ functions:
           method: post
           path: todos
           cors: true
+          # authorizer: Auth
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -106,6 +92,12 @@ functions:
           method: post
           path: todos/{todoId}/attachment
           cors: true
+    iamRoleStatements: 
+      - Effect: Allow
+        Action: 
+          - s3:PutObject 
+          - s3:GetObject 
+        Resource: arn:aws:s3:::${self:provider.environment.AttachmentBucket}/*
 
 resources:
   Resources:
