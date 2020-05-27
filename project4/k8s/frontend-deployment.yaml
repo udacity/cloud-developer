@@ -13,7 +13,7 @@ spec:
         app: frontend 
     spec:
       containers:
-      - image: mamadly/udacity-cloud-dev-frontend:frontend-v1
+      - image: mamadly/udacity-cloud-dev-frontend:frontend-v2
         name: frontend
         imagePullPolicy: Always
         resources:
