@@ -16,7 +16,7 @@ before_script:
 script:
   - docker --version # print the version for logging
   - docker build -t frontend ./project4/udacity-c2-frontend
-  - docker tag frontend_v2 mamadly/udacity-cloud-dev-frontend:frontend_v2
+  - docker tag frontend mamadly/udacity-cloud-dev-frontend:latest
   - docker build -t user ./project4/udacity-c2-user
   - docker tag user mamadly/udacity-cloud-dev-user:latest
   - docker build -t feed ./project4/udacity-c2-feed
