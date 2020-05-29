@@ -21,7 +21,8 @@ console.log('before calling create to do function');
     'Access-Control-Allow-Credentials' : true
   },
   body: JSON.stringify({
-    ToDoItems
+    //items : ToDoItems,
+    item: ToDoItems
   })
 }
   

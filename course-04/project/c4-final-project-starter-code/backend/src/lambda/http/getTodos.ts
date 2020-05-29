@@ -6,14 +6,14 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } f
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   // TODO: Get all TODO items for a current user
   console.log(event.body);
-  const ToDoItems = await getAllToDOItems()
+  const todos = await getAllToDOItems()
     return{
               statusCode:201,
               headers:{
                   'Access-Control-Allow-Origin' :'*'
               },
               body: JSON.stringify({
-                ToDoItems
+                items: todos
               })
           }
 }
