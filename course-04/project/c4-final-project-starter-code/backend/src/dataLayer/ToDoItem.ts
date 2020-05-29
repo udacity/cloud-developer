@@ -5,7 +5,7 @@ import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 
 //const util = require('aws-sdk/lib/util')
 //util.Buffer = require('some-buffer-implementation').Buffer
-
+const indexName = process.env.USER_ID_INDEX
 export class ToDoItem{
 
     private readonly docClient: DocumentClient = createDynamoDBClient()
@@ -15,11 +15,20 @@ export class ToDoItem{
 
     }
 
-    async getAllToDOItems(): Promise<TodoItem[]> {
+    async getAllToDOItems(userId: string): Promise<TodoItem[]> {
         console.log('Getting all to do items')
 
-        const result = await this.docClient.scan({
-            TableName: this.ToDoTable
+        // const result = await this.docClient.scan({
+        //     TableName: this.ToDoTable
+        // }).promise()
+
+        const result = await this.docClient.query({
+            TableName : this.ToDoTable,
+            IndexName: indexName,
+            KeyConditionExpression: "userId = :yyyy",
+            ExpressionAttributeValues: {
+                ":yyyy": userId
+            }
         }).promise()
 
         const items = result.Items

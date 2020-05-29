@@ -10,18 +10,18 @@ var bucket_name = process.env.AttachmentBucket
 
 var ToDoItemRepository = new ToDoItem()
 
-export async function getAllToDOItems(): Promise<TodoItem[]>{
-    return ToDoItemRepository.getAllToDOItems()
+export async function getAllToDOItems(userId: string): Promise<TodoItem[]>{
+    return ToDoItemRepository.getAllToDOItems(userId)
 }
 
-export async function postAllToDoItems(CreateTodoRequest : CreateTodoRequest  ) : Promise <TodoItem> {
+export async function postAllToDoItems(CreateTodoRequest : CreateTodoRequest, userid: string  ) : Promise <TodoItem> {
     
     var itemId = uuid.v4()
     //const userIdToken = decode(jwtToken) as JwtPayload
     //const userId= userIdToken.sub
 
     const createTodoItem : TodoItem = {
-        userId: uuid.v4(),
+        userId: userid,
         todoId: itemId,
         createdAt:  new Date().toISOString(),
         name: CreateTodoRequest.name,

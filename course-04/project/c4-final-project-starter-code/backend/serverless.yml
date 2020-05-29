@@ -18,6 +18,7 @@ provider:
     ToDoTable: ToDoTable-${self:provider.stage}
     IS_OFFLINE: false
     AttachmentBucket: attachmentbucket-${self:provider.stage}
+    USER_ID_INDEX: USERIDINDEX
 
 
 functions:
@@ -33,11 +34,18 @@ functions:
           method: get
           path: todos
           cors: true
+          authorizer: Auth
     iamRoleStatements:
       - Effect: Allow
         Action:
           - Dynamodb:Scan
+          - Dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.ToDoTable}
+      - Effect: Allow
+        Action:
+          - Dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.ToDoTable}/index/${self:provider.environment.USER_ID_INDEX}
+  
 
   # TODO: Configure this function
   
@@ -63,6 +71,7 @@ functions:
           method: put
           path: todos/{todoId}
           cors: true
+          authorizer: Auth
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -77,6 +86,7 @@ functions:
           method: delete
           path: todos/{todoId}
           cors: true
+          authorizer: Auth
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -91,6 +101,7 @@ functions:
           method: post
           path: todos/{todoId}/attachment
           cors: true
+          authorizer: Auth
     iamRoleStatements: 
       - Effect: Allow
         Action: 
@@ -107,9 +118,18 @@ resources:
         AttributeDefinitions:
           - AttributeName: todoId 
             AttributeType: S
+          - AttributeName: userId 
+            AttributeType: S
         KeySchema:
           - AttributeName: todoId
             KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.USER_ID_INDEX}
+            KeySchema:
+            - AttributeName: userId
+              KeyType: HASH
+            Projection:
+              ProjectionType: ALL
         BillingMode: PAY_PER_REQUEST
         TableName : ${self:provider.environment.ToDoTable}
 
