@@ -5,6 +5,8 @@ plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
   # addin plugin so that each function uses the required environment and and all are generic
+  - serverless-reqvalidator-plugin # plugin for validation
+  - serverless-aws-documentation # pre requisite for validation plugin 
 
 
 
@@ -20,6 +22,12 @@ provider:
     AttachmentBucket: attachmentbucket-${self:provider.stage}
     USER_ID_INDEX: USERIDINDEX
 
+custom: 
+  documentation:
+    models:
+      - name: ToDoRequest
+        contentType: application/json
+        schema: ${file(models/create-todo-request.json)}
 
 functions:
 
@@ -57,6 +65,12 @@ functions:
           path: todos
           cors: true
           authorizer: Auth
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: Create a new to do
+            description: Create a new to do
+            requestModels:
+              'application/json': ToDoRequest
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -111,6 +125,16 @@ functions:
 
 resources:
   Resources:
+
+    RequestBodyValidator:
+      Type: AWS::ApiGateway::RequestValidator
+      Properties: 
+        Name: 'request-body-validator'
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        ValidateRequestBody: true
+        ValidateRequestParameters: false
+
     # make table for toDoItem
     ToDoDynamoDBTable:
       Type: AWS::DynamoDB::Table
@@ -165,6 +189,7 @@ resources:
     
     # add a bucket policy 
     BucketPolicy:
+
       Type: AWS::S3::BucketPolicy
       Properties:
         PolicyDocument:
@@ -177,3 +202,15 @@ resources:
               Action: 's3:GetObject'
               Resource: 'arn:aws:s3:::${self:provider.environment.AttachmentBucket}/*'
         Bucket: !Ref AttachmentsBucket
+
+    # adding a code for the cors header as well as some other code for api gateway 
+    GatewayResponseDefault4XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Header: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
