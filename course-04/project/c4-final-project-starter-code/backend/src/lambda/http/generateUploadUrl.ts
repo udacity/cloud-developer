@@ -2,6 +2,9 @@ import 'source-map-support/register'
 import * as AWS from 'aws-sdk'
 
 import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
+import { createLogger } from '../../utils/logger'
+
+const logger = createLogger('generateToDO')
 
 const bucket_name = process.env.AttachmentBucket
 const urlExpiration = Number(process.env.SIGNED_URL_EXPIRATION)
@@ -19,6 +22,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   console.log(event.body)
   
   const signedUrl = getUploadURL(todoId)
+  logger.info('signed url is',signedUrl)
   return{
     statusCode:201,
     headers:{

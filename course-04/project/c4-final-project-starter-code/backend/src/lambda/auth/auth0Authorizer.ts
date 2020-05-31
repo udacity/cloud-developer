@@ -2,13 +2,13 @@ import { CustomAuthorizerEvent, CustomAuthorizerResult } from 'aws-lambda'
 import 'source-map-support/register'
 
 import { verify } from 'jsonwebtoken'
-//import { createLogger } from '../../utils/logger'
+import { createLogger } from '../../utils/logger'
 import Axios from 'axios'
 //import { Jwt } from '../../auth/Jwt'
 import { JwtPayload } from '../../auth/JwtPayload'
 import { jwks } from '../../auth/jwks'
 
-//const logger = createLogger('auth')
+const logger = createLogger('auth')
 
 // TODO: Provide a URL that can be used to download a certificate that can be used
 // to verify JWT token signature.
@@ -35,7 +35,7 @@ var jwksCertificate: string
 export const handler = async (
   event: CustomAuthorizerEvent
 ): Promise<CustomAuthorizerResult> => {
-  //logger.info('Authorizing a user', event.authorizationToken)
+  logger.info('Authorizing a user', event.authorizationToken)
 
   console.log("inside Authorizing a user with authorization as" + event.authorizationToken)
   const jwksData =  await Axios.get('https://dev-n1ovzx7w.auth0.com/.well-known/jwks.json')
@@ -46,7 +46,7 @@ export const handler = async (
   try {
     const jwtToken = await verifyToken(event.authorizationToken)
     console.log("inside try able to pass the value")
-    //logger.info('User was authorized', jwtToken)
+    logger.info('User was authorized', jwtToken)
 
     return {
       principalId: jwtToken.sub,
@@ -62,7 +62,7 @@ export const handler = async (
       }
     }
   } catch (e) {
- //   logger.error('User not authorized', { error: e.message })
+    logger.error('User not authorized', { error: e.message })
 
     return {
       principalId: 'user',

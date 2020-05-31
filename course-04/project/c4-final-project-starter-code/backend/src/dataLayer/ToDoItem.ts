@@ -2,6 +2,12 @@ import {TodoItem } from '../models/TodoItem'
 import { TodoUpdate } from '../models/TodoUpdate'
 import * as AWS from 'aws-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
+import  *  as AWSXRay from 'aws-xray-sdk'
+import { createLogger } from '../utils/logger'
+
+const logger = createLogger('getToDO')
+
+const XAWS = AWSXRay.captureAWS(AWS)
 
 //const util = require('aws-sdk/lib/util')
 //util.Buffer = require('some-buffer-implementation').Buffer
@@ -16,7 +22,7 @@ export class ToDoItem{
     }
 
     async getAllToDOItems(userId: string): Promise<TodoItem[]> {
-        console.log('Getting all to do items')
+        logger.info('Getting all to do items')
 
         // const result = await this.docClient.scan({
         //     TableName: this.ToDoTable
@@ -36,7 +42,7 @@ export class ToDoItem{
     }
 
     async createAllToDoItems(TodoItem) : Promise<TodoItem> {
-        console.log('Creating all to do items')
+        logger.info('Creating all to do items')
 
         const result = await this.docClient.put({
             TableName: this.ToDoTable,
@@ -50,10 +56,10 @@ export class ToDoItem{
     }
 
     async updateToDoItem(TodoUpdate : TodoUpdate , todo: string ): Promise<TodoUpdate> {
-        console.log('in update done', TodoUpdate.done)
-        console.log('in update due date ', TodoUpdate.dueDate)
-        console.log('in update name ', TodoUpdate.name)
-        console.log('todoId ', todo)
+        logger.info('in update done', TodoUpdate.done)
+        logger.info('in update due date ', TodoUpdate.dueDate)
+        logger.info('in update name ', TodoUpdate.name)
+        logger.info('todoId ', todo)
         // var params = {
         //     TableName: this.ToDoTable,
         //     Key: {
@@ -66,7 +72,7 @@ export class ToDoItem{
         //     },
         //     ReturnValues:"UPDATED_NEW"
         // };
-     console.log ('before update')
+     logger.info('before update')
     // this.docClient.update(params, function(err, data) {
     //     if (err) {
     //         console.error("Unable to update item. Error JSON:", JSON.stringify(err));
@@ -102,14 +108,15 @@ export class ToDoItem{
     }
 
     async deleteToDoItem(ToDo: string){
+        logger.info('delete to do item')
        const result = await this.docClient.delete({
             TableName: this.ToDoTable,
             Key:{
                 todoId: ToDo
             }
         }).promise()
-
         console.log(result.$response.data)
+       
     }
 
 }
@@ -118,7 +125,7 @@ function createDynamoDBClient (){
     console.log(' process enc value is '+ process.env.IS_OFFLINE)
     if(process.env.IS_OFFLINE == 'true'){
         console.log('Creating a local dynamo db instance');
-        return new AWS.DynamoDB.DocumentClient({
+        return new XAWS.DynamoDB.DocumentClient({
             region: 'localhost',
             endpoint : 'http://localhost:8000'
         })
