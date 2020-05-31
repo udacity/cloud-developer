@@ -131,6 +131,6 @@ function createDynamoDBClient (){
         })
     }
     else{
-        return new AWS.DynamoDB.DocumentClient();
+        return new XAWS.DynamoDB.DocumentClient();
     }
     }

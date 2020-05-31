@@ -7,10 +7,15 @@ plugins:
   # addin plugin so that each function uses the required environment and and all are generic
   - serverless-reqvalidator-plugin # plugin for validation
   - serverless-aws-documentation # pre requisite for validation plugin 
+  #- serverless-plugin-tracing
 
 
 
 provider:
+  tracing:
+    lambda: true
+    ApiGateway: true
+
   name: aws
   runtime: nodejs12.x
 
@@ -53,6 +58,12 @@ functions:
         Action:
           - Dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.ToDoTable}/index/${self:provider.environment.USER_ID_INDEX}
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
   
 
   # TODO: Configure this function
@@ -76,6 +87,12 @@ functions:
         Action:
           - Dynamodb:PutItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.ToDoTable}
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
 
   # TODO: Configure this function
   UpdateTodo:
@@ -91,6 +108,12 @@ functions:
         Action:
           - Dynamodb:UpdateItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.ToDoTable}
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
 
   # # TODO: Configure this function
   DeleteTodo:
@@ -106,6 +129,12 @@ functions:
         Action:
           - Dynamodb:DeleteItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.ToDoTable}
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
 
   # # TODO: Configure this function
   GenerateUploadUrl:
@@ -122,6 +151,12 @@ functions:
           - s3:PutObject 
           - s3:GetObject 
         Resource: arn:aws:s3:::${self:provider.environment.AttachmentBucket}/*
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
 
 resources:
   Resources:
