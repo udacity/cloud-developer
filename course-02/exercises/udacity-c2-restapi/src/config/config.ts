@@ -1,14 +1,14 @@
 export const config = {
 	dev: {
-		username: 'udagammacddev2',
-		password: 'udagammacddev2',
-		database: 'postgres',
-		host: 'udagammacddev2.co6vfctjgigk.ca-central-1.rds.amazonaws.com',
+		username: process.env.POSTGRESS_USERNAME,
+		password: process.env.POSTGRESS_PASSWORD,
+		database: process.env.POSTGRESS_DATABASE,
+		host: process.env.HOST,
 		dialect: 'postgres',
 		storage: ':memory:',
-		aws_region: 'ca-central-1',
-		aws_profile: 'default',
-		aws_media_bucket: 'udagammacddev2',
+		aws_region: process.env.AWS_REGION,
+		aws_profile: process.env.AWS_PROFILE,
+		aws_media_bucket: process.env.AWS_BUCKET,
 	},
 	prod: {
 		username: '',

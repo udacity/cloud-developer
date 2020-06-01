@@ -8,7 +8,6 @@ const router: Router = Router();
 // Get all feed items
 router.get('/', async (req: Request, res: Response) => {
 	const items = await FeedItem.findAndCountAll({ order: [['id', 'DESC']] });
-	console.log(items);
 	items.rows.map((item) => {
 		if (item.url) {
 			item.url = AWS.getGetSignedUrl(item.url);
@@ -32,9 +31,7 @@ router.get('/:userId', async (req: Request, res: Response) => {
 });
 // update a specific resource
 router.patch('/:userId', requireAuth, async (req: Request, res: Response) => {
-	//@TODO try it yourself
 	const { userId } = req.params;
-
 	const { body } = req;
 
 	await FeedItem.update(body, {
@@ -44,7 +41,6 @@ router.patch('/:userId', requireAuth, async (req: Request, res: Response) => {
 		returning: true,
 	});
 
-	// then change the value to be changed
 	res.status(200).send('Record updated successfully');
 });
 
