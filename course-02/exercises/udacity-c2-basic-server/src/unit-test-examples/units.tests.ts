@@ -15,6 +15,11 @@ describe('add function', () => {
     expect(result).to.equal(0);
   });
 
+  it('should add 10,000 and 1,000,000', () => {
+    const result = add(10000,1000000);
+    expect(result).to.equal(1010000);
+  });
+
 });
 
 describe('divide', () => {
@@ -27,6 +32,11 @@ describe('divide', () => {
   it('should divide 5 and 2', () => {
     const result = divide(5,2);
     expect(result).to.equal(2.5);
+  });
+
+  it('should divide -10 and -2', () => {
+    const result = divide(-10,-2);
+    expect(result).to.equal(5);
   });
 
   it('should throw an error if div by zero', () => {
