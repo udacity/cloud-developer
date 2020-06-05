@@ -18,14 +18,55 @@ router.get('/', async (req: Request, res: Response) => {
 
 //@TODO
 //Add an endpoint to GET a specific resource by Primary Key
+router.get('/:id', async (req: Request, res: Response) => {
+    let { id } = req.params;
+    if (!id) {
+        return res.status(400)
+                .send(`id is required`);
+    }
+
+    const foundImage = await FeedItem.findByPk(id);
+    if (!foundImage) {
+        return res.status(404)
+                .send(`No image found with ID: ${id}`);
+    }
+
+    res.status(200).send(foundImage);
+});
 
 // update a specific resource
 router.patch('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
-        //@TODO try it yourself
-        res.send(500).send("not implemented")
-});
+        let { id } = req.params;
+        let { caption, url } = req.body;
+
+        if (!caption && !url) {
+            return res.status(400).send(`caption or url is required in the request body`)
+        }
+
+        if (!id) {
+            return res.status(400)
+                    .send(`id is required`);
+        }
+
+        const foundImage = await FeedItem.findByPk(id);
+        if (!foundImage) {
+            return res.status(404)
+                    .send(`No image found with ID: ${id}`);
+        }
+
+        if (caption) {
+            foundImage.caption = caption;
+        }
+        if (url) {
+            foundImage.url = url;
+        }
+        foundImage.save()
+
+        res.status(200).send(foundImage);
+
+    });
 
 
 // Get a signed url to put a new item in the bucket
