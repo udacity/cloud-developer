@@ -1,4 +1,4 @@
-import { add, divide } from './units';
+import { add, divide, concatenate } from './units';
 
 import { expect } from 'chai';
 import 'mocha';
@@ -38,3 +38,17 @@ describe('divide', () => {
 // @TODO try creating a new describe block for the "concat" method
 // it should contain an it block for each it statement in the units.ts @TODO.
 // don't forget to import the method ;)
+
+describe('concatenate function', () => {
+
+  it('should return SlippingJimmy', () => {
+    const result = concatenate("Slipping","Jimmy");
+    expect(result).to.equal("SlippingJimmy");
+  });
+
+  it('should throw an error', () => {
+    expect(()=>{ concatenate("Hathoda","") }).to.throw('one of your strings is empty!')
+  });
+
+});
+
