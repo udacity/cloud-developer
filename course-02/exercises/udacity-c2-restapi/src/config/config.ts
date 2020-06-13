@@ -6,7 +6,7 @@ export const config = {
     "host": process.env.POSTGRES_HOST,
     "dialect": "postgres",
     "aws_region": "us-east-1",
-    "aws_profile": "default",
+    "aws_profile": process.env.AWS_PROFILE,
     "aws_media_bucket": "udagram-ziv-dev"
   },
   "prod": {
