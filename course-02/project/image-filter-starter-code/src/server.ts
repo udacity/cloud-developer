@@ -1,7 +1,8 @@
-import express from 'express';
+import express, { NextFunction } from 'express';
 import bodyParser from 'body-parser';
 
 import { filterImageFromURL, deleteLocalFiles } from './util/util';
+import { doesNotReject } from 'assert';
 
 (async () => {
 
@@ -14,7 +15,6 @@ import { filterImageFromURL, deleteLocalFiles } from './util/util';
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
 
-  // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
   // GET /filteredimage?image_url={{URL}}
   // endpoint to filter an image from a public url.
   // IT SHOULD
@@ -30,7 +30,7 @@ import { filterImageFromURL, deleteLocalFiles } from './util/util';
 
   /**************************************************************************** */
 
-  app.get("/filteredimage", async (req, res, next) => {
+  app.get("/filteredimage", async (req, res) => {
     const image_url = req.query.image_url
 
     // check if image URL is missing
@@ -38,19 +38,23 @@ import { filterImageFromURL, deleteLocalFiles } from './util/util';
       return res.status(400).send({ message: 'A valid image_url is required' });
     }
 
-    let image_path = await filterImageFromURL(image_url);
+    // Try filtering the image from the given url
+    var image_path = filterImageFromURL(image_url);
 
-    if (!image_path) {
-      return res.status(400).send({
-        'message': 'Error sending the image from the given url.',
-        'image_url': image_url
+    // If downloaded successfully, send the image to uer and delete
+    // On error, send an error message to the user
+    image_path.then(function (image_path) {
+      return res.status(200).sendFile(image_path, function () {
+        deleteLocalFiles([image_path]);
       });
-    }
-    res.status(200).sendFile(image_path);
+    }).catch(function (error) {
+      return res.status(422).send({
+        "message": error,
+        "image_url": image_url
+      });
+    });
 
-    //TODO File deletion
   });
-  //! END @TODO1
 
   // Root Endpoint
   // Displays a simple message to the user
