@@ -34,7 +34,11 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   /*************************************************************/
   // EndPoint implementation 
     app.get("/filteredimage",async(req:Request,res:Response) =>{
-              
+           const image_url = req.query.image_url;
+           //console.log(image_url);
+          if(!image_url){
+              res.status(400).send("INVALID Image url,please check...");
+          }
     });
   /****************************************************************/
   
