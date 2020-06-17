@@ -16,15 +16,54 @@ router.get('/', async (req: Request, res: Response) => {
     res.send(items);
 });
 
-//@TODO
 //Add an endpoint to GET a specific resource by Primary Key
+router.get('/:id', async(req: Request, res: Response) => {
+    let { id } = req.params;
+    if(!id) {
+        return res.status(400)
+                    .send("Primary Key is required");
+    }
+
+    const item = await FeedItem.findByPk(id);
+
+    if(!item) {
+        return res.status(404)
+                .send(`Feed with id  ${id} not found`);
+    }
+
+    if(item.url) {
+        item.url = AWS.getGetSignedUrl(item.url);
+    }
+    res.send(item);
+    
+})
 
 // update a specific resource
 router.patch('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
-        //@TODO try it yourself
-        res.send(500).send("not implemented")
+        const {id} = req.params;
+        const {caption, url} = req.body;
+
+        if(!id || (!caption && !url)){
+            return res.status(400)
+                    .send("Insufficient data provided in the request");
+        }
+
+        // it's important to call the find-method with await, otherwise the code will continue processing
+        const itemToBeUpdated = await FeedItem.findByPk(id);
+        
+        if(!itemToBeUpdated) {
+            return res.status(404)
+                    .send(`Update not successful: Feed with id ${id} not found.`);
+        }
+
+        const updatedObject = await itemToBeUpdated.update( {
+            caption: caption,
+            url: url
+        })
+
+        res.status(200).send(updatedObject);
 });
 
 

@@ -9,7 +9,7 @@ import { NextFunction } from 'connect';
 import * as EmailValidator from 'email-validator';
 
 const router: Router = Router();
-
+/*
 async function generatePassword(plainTextPassword: string): Promise<string> {
     //@TODO Use Bcrypt to Generated Salted Hashed Passwords
 }
@@ -21,7 +21,7 @@ async function comparePasswords(plainTextPassword: string, hash: string): Promis
 function generateJWT(user: User): string {
     //@TODO Use jwt to create a new JWT Payload containing
 }
-
+*/
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
     return next();
     // if (!req.headers || !req.headers.authorization){
@@ -49,7 +49,7 @@ router.get('/verification',
     async (req: Request, res: Response) => {
         return res.status(200).send({ auth: true, message: 'Authenticated.' });
 });
-
+/*
 router.post('/login', async (req: Request, res: Response) => {
     const email = req.body.email;
     const password = req.body.password;
@@ -81,7 +81,8 @@ router.post('/login', async (req: Request, res: Response) => {
 
     res.status(200).send({ auth: true, token: jwt, user: user.short()});
 });
-
+*/
+/*
 //register a new user
 router.post('/', async (req: Request, res: Response) => {
     const email = req.body.email;
@@ -122,7 +123,7 @@ router.post('/', async (req: Request, res: Response) => {
 
     res.status(201).send({token: jwt, user: savedUser.short()});
 });
-
+*/
 router.get('/', async (req: Request, res: Response) => {
     res.send('auth')
 });
