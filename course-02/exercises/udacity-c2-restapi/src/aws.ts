@@ -1,11 +1,20 @@
 import AWS = require('aws-sdk');
 import { config } from './config/config';
 
-const c = config.dev;
+const c = config.aws;
 
 //Configure AWS
-var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
+
+var credentials = new AWS.SharedIniFileCredentials({profile: c.aws_profile});
 AWS.config.credentials = credentials;
+
+// fixed "CredentialsError: Missing credentials in config"
+// https://stackoverflow.com/questions/26284181/aws-missing-credentials-when-i-try-send-something-to-my-s3-bucket-node-js
+AWS.config.update({
+  accessKeyId: c.aws_access_key_id,
+  secretAccessKey: c.aws_secret_access_key,
+  region: c.aws_region 
+}); // for simplicity. In prod, use loadConfigFromFile, or env variables
 
 export const s3 = new AWS.S3({
   signatureVersion: 'v4',
@@ -21,7 +30,7 @@ export const s3 = new AWS.S3({
  *    a url as a string
  */
 export function getGetSignedUrl( key: string ): string{
-
+  console.info('Processing getGetSignedUrl for ', key);
   const signedUrlExpireSeconds = 60 * 5
 
     const url = s3.getSignedUrl('getObject', {
@@ -39,11 +48,15 @@ export function getGetSignedUrl( key: string ): string{
  * @Returns:
  *    a url as a string
  */
-export function getPutSignedUrl( key: string ){
-
+export async function getPutSignedUrl( key: string ): Promise<string> {
+    console.info('Processing getPutSignedUrl for ', key);
     const signedUrlExpireSeconds = 60 * 5
 
-    const url = s3.getSignedUrl('putObject', {
+    // fix "https://s3.<region>.amazonaws.com/" returned as a response
+    // see https://github.com/aws/aws-sdk-js/issues/2918
+    // https://github.com/aws/aws-sdk-js/blob/master/CHANGELOG.md#25200
+    // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#getSignedUrlPromise-property
+    const url = await s3.getSignedUrlPromise('putObject', {
       Bucket: c.aws_media_bucket,
       Key: key,
       Expires: signedUrlExpireSeconds
