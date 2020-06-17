@@ -7,13 +7,13 @@ import { Car, cars as cars_list } from './cars';
   let cars:Car[]  = cars_list;
 
   //Create an express applicaiton
-  const app = express(); 
+  const app = express();
   //default port to listen
-  const port = 8082; 
-  
+  const port = 8082;
+
   //use middleware so post bodies 
   //are accessable as req.body.{{variable}}
-  app.use(bodyParser.json()); 
+  app.use(bodyParser.json());
 
   // Root URI call
   app.get( "/", ( req: Request, res: Response ) => {
@@ -70,17 +70,73 @@ import { Car, cars as cars_list } from './cars';
 
   // @TODO Add an endpoint to GET a list of cars
   // it should be filterable by make with a query paramater
+  app.get("/cars", (req: Request, res: Response) => {
+    let { make } = req.query;
+
+    if (make) {
+      const filterred_cars = cars.filter(function (car) { return car.make.toLowerCase() === make.toLowerCase() });
+      return res.status(200)
+        .send(filterred_cars);
+    }
+
+    return res.status(200)
+      .send(cars);
+  });
 
   // @TODO Add an endpoint to get a specific car
   // it should require id
   // it should fail gracefully if no matching car is found
+  app.get("/cars/:id", (req: Request, res: Response) => {
+    let { id } = req.params;
+
+    if (!id) {
+      // respond with an error if not
+      return res.status(400).send(`id is required`);
+    }
+
+    const filterred_car = cars.filter(function (car) { return car.id == id });
+
+    if (filterred_car && filterred_car.length === 0) {
+      // no car found for this id
+      return res.status(404).send();
+    }
+
+    return res.status(200).send(filterred_car);
+  });
+
 
   /// @TODO Add an endpoint to post a new car to our list
   // it should require id, type, model, and cost
+  app.post("/cars", (req: Request, res: Response) => {
+    // destruct our body payload for our variables
+    let { make, type, model, cost, id } = req.body;
+
+    // check to make sure all required variables are set
+    if (!id || !type || !model || !cost) {
+      // respond with an error if not
+      return res.status(400)
+                .send(`make, type, model, cost, id are required`);
+    }
+
+    // create a new car instance
+    const new_car: Car = {
+      make: make, type: type, model:model, cost:cost, id:id
+    };
+
+    // add this car to our local variable
+    cars.push(new_car);
+
+    // send the complete car object as a response
+    // along with 201 - creation success
+    res.status(201).send(new_car);
+  });
+
 
   // Start the Server
   app.listen( port, () => {
-      console.log( `server running http://localhost:${ port }` );
-      console.log( `press CTRL+C to stop server` );
-  } );
+    console.log( `server running http://localhost:${ port }` );
+    console.log( `press CTRL+C to stop server` );
+} );
+
+
 })();
