@@ -21,7 +21,6 @@ import fetch from "node-fetch";
   //    1. validate the image_url query
   const isValid = async (url: string): Promise<boolean> => {
     try {
-      // const fetch = require("node-fetch");
       console.log(`Check this value ${url}`);
       //create instance of URL from parameter
       const imageURL = new URL(url);
