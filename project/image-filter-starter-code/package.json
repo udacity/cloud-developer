@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "clean": "rm -rf www/ || true",
-    "build": "npm run clean && tsc && cp package.json www/package.json && mkdir www/tmp/ && cd www && zip -r Archive.zip . && cd ..",
+    "clean": "rm -rf www/",
+    "build": "npm run clean && tsc && copy package.json www/package.json && mkdir www\\tmp && cd www && zip -r Archive.zip . && cd ..",
     "dev": "ts-node-dev --respawn --transpileOnly ./src/server.ts"
   },
   "repository": {
