@@ -8,8 +8,10 @@ const router: Router = Router();
 // Get all feed items
 router.get('/', async (req: Request, res: Response) => {
     const items = await FeedItem.findAndCountAll({order: [['id', 'DESC']]});
+
     items.rows.map((item) => {
             if(item.url) {
+    // Remy removed before updating the config file
                 item.url = AWS.getGetSignedUrl(item.url);
             }
     });
@@ -18,18 +20,41 @@ router.get('/', async (req: Request, res: Response) => {
 
 //@TODO
 //Add an endpoint to GET a specific resource by Primary Key
+router.get( "/:id", 
+async ( req: Request, res: Response ) => {
+    let { id } = req.params;
+    if ( !id ) {
+        return res.status(400)
+                  .send(`id is required`);
+      }    
+
+    console.log('Received: ' + id)
+    const item = await FeedItem.findByPk(id);
+    return res.status(200)
+            .send(item);
+} );
 
 // update a specific resource
 router.patch('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
         //@TODO try it yourself
-        res.send(500).send("not implemented")
+        let { id } = req.params;
+        if ( !id ) {
+            return res.status(400)
+                      .send(`id is required`);
+        }    
+
+        const item = await FeedItem.findByPk(id);
+        item.url = "VIVE super toto.jpg"
+        const saved_item = await item.save();        
+        return res.status(200)
+                .send(saved_item);
 });
 
 
 // Get a signed url to put a new item in the bucket
-router.get('/signed-url/:fileName', 
+router.get('/signed-url/:fileName' ,
     requireAuth, 
     async (req: Request, res: Response) => {
     let { fileName } = req.params;
@@ -56,6 +81,7 @@ router.post('/',
         return res.status(400).send({ message: 'File url is required' });
     }
 
+    // Instanciate the new FeedItem
     const item = await new FeedItem({
             caption: caption,
             url: fileName
@@ -63,6 +89,7 @@ router.post('/',
 
     const saved_item = await item.save();
 
+    // Remy removed before updating the config file
     saved_item.url = AWS.getGetSignedUrl(saved_item.url);
     res.status(201).send(saved_item);
 });
