@@ -8,7 +8,7 @@ import fetch from "node-fetch";
   const app = express();
 
   // Set the network port
-  const port = 8082;
+  const port = process.env.PORT || 8082;
 
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
