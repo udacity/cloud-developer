@@ -14,5 +14,11 @@ export const config = {
   },
   "jwt" : {
     "secret" : process.env.JWT_SECRET
+  },
+  "cors" : {
+    "access_control_allow_origin": process.env.ACCESS_CONTROL_ALLOW_ORIGIN
+  },
+  "sentry" : {
+    "dsn" : process.env.SENTRY_DNS
   }
 }
