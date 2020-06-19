@@ -1,8 +1,11 @@
 import express from 'express';
+import * as Sentry from '@sentry/node';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import { config } from './config/config';
 
 (async () => {
+  Sentry.init({ dsn: config.sentry.dsn });
 
   // Init the Express application
   const app = express();
