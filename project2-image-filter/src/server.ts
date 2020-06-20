@@ -3,6 +3,7 @@ import * as Sentry from '@sentry/node';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 import { config } from './config/config';
+const morgan = require('morgan');
 
 (async () => {
   Sentry.init({ dsn: config.sentry.dsn });
@@ -15,6 +16,10 @@ import { config } from './config/config';
   
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
+
+  // use morgan logger
+  // :remote-addr :remote-user [:date[iso]] :method :url HTTP/:http-version :status :res[content-length] - :response-time ms
+  app.use(morgan(config.morgan.format));
 
   // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
   // GET /filteredimage?image_url={{URL}}
