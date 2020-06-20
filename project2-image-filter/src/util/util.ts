@@ -29,6 +29,15 @@ export async function filterImageFromURL(inputURL: string): Promise<string>{
 //    files: Array<string> an array of absolute paths to files
 export async function deleteLocalFiles(files:Array<string>){
     for( let file of files) {
-        fs.unlinkSync(file);
+        deleteLocalFile(file);
     }
+}
+
+// deleteLocalFiles
+// helper function to delete a file on the local disk
+// useful to cleanup after tasks
+// INPUTS
+//    file: string of absolute path to file
+export async function deleteLocalFile(file:string){
+    fs.unlinkSync(file);
 }
