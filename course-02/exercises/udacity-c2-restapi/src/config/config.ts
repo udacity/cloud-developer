@@ -1,14 +1,14 @@
 export const config = {
   "dev": {
-    "username": "xxxxxx",
-    "password": "xxxxxx",
-    "database": "xxxxxx",
-    "host": "xxxxxx",
-    "port": 5342,
+    "username": process.env.POSTGRESS_USERNAME,
+    "password": process.env.POSTGRESS_PASSWORD,
+    "database": process.env.POSTGRESS_DATABASE,
+    "host": process.env.POSTGRESS_HOST,
+    "port": process.env.POSTGRESS_PORT,
     "dialect": "postgres",
-    "aws_region.bak": "",
-    "aws_profile.bak": "default",
-    "aws_media_bucket.bak": "xxxxxx"
+    "aws_region":  process.env.AWS_REGION,
+    "aws_profile": process.env.AWS_PROFILE,
+    "aws_media_bucket": process.env.AWS_MEDIA_BUCKET
   },
   "prod": {
     "username": "",
