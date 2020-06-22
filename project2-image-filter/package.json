@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -Force www/*",
-    "build": "rm -Force www/*; tsc ; cp package.json www/package.json ; cd www ; 7z a -r Archive.zip ; cd ..",
+    "build": "rm -Recurse -Force www/*; tsc ; cp package.json www/package.json ; cd www ; 7z a -r Archive.zip ; cd ..",
     "dev": "ts-node-dev --respawn --transpileOnly ./src/server.ts"
   },
   "repository": {
@@ -29,11 +29,11 @@
   },
   "dependencies": {
     "@sentry/node": "^5.17.0",
-    "bluebird": "^3.7.2",
     "express": "^4.17.1",
     "http-status": "^1.4.2",
-    "jimp": "^0.6.4",
+    "jimp": "^0.13.0",
     "morgan": "^1.10.0",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "valid-url": "^1.0.9"
   }
 }

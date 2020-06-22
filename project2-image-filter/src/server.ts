@@ -5,7 +5,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 import { config } from './config/config';
 const morgan = require('morgan');
 import status from 'http-status';
-const request = require('request');
+const valid_url = require('valid-url');
 
 (async () => {
   Sentry.init({ dsn: config.sentry.dsn });
@@ -42,17 +42,14 @@ const request = require('request');
     const { image_url } = req.query;
 
     // 1. validate the image_url query
-    if ( !image_url ) {
+    if ( !image_url) {
       return res.status(status.BAD_REQUEST).send(status['400_MESSAGE'] + " `image_url` query parameter is required.");
     }
 
-    // 1b. check if image_url is accessible
-    request({method: 'HEAD', uri:image_url}, function (error: any, response: { statusCode: number; }, body: any) {
-      if (error || response.statusCode != 200) {
-        return res.status(status.UNPROCESSABLE_ENTITY)
-            .send(status['422_MESSAGE'] + ' `image_url` is not accessible : ' + image_url);
-      }
-    });
+    // 1b. check if image_url is valid
+    if(!valid_url.isUri(image_url)) {
+      return res.status(status.BAD_REQUEST).send(status['400_MESSAGE'] + " `image_url` is not a valid url.");
+    }
 
     // 2. call filterImageFromURL(image_url) to filter the image
     filterImageFromURL(image_url).then(filtered_image_url => {
@@ -62,8 +59,7 @@ const request = require('request');
         deleteLocalFiles([filtered_image_url]);
       });
     }).catch((e) => {
-      return res.status(status.UNPROCESSABLE_ENTITY)
-        .send(status['422_MESSAGE'] + ' `image_url` may be invalid : ' + image_url + ' ' + e);
+      return res.status(status.UNPROCESSABLE_ENTITY).send(status['422_MESSAGE'] + ' `image_url` may be unreachable : ' + image_url);
     });
 
   });
