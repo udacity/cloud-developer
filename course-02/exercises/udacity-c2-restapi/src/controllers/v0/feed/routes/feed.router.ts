@@ -11,7 +11,6 @@ router.get('/', async (req: Request, res: Response) => {
 
     items.rows.map((item) => {
             if(item.url) {
-    // Remy removed before updating the config file
                 item.url = AWS.getGetSignedUrl(item.url);
             }
     });
@@ -55,7 +54,7 @@ router.patch('/:id',
 
 // Get a signed url to put a new item in the bucket
 router.get('/signed-url/:fileName' ,
-    requireAuth, 
+    requireAuth,            
     async (req: Request, res: Response) => {
     let { fileName } = req.params;
     const url = AWS.getPutSignedUrl(fileName);
@@ -89,7 +88,6 @@ router.post('/',
 
     const saved_item = await item.save();
 
-    // Remy removed before updating the config file
     saved_item.url = AWS.getGetSignedUrl(saved_item.url);
     res.status(201).send(saved_item);
 });

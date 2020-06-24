@@ -7,7 +7,6 @@ const c = config.dev;
 //var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
 
 ////////////
-// Remy MOD
 // Correction caught in the video
 ///////////////////////////////////
 //Configure AWS, check for deployed first
