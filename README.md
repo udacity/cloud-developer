@@ -2,7 +2,7 @@
 
 ## Context
 
-[Udacity NANODEGREE Cloud Developer - Homepage](https://classroom.udacity.com/nanodegrees/nd9990)
+[Udacity NANODEGREE Cloud Developer - Homepage](https://www.udacity.com/course/cloud-developer-nanodegree--nd9990)
 
 [Udacity NANODEGREE Cloud Developer - Syllabus](https://d20vrrgs8k4bvw.cloudfront.net/documents/en-US/Cloud+Developer+Nanodegree+program+Syllabus.pdf)
 
