@@ -9,7 +9,6 @@
 ## Projects
 
 [PROJECT 1 : Deploy Static Website on AWS](project1-deploy-static-website-on-aws)
-Deploy a static website to AWS.
 _Keywords : aws, s3, cloudfront_
 
 [PROJECT 2 : Udagram, Your Own Instagram on AWS](project2-image-filter)
