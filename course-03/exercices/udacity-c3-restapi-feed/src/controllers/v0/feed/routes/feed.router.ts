@@ -1,6 +1,5 @@
 import { Router, Request, Response } from 'express';
 import { FeedItem } from '../models/FeedItem';
-import { requireAuth } from '../../users/routes/auth.router';
 import * as AWS from '../../../../aws';
 
 const router: Router = Router();
@@ -17,8 +16,7 @@ router.get('/', async (req: Request, res: Response) => {
     res.send(items);
 });
 
-//@TODO
-//Add an endpoint to GET a specific resource by Primary Key
+// Endpoint to GET a specific resource by Primary Key
 // Get all feed items
 router.get('/:id', async (req: Request, res: Response) => {
     let { id } = req.params;
@@ -35,7 +33,6 @@ router.get('/:id', async (req: Request, res: Response) => {
 
 // update a specific resource
 router.patch('/:id',
-    requireAuth,
     async (req: Request, res: Response) => {
         console.info('Processing feed request PATCH /:id', req.params, req.body);
         let { id } = req.params;
@@ -61,7 +58,6 @@ router.patch('/:id',
 
 // Get a signed url to put a new item in the bucket
 router.get('/signed-url/:fileName',
-    requireAuth,
     async (req: Request, res: Response) => {
         console.info('Processing feed request GET /signed-url/:fileName', req.params, req.body);
         let { fileName } = req.params;
@@ -74,7 +70,6 @@ router.get('/signed-url/:fileName',
 // NOTE the file name is they key name in the s3 bucket.
 // body : {caption: string, fileName: string};
 router.post('/',
-    requireAuth,
     async (req: Request, res: Response) => {
         console.info('Processing feed request POST /', req.params, req.body);
         const caption = req.body.caption;
