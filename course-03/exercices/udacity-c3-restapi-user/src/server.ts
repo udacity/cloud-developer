@@ -19,7 +19,7 @@ import * as Sentry from '@sentry/node';
   Sentry.init({ dsn: config.sentry.dsn });
 
   const app = express();
-  const port = process.env.PORT || 8080; // default port to listen
+  const port = process.env.PORT_USER_SERVICE || 8081; // default port to listen
   
   app.use(bodyParser.json());
 
