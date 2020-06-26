@@ -11,19 +11,37 @@ import * as EmailValidator from 'email-validator';
 const router: Router = Router();
 
 async function generatePassword(plainTextPassword: string): Promise<string> {
-    //@TODO Use Bcrypt to Generated Salted Hashed Passwords
+    const salt = bcrypt.genSaltSync(10);
+    return new Promise((resolve, reject) => {
+        try {
+            const hash = bcrypt.hashSync(plainTextPassword, salt);
+            resolve(hash);
+        } catch (e) {
+            reject(e.message);
+        }
+    });
 }
 
 async function comparePasswords(plainTextPassword: string, hash: string): Promise<boolean> {
-    //@TODO Use Bcrypt to Compare your password to your Salted Hashed Password
+    return new Promise((resolve, reject) => {
+        const match = bcrypt.compareSync(plainTextPassword, hash);
+        if (match) {
+            resolve();
+        } else {
+            reject();
+        }
+    });
 }
 
 function generateJWT(user: User): string {
-    //@TODO Use jwt to create a new JWT Payload containing
+    return jwt.sign({
+        data: user.email 
+    }, user.id, { expiresIn: '1d' });
 }
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
     return next();
+
     // if (!req.headers || !req.headers.authorization){
     //     return res.status(401).send({ message: 'No authorization headers.' });
     // }
