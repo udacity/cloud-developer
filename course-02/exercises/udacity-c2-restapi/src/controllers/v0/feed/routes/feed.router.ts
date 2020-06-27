@@ -89,10 +89,14 @@ router.post('/',
             url: fileName
     });
 
-    const saved_item = await item.save();
-
-    saved_item.url = AWS.getGetSignedUrl(saved_item.url);
-    res.status(201).send(saved_item);
+    try {
+        const saved_item = await item.save();
+        saved_item.url = AWS.getGetSignedUrl(saved_item.url);
+        res.status(201).send(saved_item);
+    } catch (error) {
+        console.error(error)
+        res.status(400).send( { message: 'Unknown error' });
+    }
 });
 
 export const FeedRouter: Router = router;
