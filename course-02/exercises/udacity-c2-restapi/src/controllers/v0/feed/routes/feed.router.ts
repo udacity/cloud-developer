@@ -32,8 +32,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 router.patch('/:id', requireAuth, async (req: Request, res: Response) => {
     let { id } = req.params;
     await FeedItem.update(req.body, { where: { id: id } });
-    const item = await FeedItem.findByPk(id);
-    res.status(204).send(item);
+    res.status(204).send(null);
 });
 
 
