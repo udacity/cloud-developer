@@ -8,6 +8,7 @@ import { NextFunction } from 'connect';
 
 import * as EmailValidator from 'email-validator';
 import { config } from '../../../../config/config';
+import * as Sentry from '@sentry/node';
 
 const router: Router = Router();
 
@@ -46,6 +47,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
 
     return jwt.verify(token, config.jwt_secret, (err, _decoded) => {
       if (err) {
+        Sentry.captureException(err);
         return res.status(500).send({ auth: false, message: 'Failed to authenticate.' });
       }
       return next();
@@ -122,6 +124,7 @@ router.post('/', async (req: Request, res: Response) => {
     try {
         savedUser = await newUser.save();
     } catch (e) {
+        Sentry.captureException(e);
         throw e;
     }
 

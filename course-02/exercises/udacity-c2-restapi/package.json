@@ -16,6 +16,7 @@
   "author": "Gabriel Ruttner",
   "license": "ISC",
   "dependencies": {
+    "@sentry/node": "^5.18.1",
     "@types/jsonwebtoken": "^8.3.2",
     "aws-sdk": "^2.492.0",
     "bcrypt": "^3.0.6",
