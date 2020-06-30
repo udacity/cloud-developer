@@ -18,8 +18,8 @@ import { V0MODELS } from './controllers/v0/model.index';
 
   //CORS Should be restricted
   app.use(function(req, res, next) {
-    // res.header("Access-Control-Allow-Origin", "http://127.0.0.1:8100/");
-    res.header("Access-Control-Allow-Origin", "https://udagram-ramin-frontend-test.s3.eu-west-2.amazonaws.com/");
+    res.header("Access-Control-Allow-Origin", "http://127.0.0.1:8100/");
+    // res.header("Access-Control-Allow-Origin", "https://udagram-ramin-frontend-test.s3.eu-west-2.amazonaws.com/");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     next();
   });
@@ -34,8 +34,6 @@ import { V0MODELS } from './controllers/v0/model.index';
 
   // Start the Server
   app.listen( port, () => {
-      // console.log( `server running http://localhost:${ port }` );
-      // console.log( `press CTRL+C to stop server` );
       console.log( `Server runnning on ${ port }` );
   } );
 })();

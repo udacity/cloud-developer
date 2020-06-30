@@ -11,7 +11,6 @@ import { config } from '../../../../config/config';
 
 const router: Router = Router();
 
-
 async function generatePassword(plainTextPassword: string): Promise<string> {
     const saltRounds = 10;
     const salt = await bcrypt.genSalt(saltRounds);
@@ -74,14 +73,14 @@ router.post('/login', async (req: Request, res: Response) => {
 
     const user = await User.findByPk(email);
     // check that user exists
-    if(!user) {
+    if (!user) {
         return res.status(401).send({ auth: false, message: 'Unauthorized' });
     }
 
     // check that the password matches
     const authValid = await comparePasswords(password, user.password_hash)
 
-    if(!authValid) {
+    if (!authValid) {
         return res.status(401).send({ auth: false, message: 'Unauthorized' });
     }
 
@@ -108,7 +107,7 @@ router.post('/', async (req: Request, res: Response) => {
     // find the user
     const user = await User.findByPk(email);
     // check that user doesnt exists
-    if(user) {
+    if (user) {
         return res.status(422).send({ auth: false, message: 'User may already exist' });
     }
 
@@ -128,7 +127,6 @@ router.post('/', async (req: Request, res: Response) => {
 
     // Generate JWT
     const jwt = generateJWT(savedUser);
-
     res.status(201).send({token: jwt, user: savedUser.short()});
 });
 
