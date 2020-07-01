@@ -7,12 +7,18 @@ import bodyParser from 'body-parser';
 
 import { V0MODELS } from './controllers/v0/model.index';
 
-const Sentry = require('@sentry/node');
+import * as Sentry from '@sentry/node';
 Sentry.init({ dsn: 'https://581e6338acc1480198196aceb2586ebc@o414265.ingest.sentry.io/5303427' });
 
 (async () => {
-  await sequelize.addModels(V0MODELS);
-  await sequelize.sync();
+  try {
+    await sequelize.addModels(V0MODELS);
+    await sequelize.sync();
+  } catch (e) {
+    Sentry.captureException(e);
+    // TODO: Improve error handling
+    throw(e);
+  }
 
   const app = express();
   const port = process.env.PORT || 8080; // default port to listen
@@ -37,6 +43,6 @@ Sentry.init({ dsn: 'https://581e6338acc1480198196aceb2586ebc@o414265.ingest.sent
 
   // Start the Server
   app.listen( port, () => {
-      console.log( `Server runnning on ${ port }` );
-  } );
+    console.log( `Server runnning on ${ port }` );
+  });
 })();
