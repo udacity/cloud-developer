@@ -37,3 +37,26 @@ npm run dev
 
 Developer mode runs off the TypeScript source. Any saves will reset the server and run the latest version of the codebase. 
 
+
+## Working with a local Database
+
+* For local development there is the option of running a local Postgres database to avoid incurring AWS costs.
+* To run the local server, first set the ENV variable `NODE_ENV` to `development`.
+
+```bash
+  export NODE_ENV=development
+```
+
+* Then create a local `.env` file with the following values (this assumes you have correctly set the other Environment variables in `config.ts`)
+
+```bash
+DB_USERNAME=root
+DB_PASSWORD=admin
+DB_NAME=<my_database>
+```
+
+* Start the dockerized postgres container with `docker-compose up -d` in the root directory
+* Run the server as usual - `npm run dev` (You should run this is in a fresh terminal session)
+
+* If you want to switch back to using your remote AWS database, set `NODE_ENV` to `aws`.
+* Ensure the environment variable `DB_HOST` has the correct value for your remote database and restart the server.
