@@ -1,21 +1,17 @@
 import express from 'express';
 import { sequelize } from './sequelize';
-
 import { IndexRouter } from './controllers/v0/index.router';
-
 import bodyParser from 'body-parser';
-
 import { V0MODELS } from './controllers/v0/model.index';
+import { logger }  from './utils/logger';
 
-import * as Sentry from '@sentry/node';
-Sentry.init({ dsn: 'https://581e6338acc1480198196aceb2586ebc@o414265.ingest.sentry.io/5303427' });
 
 (async () => {
   try {
     await sequelize.addModels(V0MODELS);
     await sequelize.sync();
   } catch (e) {
-    Sentry.captureException(e);
+    logger.error(e);
     // TODO: Improve error handling
     throw(e);
   }
@@ -27,8 +23,8 @@ Sentry.init({ dsn: 'https://581e6338acc1480198196aceb2586ebc@o414265.ingest.sent
 
   //CORS Should be restricted
   app.use(function(req, res, next) {
-    // res.header("Access-Control-Allow-Origin", "http://localhost:8100/api/v0");
-    res.header("Access-Control-Allow-Origin", "https://udagram-ramin-frontend.s3.eu-west-2.amazonaws.com/");
+    res.header("Access-Control-Allow-Origin", "http://localhost:8100/api/v0");
+    // res.header("Access-Control-Allow-Origin", "https://udagram-ramin-frontend.s3.eu-west-2.amazonaws.com/");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     next();
   });

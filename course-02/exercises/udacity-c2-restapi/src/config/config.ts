@@ -20,5 +20,6 @@ export const config = {
     "host": "",
     "dialect": "postgres"
   },
-  "jwt_secret": process.env.JWT_SECRET
+  "jwt_secret": process.env.JWT_SECRET,
+  "sentryChannel": process.env.SENTRY_CHANNEL
 }

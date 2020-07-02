@@ -17,18 +17,22 @@
   "license": "ISC",
   "dependencies": {
     "@sentry/node": "^5.18.1",
+    "@types/got": "^9.6.11",
     "@types/jsonwebtoken": "^8.3.2",
+    "@types/winston": "^2.4.4",
     "aws-sdk": "^2.492.0",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
     "email-validator": "^2.0.4",
     "express": "^4.17.1",
+    "got": "^11.3.0",
     "jsonwebtoken": "^8.5.1",
     "pg": "^7.11.0",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^5.19.6",
-    "sequelize-typescript": "^0.6.11"
+    "sequelize-typescript": "^0.6.11",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
