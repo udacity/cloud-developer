@@ -2,8 +2,6 @@ import { Router, Request, Response } from 'express';
 import { FeedItem } from '../models/FeedItem';
 import { requireAuth } from '../../users/routes/auth.router';
 import * as AWS from '../../../../aws';
-import got from 'got';
-import { logger } from '../../../../utils/logger';
 
 const router: Router = Router();
 
@@ -27,21 +25,6 @@ router.get('/:id', async (req: Request, res: Response) => {
         item.url = AWS.getGetSignedUrl(item.url);
     }
     res.send(item);
-});
-
-router.get('/filteredImage', async (req: Request, res: Response) => {
-    const { image_url } = req.query;
-    if (!image_url) {
-        return res.status(400).send({ message: 'A valid image url must be sent' });
-    }
-    
-    try {
-        const target = `http://localhost:8082/filteredimage?image_url=${image_url}`
-        const filteredImage = await got(target);
-        res.send(filteredImage);
-    } catch (e) {
-        logger.error(String(e));
-    }
 });
 
 // update a specific resource

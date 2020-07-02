@@ -23,8 +23,8 @@ import { logger }  from './utils/logger';
 
   //CORS Should be restricted
   app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://localhost:8100/api/v0");
-    // res.header("Access-Control-Allow-Origin", "https://udagram-ramin-frontend.s3.eu-west-2.amazonaws.com/");
+    // res.header("Access-Control-Allow-Origin", "http://localhost:8100/api/v0");
+    res.header("Access-Control-Allow-Origin", "https://udagram-ramin-frontend.s3.eu-west-2.amazonaws.com/");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     next();
   });

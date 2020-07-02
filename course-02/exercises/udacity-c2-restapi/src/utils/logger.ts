@@ -2,7 +2,8 @@ import * as Sentry from '@sentry/node';
 import { config } from './../config/config';
 import winston from 'winston';
 
-const sentryChannel:string = config.sentryChannel || 'https://581e6338acc1480198196aceb2586ebc@o414265.ingest.sentry.io/5303427';
+// const sentryChannel:string = config.sentryChannel || 'https://581e6338acc1480198196aceb2586ebc@o414265.ingest.sentry.io/5303427';
+const sentryChannel:string = null;
 
 export const logger = (() => {
   if (!sentryChannel) {
@@ -34,5 +35,6 @@ function createWinstonLogger() {
       format: winston.format.simple(),
     }));
   }
-    return logger;
+
+  return logger;
 }
