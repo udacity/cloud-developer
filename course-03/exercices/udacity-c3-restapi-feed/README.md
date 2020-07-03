@@ -49,11 +49,12 @@ Developer mode runs off the TypeScript source. Any saves will reset the server a
 
 ## Build & run docker image
 
-#### Build your image
+### Build your image
 
 `docker build -t {dockerid}/udacity-restapi-feed .`
 Replace {dockerid} with your docker user's id.
 The -t flag lets you tag your image so it's easier to find later using the docker images command.
 
-`docker run --rm --publish 8080:8080 -v "%userprofile%\.aws:/root/.aws" --env DB_USERNAME=%DB_USERNAME% --env DB_PASSWORD=%DB_PASSWORD% --env DB_NAME=%DB_NAME% --env DB_HOST=%DB_HOST% --env AWS_REGION=%AWS_REGION% --env AWS_PROFILE=%AWS_PROFILE% --env AWS_MEDIA_BUCKET=%AWS_MEDIA_BUCKET% --env AWS_ACCESS_KEY_ID=%AWS_ACCESS_KEY_ID% --env AWS_SECRET_ACCESS_KEY=%AWS_SECRET_ACCESS_KEY% --env JWT_SECRET=%JWT_SECRET% --env ACCESS_CONTROL_ALLOW_ORIGIN=%ACCESS_CONTROL_ALLOW_ORIGIN% --env SENTRY_DNS=%SENTRY_DNS% --env IMAGEFILTER_SENTRY_DNS=%IMAGEFILTER_SENTRY_DNS% --env IMAGEFILTER_MORGAN_FORMAT="%IMAGEFILTER_MORGAN_FORMAT%" --env SENTRY_DNS_FEED=%SENTRY_DNS_FEED% --env SENTRY_DNS_USER=%SENTRY_DNS_USER% --env PORT_FEED_SERVICE=%PORT_FEED_SERVICE% --env PORT_USER_SERVICE=%PORT_USER_SERVICE% --name feed {dockerid}/udacity-restapi-feed`
+### Run your image
 
+`docker run --rm --publish 8080:8080 -v "%userprofile%\.aws:/root/.aws" --env DB_USERNAME=%DB_USERNAME% --env DB_PASSWORD=%DB_PASSWORD% --env DB_NAME=%DB_NAME% --env DB_HOST=%DB_HOST% --env AWS_REGION=%AWS_REGION% --env AWS_PROFILE=%AWS_PROFILE% --env AWS_MEDIA_BUCKET=%AWS_MEDIA_BUCKET% --env AWS_ACCESS_KEY_ID=%AWS_ACCESS_KEY_ID% --env AWS_SECRET_ACCESS_KEY=%AWS_SECRET_ACCESS_KEY% --env JWT_SECRET=%JWT_SECRET% --env ACCESS_CONTROL_ALLOW_ORIGIN=%ACCESS_CONTROL_ALLOW_ORIGIN% --env SENTRY_DNS=%SENTRY_DNS% --env IMAGEFILTER_SENTRY_DNS=%IMAGEFILTER_SENTRY_DNS% --env IMAGEFILTER_MORGAN_FORMAT="%IMAGEFILTER_MORGAN_FORMAT%" --env SENTRY_DNS_FEED=%SENTRY_DNS_FEED% --env SENTRY_DNS_USER=%SENTRY_DNS_USER% --env PORT_FEED_SERVICE=8080 --env PORT_USER_SERVICE=8080 --name feed kendyjm/udacity-restapi-feed`
