@@ -65,3 +65,15 @@ ionic build
         b. NPM, Ionic CLI
         c. run tests (npm test), identify broken function, fix the function
         d. write tests for form validation and re-run tests
+
+## Build & run docker image
+
+### Build your image
+
+`docker build -t kendyjm/udacity-frontend .`
+Replace {dockerid} with your docker user's id.
+The -t flag lets you tag your image so it's easier to find later using the docker images command.
+
+### Run your image
+
+`docker run --rm --publish 8100:80 --name frontend kendyjm/udacity-frontend`
