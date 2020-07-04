@@ -44,7 +44,7 @@ import { filterImageFromURL, deleteLocalFiles } from "./util/util";
       const filteredPath = await filterImageFromURL(imageURL);
       if (!filteredPath) {
         return res
-          .status(400)
+          .status(422)
           .send(`an error occurred while trying to process your image`);
       }
       res.status(200).sendFile(filteredPath, () => {
