@@ -1,4 +1,4 @@
-import express, { Router, Request, Response } from "express";
+import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
 import { isUri } from "valid-url";
 import { filterImageFromURL, deleteLocalFiles } from "./util/util";
@@ -41,8 +41,15 @@ import { filterImageFromURL, deleteLocalFiles } from "./util/util";
       if (!imageURL || !isUri(imageURL)) {
         return res.status(400).send(`a valid image url is required`);
       }
-
-      return res.status(200).send(`${imageURL}`);
+      const filteredPath = await filterImageFromURL(imageURL);
+      if (!filteredPath) {
+        return res
+          .status(400)
+          .send(`an error occurred while trying to process your image`);
+      }
+      res.status(200).sendFile(filteredPath, () => {
+        deleteLocalFiles([filteredPath]);
+      });
     } catch (e) {
       console.log(e);
       return res.status(500);
