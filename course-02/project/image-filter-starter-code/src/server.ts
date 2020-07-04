@@ -37,12 +37,12 @@ import { filterImageFromURL, deleteLocalFiles } from "./util/util";
     //res.send("try GET /filteredimage?image_url={{}}")
     try {
       //@TODO try it yourself
-      const imageUrl = req.query.image_url;
-      if (!imageUrl || !isUri(imageUrl)) {
+      const imageURL = req.query.image_url;
+      if (!imageURL || !isUri(imageURL)) {
         return res.status(400).send(`a valid image url is required`);
       }
 
-      return res.status(200).send(`${imageUrl}`);
+      return res.status(200).send(`${imageURL}`);
     } catch (e) {
       console.log(e);
       return res.status(500);
