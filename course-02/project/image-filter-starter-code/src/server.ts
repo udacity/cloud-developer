@@ -1,4 +1,5 @@
 import express from 'express';
+import HttpStatus from 'http-status-codes';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
@@ -13,19 +14,22 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
 
-  app.get("/filteredimage", async ( req, res ) => {
-    var image_url = req.query.image_url;
+  // Rest endpoint to filter the image using utiity functions
+  app.get("/filteredimage", async ( req:express.Request, res:express.Response ) => {
+    const image_url = req.query.image_url;
     // validate the image url
     if(!image_url){
-     res.status(400).send('image url is required');
+      res.status(HttpStatus.BAD_REQUEST).send('image url is required');
     }
     //Filtering the image using the given utility function
     const result = await filterImageFromURL(image_url);
-    res.status(200).sendFile(result, err => { if (err) {
-      res.status(500);
-    }
+    res.status(HttpStatus.OK).sendFile(result, err => { 
+      if (err) {
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR).send("Unknown error occured in server. Please retry your request.");
+      }
     //delete the local files after filtering the image
-    deleteLocalFiles([result])});
+    deleteLocalFiles([result]);
+  });
  });
   
   // Root Endpoint

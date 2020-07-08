@@ -29,6 +29,8 @@
   },
   "dependencies": {
     "express": "^4.17.1",
+    "http-status": "^1.4.2",
+    "http-status-codes": "^1.4.0",
     "jimp": "^0.6.4"
   }
 }
