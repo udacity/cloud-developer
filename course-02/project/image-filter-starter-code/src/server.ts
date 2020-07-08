@@ -14,12 +14,15 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
 
+  // Importing a image url validator to ensure that a valid image url is used
+  const isImageUrl = require('is-image-url');
+
   // Rest endpoint to filter the image using utiity functions
   app.get("/filteredimage", async ( req:express.Request, res:express.Response ) => {
     const image_url = req.query.image_url;
     // validate the image url
-    if(!image_url){
-      res.status(HttpStatus.BAD_REQUEST).send('image url is required');
+    if(!image_url || !isImageUrl(image_url)){
+      res.status(HttpStatus.BAD_REQUEST).send('Image url is required. Please retry with a valid url');
     }
     //Filtering the image using the given utility function
     const result = await filterImageFromURL(image_url);
