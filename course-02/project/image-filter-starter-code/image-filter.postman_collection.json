@@ -1,0 +1,151 @@
+{
+	"info": {
+		"_postman_id": "bd230dc5-f0ad-465e-8366-e97ef1ae5c64",
+		"name": "image-filter",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Public",
+			"item": [
+				{
+					"name": "User Registration",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"email\":\"hello@gmail.com\",\r\n\t\"password\":\"fancypass\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v0/users/auth/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v0",
+								"users",
+								"auth",
+								"login"
+							]
+						},
+						"description": "Post request with body of the form \r\n{\r\n    \"email\":\"\",\r\n    \"password\":\"\"\r\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "Authorize",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"email\":\"hello@gmail.com\",\r\n\t\"password\":\"fancypass\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v0/users/auth/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v0",
+								"users",
+								"auth",
+								"login"
+							]
+						},
+						"description": "Post request to supply username and password to obtain bearer token.\r\nRequest body: {\r\n    \"email\":\"\",\r\n    \"password\":\"\"\r\n}"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Authorized",
+			"item": [
+				{
+					"name": "image filter",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlbGxvQGdtYWlsLmNvbSIsInBhc3N3b3JkX2hhc2giOiIkMmIkMTAkLkE4cDFJRDlZSE9EUDFmdm8uLy5uLnNWeGd6OGtNaTVja1gyUXFYS0R4RHpQeVNRMS9TQnkiLCJjcmVhdGVkQXQiOiIyMDIwLTA3LTExVDA4OjQ0OjI0LjU2MVoiLCJ1cGRhdGVkQXQiOiIyMDIwLTA3LTExVDA4OjQ0OjI0LjU2MloiLCJpYXQiOjE1OTQ0NjEyMzl9.TfsexT9pi0kmgdhdPTMMFV-00DLpS31hE9Z9gqjuJrA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v0/images/filteredimage?image_url=https://www.vets4pets.com/siteassets/species/cat/kitten/tiny-kitten-in-field.jpg",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v0",
+								"images",
+								"filteredimage"
+							],
+							"query": [
+								{
+									"key": "image_url",
+									"value": "https://www.vets4pets.com/siteassets/species/cat/kitten/tiny-kitten-in-field.jpg"
+								}
+							]
+						},
+						"description": "Get request\r\nAuthorization: Provide bearer token received from the auth request.\r\nSupply query parameter image_url to get image from the internet"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "3cba2fca-9b08-41a1-9db7-de95c05c43c7",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "a6adf4e7-5796-4e20-9c45-2bc8fd61366f",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "71c957d0-7adf-4302-bb71-a0e319f52bd6",
+			"key": "host",
+			"value": "http://image-filter-dev22222.us-east-2.elasticbeanstalk.com",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

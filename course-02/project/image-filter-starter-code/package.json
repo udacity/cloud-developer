@@ -1,25 +1,20 @@
 {
-  "name": "udacity-c2-image-filter",
+  "name": "udacity-c2-restapi",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
   "scripts": {
     "start": "node .",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc",
+    "dev": "ts-node-dev --respawn --transpileOnly ./src/server.ts",
+    "prod": "tsc && node ./www/server.js",
     "clean": "rm -rf www/ || true",
-    "build": "npm run clean && tsc && cp package.json www/package.json && mkdir www\\tmp && cd www && zip -r Archive.zip . && cd ..",
-    "dev": "ts-node-dev --respawn --transpileOnly ./src/server.ts"
+    "build": "npm run clean && tsc && cp -rf src/config www/config && cp .npmrc www/.npmrc && cp package.json www/package.json && cd www && zip -r Archive.zip . && cd ..",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/grutt/udacity-c2-image-filter.git"
-  },
-  "author": "",
+  "keywords": [],
+  "author": "Gabriel Ruttner",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/grutt/udacity-c2-image-filter/issues"
-  },
-  "homepage": "https://github.com/grutt/udacity-c2-image-filter#readme",
   "dependencies": {
     "@types/bcrypt": "^3.0.0",
     "@types/jsonwebtoken": "^8.3.2",
@@ -28,10 +23,10 @@
     "body-parser": "^1.19.0",
     "email-validator": "^2.0.4",
     "express": "^4.17.1",
+    "jimp": "^0.13.0",
     "jsonwebtoken": "^8.5.1",
     "pg": "^7.11.0",
     "reflect-metadata": "^0.1.13",
-    "jimp": "^0.13.0",
     "sequelize": "^5.21.12",
     "sequelize-typescript": "^0.6.11"
   },
