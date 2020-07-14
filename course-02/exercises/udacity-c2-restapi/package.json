@@ -37,7 +37,7 @@
     "@types/validator": "^10.11.1",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
-    "mocha": "^6.1.4",
+    "mocha": "^8.0.1",
     "sequelize-cli": "^6.2.0",
     "ts-node-dev": "^1.0.0-pre.40",
     "tslint": "^5.18.0",
