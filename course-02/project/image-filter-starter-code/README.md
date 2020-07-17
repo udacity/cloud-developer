@@ -31,6 +31,14 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
 Follow the process described in the course to `eb init` a new application and `eb create` a new environment to deploy your image-filter service! Don't forget you can use `eb deploy` to push changes.
 
+<<<<<<< HEAD
+### Deployed URL 
+
+The application is available at udagram-soni-filter-dev2.us-east-2.elasticbeanstalk.com/filteredimage?image_url=https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_tabby_and_white_kitten_n01.jpg
+=======
+The solution is deployed at http://udagram-soni-filter-dev2.us-east-2.elasticbeanstalk.com/filteredimage?image_url=
+>>>>>>> a13e55b8c5131b03517079865c75f417d8942a57
+
 ## Stand Out (Optional)
 
 ### Refactor the course RESTapi

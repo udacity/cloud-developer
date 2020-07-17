@@ -1,0 +1,654 @@
+{
+	"info": {
+		"_postman_id": "565e516a-f228-4735-bf71-b22613237718",
+		"name": "Udacity C4",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Offline Udagram",
+			"item": [
+				{
+					"name": "Get group",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3003/groups/3be2e963-4e18-49ab-b016-9ce69a38df49",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"groups",
+								"3be2e963-4e18-49ab-b016-9ce69a38df49"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a  group",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImtpZCI6Ik9UZzVNMEkxTlRjeFJESXdPRUkyUmtNM016QkJNakUxTlRRMVJFUTNOa0ZCTVRaRVJEZ3pOZyJ9.eyJpc3MiOiJodHRwczovL3Rlc3QtZW5kcG9pbnQuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDVjYWQ4ZmJmYzRmZWMzMTBkZjE5NjMzNSIsImF1ZCI6Imh0dHBzOi8vdGVzdC1lbmRwb2ludC5hdXRoMC5jb20vYXBpL3YyLyIsImlhdCI6MTU1NDg3OTU0NywiZXhwIjoxNTU0OTY1OTQ3LCJhenAiOiJHcTEzTTlzTnZtaTFJWFFLa1cya2N3TndVN2l1T05lTCIsInNjb3BlIjoicmVhZDpjdXJyZW50X3VzZXIgdXBkYXRlOmN1cnJlbnRfdXNlcl9tZXRhZGF0YSBkZWxldGU6Y3VycmVudF91c2VyX21ldGFkYXRhIGNyZWF0ZTpjdXJyZW50X3VzZXJfbWV0YWRhdGEgY3JlYXRlOmN1cnJlbnRfdXNlcl9kZXZpY2VfY3JlZGVudGlhbHMgZGVsZXRlOmN1cnJlbnRfdXNlcl9kZXZpY2VfY3JlZGVudGlhbHMgdXBkYXRlOmN1cnJlbnRfdXNlcl9pZGVudGl0aWVzIiwiZ3R5IjoicGFzc3dvcmQifQ.lELOXpUCqyqdDX-rRQ9Udk9mp9f3xfH1JaGjhksXogI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"New local\",\n\t\"description\": \"New local group description\"\n}"
+						},
+						"url": {
+							"raw": "localhost:3003/groups/",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"groups",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all groups",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3003/groups",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"groups"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Udagram",
+			"item": [
+				{
+					"name": "Images",
+					"item": [
+						{
+							"name": "Create an image",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{authToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"title\": \"New image\"\n}"
+								},
+								"url": {
+									"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/groups/1/images",
+									"protocol": "https",
+									"host": [
+										"{{apiId}}",
+										"execute-api",
+										"us-east-1",
+										"amazonaws",
+										"com"
+									],
+									"path": [
+										"dev",
+										"groups",
+										"1",
+										"images"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Images for a group",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJnaXZlbl9uYW1lIjoiSXZhbiIsImZhbWlseV9uYW1lIjoiTXVzaGtldHlrIiwibmlja25hbWUiOiJpdmFuLm11c2hrZXRpayIsIm5hbWUiOiJJdmFuIE11c2hrZXR5ayIsInBpY3R1cmUiOiJodHRwczovL2xoNS5nb29nbGV1c2VyY29udGVudC5jb20vLTlFMzN4NG95YnZnL0FBQUFBQUFBQUFJL0FBQUFBQUFBR2JjL090SEFIWDlHbFBnL3Bob3RvLmpwZyIsImxvY2FsZSI6ImVuLUdCIiwidXBkYXRlZF9hdCI6IjIwMTktMDQtMDhUMjA6MTA6MDkuNjU2WiIsImVtYWlsIjoiaXZhbi5tdXNoa2V0aWtAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImlzcyI6Imh0dHBzOi8vdGVzdC1lbmRwb2ludC5hdXRoMC5jb20vIiwic3ViIjoiZ29vZ2xlLW9hdXRoMnwxMTEwMzM3OTg1NDUwMTAxMjU4NTUiLCJhdWQiOiJHcTEzTTlzTnZtaTFJWFFLa1cya2N3TndVN2l1T05lTCIsImlhdCI6MTU1NDc1NDIwOSwiZXhwIjoxNTU0NzkwMjA5LCJhdF9oYXNoIjoidUFjYkk0c0NSZ2xVb1lwYVdaYW5JQSIsIm5vbmNlIjoiYU1NNGE1WkMySWowflNxSlRiRzBhZUYzLmpNenh4OVkifQ.QgVnp19MxrNqLjNy0tF5UhARFDqIvUyI0ZintM10Row",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/groups/1/images",
+									"protocol": "https",
+									"host": [
+										"{{apiId}}",
+										"execute-api",
+										"us-east-1",
+										"amazonaws",
+										"com"
+									],
+									"path": [
+										"dev",
+										"groups",
+										"1",
+										"images"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get image by id",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJnaXZlbl9uYW1lIjoiSXZhbiIsImZhbWlseV9uYW1lIjoiTXVzaGtldHlrIiwibmlja25hbWUiOiJpdmFuLm11c2hrZXRpayIsIm5hbWUiOiJJdmFuIE11c2hrZXR5ayIsInBpY3R1cmUiOiJodHRwczovL2xoNS5nb29nbGV1c2VyY29udGVudC5jb20vLTlFMzN4NG95YnZnL0FBQUFBQUFBQUFJL0FBQUFBQUFBR2JjL090SEFIWDlHbFBnL3Bob3RvLmpwZyIsImxvY2FsZSI6ImVuLUdCIiwidXBkYXRlZF9hdCI6IjIwMTktMDQtMDhUMjA6MTA6MDkuNjU2WiIsImVtYWlsIjoiaXZhbi5tdXNoa2V0aWtAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImlzcyI6Imh0dHBzOi8vdGVzdC1lbmRwb2ludC5hdXRoMC5jb20vIiwic3ViIjoiZ29vZ2xlLW9hdXRoMnwxMTEwMzM3OTg1NDUwMTAxMjU4NTUiLCJhdWQiOiJHcTEzTTlzTnZtaTFJWFFLa1cya2N3TndVN2l1T05lTCIsImlhdCI6MTU1NDc1NDIwOSwiZXhwIjoxNTU0NzkwMjA5LCJhdF9oYXNoIjoidUFjYkk0c0NSZ2xVb1lwYVdaYW5JQSIsIm5vbmNlIjoiYU1NNGE1WkMySWowflNxSlRiRzBhZUYzLmpNenh4OVkifQ.QgVnp19MxrNqLjNy0tF5UhARFDqIvUyI0ZintM10Row",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/groups/1/images",
+									"protocol": "https",
+									"host": [
+										"{{apiId}}",
+										"execute-api",
+										"us-east-1",
+										"amazonaws",
+										"com"
+									],
+									"path": [
+										"dev",
+										"groups",
+										"1",
+										"images"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Groups",
+					"item": [
+						{
+							"name": "Get all groups",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/groups",
+									"protocol": "https",
+									"host": [
+										"{{apiId}}",
+										"execute-api",
+										"us-east-1",
+										"amazonaws",
+										"com"
+									],
+									"path": [
+										"dev",
+										"groups"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a group",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{authToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"Postman\",\n\t\"description\": \"Photos of Postman tool\"\n}"
+								},
+								"url": {
+									"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/groups/",
+									"protocol": "https",
+									"host": [
+										"{{apiId}}",
+										"execute-api",
+										"us-east-1",
+										"amazonaws",
+										"com"
+									],
+									"path": [
+										"dev",
+										"groups",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create an invalid group",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"New\",\n\t\"description\": 1234\n}"
+								},
+								"url": {
+									"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/groups",
+									"protocol": "https",
+									"host": [
+										"{{apiId}}",
+										"execute-api",
+										"us-east-1",
+										"amazonaws",
+										"com"
+									],
+									"path": [
+										"dev",
+										"groups"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get a group",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/groups/1",
+									"protocol": "https",
+									"host": [
+										"{{apiId}}",
+										"execute-api",
+										"us-east-1",
+										"amazonaws",
+										"com"
+									],
+									"path": [
+										"dev",
+										"groups",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "Udagram Prod",
+			"item": [
+				{
+					"name": "Images",
+					"item": [
+						{
+							"name": "Create an image",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJnaXZlbl9uYW1lIjoiSXZhbiIsImZhbWlseV9uYW1lIjoiTXVzaGtldHlrIiwibmlja25hbWUiOiJpdmFuLm11c2hrZXRpayIsIm5hbWUiOiJJdmFuIE11c2hrZXR5ayIsInBpY3R1cmUiOiJodHRwczovL2xoNS5nb29nbGV1c2VyY29udGVudC5jb20vLTlFMzN4NG95YnZnL0FBQUFBQUFBQUFJL0FBQUFBQUFBR2JjL090SEFIWDlHbFBnL3Bob3RvLmpwZyIsImxvY2FsZSI6ImVuLUdCIiwidXBkYXRlZF9hdCI6IjIwMTktMDQtMDhUMjA6MTA6MDkuNjU2WiIsImVtYWlsIjoiaXZhbi5tdXNoa2V0aWtAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImlzcyI6Imh0dHBzOi8vdGVzdC1lbmRwb2ludC5hdXRoMC5jb20vIiwic3ViIjoiZ29vZ2xlLW9hdXRoMnwxMTEwMzM3OTg1NDUwMTAxMjU4NTUiLCJhdWQiOiJHcTEzTTlzTnZtaTFJWFFLa1cya2N3TndVN2l1T05lTCIsImlhdCI6MTU1NDc1NDIwOSwiZXhwIjoxNTU0NzkwMjA5LCJhdF9oYXNoIjoidUFjYkk0c0NSZ2xVb1lwYVdaYW5JQSIsIm5vbmNlIjoiYU1NNGE1WkMySWowflNxSlRiRzBhZUYzLmpNenh4OVkifQ.QgVnp19MxrNqLjNy0tF5UhARFDqIvUyI0ZintM10Row",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"title\": \"Test\"\n}"
+								},
+								"url": {
+									"raw": "https://{{prodApiId}}.execute-api.us-east-1.amazonaws.com/prod/groups/3b62d8a4-e5bd-4f29-b7e6-74f5fb967208/images",
+									"protocol": "https",
+									"host": [
+										"{{prodApiId}}",
+										"execute-api",
+										"us-east-1",
+										"amazonaws",
+										"com"
+									],
+									"path": [
+										"prod",
+										"groups",
+										"3b62d8a4-e5bd-4f29-b7e6-74f5fb967208",
+										"images"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Groups",
+					"item": [
+						{
+							"name": "Get all groups",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{prodApiId}}.execute-api.us-east-1.amazonaws.com/prod/groups",
+									"protocol": "https",
+									"host": [
+										"{{prodApiId}}",
+										"execute-api",
+										"us-east-1",
+										"amazonaws",
+										"com"
+									],
+									"path": [
+										"prod",
+										"groups"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a group",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJnaXZlbl9uYW1lIjoiSXZhbiIsImZhbWlseV9uYW1lIjoiTXVzaGtldHlrIiwibmlja25hbWUiOiJpdmFuLm11c2hrZXRpayIsIm5hbWUiOiJJdmFuIE11c2hrZXR5ayIsInBpY3R1cmUiOiJodHRwczovL2xoNS5nb29nbGV1c2VyY29udGVudC5jb20vLTlFMzN4NG95YnZnL0FBQUFBQUFBQUFJL0FBQUFBQUFBR2JjL090SEFIWDlHbFBnL3Bob3RvLmpwZyIsImxvY2FsZSI6ImVuLUdCIiwidXBkYXRlZF9hdCI6IjIwMTktMDQtMTBUMDk6NDI6MDEuODg2WiIsImVtYWlsIjoiaXZhbi5tdXNoa2V0aWtAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImlzcyI6Imh0dHBzOi8vdGVzdC1lbmRwb2ludC5hdXRoMC5jb20vIiwic3ViIjoiZ29vZ2xlLW9hdXRoMnwxMTEwMzM3OTg1NDUwMTAxMjU4NTUiLCJhdWQiOiJHcTEzTTlzTnZtaTFJWFFLa1cya2N3TndVN2l1T05lTCIsImlhdCI6MTU1NDg4OTMyMSwiZXhwIjoxNTU0OTI1MzIxLCJhdF9oYXNoIjoiaHlvRExTZmZVMDhTWHMxTzVjRnpjZyIsIm5vbmNlIjoiYTF-Wm56U1BCUDZwRmRKb1g2N3hwcnlrdzguOWouWTUifQ.gsmLlQysylIRpK0fGk0kfTK9iVzXe-6ONgNN43rzsPE",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"New prod group - sanity check\",\n\t\"description\": \"New prod group description\"\n}"
+								},
+								"url": {
+									"raw": "https://{{prodApiId}}.execute-api.us-east-1.amazonaws.com/prod/groups/",
+									"protocol": "https",
+									"host": [
+										"{{prodApiId}}",
+										"execute-api",
+										"us-east-1",
+										"amazonaws",
+										"com"
+									],
+									"path": [
+										"prod",
+										"groups",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create an invalid group",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"New\",\n\t\"description\": 1234\n}"
+								},
+								"url": {
+									"raw": "https://{{prodApiId}}.execute-api.us-east-1.amazonaws.com/prod/groups",
+									"protocol": "https",
+									"host": [
+										"{{prodApiId}}",
+										"execute-api",
+										"us-east-1",
+										"amazonaws",
+										"com"
+									],
+									"path": [
+										"prod",
+										"groups"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get a group",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{prodApiId}}.execute-api.us-east-1.amazonaws.com/prod/groups/3be2e963-4e18-49ab-b016-9ce69a38df49",
+									"protocol": "https",
+									"host": [
+										"{{prodApiId}}",
+										"execute-api",
+										"us-east-1",
+										"amazonaws",
+										"com"
+									],
+									"path": [
+										"prod",
+										"groups",
+										"3be2e963-4e18-49ab-b016-9ce69a38df49"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete group",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "https://{{prodApiId}}.execute-api.us-east-1.amazonaws.com/prod/groups/d628b9e9-fae9-4756-ac66-4ac942249a28",
+									"protocol": "https",
+									"host": [
+										"{{prodApiId}}",
+										"execute-api",
+										"us-east-1",
+										"amazonaws",
+										"com"
+									],
+									"path": [
+										"prod",
+										"groups",
+										"d628b9e9-fae9-4756-ac66-4ac942249a28"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "79585a46-b1ed-4e8e-a196-1c8e93ba9045",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "d301567f-1e50-4900-bd53-a14ede0e252d",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Hello Serverless",
+			"item": [
+				{
+					"name": "GET hello",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{helloApiId}}.execute-api.us-east-1.amazonaws.com/dev/hello",
+							"protocol": "https",
+							"host": [
+								"{{helloApiId}}",
+								"execute-api",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"hello"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "e67f3336-40db-40c6-9927-df98737a3ce6",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "c53abe5c-6375-4a64-97b7-061e0cfa6196",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "58ef260e-aaf1-4001-88c6-0a96941cef70",
+			"key": "apiId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "70c55ddb-17b9-4899-bb3f-e37d74118dfe",
+			"key": "helloApiId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "19c642c5-82d9-421b-82e9-4563bc741aae",
+			"key": "prodApiId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "1b42ac68-7125-4ed9-9b6c-addd223d4351",
+			"key": "authToken",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
