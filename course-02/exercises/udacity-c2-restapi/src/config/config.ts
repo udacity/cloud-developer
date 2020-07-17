@@ -1,4 +1,5 @@
 export const config = {
+<<<<<<< HEAD
   "dev": {
     "username": "",
     "password": "",
@@ -16,6 +17,8 @@ export const config = {
     "host": "",
     "dialect": "postgres"
   },
+=======
+>>>>>>> 469b64a027c16fc6da338022010cd3b4d3d810f7
   "postgress": {
     "username": process.env.POSTGRESS_USERNAME,
     "password": process.env.POSTGRESS_PASSWORD,
