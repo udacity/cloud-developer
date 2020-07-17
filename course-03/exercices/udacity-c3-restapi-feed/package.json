@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node .",
     "tsc": "tsc",
-    "dev": "ts-node-dev ./src/server.ts  --transpileOnly ",
+    "dev": "ts-node-dev --respawn --transpileOnly ./src/server.ts",
     "prod": "tsc && node ./www/server.js",
     "clean": "rm -rf www/ || true",
     "build": "npm run clean && tsc && cp -rf src/config www/config && cp .npmrc www/.npmrc && cp package.json www/package.json && cd www && zip -r Archive.zip . && cd ..",
@@ -27,7 +27,7 @@
     "jsonwebtoken": "^8.5.1",
     "pg": "^7.9.0",
     "reflect-metadata": "^0.1.13",
-    "sequelize": "^5.3.5",
+    "sequelize": "^5.22.3",
     "sequelize-typescript": "^0.6.9",
     "ts-node": "^8.0.3"
   },
