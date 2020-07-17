@@ -1,13 +1,13 @@
 export const config = {
   "dev": {
-    "username": "udagram_soni_dev",
-    "password": "L!5.4.run.284",
-    "database": "udagram-soni-dev",
-    "host": "udagram-soni-dev.cjytjdchnxuc.us-east-2.rds.amazonaws.com",
+    "username": "",
+    "password": "",
+    "database": "",
+    "host": "",
     "dialect": "postgres",
     "aws_region": "us-east-2",
     "aws_profile": "default",
-    "aws_media_bucket": "udagram-soni-dev-bucket"
+    "aws_media_bucket": ""
   },
   "prod": {
     "username": "",
