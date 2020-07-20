@@ -15,11 +15,11 @@ spec:
             memory: "1024Mi"
             cpu: "500m"      
         env:
-        - name: URL
+        - name: ACCESS_CONTROL_ALLOW_ORIGIN
           valueFrom:
             configMapKeyRef:
               name: env-config
-              key: URL
+              key: ACCESS_CONTROL_ALLOW_ORIGIN
         - name: AWS_MEDIA_BUCKET
           valueFrom:
             configMapKeyRef:

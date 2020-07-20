@@ -24,9 +24,7 @@ services:
       AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
       AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
       ACCESS_CONTROL_ALLOW_ORIGIN: $ACCESS_CONTROL_ALLOW_ORIGIN
-
       SENTRY_DNS_FEED: $SENTRY_DNS_FEED
-      URL: "http://localhost:8100"
   backend-feed:
     image: kendyjm/udacity-restapi-feed
     volumes:
@@ -44,9 +42,7 @@ services:
       AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY 
       AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
       ACCESS_CONTROL_ALLOW_ORIGIN: $ACCESS_CONTROL_ALLOW_ORIGIN
-
       SENTRY_DNS_USER: $SENTRY_DNS_USER
-      URL: "http://localhost:8100"
   frontend:
     image: kendyjm/udacity-frontend
     ports:

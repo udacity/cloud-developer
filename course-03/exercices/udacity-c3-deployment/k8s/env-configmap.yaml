@@ -7,7 +7,7 @@ data:
   JWT_SECRET: ___INSERT_JWT_SECRET___
   DB_NAME: ___INSERT_DB_NAME___
   DB_HOST: ___INSERT_DB_HOST___
-  URL: http://localhost:8100  
+  ACCESS_CONTROL_ALLOW_ORIGIN: ___INSERT_ACCESS_CONTROL_ALLOW_ORIGIN___
 metadata:
   name: env-config
   
