@@ -35,3 +35,6 @@ UserInterfaceState.xcuserstate
 node_modules
 venv/
 .vscode
+*.tfstate*
+*kubeconfig
+*.tar.gz
