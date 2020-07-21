@@ -1,0 +1,9 @@
+apiVersion: kubeone.io/v1beta1
+kind: KubeOneCluster
+name: udagram-cluster
+versions:
+  kubernetes: 1.18.2
+cloudProvider:
+  aws: {}
+apiEndpoint:
+  port: 6443
