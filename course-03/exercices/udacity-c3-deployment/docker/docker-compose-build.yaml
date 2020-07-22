@@ -2,7 +2,7 @@ version: "1"
 services:
   reverseproxy:
     build:
-      context: ../../udaciy-c3-nginx-reverseproxy
+      context: ../../udacity-c3-nginx-reverseproxy
     image: kendyjm/udacity-nginx-reverseproxy
   backend_user:
     build:
