@@ -67,9 +67,7 @@ source ~/.profile
 
 #### Build the images
 
-```bash
-docker-compose -f docker-compose-build.yaml build --parallel --pull --force-rm
-```
+Build the docker images by following this documentation : <udacity-c3-deployment/docker/>
 
 ![dockercomposebuild](screenshots/dockercomposebuild.png)
 
