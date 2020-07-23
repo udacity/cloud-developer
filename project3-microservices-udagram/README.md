@@ -70,7 +70,7 @@ source ~/.profile
 
 ### Running locally with Docker
 
-#### 1) Push or build images
+#### 1) Pull or build images
 
 To run the docker images, 2 options:
 1a) Get existing images from DOcker Hub
@@ -84,6 +84,8 @@ The project's images are available at Docker Hub :
 - [kendyjm/udacity-restapi-user](https://hub.docker.com/repository/docker/kendyjm/udacity-restapi-user)
 - [kendyjm/udacity-frontend](https://hub.docker.com/repository/docker/kendyjm/udacity-frontend)
 - [kendyjm/udacity-nginx-reverseproxy](https://hub.docker.com/repository/docker/kendyjm/udacity-nginx-reverseproxy)
+
+![dockerhub](screenshots/dockerhub.png)
 
 Just push these images executing this script:
 
@@ -112,7 +114,7 @@ Run your docker containers: `docker-compose up`
 
 ![dockercomposeup](screenshots/dockercomposeup.png)  
 
-#### Access Udagram
+#### 4) Access Udagram
 
 Test if everything is ok by browsing the frontend application running in localhost : <http://localhost:8100/>
 
@@ -120,13 +122,12 @@ Test if everything is ok by browsing the frontend application running in localho
 
 To exit run `control + C`
 
-#### Push
+### CI/CD with Travis
 
-Push the images: `docker-compose -f docker-compose-build.yaml push`
+- Sign up for [Travis](https://travis-ci.com) and connect your Github application repository to TravisCL.
+- Have a look to the [config file](../.travis.yml) that will be read by Travis, at the root of the repository. It needs some environment variables.
+- Add your environment variables to the project repository in [Travis](https://travis-ci.com) by selecting the setting option.
+- Commit and Push your changes trigger a Travis build.
+- Check the build status page to see if your build passes or fails according to the return status of the build command by visiting [TravisCL](https://travis-ci.com) and selecting your repository.
 
-![dockercomposepush](screenshots/dockercomposepush.png)  
-
-Check your [Docker Hub](https://hub.docker.com/) to find the pushed images:
-
-![DockerHub](screenshots/dockerhub.png)
-
+![traviscibuildpassed](screenshots/traviscibuildpassed.png)

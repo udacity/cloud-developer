@@ -17,4 +17,4 @@ _Keywords : AWS, elasticbeanstalk, eb-cli, nodejs, express, sentry, jimp, morgan
 
 [PROJECT 3 : Udagram V2 - microservices at scale! Your Own Instagram on AWS](project3-microservices-udagram)
 Develop a cloud-based application for uploading and filtering images!
-_Keywords : AWS, Elastic Kubernetes Service (Amazon EKS), containerization with Docker, CI with Travis, container orchestration/CD with Kubernetes_
+_Keywords : AWS, Elastic Kubernetes Service (Amazon EKS), containerization with Docker, CI/CD with Travis, container orchestration/CD with Kubernetes_
