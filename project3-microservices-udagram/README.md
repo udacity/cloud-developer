@@ -11,6 +11,7 @@ A basic Ionic client web application which consumes the RestAPI Backend.
 4. [The reverse proxy server](udaciy-c3-nginx-reverseproxy), a NGINX proxy server.
 
 ## Architecture
+
 ![architecture](./screenshots/architecture-v2.png)
 
 ## Getting started
