@@ -18,20 +18,24 @@ A basic Ionic client web application which consumes the RestAPI Backend.
 ### Prerequisites
 
 You need to install:
-[AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-linux.html)
-[Docker](https://docs.docker.com/get-docker/)
-[Docker Compose](https://docs.docker.com/compose/install/)
-[Eksctl](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html)  
-[Kubectl](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html)
+
+- [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-linux.html)
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- [Eksctl](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html)  
+- [Kubectl](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html)
 
 ### Installation
 
 Test that your installation was Successful with the following commands:
-`aws --version`
-`docker --version`  
-`docker-compose version --short`
-`eksctl version`
-`kubectl version --short --client`  
+
+```bash
+aws --version
+docker --version
+docker-compose version --short
+eksctl version
+kubectl version --short --client
+```
 
 ![setupversions](screenshots/setupversions.png)
 
@@ -63,21 +67,45 @@ Source your .profile to execute your bash scripts automatically whenever a new i
 source ~/.profile
 ```  
 
-### Setup Docker Enviroment
+### Running locally with Docker
 
-#### Build the images
+#### 1) Push or build images
 
-Build the docker images by following this documentation : <udacity-c3-deployment/docker/>
+To run the docker images, 2 options:
+1a) Get existing images from DOcker Hub
+1b) Build your images
+
+##### 1a) Get Docker hub images
+
+The project's images are available at Docker Hub :
+
+- [kendyjm/udacity-restapi-feed](https://hub.docker.com/repository/docker/kendyjm/udacity-restapi-feed)
+- [kendyjm/udacity-restapi-user](https://hub.docker.com/repository/docker/kendyjm/udacity-restapi-user)
+- [kendyjm/udacity-frontend](https://hub.docker.com/repository/docker/kendyjm/udacity-frontend)
+- [kendyjm/udacity-nginx-reverseproxy](https://hub.docker.com/repository/docker/kendyjm/udacity-nginx-reverseproxy)
+
+Just push these images executing this script:
+
+```bash
+docker pull kendyjm/udacity-restapi-feed:latest
+docker pull kendyjm/udacity-restapi-user:latest
+docker pull kendyjm/udacity-nginx-reverseproxy:latest
+docker pull kendyjm/udacity-frontend:latest
+```
+
+##### 1b) Build the images
+
+Build the docker images by following the documentation in [udacity-c3-deployment/docker](udacity-c3-deployment/docker)
 
 ![dockercomposebuild](screenshots/dockercomposebuild.png)
 
-##### List your docker images
+#### 2) List your docker images
 
 To check if they have been built: `docker images`  
 
 ![dockerimages](screenshots/dockerimages.png)
 
-#### Run
+#### 3) Run
 
 Run your docker containers: `docker-compose up`  
 
@@ -101,11 +129,3 @@ Check your [Docker Hub](https://hub.docker.com/) to find the pushed images:
 
 ![DockerHub](screenshots/dockerhub.png)
 
-#### Docker hub images
-
-The project's images are available at Docker Hub :
-
-- [kendyjm/udacity-restapi-feed](https://hub.docker.com/repository/docker/kendyjm/udacity-restapi-feed)
-- [kendyjm/udacity-restapi-user](https://hub.docker.com/repository/docker/kendyjm/udacity-restapi-user)
-- [kendyjm/udacity-frontend](https://hub.docker.com/repository/docker/kendyjm/udacity-frontend)
-- [kendyjm/udacity-nginx-reverseproxy](https://hub.docker.com/repository/docker/kendyjm/udacity-nginx-reverseproxy)
