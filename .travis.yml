@@ -3,7 +3,7 @@ language: minimal
 services: docker
 
 env:
-  - DOCKER_COMPOSE_VERSION=1.23.2
+  - DOCKER_COMPOSE_VERSION=1.25.5
 
 before_install:
   - docker -v && docker-compose -v
@@ -18,7 +18,7 @@ before_install:
 
 
 install:
-  - docker-compose -f course-03/exercises/udacity-c3-deployment/docker/docker-compose-build.yaml build --parallel 
+  - docker-compose -f project3-microservices-udagram/udacity-c3-deployment/docker/docker-compose-build.yaml build --parallel 
 
 
 
