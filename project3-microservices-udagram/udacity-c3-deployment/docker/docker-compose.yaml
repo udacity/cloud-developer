@@ -1,0 +1,49 @@
+version: "3.8"
+services:
+  reverseproxy:
+      image: kendyjm/udacity-nginx-reverseproxy
+      ports:
+          - 8080:8080
+      restart: always
+      depends_on:
+        - backend-user
+        - backend-feed     
+  backend-user:
+    image: kendyjm/udacity-restapi-user
+    volumes:
+      - $HOME/.aws:/root/.aws
+    environment:
+      DB_USERNAME: $DB_USERNAME
+      DB_PASSWORD: $DB_PASSWORD 
+      DB_NAME: $DB_NAME 
+      DB_HOST: $DB_HOST 
+      AWS_REGION: $AWS_REGION 
+      AWS_PROFILE: $AWS_PROFILE 
+      AWS_MEDIA_BUCKET: $AWS_MEDIA_BUCKET
+      JWT_SECRET: $JWT_SECRET
+      AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+      AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+      ACCESS_CONTROL_ALLOW_ORIGIN: $ACCESS_CONTROL_ALLOW_ORIGIN
+      SENTRY_DNS_FEED: $SENTRY_DNS_FEED
+  backend-feed:
+    image: kendyjm/udacity-restapi-feed
+    volumes:
+      - $HOME/.aws:/root/.aws
+    environment:
+      DB_USERNAME: $DB_USERNAME
+      DB_PASSWORD: $DB_PASSWORD 
+      DB_NAME: $DB_NAME 
+      DB_HOST: $DB_HOST
+      AWS_REGION: $AWS_REGION 
+      AWS_PROFILE: $AWS_PROFILE 
+      AWS_MEDIA_BUCKET: $AWS_MEDIA_BUCKET
+      JWT_SECRET: $JWT_SECRET
+      AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+      AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY 
+      AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+      ACCESS_CONTROL_ALLOW_ORIGIN: $ACCESS_CONTROL_ALLOW_ORIGIN
+      SENTRY_DNS_USER: $SENTRY_DNS_USER
+  frontend:
+    image: kendyjm/udacity-frontend
+    ports:
+      - "8100:80"

@@ -1,0 +1,18 @@
+version: "3.8"
+services:
+  reverseproxy:
+    build:
+      context: ../../udacity-c3-nginx-reverseproxy
+    image: kendyjm/udacity-nginx-reverseproxy
+  backend_user:
+    build:
+      context: ../../udacity-c3-restapi-user
+    image: kendyjm/udacity-restapi-user
+  backend_feed:
+    build:
+      context: ../../udacity-c3-restapi-feed  
+    image: kendyjm/udacity-restapi-feed
+  frontend:
+    build:
+      context: ../../udacity-c2-frontend  
+    image: kendyjm/udacity-frontend

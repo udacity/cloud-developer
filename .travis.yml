@@ -1,0 +1,29 @@
+language: minimal
+
+services: docker
+
+env:
+  - DOCKER_COMPOSE_VERSION=1.25.5
+
+before_install:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - docker -v
+  - docker-compose version --short
+  - curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+  - sudo mv /tmp/eksctl /usr/local/bin
+  - eksctl version  
+  - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+  - chmod +x ./kubectl
+  - sudo mv ./kubectl /usr/local/bin/kubectl
+  - kubectl version --short --client
+
+install:
+  - docker-compose -f project3-microservices-udagram/udacity-c3-deployment/docker/docker-compose-build.yaml build --parallel 
+  - docker-compose -f project3-microservices-udagram/udacity-c3-deployment/docker/docker-compose-build.yaml push
+
+
+
