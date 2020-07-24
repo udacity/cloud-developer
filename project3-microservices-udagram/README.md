@@ -116,7 +116,7 @@ Run your docker containers: `docker-compose up`
 
 #### 4) Access Udagram
 
-Test if everything is ok by browsing the frontend application running in localhost : <http://localhost:8100/>
+Browse the frontend application : <http://localhost:8100/>
 
 ![udagramlocalhost](screenshots/udagramlocalhost.png)
 
@@ -133,6 +133,33 @@ Your cluster is created and visible in the [AWS Console/EKS](https://eu-west-3.c
 
 Setup the ubernetes environment by following the documentation in [udacity-c3-deployment/k8s](udacity-c3-deployment/k8s)
 
+#### Check status of all resources (services, delpoyments, pods, hpa)
+
+```bash
+kubectl get all
+```
+
+![kubernetesresourcesstatus](screenshots/kubernetesresourcesstatus.png)
+
+#### Check pods logs
+
+```bash
+kubectl logs <podId>
+```
+
+![kubernetespodslogs](screenshots/kubernetespodslogs.png)
+
+#### Connect the Services with Port Forwarding
+
+Use Port Forwarding to the Frontend and Reverse Proxy services:
+The port forwarding must be done in Separate terminals, to run both services at the same time.
+
+```bash
+kubectl port-forward service/frontend 8100:8100
+kubectl port-forward service/reverseproxy 8080:8080
+```
+
+Browse the frontend application : <http://localhost:8100/>
 
 ### CI/CD with Travis
 

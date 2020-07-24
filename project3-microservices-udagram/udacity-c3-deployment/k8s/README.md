@@ -32,3 +32,25 @@ Apply all other yaml files:
 ```bash
 kubectl apply -f .
 ```
+
+![kubernetescomponentsloading](../../screenshots/kubernetescomponentsloading.png)
+
+## Enable Horizontal Scaling In Kubernetes
+
+This optional, enable [Horizontal Pod Autoscaler](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) on deployments.
+
+## Check status of all resources (services, delpoyments, pods, hpa)
+
+```bash
+kubectl get all
+```
+
+![kubernetesresourcesstatus](../../screenshots/kubernetesresourcesstatus.png)
+
+## Check pods logs
+
+```bash
+kubectl logs <podId>
+```
+
+![kubernetespodslogs](../../screenshots/kubernetespodslogs.png)
