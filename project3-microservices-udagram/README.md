@@ -1,6 +1,6 @@
 # Udagram Image Filtering Microservice
 
-master: [![Build Status](https://travis-ci.com/kendyjm/udacity-cloud-developer-nd9990.svg?branch=master)](https://travis-ci.com/kendyjm/udacity-cloud-developer-nd9990)
+master: [![Build Status](https://travis-ci.com/kendyjm/udacity-cloud-developer-nd9990.svg?branch=master)](https://travis-ci.com/kendyjm/udacity-cloud-developer-nd9990) - development: [![Build Status](https://travis-ci.com/kendyjm/udacity-cloud-developer-nd9990.svg?branch=development)](https://travis-ci.com/kendyjm/udacity-cloud-developer-nd9990)
 
 Udagram allows users to register and log into a web client, post photos to the feed, and process photos using an image filtering microservice.
 
