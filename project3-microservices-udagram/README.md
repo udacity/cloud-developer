@@ -1,6 +1,8 @@
 # Udagram Image Filtering Microservice
 
-Udagram is a simple cloud application developed alongside the Udacity Cloud Engineering Nanodegree. It allows users to register and log into a web client, post photos to the feed, and process photos using an image filtering microservice.
+master: [![Build Status](https://travis-ci.com/kendyjm/udacity-cloud-developer-nd9990.svg?branch=master)](https://travis-ci.com/kendyjm/udacity-cloud-developer-nd9990)
+
+Udagram allows users to register and log into a web client, post photos to the feed, and process photos using an image filtering microservice.
 
 The project is split into four parts:
 
@@ -20,7 +22,7 @@ A basic Ionic client web application which consumes the RestAPI Backend.
 
 You need to install:
 
-- [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-linux.html)
+- [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html)
 - [Docker](https://docs.docker.com/get-docker/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 - [Eksctl](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html)  
@@ -28,7 +30,7 @@ You need to install:
 
 ### Installation
 
-Test that your installation was Successful with the following commands:
+Test that your installation is successful with the following commands:
 
 ```bash
 aws --version
@@ -121,6 +123,10 @@ Test if everything is ok by browsing the frontend application running in localho
 ![udagramlocalhost](screenshots/udagramlocalhost.png)
 
 To exit run `control + C`
+
+### Run with a Kubernetes Cluster on Amazon EKS
+
+Create your cluster with `eksctl` by following documentation in [udacity-c3-deployment/eks](udacity-c3-deployment/eks)
 
 ### CI/CD with Travis
 
