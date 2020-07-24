@@ -20,11 +20,11 @@ spec:
         imagePullPolicy: Always  
         resources:
           requests:
-            memory: "128Mi"
+            memory: "64Mi"
             cpu: "250m"
           limits:
-            memory: "2048Mi"
-            cpu: "500m"      
+            memory: "1536Mi"
+            cpu: "500m"       
         env:
         - name: ACCESS_CONTROL_ALLOW_ORIGIN
           valueFrom:
