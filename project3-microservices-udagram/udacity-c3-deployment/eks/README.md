@@ -3,7 +3,7 @@
 Create your cluster with `eksctl` by running the running the following script or the [official guide](https://eksctl.io/usage/creating-and-managing-clusters/).
 
 ```bash
-eksctl create cluster -f udacity-c3-deployment/eks/eksclusterconfig.yaml
+eksctl create cluster -f eksclusterconfig.yaml
 ```
 
 `eksclusterconfig.yaml` follows the [schema described here](https://eksctl.io/usage/schema/)
