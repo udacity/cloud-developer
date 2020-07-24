@@ -6,8 +6,7 @@ Udagram allows users to register and log into a web client, post photos to the f
 
 The project is split into four parts:
 
-1. [The Simple Frontend](udacity-c3-frontend)
-A basic Ionic client web application which consumes the RestAPI Backend.
+1. [The Frontend](udacity-c2-frontend), an Ionic client web application which consumes the RestAPI feed and user.
 2. [The RestAPI Feed Backend](udacity-c3-restapi-feed), a Node-Express feed microservice.
 3. [The RestAPI User Backend](udacity-c3-restapi-user), a Node-Express user microservice.
 4. [The reverse proxy server](udaciy-c3-nginx-reverseproxy), a NGINX proxy server.
@@ -75,10 +74,11 @@ source ~/.profile
 #### 1) Pull or build images
 
 To run the docker images, 2 options:
-1a) Get existing images from DOcker Hub
-1b) Build your images
 
-##### 1a) Get Docker hub images
+- 1a) Get Docker images from Docker Hub
+- 1b) Build the Docker images
+
+##### 1a) Get Docker images from Docker Hub
 
 The project's images are available at Docker Hub :
 
@@ -98,15 +98,13 @@ docker pull kendyjm/udacity-nginx-reverseproxy:latest
 docker pull kendyjm/udacity-frontend:latest
 ```
 
-##### 1b) Build the images
+##### 1b) Build the Docker images
 
 Build the docker images by following the documentation in [udacity-c3-deployment/docker](udacity-c3-deployment/docker)
 
-![dockercomposebuild](screenshots/dockercomposebuild.png)
-
 #### 2) List your docker images
 
-To check if they have been built: `docker images`  
+Check images available : `docker images`  
 
 ![dockerimages](screenshots/dockerimages.png)
 
@@ -127,6 +125,14 @@ To exit run `control + C`
 ### Run with a Kubernetes Cluster on Amazon EKS
 
 Create your cluster with `eksctl` by following documentation in [udacity-c3-deployment/eks](udacity-c3-deployment/eks)
+
+Your cluster is created and visible in the [AWS Console/EKS](https://eu-west-3.console.aws.amazon.com/eks/home#/clusters):
+![eksclusterconsole](screenshots/eksclusterconsole.png)
+
+#### Setup Kubernetes Environment
+
+Setup the ubernetes environment by following the documentation in [udacity-c3-deployment/k8s](udacity-c3-deployment/k8s)
+
 
 ### CI/CD with Travis
 
