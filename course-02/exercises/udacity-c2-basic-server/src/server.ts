@@ -54,7 +54,7 @@ import { Car, cars as cars_list } from './cars';
   // to demonstrate req.body
   // > try it by posting {"name": "the_name" } as 
   // an application/json body to {{host}}/persons
-  app.post( "/persons", 
+  app.post( "/persons",
     async ( req: Request, res: Response ) => {
 
       const { name } = req.body;
@@ -70,13 +70,38 @@ import { Car, cars as cars_list } from './cars';
 
   // @TODO Add an endpoint to GET a list of cars
   // it should be filterable by make with a query paramater
+    app.get("/cars/:make", async (req, res) => {
+        console.log('===>', req.params)
+        const carMake = req.params && req.params.make ? req.params.make : res.status(400).send(`make of car is required`)
+        const filteredCarList = cars_list.filter(car => carMake === car.make)
+        return res.status(200).send(filteredCarList)
+    })
 
   // @TODO Add an endpoint to get a specific car
   // it should require id
   // it should fail gracefully if no matching car is found
+    app.get("/car/:id", async (req, res) => {
+        const carId = req.params && req.params.id ? req.params.id : res.status(400).send(`id of car is required`)
+        const filteredCar = cars_list.filter(car => carId == car.id)
+        return (filteredCar.length === 1) ? res.status(200).send(filteredCar[0]) : res.status(404).send(`car id not found`)
+    })
 
   /// @TODO Add an endpoint to post a new car to our list
   // it should require id, type, model, and cost
+    app.post("/car/", async (req, res) => {
+        let { make, type, model, cost } = req.body
+        if (!make || !type || !model || !cost) {
+            return res.status(400).send(`make, type, model, and cost are required`)
+        }
+
+        const new_car:Car = {
+            id: (cars_list.length + 1), make: make, type: type, model: model, cost: cost
+        }
+
+        cars.push(new_car)
+
+        res.status(201).send(new_car)
+    })
 
   // Start the Server
   app.listen( port, () => {
