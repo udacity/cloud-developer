@@ -21,6 +21,7 @@
     "aws-sdk": "^2.492.0",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
+    "codelyzer": "^6.0.0",
     "email-validator": "^2.0.4",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
@@ -41,5 +42,19 @@
     "ts-node-dev": "^1.0.0-pre.40",
     "tslint": "^5.18.0",
     "typescript": "^3.5.3"
+  },
+  "codelyzer": {
+    "version": "4.5.0",
+    "resolved": "https://registry.npmjs.org/codelyzer/-/codelyzer-4.5.0.tgz",
+    "integrity": "sha512-oO6vCkjqsVrEsmh58oNlnJkRXuA30hF8cdNAQV9DytEalDwyOFRvHMnlKFzmOStNerOmPGZU9GAHnBo4tGvtiQ==",
+    "dev": true,
+    "requires": {
+      "app-root-path": "^2.1.0",
+      "css-selector-tokenizer": "^0.7.0",
+      "cssauron": "^1.4.0",
+      "semver-dsl": "^1.0.1",
+      "source-map": "^0.5.7",
+      "sprintf-js": "^1.1.1"
+    }
   }
 }
