@@ -1,7 +1,9 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import { filterImageFromURL, deleteLocalFiles } from './util/util';
+
 import { isUri } from 'valid-url';
+
 (async () => {
   // Init the Express application
   const app = express();
@@ -55,7 +57,6 @@ import { isUri } from 'valid-url';
     res.send('try GET /filteredimage?image_url={{}}');
   });
 
-  // Start the Server
   app.listen(port, () => {
     console.log(`server running http://localhost:${port}`);
     console.log(`press CTRL+C to stop server`);
