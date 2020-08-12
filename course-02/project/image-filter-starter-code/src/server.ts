@@ -1,6 +1,10 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import { filterImageFromURL, deleteLocalFiles } from './util/util';
+import { isUri } from 'valid-url';
+import { Request, Response } from 'express';
+
+// tested links - https://www.google.com/images/srpr/logo4w.png
 
 (async () => {
   // Init the Express application
@@ -14,6 +18,22 @@ import { filterImageFromURL, deleteLocalFiles } from './util/util';
 
   // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
   // GET /filteredimage?image_url={{URL}}
+  app.get('/filteredimage', async (req: Request, res: Response) => {
+    const { image_url: image_URL } = req.query;
+    if (!image_URL || !isUri(image_URL)) {
+      return res
+        .status(400)
+        .send({ auth: false, message: 'Image url is missing or malformed' });
+    }
+
+    const filteredImagePath = await filterImageFromURL(image_URL);
+
+    res
+      .status(200)
+      .sendFile(filteredImagePath, {}, () =>
+        deleteLocalFiles([filteredImagePath])
+      );
+  });
   // endpoint to filter an image from a public url.
   // IT SHOULD
   //    1
