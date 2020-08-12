@@ -1,8 +1,10 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import { filterImageFromURL, deleteLocalFiles } from './util/util';
-
 import { isUri } from 'valid-url';
+import { Request, Response } from 'express';
+
+// testing links - https://www.google.com/images/srpr/logo4w.png
 
 (async () => {
   // Init the Express application
@@ -16,25 +18,22 @@ import { isUri } from 'valid-url';
 
   // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
   // GET /filteredimage?image_url={{URL}}
-  app.get('/filteredimage', async (req, res) => {
-    const { image_url } = req.query;
-
-    // Using the node package validUrl for validating the image URL
-
-    if (!image_url || !isUri(image_url)) {
+  app.get('/filteredimage', async (req: Request, res: Response) => {
+    const { image_url: image_URL } = req.query;
+    if (!image_URL || !isUri(image_URL)) {
       return res
         .status(400)
         .send({ auth: false, message: 'Image url is missing or malformed' });
-    } else {
-      const filteredImagePath = await filterImageFromURL(image_url);
-      res
-        .status(200)
-        .sendFile(filteredImagePath, {}, () =>
-          deleteLocalFiles([filteredImagePath])
-        );
     }
-  });
 
+    const filteredImagePath = await filterImageFromURL(image_URL);
+
+    res
+      .status(200)
+      .sendFile(filteredImagePath, {}, () =>
+        deleteLocalFiles([filteredImagePath])
+      );
+  });
   // endpoint to filter an image from a public url.
   // IT SHOULD
   //    1
@@ -57,6 +56,7 @@ import { isUri } from 'valid-url';
     res.send('try GET /filteredimage?image_url={{}}');
   });
 
+  // Starting the Server
   app.listen(port, () => {
     console.log(`server running http://localhost:${port}`);
     console.log(`press CTRL+C to stop server`);
