@@ -4,7 +4,7 @@ import { filterImageFromURL, deleteLocalFiles } from './util/util';
 import { isUri } from 'valid-url';
 import { Request, Response } from 'express';
 
-// tested links - https://www.google.com/images/srpr/logo4w.png
+// testing links - https://www.google.com/images/srpr/logo4w.png
 
 (async () => {
   // Init the Express application
