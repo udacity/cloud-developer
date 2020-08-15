@@ -28,6 +28,8 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "@types/hapi__joi": "^17.1.4",
     "express": "^4.17.1",
     "jimp": "^0.6.4"
   }

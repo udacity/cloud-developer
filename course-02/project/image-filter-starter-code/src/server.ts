@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import schema from './joi-schema';
 
 (async () => {
 
@@ -28,6 +29,35 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
+
+  app.get( "/filteredimage", async ( req, res ) => {
+    console.log(req);
+    const validation = schema.validate(req.query);
+
+    if(validation.error) {
+      res.status(400).send(validation.error);
+    }
+
+    try{
+      const content = await filterImageFromURL(req.query.image_url);
+      res.sendFile(content, async (error) => {
+        if (!error) {
+          await deleteLocalFiles([content]);
+        }
+      });
+
+    } catch(error) {
+      res.status(400).send(error.message);
+    }
+    
+  } );
+  
+  app.get( "/filteredimage", async ( req, res ) => {
+    console.log(req);
+    schema.validate(req.params);
+
+    res.send("try GET /filteredimage?image_url={{}}")
+  } );
 
   //! END @TODO1
   
