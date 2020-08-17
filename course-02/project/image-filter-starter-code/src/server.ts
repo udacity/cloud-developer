@@ -40,7 +40,6 @@ import schema from './joi-schema';
   });
   
   app.get( "/filteredimage", async ( req, res ) => {
-    console.log(req);
     schema.validate(req.params);
 
     res.send("try GET /filteredimage?image_url={{}}")
