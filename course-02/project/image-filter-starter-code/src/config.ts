@@ -1,5 +1,5 @@
 const config = {
-    JWT_TOKEN : 'udagram_secret',
+    JWT_SECRET : process.env.jwt_secret,
 }
 
 export default config;
