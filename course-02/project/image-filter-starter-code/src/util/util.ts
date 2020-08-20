@@ -1,5 +1,7 @@
 import fs from 'fs';
 import Jimp = require('jimp');
+const path = require('path');
+const fsPromises = fs.promises;
 
 // filterImageFromURL
 // helper function to download, filter, and save the filtered image locally
@@ -31,4 +33,16 @@ export async function deleteLocalFiles(files:Array<string>){
     for( let file of files) {
         fs.unlinkSync(file);
     }
+}
+
+// getLocalFilesUrl
+// helper function to retrieve files on local disk 
+// return array that includes absolute path of local files
+// RETURNS
+//    array of an absolute path of locally saved filtered image files
+export async function getLocalFilesUrls(): Promise<Array<string>>{
+    const directoryPath = path.join(__dirname, 'tmp');
+    let files = await fsPromises.readdir(directoryPath);
+    files = files.map(file => __dirname + "/tmp/" + file);
+    return files;
 }
