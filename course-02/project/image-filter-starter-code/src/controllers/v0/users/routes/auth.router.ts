@@ -11,7 +11,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
     }
     
     if (req.headers.authorization !== config.authorization.secret){
-        return res.status(500).send({ auth: false, message: 'Failed to authenticate.' });
+        return res.status(401).send({ auth: false, message: 'Unauthorized.' });
     }
 
     return next();
