@@ -30,16 +30,24 @@ router.get('/',
     if(!image_url_lowercase.includes('jpeg') && !image_url_lowercase.includes('jpg') && 
         !image_url_lowercase.includes('png') && !image_url_lowercase.includes('bmp')) 
         return res.status(400).send("Target Image Type can be only jpeg,png,bmp");    
+
     try {
-        const filteredpath = await filterImageFromURL(image_url);
-        await res.status(200).sendFile(filteredpath,async (err) => {
-            if (err) {
-                return res.status(422).send("Fail to filter image!");  
-            } else {
-                const tmpfiles = await getLocalFilesUrls();
-                await deleteLocalFiles(tmpfiles);
-            }
+        await 
+            filterImageFromURL(image_url)
+                .then(filteredpath => {
+                    res.status(200).sendFile(filteredpath,async (err) => {
+                        if (err) {
+                            return res.status(422).send("Fail to filter image!");  
+                        } else {
+                            const tmpfiles = await getLocalFilesUrls();
+                            await deleteLocalFiles(tmpfiles);
+                        }
+                    });
+                })
+        .catch(error => {
+            throw error;
         });
+        
     } catch (error) {
         return res.status(422).send("Fail to filter image!");
     }
