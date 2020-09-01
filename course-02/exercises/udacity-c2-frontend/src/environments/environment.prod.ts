@@ -4,8 +4,9 @@
 
 export const environment = {
   production: false,
-  appName: 'Udagram',
-  apiHost: 'http://localhost:8080/api/v0'
+  appName: 'udacity-test-dev-dev',
+  apiHost: 'http://udacity-test-dev-dev.ap-northeast-1.elasticbeanstalk.com/api/v0',
+  jwt_secret: process.env.JWT_SECRET
 };
 
 /*
