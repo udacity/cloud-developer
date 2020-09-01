@@ -18,13 +18,83 @@ router.get('/', async (req: Request, res: Response) => {
 
 //@TODO
 //Add an endpoint to GET a specific resource by Primary Key
+// Get all feed items
+router.get('/:id', async (req: Request, res: Response) => {
+    let { id } = req.params;
+
+    if ( !id ) {
+        return res.status(400)
+                .send(`id is required`);
+    }
+
+    const item = await FeedItem.findByPk(id);
+
+    if(!item){
+        return res.status(404).send(`it is not found`);
+    }
+    
+    if(item.url) {
+        item.url = AWS.getGetSignedUrl(item.url);
+    }
+    res.send(item);
+});
 
 // update a specific resource
 router.patch('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
         //@TODO try it yourself
-        res.send(500).send("not implemented")
+
+        let { id } = req.params;
+
+        if ( !id ) {
+            return res.status(400)
+                    .send(`id is required`);
+        }
+
+        const caption = req.body.caption;
+        const fileName = req.body.url;
+
+        // check Caption or Filename is valid
+        if (!caption && !fileName) {
+            return res.status(400).send({ message: 'Caption or fileName is required or malformed' });
+        }
+
+        // check id is valid
+        if (!id) {
+            return res.status(400).send({ message: 'Id is required' });
+        }
+
+        let param = {};
+        if(caption && fileName) {
+            param = { caption: caption,url: fileName }
+        }else if(caption) {
+            param = { caption: caption}
+        }else if(fileName){
+            param = { url: fileName }
+        }
+
+        
+        const items = await FeedItem.update(param, {
+            returning: true,
+            where: {
+                    id: id
+                }
+            })
+            .then(function([ rowsUpdate, [updatedFeedItem] ]) {
+                if(!updatedFeedItem) 
+                {
+                    res.status(400).send("There is nothing to update!")
+                }
+                else {
+                if(updatedFeedItem.url) {
+                    updatedFeedItem.url = AWS.getGetSignedUrl(updatedFeedItem.url);
+                }
+                res.status(200).json(updatedFeedItem)
+            }
+            });
+
+        // res.send(500).send("not implemented")
 });
 
 
