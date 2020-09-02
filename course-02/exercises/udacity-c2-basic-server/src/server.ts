@@ -1,7 +1,7 @@
-import express, { Router, Request, Response } from 'express';
+import express, {Request, Response} from 'express';
 import bodyParser from 'body-parser';
 
-import { Car, cars as cars_list } from './cars';
+import {Car, cars as cars_list} from './cars';
 
 (async () => {
   let cars:Car[]  = cars_list;
@@ -68,15 +68,67 @@ import { Car, cars as cars_list } from './cars';
                 .send(`Welcome to the Cloud, ${name}!`);
   } );
 
-  // @TODO Add an endpoint to GET a list of cars
-  // it should be filterable by make with a query paramater
+  app.get( "/cars", (req, res) => {
+     const {make} = req.query as {make?: string};
 
-  // @TODO Add an endpoint to get a specific car
-  // it should require id
-  // it should fail gracefully if no matching car is found
+     let queriedCars = cars;
+     if (make) {
+         queriedCars = queriedCars.filter( car => car.make === make);
+     }
+
+     return res.status(200).send(queriedCars);
+  })
+
+    app.get( "/cars/:id", (req, res) => {
+        const {id: rawId} = req.params;
+
+        const id = parseInt(rawId);
+        if (isNaN(id)) {
+            return res.status(400).send("expected parameter id to be an integer");
+        }
+
+        const car = cars[id];
+
+        if (car === undefined) {
+            return res.status(400).send("no car found with id " + id);
+        }
+
+        return res.status(200).send(car);
+    })
 
   /// @TODO Add an endpoint to post a new car to our list
   // it should require id, type, model, and cost
+    app.post( "/cars", (req, res) => {
+        const {type, model, cost: rawCost, make, id: rawId} = req.body;
+
+        const missingParams = Object.entries({type, model, cost: rawCost, make})
+            .filter( ([key, value]) => value === undefined)
+            .map( ([key]) => key);
+
+        if (missingParams.length > 0) {
+            return res.status(400)
+                .send( "mandatory car fields missing: " + missingParams.join(","))
+        }
+
+        const cost = parseFloat(rawCost);
+        if (isNaN(cost)) {
+            return res.status(400).send("expected cost to be of type number");
+        }
+        const id = rawId === undefined ? cars.length : parseInt(rawId);
+
+        if (isNaN(id)) {
+            return res.status(400).send("expected id to be of type number");
+        }
+
+        if (cars[id] !== undefined) {
+            return res.status(400).send("a car with id " + id + " exists already");
+        }
+
+        const car: Car = {id, type, model, cost, make};
+        cars[id] = car;
+
+        return res.status(201).send(car);
+    })
 
   // Start the Server
   app.listen( port, () => {
