@@ -1,6 +1,7 @@
 import express, {Request, Response} from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import {isWebUri} from 'valid-url'
 import Jimp from "jimp";
 
 (async () => {
@@ -45,14 +46,18 @@ import Jimp from "jimp";
       return sendError( res, 400, "parameter image_url is required.");
     }
 
-      try {
-            const image: Jimp = await filterImageFromURL(image_url);
-            return res.type(image.getMIME()).send(await image.getBufferAsync(image.getMIME()));
+    if (!isWebUri(image_url)) {
+      return sendError( res, 400, "parameter image_url must be a valid url on the web.");
+    }
 
-      } catch (error) {
-          console.log(error);
-          return sendError( res, 500, "an unexpected error occurred during image processing");
-      }
+    try {
+        const image: Jimp = await filterImageFromURL(image_url);
+        return res.type(image.getMIME()).send(await image.getBufferAsync(image.getMIME()));
+
+    } catch (error) {
+      console.log(error);
+      return sendError( res, 422, "couldn't process given image");
+    }
   })
   
 
