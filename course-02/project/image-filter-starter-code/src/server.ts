@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import {filterImageFromURL, sendError} from './util/util';
 import {isWebUri} from 'valid-url'
 import Jimp from "jimp";
+import {requireAuth} from "./authentication";
 
 (async () => {
 
@@ -39,7 +40,9 @@ import Jimp from "jimp";
     res.send("try GET /filteredimage?image_url={{}}")
   } );
 
-  app.get( "/filteredimage", async (req: Request, res: Response) => {
+  app.get( "/filteredimage",
+    requireAuth,
+    async (req: Request, res: Response) => {
     const {image_url}: {image_url: string|undefined} = req.query;
 
     if (!image_url) {
