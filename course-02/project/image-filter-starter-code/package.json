@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "jimp": "^0.16.1"
+    "jimp": "^0.16.1",
+    "valid-url": "^1.0.9"
   }
 }
