@@ -1,6 +1,7 @@
 import express, {Request, Response} from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import Jimp from "jimp";
 
 (async () => {
 
@@ -45,10 +46,8 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     }
 
       try {
-            const pathToFilteredImage: string = await filterImageFromURL(image_url);
-            res.sendFile(pathToFilteredImage);
-            await deleteLocalFiles([pathToFilteredImage]);
-            return;
+            const image: Jimp = await filterImageFromURL(image_url);
+            return res.type(image.getMIME()).send(await image.getBufferAsync(image.getMIME()));
 
       } catch (error) {
           console.log(error);
