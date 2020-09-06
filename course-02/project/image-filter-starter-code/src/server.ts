@@ -58,7 +58,7 @@ import {requireAuth} from "./authentication";
         return res.type(image.getMIME()).send(await image.getBufferAsync(image.getMIME()));
 
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return sendError( res, 422, "couldn't process given image");
     }
   })

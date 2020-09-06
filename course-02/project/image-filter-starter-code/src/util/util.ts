@@ -23,7 +23,7 @@ import Jimp = require('jimp');
  */
 export async function filterImageFromURL(inputURL: string): Promise<Jimp>{
 
-    const photo = await Jimp.read(inputURL);
+    const photo: Jimp = await Jimp.read(inputURL);
     return photo
         .resize(256, 256) // resize
         .quality(60) // set JPEG quality
