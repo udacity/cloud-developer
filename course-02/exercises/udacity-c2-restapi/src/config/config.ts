@@ -9,4 +9,8 @@ export const config = {
     "aws_profile": process.env.AWS_PROFILE,
     "aws_media_bucket": process.env.AWS_MEDIA_BUCKET,
   }
+,
+"jwt": {
+  "secret":"helloworld"
+}
 }
