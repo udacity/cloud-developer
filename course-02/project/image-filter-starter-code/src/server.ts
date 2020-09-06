@@ -1,6 +1,6 @@
 import express, {Request, Response} from 'express';
 import bodyParser from 'body-parser';
-import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import {filterImageFromURL, sendError} from './util/util';
 import {isWebUri} from 'valid-url'
 import Jimp from "jimp";
 
@@ -68,6 +68,3 @@ import Jimp from "jimp";
   } );
 })();
 
-function sendError(res: Response, errorCode: number, message: string) {
-  return res.status(errorCode).send({message});
-}
