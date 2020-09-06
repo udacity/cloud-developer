@@ -1,4 +1,4 @@
-import express from 'express';
+import express, {Request, Response} from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
@@ -36,6 +36,16 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   app.get( "/", async ( req, res ) => {
     res.send("try GET /filteredimage?image_url={{}}")
   } );
+
+  app.get( "/filteredimage", async (req: Request, res: Response) => {
+    const {image_url}: {image_url: string|undefined} = req.query;
+
+    if (!image_url) {
+      return sendError( res, 400, "parameter image_url is required.");
+    }
+
+    return res.send("ok");
+  })
   
 
   // Start the Server
@@ -44,3 +54,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
       console.log( `press CTRL+C to stop server` );
   } );
 })();
+
+function sendError(res: Response, errorCode: number, message: string) {
+  return res.status(errorCode).send({message});
+}
