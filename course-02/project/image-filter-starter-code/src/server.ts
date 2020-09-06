@@ -44,7 +44,16 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
       return sendError( res, 400, "parameter image_url is required.");
     }
 
-    return res.send("ok");
+      try {
+            const pathToFilteredImage: string = await filterImageFromURL(image_url);
+            res.sendFile(pathToFilteredImage);
+            await deleteLocalFiles([pathToFilteredImage]);
+            return;
+
+      } catch (error) {
+          console.log(error);
+          return sendError( res, 500, "an unexpected error occurred during image processing");
+      }
   })
   
 
