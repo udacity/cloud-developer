@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "jimp": "^0.6.4"
+    "jimp": "^0.16.1",
+    "latest-version": "^5.1.0"
   }
 }
