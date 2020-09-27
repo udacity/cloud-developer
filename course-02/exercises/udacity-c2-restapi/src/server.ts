@@ -1,3 +1,4 @@
+require("dotenv").config();
 import express from 'express';
 import { sequelize } from './sequelize';
 
@@ -13,7 +14,7 @@ import { V0MODELS } from './controllers/v0/model.index';
 
   const app = express();
   const port = process.env.PORT || 8080; // default port to listen
-  
+
   app.use(bodyParser.json());
 
   //CORS Should be restricted
@@ -29,7 +30,7 @@ import { V0MODELS } from './controllers/v0/model.index';
   app.get( "/", async ( req, res ) => {
     res.send( "/api/v0/" );
   } );
-  
+
 
   // Start the Server
   app.listen( port, () => {
