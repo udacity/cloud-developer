@@ -7,19 +7,27 @@ import * as jwt from 'jsonwebtoken';
 import { NextFunction } from 'connect';
 
 import * as EmailValidator from 'email-validator';
+import { config } from '../../../../config/config';
 
 const router: Router = Router();
 
 async function generatePassword(plainTextPassword: string): Promise<string> {
     //@TODO Use Bcrypt to Generated Salted Hashed Passwords
+    const saltRound = 10;
+    const salt = await bcrypt.genSalt(saltRound);
+    const password =  await bcrypt.hash(plainTextPassword, salt);
+    return password;
 }
 
 async function comparePasswords(plainTextPassword: string, hash: string): Promise<boolean> {
     //@TODO Use Bcrypt to Compare your password to your Salted Hashed Password
+    const compare = await bcrypt.compare(plainTextPassword,hash);
+    return compare;
 }
 
 function generateJWT(user: User): string {
     //@TODO Use jwt to create a new JWT Payload containing
+    return jwt.sign(user, config.jwt.secret);
 }
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
@@ -119,12 +127,19 @@ router.post('/', async (req: Request, res: Response) => {
 
     // Generate JWT
     const jwt = generateJWT(savedUser);
-
     res.status(201).send({token: jwt, user: savedUser.short()});
 });
 
 router.get('/', async (req: Request, res: Response) => {
-    res.send('auth')
+    const {user} = req.body
+    if (!user) {
+        console.log("user is required");
+        res.status(422).send({"result": "user is required"});
+    }
+    else {
+    const jwt = await generateJWT(user);
+    res.send({"result": jwt});
+    }
 });
 
 export const AuthRouter: Router = router;
