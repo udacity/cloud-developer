@@ -15,3 +15,15 @@ export const divide = (a: number, b: number) => {
 // it should return one string combining the two strings.
 // it should throw an error if either of the strings are empty.
 // ensure your function is exported.
+export const concat = (a: string, b: string) => {
+    
+    if(a === null || a === undefined || a === "") {
+        throw new Error('Invalid Argument');
+    }
+
+    if(b === null || b === undefined || b === "") {
+        throw new Error('Invalid Argument');
+    }
+
+    return a + b;
+}
