@@ -16,5 +16,7 @@ export const config = {
     "host": "",
     "dialect": "postgres"
   },
-  "jwt_secret": "helloworld"
+  "jwt": {
+    "secret": process.env.UDAGRAM_DEV_JWT_SECRET
+  }
 }
