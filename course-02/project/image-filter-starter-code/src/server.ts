@@ -1,6 +1,9 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+
+
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import { nextTick } from 'process';
 
 (async () => {
 
@@ -29,8 +32,26 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   /**************************************************************************** */
 
-  //! END @TODO1
+
+
+  app.get("/filteredimage", async function (req, res) {
+      const { image_url } = req.query;
+
+      // validate given parameter
+      if (image_url == undefined || image_url == null) {
+        return res.status(400).send("Please pass a valid url by query param like /filteredimage?image_url=[image url]. '" + image_url + "' doesn't look like a valid url");
+      }
+      const filesToDelete:string[] = new Array();
+
+      const file = await filterImageFromURL(image_url);
+      return res.status(200).sendFile(file, () => { deleteLocalFiles([file])});
+    });
   
+
+    //! END @TODO1
+  
+
+
   // Root Endpoint
   // Displays a simple message to the user
   app.get( "/", async ( req, res ) => {
