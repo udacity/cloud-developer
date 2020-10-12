@@ -45,6 +45,7 @@ import { nextTick } from 'process';
 
       const file = await filterImageFromURL(image_url);
       return res.status(200).sendFile(file, () => { deleteLocalFiles([file])});
+ 
     });
   
 
