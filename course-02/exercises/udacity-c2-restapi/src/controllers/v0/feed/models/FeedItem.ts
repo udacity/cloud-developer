@@ -3,6 +3,11 @@ import { User } from '../../users/models/User';
 
 @Table
 export class FeedItem extends Model<FeedItem> {
+  
+  @PrimaryKey
+  @Column
+  public id!: number;
+
   @Column
   public caption!: string;
 
