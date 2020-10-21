@@ -46,3 +46,9 @@ Prevent requests without valid authentication headers.
 
 Add your own domain name and have it point to the running services (try adding a subdomain name to point to the processing server)
 > !NOTE: Domain names are not included in AWS’ free tier and will incur a cost.
+
+### image-filter-starter-code submission:
+
+Endpoint: image-filter-starter-ayah-dev-env.ap-south-1.elasticbeanstalk.com
+
+Note that: build script @package.json file has been updated to be able to run @Win10 
