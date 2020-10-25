@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: env-config
+data:
+  POSTGRESS_DB: clouddevdev
+  POSTGRESS_HOST: clouddevdev.cw9w4gg18sic.us-east-2.rds.amazonaws.com
+  URL: http://localhost:8100
+  JWT_SECRET: helloworld
+  AWS_REGION: us-east-2
+  AWS_PROFILE: default
+  AWS_BUCKET: clouddevdev
