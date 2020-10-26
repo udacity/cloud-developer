@@ -28,6 +28,11 @@ export function getGetSignedUrl( key: string ): string{
 
   const signedUrlExpireSeconds = 60 * 5
 
+  s3.config.update({
+    accessKeyId: c.access_key_id,
+    secretAccessKey: c.secret_access_key
+  })
+
     const url = s3.getSignedUrl('getObject', {
         Bucket: c.aws_media_bucket,
         Key: key,
@@ -45,7 +50,12 @@ export function getGetSignedUrl( key: string ): string{
  */
 export function getPutSignedUrl( key: string ){
 
-    const signedUrlExpireSeconds = 60 * 5
+  const signedUrlExpireSeconds = 60 * 5
+
+  s3.config.update({
+    accessKeyId: c.access_key_id,
+    secretAccessKey: c.secret_access_key
+  })
 
     const url = s3.getSignedUrl('putObject', {
       Bucket: c.aws_media_bucket,

@@ -73,6 +73,16 @@ spec:
             secretKeyRef:
               name: env-secret
               key: POSTGRESS_USERNAME
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-secret
+              key: AWS_ACCESS_KEY_ID
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-secret
+              key: AWS_SECRET_ACCESS_KEY
         volumeMounts:
         - name: aws-secret
           mountPath: "/root/.aws/"
