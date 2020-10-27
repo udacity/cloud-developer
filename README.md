@@ -14,3 +14,11 @@ The URL of the project is `http://instagram-on-aws-dev2.us-east-2.elasticbeansta
 
 The image of the running instance can be found in
 `deployment_screenshots` directory.
+
+## Refactor Udagram App into Microservices and Deploy
+
+This project is a continuation of *Instagram Project on AWS*, where the monolith app has been restructured into separable pieces such as a frontend, restapi-feed, restapi-user. And for better handling, it was taken advantage of docker for building images, Kubernetes for container deployment, and continuous integration with Travis CI.
+
+Since this is a continuation, the project resides in  `course-02/exercises`.
+
+The images of the project running are at `course-02/project/refactor-into-microservices-and-deploy`.
