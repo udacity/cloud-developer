@@ -24,7 +24,7 @@ Since this is a continuation, the project resides in  `course-02/exercises`.
 The images of the project running are at `course-02/project/refactor-into-microservices-and-deploy`.
 
 The Docker images are available in (make sure you have an account to be able to see it):
-- https://hub.docker.com/repository/docker/andersonlando/udacity-frontend
-- https://hub.docker.com/repository/docker/andersonlando/udacity-restapi-user
-- https://hub.docker.com/repository/docker/andersonlando/reverseproxy
+- https://hub.docker.com/r/andersonlando/udacity-frontend
+- https://hub.docker.com/r/andersonlando/udacity-restapi-user
+- https://hub.docker.com/r/andersonlando/reverseproxy
 - https://hub.docker.com/r/andersonlando/udacity-restapi-feed
