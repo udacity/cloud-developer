@@ -3,6 +3,8 @@ import { Router, Request, Response } from 'express';
 import { User } from '../models/User';
 import { config } from '../../../../config/config';
 
+const c = config.jwt;
+
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { NextFunction } from 'connect';
@@ -23,7 +25,7 @@ async function comparePasswords(plainTextPassword: string, hash: string): Promis
 }
 
 function generateJWT(user: User): string {
-    return jwt.sign(User, config.jwt.secret);
+    return jwt.sign(user.toJSON(), c.secret);
 }
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
@@ -40,7 +42,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
     
     const token = token_bearer[1];
 
-    return jwt.verify(token, config.jwt.secret, (err, decoded) => {
+    return jwt.verify(token, c.secret, (err, decoded) => {
       if (err) {
         return res.status(500).send({ auth: false, message: 'Failed to authenticate.' });
       }
