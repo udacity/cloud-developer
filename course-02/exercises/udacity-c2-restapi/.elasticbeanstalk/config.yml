@@ -1,0 +1,3 @@
+deploy:
+  artifact: ./www/Archive.zip  deploy:
+  artifact: ./www/Archive.zip  
