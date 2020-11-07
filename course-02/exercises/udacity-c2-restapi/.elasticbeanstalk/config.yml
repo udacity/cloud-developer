@@ -1,3 +1,19 @@
+branch-defaults:
+  default:
+    group_suffix: null
+global:
+  application_name: udagram-williams-dev
+  branch: null
+  default_ec2_keyname: null
+  default_platform: Node.js 12 running on 64bit Amazon Linux 2
+  default_region: us-east-1
+  include_git_submodules: true
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: CORT0619
+  repository: null
+  sc: null
+  workspace_type: Application
 deploy:
-  artifact: ./www/Archive.zip  deploy:
   artifact: ./www/Archive.zip  
