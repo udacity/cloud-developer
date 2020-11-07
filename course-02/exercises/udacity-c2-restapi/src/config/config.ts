@@ -21,5 +21,8 @@ export const config = {
   },
   "jwt": {
     "secret": process.env.JWT_SECRET
+  },
+  "image_filter" : {
+    "endpoint": process.env.IMAGE_FILTER_ENDPOINT
   }
 }
