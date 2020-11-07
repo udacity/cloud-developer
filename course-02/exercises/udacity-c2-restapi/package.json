@@ -27,6 +27,7 @@
     "pg": "^7.11.0",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^5.10.0",
+    "superagent": "^6.1.0",
     "sequelize-typescript": "^0.6.11"
   },
   "devDependencies": {
@@ -34,11 +35,11 @@
     "@types/express": "^4.17.0",
     "@types/node": "^14.14.6",
     "@types/sequelize": "^4.28.3",
+    "@types/superagent": "^4.1.10",
     "@types/validator": "^10.11.1",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "mocha": "^6.1.4",
-    "superagent": "^6.1.0",
     "ts-node-dev": "^1.0.0-pre.40",
     "tslint": "^5.18.0",
     "typescript": "^3.5.3"
