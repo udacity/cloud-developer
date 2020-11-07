@@ -82,6 +82,7 @@ router.put('/',
 
         // use and event to act on returned image
         var data = new EventEmitter();
+        var putimage = new EventEmitter();
 
         (async () => {
             try {
@@ -93,7 +94,7 @@ router.put('/',
               // send image from response body to waiting event
               data.emit('done', resp.body);
             } catch (err) {
-                return res.status(400).send({ message: err });
+                return res.status(400).send({ message: 'filtered image get failed', err: err });
             }
           })();
 
@@ -107,13 +108,18 @@ router.put('/',
                             .put(AWS.getPutSignedUrl(filename))
                             .send(image)
                             .set('Content-type', 'image/jpeg')
+                    putimage.emit('done', resp);
                 } catch (err) {
-                    return res.status(400).send({ message: err });
+                    return res.status(400).send({ message: 'signed URL put failed', err: err });
                 }
             })();
         });
         
-        return res.status(200).send('filtered image uploaded to the file store');
+        putimage.on('done', (putres) => {
+            return res.status(200)
+                .send({ message: 'filtered image uploaded to the file store',
+                        put_response: putres });
+        });
     });
 
 // Post meta data and the filename after a file is uploaded 
