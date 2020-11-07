@@ -2,7 +2,11 @@ import { Router, Request, Response } from 'express';
 import { FeedItem } from '../models/FeedItem';
 import { requireAuth } from '../../users/routes/auth.router';
 import * as AWS from '../../../../aws';
+import request from 'superagent';
+import { config } from '../../../../config/config';
+import { EventEmitter } from 'events'
 
+const c = config.image_filter;
 const router: Router = Router();
 
 // Get all feed items
@@ -53,6 +57,63 @@ router.get('/signed-url/:fileName',
         let { fileName } = req.params;
         const url = AWS.getPutSignedUrl(fileName);
         res.status(201).send({ url: url });
+    });
+
+// Put an image from a public URL to filestore 
+// using a signed URL after image is filtered
+// body : {public_url: string, filename: string};
+router.put('/',
+ //   requireAuth,
+    async (req: Request, res: Response) => {
+
+        // read in parameters from the request body
+        const public_url = req.body.public_url;
+        const filename = req.body.filename as string;
+
+        // check URL is present
+        if (!public_url) {
+            return res.status(400).send({ message: 'File url is required' });
+        }
+
+        // check filename is present
+        if (!filename) {
+            return res.status(400).send({ message: 'Filename is required' });
+        }
+
+        // use and event to act on returned image
+        var data = new EventEmitter();
+
+        (async () => {
+            try {
+              // make http get call to return the filtered immage
+              // from the public URL
+              const resp = await request
+                .get(c.endpoint + '/filteredimage')
+                .query({ image_url: public_url });
+              // send image from response body to waiting event
+              data.emit('done', resp.body);
+            } catch (err) {
+                return res.status(400).send({ message: err });
+            }
+          })();
+
+          // act on received filtered imaqge
+          data.on('done', (image) => {
+            (async () => {
+                try {
+                    // get a signed URL based on input filename
+                    // and put filtered image to the AWS file store
+                    const resp = await request
+                            .put(AWS.getPutSignedUrl(filename))
+                            .send(image)
+                            .set('Content-type', 'image/jpeg')
+                } catch (err) {
+                    return res.status(400).send({ message: err });
+                }
+            })();
+        });
+        
+        return res.status(200).send('filtered image uploaded to the file store');
     });
 
 // Post meta data and the filename after a file is uploaded 
