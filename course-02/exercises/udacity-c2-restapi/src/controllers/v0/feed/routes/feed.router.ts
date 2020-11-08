@@ -10,7 +10,9 @@ const c = config.image_filter;
 const router: Router = Router();
 
 // Get all feed items
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', 
+    requireAuth,
+    async (req: Request, res: Response) => {
     const items = await FeedItem.findAndCountAll({ order: [['id', 'DESC']] });
     items.rows.map((item) => {
         if (item.url) {
@@ -20,9 +22,10 @@ router.get('/', async (req: Request, res: Response) => {
     res.send(items);
 });
 
-//@TODO
-//Add an endpoint to GET a specific resource by Primary Key
-router.get('/:id', async (req: Request, res: Response) => {
+// GET a specific resource by Primary Key
+router.get('/:id', 
+    requireAuth,
+    async (req: Request, res: Response) => {
     let { id } = req.params;
     const item = await FeedItem.findByPk(id);
     res.send(item);
@@ -63,7 +66,7 @@ router.get('/signed-url/:fileName',
 // using a signed URL after image is filtered
 // body : {public_url: string, filename: string};
 router.put('/',
- //   requireAuth,
+    requireAuth,
     async (req: Request, res: Response) => {
 
         // read in parameters from the request body
@@ -117,14 +120,14 @@ router.put('/',
         
         putimage.on('done', (putres) => {
             return res.status(200)
-                .send({ message: 'filtered image uploaded to the file store',
-                        put_response: putres });
+                .send({ message: 'filtered image uploaded to the file store' });//,
+                      //  put_response: putres });
         });
     });
 
 // Post meta data and the filename after a file is uploaded 
 // NOTE the file name is they key name in the s3 bucket.
-// body : {caption: string, fileName: string};
+// body : {caption: string, url: string};
 router.post('/',
     requireAuth,
     async (req: Request, res: Response) => {

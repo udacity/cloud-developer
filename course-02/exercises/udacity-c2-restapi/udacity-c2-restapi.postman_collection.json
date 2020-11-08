@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "90c44738-86d0-440c-ac60-dcb7b70fb9e8",
+		"_postman_id": "6a1e7f7e-5cc3-4876-a1da-3304b92c8fe8",
 		"name": "udacity-c2-restapi",
 		"description": "Requests that should work!",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -10,24 +10,18 @@
 			"name": "Public",
 			"item": [
 				{
-					"name": "/api/v0/feed",
+					"name": "/api/v0/users/",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "1ad01629-c164-41ef-9d19-0a5fd13274af",
+								"id": "617bb318-d039-4d69-af59-1ba78dcd3ee1",
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"The count is equal to the number of items rx\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.count).to.eql(jsonData.rows.length);",
-									"});",
-									"",
-									"pm.test(\"Response time is less than 600ms\", function () {",
-									"    pm.expect(pm.response.responseTime).to.be.below(600);",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"users\");\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -36,182 +30,6 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{host}}/api/v0/feed",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"v0",
-								"feed"
-							]
-						},
-						"description": "Get all the items in the feed"
-					},
-					"response": []
-				},
-				{
-					"name": "/api/v0/feed/:id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "1ad01629-c164-41ef-9d19-0a5fd13274af",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"A single item is returned\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.id).to.not.eql(null);",
-									"});",
-									"",
-									"pm.test(\"Response time is less than 200ms\", function () {",
-									"    pm.expect(pm.response.responseTime).to.be.below(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{host}}/api/v0/feed/:id",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"v0",
-								"feed",
-								":id"
-							],
-							"query": [
-								{
-									"key": "id",
-									"value": "4",
-									"disabled": true
-								}
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "3"
-								}
-							]
-						},
-						"description": "Request a specific feed item detail"
-					},
-					"response": [
-						{
-							"name": "/api/v0/feed/:id",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{host}}/api/v0/feed/:id",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"v0",
-										"feed",
-										":id"
-									],
-									"query": [
-										{
-											"key": "id",
-											"value": "4",
-											"disabled": true
-										}
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "3"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "X-Powered-By",
-									"value": "Express"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "133"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"85-gic7UchUXbyxmSqNsq7nx4+Eaas\""
-								},
-								{
-									"key": "Date",
-									"value": "Tue, 26 Mar 2019 15:07:32 GMT"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"id\": 3,\n    \"caption\": \"hello0.5278862272947393\",\n    \"url\": null,\n    \"createdAt\": \"2019-03-26T14:16:58.442Z\",\n    \"updatedAt\": \"2019-03-26T14:16:58.443Z\"\n}"
-						}
-					]
-				},
-				{
-					"name": "/api/v0/user/auth valid registration",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "4fa0ec55-4fb1-4eda-a7a3-08af62324ede",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"A single item is returned\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.id).to.not.eql(null);",
-									"});",
-									"",
-									"pm.test(\"Response time is less than 200ms\", function () {",
-									"    pm.expect(pm.response.responseTime).to.be.below(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -220,12 +38,8 @@
 								"value": "application/json"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"email\":\"hello@gmail.com\",\n\t\"password\":\"fancypass\"\n}"
-						},
 						"url": {
-							"raw": "{{host}}/api/v0/users/auth",
+							"raw": "{{host}}/api/v0/users/",
 							"host": [
 								"{{host}}"
 							],
@@ -233,32 +47,25 @@
 								"api",
 								"v0",
 								"users",
-								"auth"
+								""
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "/api/v0/user/auth invalid registration",
+					"name": "/api/v0/users/auth/",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "b3737edc-f79e-4823-b2c5-e84e6359e173",
+								"id": "9bf96d8c-ef33-4ddc-91e5-ec47b63cc963",
 								"exec": [
-									"pm.test(\"Status code is 400\", function () {",
-									"    pm.response.to.have.status(400);",
-									"});",
-									"",
-									"pm.test(\"auth is false and a message is included in the error body\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.id).to.not.eql(null);",
-									"    pm.expect(jsonData.message).to.not.eql(null)",
-									"});",
-									"",
-									"pm.test(\"Response time is less than 200ms\", function () {",
-									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"auth\");\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -266,21 +73,17 @@
 						}
 					],
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [
 							{
 								"key": "Content-Type",
 								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
+								"type": "text",
+								"value": "application/json"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"password\": \"fancypass\"\n}"
-						},
 						"url": {
-							"raw": "{{host}}/api/v0/users/auth",
+							"raw": "{{host}}/api/v0/users/auth/",
 							"host": [
 								"{{host}}"
 							],
@@ -288,7 +91,8 @@
 								"api",
 								"v0",
 								"users",
-								"auth"
+								"auth",
+								""
 							]
 						}
 					},
@@ -300,7 +104,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "5524b249-cd4d-4e75-91c4-b2f690d53d44",
+								"id": "97378810-ecf9-48f5-8a60-31a3232dc439",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -359,7 +163,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "41cd51df-9472-4d8d-9177-b4f54d6a8530",
+								"id": "92526ce0-478a-4a05-85ff-384b457061b1",
 								"exec": [
 									"pm.test(\"Status code is 400\", function () {",
 									"    pm.response.to.have.status(400);",
@@ -408,8 +212,118 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "/api/v0/user/auth valid registration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "566f1813-a41f-44f6-9354-11e9ced5c682",
+								"exec": [
+									"pm.test(\"Status code is 422 since user exists\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"pm.test(\"A single item is returned\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.not.eql(null);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\":\"hello@gmail.com\",\n\t\"password\":\"fancypass\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/v0/users/auth",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v0",
+								"users",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v0/user/auth invalid registration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c6e230c9-13a2-407b-8ca7-78e10d8e5308",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"auth is false and a message is included in the error body\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.not.eql(null);",
+									"    pm.expect(jsonData.message).to.not.eql(null)",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\": \"fancypass\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/v0/users/auth",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v0",
+								"users",
+								"auth"
+							]
+						}
+					},
+					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Unauthorized",
@@ -420,7 +334,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "1ad01629-c164-41ef-9d19-0a5fd13274af",
+								"id": "82d0622b-5542-444c-9c0f-ee5389575ef9",
 								"exec": [
 									"pm.test(\"Status code is 401\", function () {",
 									"    pm.response.to.have.status(401);",
@@ -435,6 +349,9 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -455,19 +372,200 @@
 						"description": "Post a new item to the feed"
 					},
 					"response": []
+				},
+				{
+					"name": "/api/v0/users/auth/verification no auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a4bba1ee-801e-4152-bcf3-6aeb4b8cbde9",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"No authorization headers.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v0/users/auth/verification",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v0",
+								"users",
+								"auth",
+								"verification"
+							]
+						},
+						"description": "Post a new item to the feed"
+					},
+					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Authorized",
 			"item": [
+				{
+					"name": "/api/v0/users/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c6ddcbc0-54cc-46a4-ba81-23e97d3af3a5",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"password_hash\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v0/users/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v0",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "hello@gmail.com"
+								}
+							]
+						},
+						"description": "Post a new item to the feed"
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v0/users/auth/verification",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6ddf1999-3abb-428f-9d7d-cb703f516efe",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"Authenticated\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v0/users/auth/verification",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v0",
+								"users",
+								"auth",
+								"verification"
+							]
+						},
+						"description": "Post a new item to the feed"
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v0/feed/signed-url",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d265ad99-a234-4086-8964-fa5ab5a38882",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"The post returns a new item with an id\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.not.eql(null);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Body matches string for signed URL\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"X-Amz-Algorithm\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v0/feed/signed-url/:fileName",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v0",
+								"feed",
+								"signed-url",
+								":fileName"
+							],
+							"variable": [
+								{
+									"key": "fileName",
+									"value": "Puppies.jpg"
+								}
+							]
+						},
+						"description": "Post a new item to the feed"
+					},
+					"response": []
+				},
 				{
 					"name": "/api/v0/feed invalid",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "1ad01629-c164-41ef-9d19-0a5fd13274af",
+								"id": "8ed6fefa-c2d4-407d-be4a-2cef07f4c827",
 								"exec": [
 									"pm.test(\"Status code is 400\", function () {",
 									"    pm.response.to.have.status(400);",
@@ -516,24 +614,19 @@
 					"response": []
 				},
 				{
-					"name": "/api/v0/feed authorized Copy",
+					"name": "/api/v0/feed add item",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "1ad01629-c164-41ef-9d19-0a5fd13274af",
+								"id": "8ab11794-fa7a-4b27-9b9b-2a2113e191e7",
 								"exec": [
-									"pm.test(\"Status code is 201\", function () {",
-									"    pm.response.to.have.status(201);",
-									"});",
-									"",
-									"pm.test(\"The post returns a new item with an id\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.id).to.not.eql(null);",
-									"});",
-									"",
-									"pm.test(\"Response time is less than 200ms\", function () {",
-									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"Puppies.jpg\");\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -546,13 +639,13 @@
 							{
 								"key": "Content-Type",
 								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
+								"type": "text",
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"caption\": \"Hello\",\n    \"url\": \"test.jpg\"\n}"
+							"raw": "{ \"caption\": \"Woof, woof!\", \r\n  \"url\": \"Puppies.jpg\"}"
 						},
 						"url": {
 							"raw": "{{host}}/api/v0/feed",
@@ -568,6 +661,209 @@
 						"description": "Post a new item to the feed"
 					},
 					"response": []
+				},
+				{
+					"name": "/api/v0/feed all items",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b761f6b2-e0a8-4c68-a532-d5103dfcf187",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"count\");\r",
+									"});\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"rows\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/v0/feed/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v0",
+								"feed",
+								""
+							]
+						},
+						"description": "Post a new item to the feed"
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v0/feed one item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "57d35a97-74c0-4a75-b809-b5777a2deede",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"caption\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/v0/feed/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v0",
+								"feed",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Post a new item to the feed"
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v0/feed update one item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9250ccb5-d0fd-4e51-8b29-26588d84ce5d",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"caption\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"caption\": \"Hello Kitty!\", \r\n  \"url\": \"meow.jpg\"}"
+						},
+						"url": {
+							"raw": "{{host}}/api/v0/feed/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v0",
+								"feed",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Post a new item to the feed"
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v0/feed put image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d265ad99-a234-4086-8964-fa5ab5a38882",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"filtered image uploaded to the file store\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"public_url\": \"https://www.thelabradorsite.com/wp-content/uploads/2019/03/Black-Lab-Your-Guide-To-The-Black-Labrador-Retriever-LS-long-1.jpg\",\n    \"filename\": \"Puppies.jpg\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/v0/feed/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v0",
+								"feed",
+								""
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"auth": {
@@ -575,7 +871,7 @@
 				"bearer": [
 					{
 						"key": "token",
-						"value": "{{token}}",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlbGxvQGdtYWlsLmNvbSIsInBhc3N3b3JkX2hhc2giOiIkMmIkMTAkRzQ4Tmh6dmJWdHM5cU5yUDE4VFF6dTV0U284N2ZTcGxzbG03S29yMi9UTlRoWkp6andPc3EiLCJjcmVhdGVkQXQiOiIyMDIwLTExLTAzVDIyOjM2OjA0LjIyMVoiLCJ1cGRhdGVkQXQiOiIyMDIwLTExLTAzVDIyOjM2OjA0LjIyMloiLCJpYXQiOjE2MDQ3ODMxNzR9.StV7_9gBSkES2J3wwUGu5Fkzy4VsJK9jYm9vGDOkA1E",
 						"type": "string"
 					}
 				]
@@ -584,7 +880,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "65e7c108-0985-4ca7-9613-0898f005cf76",
+						"id": "51b02f6d-b374-42e0-b7f5-6474cf34b447",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -594,21 +890,22 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "cf28f76e-ffbb-4199-b636-1c080a86e465",
+						"id": "7680bff6-8462-4bec-99f2-e7d73ea0907b",
 						"type": "text/javascript",
 						"exec": [
 							""
 						]
 					}
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "bc5d9c7a-7a6b-49ed-af16-206e17e8732f",
+				"id": "ad553129-a0c0-42e3-b085-883a68daa155",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -618,7 +915,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "a7cb0174-2461-42e2-979e-1b5922eea0fe",
+				"id": "c4f213d6-6ed2-448e-ad25-941984cfb018",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -628,10 +925,10 @@
 	],
 	"variable": [
 		{
-			"id": "3e3ea131-5328-4f50-8fe1-516e3995917d",
+			"id": "cd2a2095-059e-411c-a253-a24b0b82c635",
 			"key": "host",
-			"value": "http://localhost:8080",
-			"type": "string"
+			"value": "http://localhost:8080"
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }
