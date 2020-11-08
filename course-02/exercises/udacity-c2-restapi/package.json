@@ -27,13 +27,15 @@
     "pg": "^7.11.0",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^5.10.0",
+    "superagent": "^6.1.0",
     "sequelize-typescript": "^0.6.11"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.27",
     "@types/express": "^4.17.0",
-    "@types/node": "^11.13.17",
+    "@types/node": "^14.14.6",
     "@types/sequelize": "^4.28.3",
+    "@types/superagent": "^4.1.10",
     "@types/validator": "^10.11.1",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
