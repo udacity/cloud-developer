@@ -1,14 +1,21 @@
-import express from 'express';
+import express, { response } from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
-
+import { Router, Request, Response } from 'express';
+import path from 'path';
 (async () => {
 
   // Init the Express application
   const app = express();
+  const { check, validationResult } = require ('express-validator');
+  //init file system
+  const fs = require ('fs');
+ //init url-exist
+  const urlExist = require("url-exist");
 
   // Set the network port
   const port = process.env.PORT || 8082;
+
   
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
@@ -30,12 +37,49 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   /**************************************************************************** */
 
   //! END @TODO1
+  app.get ('/filteredimage',
+  [check('image_url').isURL()],
+  async function (req:Request, res:Response) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+      return res.status(422).json({errors: errors.array()});
+    const {image_url} = req.query;
+    console.log(image_url);
+    if(!urlExist(image_url))
+      return res.status(404).send("URL Doesn't Exist");
+    const filtered_image =await filterImageFromURL(image_url);
+   // console.log(filtered_image);
+    /*if(filtered_image == "Invalid URL")
+    {
+      return res.status(404).send("Invalid URL Image is not found");
+    }*/
+    res.status(200).sendFile(filtered_image) ;
+    
+    res.on('finish', function(){
+      console.log('the response has been sent');
+      const tempFolder = __dirname + path.sep + "util" + path.sep + "tmp" + path.sep;
+
+      const filesToDelete = fs.readdirSync(tempFolder);
+      let pathsToDelete : string[] = [];
+      for(let i : number = 0; i<filesToDelete.length; i++)
+      {
+        console.log(tempFolder + filesToDelete[i])
+        pathsToDelete.push(tempFolder + filesToDelete[i]);
+      }
+      deleteLocalFiles(pathsToDelete);
+      });
+      
+      return
+  
+    
+  });
   
   // Root Endpoint
   // Displays a simple message to the user
   app.get( "/", async ( req, res ) => {
     res.send("try GET /filteredimage?image_url={{}}")
   } );
+  
   
 
   // Start the Server
@@ -44,3 +88,4 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
       console.log( `press CTRL+C to stop server` );
   } );
 })();
+
