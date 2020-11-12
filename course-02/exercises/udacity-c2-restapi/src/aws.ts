@@ -14,6 +14,8 @@ if(c.aws.profile !== "DEPLOYED") {
 }
 
 export const s3 = new AWS.S3({
+  accessKeyId: c.aws.s3.access_key_id,
+  secretAccessKey: c.aws.s3.secret_access_key,
   signatureVersion: 'v4',
   region: c.aws.region,
   params: {Bucket: c.aws.media_bucket}
@@ -27,7 +29,7 @@ export const s3 = new AWS.S3({
  *    a url as a string
  */
 export function getGetSignedUrl( key: string ): string{
-
+  console.log('gepl-test: media bucket: ' + c.aws.media_bucket + ', region: ' + c.aws.region);
   const signedUrlExpireSeconds = 60 * 5
 
     const url = s3.getSignedUrl('getObject', {
