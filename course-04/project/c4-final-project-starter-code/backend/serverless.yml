@@ -15,14 +15,17 @@ provider:
     CREATED_AT_INDEX: CreatedAtIndex
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-2'}
+  tracing:
+    lambda: true
+    apiGateway: true
 
 custom:
   documentation:
     api:
       info:
-        version: v1.0.0
+        version: v3.0.0
         title: Serverless Todo Aplication
-        description: An example of using AWS Lambda for Serverless development
+        description: Because of the exhaustive debbuging, this is already on version 3 xD.
 
 functions:
   Auth:
@@ -56,6 +59,16 @@ functions:
         Action:
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.CREATED_AT_INDEX}
+      - Effect: Allow
+        Action:
+          - xray:PutTraceSegments
+        Resource: "*"
+      - Effect: Allow
+        Action:
+          - logs:CreateLogStream
+          - logs:CreateLogGroup
+          - logs:PutLogEvents
+        Resource: "*"
     events:
       - http:
           method: get
@@ -71,6 +84,16 @@ functions:
         Action:
           - dynamodb:PutItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+      - Effect: Allow
+        Action:
+          - xray:PutTraceSegments
+        Resource: "*"
+      - Effect: Allow
+        Action:
+          - logs:CreateLogStream
+          - logs:CreateLogGroup
+          - logs:PutLogEvents
+        Resource: "*"
     events:
       - http:
           method: post
@@ -90,6 +113,16 @@ functions:
           - dynamodb:UpdateItem
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+      - Effect: Allow
+        Action:
+          - xray:PutTraceSegments
+        Resource: "*"
+      - Effect: Allow
+        Action:
+          - logs:CreateLogStream
+          - logs:CreateLogGroup
+          - logs:PutLogEvents
+        Resource: "*"
     events:
       - http:
           method: patch
@@ -109,6 +142,16 @@ functions:
           - dynamodb:DeleteItem
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+      - Effect: Allow
+        Action:
+          - xray:PutTraceSegments
+        Resource: "*"
+      - Effect: Allow
+        Action:
+          - logs:CreateLogStream
+          - logs:CreateLogGroup
+          - logs:PutLogEvents
+        Resource: "*"
     events:
       - http:
           method: delete
@@ -128,6 +171,16 @@ functions:
         Action:
           - s3:PutObject
         Resource: arn:aws:s3:::${self:provider.environment.IMAGES_BUCKET}/*
+      - Effect: Allow
+        Action:
+          - xray:PutTraceSegments
+        Resource: "*"
+      - Effect: Allow
+        Action:
+          - logs:CreateLogStream
+          - logs:CreateLogGroup
+          - logs:PutLogEvents
+        Resource: "*"
     events:
       - http:
           method: post
