@@ -3,7 +3,7 @@ import * as AWSXRay from 'aws-xray-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 import { config } from '../config'
 import { TodoItem } from '../models/TodoItem'
-import { TodoUpdate } from '../models/TodoUpdate'
+// import { TodoUpdate } from '../models/TodoUpdate'
 
 
 const XAWS = AWSXRay.captureAWS(AWS)
