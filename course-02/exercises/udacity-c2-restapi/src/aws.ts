@@ -29,7 +29,6 @@ export const s3 = new AWS.S3({
  *    a url as a string
  */
 export function getGetSignedUrl( key: string ): string{
-  console.log('gepl-test: media bucket: ' + c.aws.media_bucket + ', region: ' + c.aws.region);
   const signedUrlExpireSeconds = 60 * 5
 
     const url = s3.getSignedUrl('getObject', {
