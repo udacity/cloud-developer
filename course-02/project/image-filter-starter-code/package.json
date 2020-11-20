@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "jimp": "^0.6.4"
+    "jimp": "^0.6.4",
+    "mime-types": "^2.1.27"
   }
 }
