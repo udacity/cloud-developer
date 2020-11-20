@@ -78,6 +78,8 @@ import { Car, cars as cars_list } from './cars';
   /// @TODO Add an endpoint to post a new car to our list
   // it should require id, type, model, and cost
 
+// Adding a few comments to the code starting on the dev. branch.
+
   // Start the Server
   app.listen( port, () => {
       console.log( `server running http://localhost:${ port }` );
