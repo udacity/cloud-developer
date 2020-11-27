@@ -2,10 +2,13 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
+
 (async () => {
 
   // Init the Express application
   const app = express();
+
+  const fs = require('fs');
 
   // Set the network port
   const port = process.env.PORT || 8082;
@@ -28,6 +31,29 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
+
+  app.get('/filteredimage', 
+   async ( req, res) => {
+
+    let image_url: string
+    image_url = req.query.image_url as string;
+    console.log('Image URL: ' + image_url);
+
+    if ( !image_url ) {
+      return res.status(400)
+                .send(`image_url is required`);
+    }
+    let filteredimage = await filterImageFromURL(image_url);
+    console.log('Filtered File Path: ', filteredimage)
+    res.status(200).sendFile(filteredimage, err => {
+      if (err) {
+          console.log(err);
+          res.sendStatus(500);
+      }
+      deleteLocalFiles([filteredimage]);
+    }); 
+     
+  } );
 
   //! END @TODO1
   
