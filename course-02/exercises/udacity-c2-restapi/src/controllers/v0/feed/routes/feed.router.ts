@@ -16,15 +16,38 @@ router.get('/', async (req: Request, res: Response) => {
     res.send(items);
 });
 
-//@TODO
-//Add an endpoint to GET a specific resource by Primary Key
+// Get a specific resource
+router.get('/:id', 
+    async (req: Request, res: Response) => {
+    let { id } = req.params;
+    const item = await FeedItem.findByPk(id);
+    res.send(item);
+});
 
 // update a specific resource
 router.patch('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
-        //@TODO try it yourself
-        res.send(500).send("not implemented")
+        let {id} = req.params
+        let {caption,url} = req.body
+        if(!id){
+            res.status(400).send('Id is required')
+        }
+
+        if(!caption || !url){
+            res.status(400).send('caption & Url is Required')
+        }
+
+        const item = await FeedItem.findByPk(id)
+        if(!item){
+            res.status(404).send('Invalid Id')
+        }
+
+        item.caption = caption
+        item.url = url
+        await item.save()
+
+        res.status(200).send(item)
 });
 
 
@@ -58,7 +81,8 @@ router.post('/',
 
     const item = await new FeedItem({
             caption: caption,
-            url: fileName
+            url: fileName,
+            updatedAt: new Date()
     });
 
     const saved_item = await item.save();
