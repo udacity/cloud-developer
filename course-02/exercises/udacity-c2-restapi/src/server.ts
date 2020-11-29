@@ -7,8 +7,10 @@ import bodyParser from 'body-parser';
 
 import { V0MODELS } from './controllers/v0/model.index';
 
+require('dotenv').config();
+
 (async () => {
-   sequelize.addModels(V0MODELS);
+  await sequelize.addModels(V0MODELS);// register our models
   await sequelize.sync();
 
   const app = express();
@@ -23,8 +25,8 @@ import { V0MODELS } from './controllers/v0/model.index';
     next();
   });
 
-  app.use('/api/v0/', IndexRouter)
-
+  app.use('/api/v0/', IndexRouter) // indexes both the feed and users router
+  
   // Root URI call
   app.get( "/", async ( req, res ) => {
     res.send( "/api/v0/" );
