@@ -9,39 +9,87 @@ const router: Router = Router();
 router.get('/', async (req: Request, res: Response) => {
     const items = await FeedItem.findAndCountAll({order: [['id', 'DESC']]});
     items.rows.map((item) => {
-            if(item.url) {
+            if (item.url) {
                 item.url = AWS.getGetSignedUrl(item.url);
             }
     });
     res.send(items);
 });
 
-//@TODO
-//Add an endpoint to GET a specific resource by Primary Key
+// @TODO - completed
+// Add an endpoint to GET a specific resource by Primary Key
+router.get('/:id',
+    requireAuth,
+    async (req: Request, res: Response) => {
+        const { id } = req.params;
+        if (!id) {
+            res.send(400).send('id params is missing');
+        }
+
+        const findById = await FeedItem.findByPk(id)
+            // tslint:disable-next-line:no-shadowed-variable
+            .then((res) => {
+                return (res && res.dataValues) ? res.dataValues : false;
+            });
+        if (findById) {
+            res.status(200).send(findById);
+        } else {
+            res.status(404).send('item was not found');
+        }
+    });
 
 // update a specific resource
-router.patch('/:id', 
-    requireAuth, 
+router.patch('/:id',
+    requireAuth,
     async (req: Request, res: Response) => {
-        //@TODO try it yourself
-        res.send(500).send("not implemented")
+        // @TODO try it yourself
+        const { id } = req.params;
+        const { caption, url } = req.body;
+        if (!id) {
+            res.send(400).send('id params is missing');
+        }
+        if (!caption || !url) {
+            return res.status(400).send({ message: 'Caption is required or malformed or File url is required to update item' });
+        }
+        const updateById = await FeedItem.findByPk(id)
+            // tslint:disable-next-line:no-shadowed-variable
+            .then(res => {
+                const data = (res && res.dataValues) ? res.dataValues : false;
+
+                if (data) {
+                    // @ts-ignore
+                    return FeedItem.update({ caption, url }, { where: { id } })
+                        // tslint:disable-next-line:no-shadowed-variable
+                        .then(res => {
+                            return (res && res.length) ? true : false;
+                        });
+                } else {
+                    return false;
+                }
+            });
+        // @ts-ignore
+        if (updateById) {
+            res.status(200).send('item was updated');
+        } else {
+            res.status(500).send('not implemented');
+        }
 });
 
 
 // Get a signed url to put a new item in the bucket
-router.get('/signed-url/:fileName', 
-    requireAuth, 
+router.get('/signed-url/:fileName',
+    requireAuth,
     async (req: Request, res: Response) => {
-    let { fileName } = req.params;
+    const { fileName } = req.params;
     const url = AWS.getPutSignedUrl(fileName);
     res.status(201).send({url: url});
 });
 
-// Post meta data and the filename after a file is uploaded 
+// Post meta data and the filename after a file is uploaded
 // NOTE the file name is they key name in the s3 bucket.
 // body : {caption: string, fileName: string};
-router.post('/', 
-    requireAuth, 
+router.post('/',
+    requireAuth,
     async (req: Request, res: Response) => {
     const caption = req.body.caption;
     const fileName = req.body.url;
