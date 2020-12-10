@@ -15,16 +15,49 @@ router.get('/', async (req: Request, res: Response) => {
     });
     res.send(items);
 });
+router.get('/', async (req: Request, res: Response) => {
+    const items = await FeedItem.findAndCountAll({order: [['id', 'DESC']]});
+    items.rows.map((item) => {
+            if(item.url) {
+                item.url = AWS.getGetSignedUrl(item.url);
+            }
+    });
+    res.send(items);
+});
+
 
 //@TODO
 //Add an endpoint to GET a specific resource by Primary Key
+router.get('/:id', async (req: Request, res: Response) => {
+    let { id } = req.params;
+
+    const feedItem = await FeedItem.findByPk(id);
+    if(feedItem.url){
+        feedItem.url = AWS.getGetSignedUrl(feedItem.url);
+    }
+    
+    res.send(feedItem);
+});
 
 // update a specific resource
 router.patch('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
         //@TODO try it yourself
-        res.send(500).send("not implemented")
+        let { id } = req.params;
+        const caption = req.body.caption;
+        const fileName = req.body.url;
+        const feedItem = await FeedItem.findByPk(id);
+        if(caption)
+           feedItem.caption = caption;
+        if(fileName)
+           feedItem.url = fileName;
+        
+       
+        const saved_item = await feedItem.save();
+
+        saved_item.url = AWS.getGetSignedUrl(saved_item.url);
+        res.status(200).send(saved_item);
 });
 
 
