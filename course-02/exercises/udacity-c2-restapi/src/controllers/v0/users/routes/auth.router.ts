@@ -14,17 +14,18 @@ const router: Router = Router();
 async function generatePassword(plainTextPassword: string): Promise<string> {
     //@TODO Use Bcrypt to Generated Salted Hashed Passwords - completed
     const saltRounds = 10
-    return await bcrypt.hash(plainTextPassword, saltRounds, (err, result) => { return result ? result : err })
+    const salted = await bcrypt.genSalt(saltRounds)
+    return await bcrypt.hash(plainTextPassword, salted)
 }
 
 async function comparePasswords(plainTextPassword: string, hash: string): Promise<boolean> {
     //@TODO Use Bcrypt to Compare your password to your Salted Hashed Password - completed
-    return bcrypt.compare(plainTextPassword, hash, (err, result) => { return result ? result : err })
+    return await bcrypt.compare(plainTextPassword, hash)
 }
 
 function generateJWT(user: User): string {
     //@TODO Use jwt to create a new JWT Payload containing - completed
-    return jwt.sign(user, config.dev.jwt_secret)
+    return jwt.sign({ user }, config.dev.jwt_secret)
 }
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
@@ -41,7 +42,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
     const token = token_bearer[1];
 
     return jwt.verify(token, config.dev.jwt_secret, (err, decoded) => {
-      if (err) {
+        if (err) {
         return res.status(500).send({ auth: false, message: 'Failed to authenticate.' });
       }
       return next();
@@ -108,7 +109,6 @@ router.post('/', async (req: Request, res: Response) => {
     }
 
     const password_hash = await generatePassword(plainTextPassword);
-
     const newUser = await new User({
         email: email,
         password_hash: password_hash

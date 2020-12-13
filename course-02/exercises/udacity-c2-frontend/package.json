@@ -54,19 +54,5 @@
     "tslint": "~5.12.0",
     "typescript": "~3.1.6"
   },
-  "codelyzer": {
-    "version": "4.5.0",
-    "resolved": "https://registry.npmjs.org/codelyzer/-/codelyzer-4.5.0.tgz",
-    "integrity": "sha512-oO6vCkjqsVrEsmh58oNlnJkRXuA30hF8cdNAQV9DytEalDwyOFRvHMnlKFzmOStNerOmPGZU9GAHnBo4tGvtiQ==",
-    "dev": true,
-    "requires": {
-      "app-root-path": "^2.1.0",
-      "css-selector-tokenizer": "^0.7.0",
-      "cssauron": "^1.4.0",
-      "semver-dsl": "^1.0.1",
-      "source-map": "^0.5.7",
-      "sprintf-js": "^1.1.1"
-    }
-  },
   "description": "An Ionic project"
 }
