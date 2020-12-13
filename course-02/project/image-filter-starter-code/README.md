@@ -1,3 +1,6 @@
+# Github URL:
+https://github.com/uanat-gpsw/cloud-developer/edit/master/course-02/project/image-filter-starter-code
+
 # Endpoint URL:
 http://image-server-dev.us-west-2.elasticbeanstalk.com/filteredimage?image_url=https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_tabby_and_white_kitten_n01.jpg
 
