@@ -37,7 +37,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     }
 
     filterImageFromURL(image_url).then(img => {
-      res.sendFile(img, () => {
+      res.status(200).sendFile(img, () => {
         deleteLocalFiles([img]);
       });
     });
