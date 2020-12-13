@@ -11,7 +11,7 @@ import e from 'express';
   // Set the network port
   const port = process.env.PORT || 8082;
   
-  // Use the body parser middleware for post requestuests
+  // Use the body parser middleware for post request
   app.use(bodyParser.json());
 
   // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
