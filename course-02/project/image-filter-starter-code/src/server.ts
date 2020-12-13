@@ -11,7 +11,7 @@ import e from 'express';
   // Set the network port
   const port = process.env.PORT || 8082;
   
-  // Use the body parser middleware for post requests
+  // Use the body parser middleware for post requestuests
   app.use(bodyParser.json());
 
   // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
@@ -34,22 +34,22 @@ import e from 'express';
   
   // Root Endpoint
   // Displays a simple message to the user
-  app.get( "/", async ( req, res ) => {
-    res.send("try GET /filteredimage?image_url={{}}")
+  app.get( "/", async ( request, response ) => {
+    response.send("try GET /filteredimage?image_url={{}}")
   } );
   
-  app.get( "/filteredimage/", async ( req, res ) => {
-    let { image_url } = req.query;
+  app.get( "/filteredimage/", async ( request, response ) => {
+    let { image_url } = request.query;
     if(!image_url){
-        return res.status(400).send(`Need url`);
+        return response.status(400).send(`Need url`);
     }
     if(!isValidUrl(image_url) )
     {
-      return res.status(422).send(`Not a valid url`);
+      return response.status(422).send(`Not a valid url`);
     }
     const fileURL = await(filterImageFromURL(image_url));
-    res.sendFile(fileURL);
-    res.on('finish',function () {deleteLocalFiles(new Array(fileURL));});
+    response.sendFile(fileURL);
+    response.on('finish',function () {deleteLocalFiles(new Array(fileURL));});
   } );
 
   // Start the Server
