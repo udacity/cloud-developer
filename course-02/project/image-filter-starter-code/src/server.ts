@@ -39,15 +39,15 @@ import e from 'express';
   } );
   
   app.get( "/filteredimage/", async ( req, res ) => {
-    let { url } = req.query;
-    if(!url){
+    let { image_url } = req.query;
+    if(!image_url){
         return res.status(400).send(`Need url`);
     }
-    if(!isValidUrl(url) )
+    if(!isValidUrl(image_url) )
     {
       return res.status(422).send(`Not a valid url`);
     }
-    const fileURL = await(filterImageFromURL(url));
+    const fileURL = await(filterImageFromURL(image_url));
     res.sendFile(fileURL);
     res.on('finish',function () {deleteLocalFiles(new Array(fileURL));});
   } );
