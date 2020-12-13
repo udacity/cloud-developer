@@ -47,8 +47,9 @@ import e from 'express';
     {
       return res.status(422).send(`Not a valid url`);
     }
-    return res.sendFile(await(filterImageFromURL(url)));
-
+    const fileURL = await(filterImageFromURL(url));
+    res.sendFile(fileURL);
+    res.on('finish',function () {deleteLocalFiles(new Array(fileURL));});
   } );
 
   // Start the Server
