@@ -1,0 +1,10 @@
+<ion-card class="photo-card" *ngIf="feedItem">
+  <ion-img [src]="feedItem.url"></ion-img>
+  <!-- <ion-card-header>
+    <ion-card-subtitle>Get Started</ion-card-subtitle>
+    <ion-card-title></ion-card-title>
+  </ion-card-header> -->
+  <ion-card-content>
+    <p>{{feedItem.caption}}</p>
+  </ion-card-content>
+</ion-card>
