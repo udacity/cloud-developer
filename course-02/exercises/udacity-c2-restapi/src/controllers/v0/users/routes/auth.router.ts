@@ -25,7 +25,7 @@ async function comparePasswords(plainTextPassword: string, hash: string): Promis
 }
 
 function generateJWT(user: User): string {
-    return jwt.sign(user,config.jwt.secret);
+    return jwt.sign(user.email,config.jwt.secret);
 }
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
@@ -48,6 +48,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
       }
       return next();
     });
+    
 }
 
 router.get('/verification', 
