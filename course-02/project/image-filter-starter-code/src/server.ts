@@ -33,7 +33,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
       return res.status(400).json("Please include image url");
     }
 
-    const filtered_image = await filterImageFromURL(req.query.image_url);
+    const filtered_image: string = await filterImageFromURL(req.query.image_url);
     res.status(200).sendFile(filtered_image, () => {
       deleteLocalFiles([filtered_image]); 
     })
