@@ -6,6 +6,10 @@ import { Car, cars as cars_list } from './cars';
 (async () => {
   let cars:Car[]  = cars_list;
 
+  function printCars(cars : Car[]) : string {
+    return JSON.stringify(cars, null, ' ');
+  }
+
   //Create an express applicaiton
   const app = express(); 
   //default port to listen
@@ -70,6 +74,22 @@ import { Car, cars as cars_list } from './cars';
 
   // @TODO Add an endpoint to GET a list of cars
   // it should be filterable by make with a query paramater
+  // > try it {{host}}/cars?make=the_make
+  app.get("/cars/", ( req: Request, res: Response) => {
+    let { make } = req.query;
+
+    if (!make) {
+      return res.status(200).send(`${printCars(cars_list)}`);
+    }
+
+    let filtered  = cars_list.filter(o => o.make === make);
+
+    if (!filtered.length) {
+      return res.status(200).send(`no models for make="${make}"`)
+    }
+
+    return res.status(200).send(`${printCars(filtered)}`);
+  });
 
   // @TODO Add an endpoint to get a specific car
   // it should require id
