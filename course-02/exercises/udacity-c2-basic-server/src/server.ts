@@ -6,10 +6,6 @@ import { Car, cars as cars_list } from './cars';
 (async () => {
   let cars:Car[]  = cars_list;
 
-  function printCars(cars : Car[]) : string {
-    return JSON.stringify(cars, null, ' ');
-  }
-
   //Create an express applicaiton
   const app = express(); 
   //default port to listen
@@ -79,13 +75,13 @@ import { Car, cars as cars_list } from './cars';
     let { make } = req.query;
 
     if (!make) {
-      return res.status(200).send(`${printCars(cars_list)}`);
+      return res.status(200).send(cars_list);
     }
 
     let filtered  = cars_list.filter(o => o.make === make);
 
     return (filtered.length)
-      ? res.status(200).send(`${printCars(filtered)}`)
+      ? res.status(200).send(filtered)
       : res.status(200).send(`no models for make="${make}"`);
   });
 
@@ -101,7 +97,7 @@ import { Car, cars as cars_list } from './cars';
 
     let found = cars_list.find(o => o.id.toString() === id);
     return (found)
-      ? res.status(200).send(`${printCars([found])}`)
+      ? res.status(200).send(found)
       : res.status(400).send(`no cars with id=${id}`);
   });
 
@@ -115,9 +111,10 @@ import { Car, cars as cars_list } from './cars';
         return res.status(400).send(`id, type, make, model and cost must all be defined`);
       }
 
-      cars_list.push({make: make, type: type, model: model, cost: cost, id: id})
+      const new_car: Car = {make: make, type: type, model: model, cost: cost, id: id};
+      cars_list.push(new_car);
 
-      return res.status(200).send(`car added`);
+      return res.status(201).send(new_car);
     }
   );
 
