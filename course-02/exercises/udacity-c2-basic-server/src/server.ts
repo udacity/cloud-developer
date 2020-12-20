@@ -84,16 +84,26 @@ import { Car, cars as cars_list } from './cars';
 
     let filtered  = cars_list.filter(o => o.make === make);
 
-    if (!filtered.length) {
-      return res.status(200).send(`no models for make="${make}"`)
-    }
-
-    return res.status(200).send(`${printCars(filtered)}`);
+    return (filtered.length)
+      ? res.status(200).send(`${printCars(filtered)}`)
+      : res.status(200).send(`no models for make="${make}"`);
   });
 
   // @TODO Add an endpoint to get a specific car
   // it should require id
   // it should fail gracefully if no matching car is found
+  app.get("/car/", (req: Request, res: Response) => {
+    let { id } = req.query;
+
+    if (!id) {
+      return res.status(400).send(`id is required`);
+    }
+
+    let found = cars_list.find(o => o.id.toString() === id);
+    return (found)
+      ? res.status(200).send(`${printCars([found])}`)
+      : res.status(400).send(`no cars with id=${id}`);
+  });
 
   /// @TODO Add an endpoint to post a new car to our list
   // it should require id, type, model, and cost
