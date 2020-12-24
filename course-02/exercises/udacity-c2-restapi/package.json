@@ -8,7 +8,7 @@
     "tsc": "tsc",
     "dev": "ts-node-dev ./src/server.ts",
     "prod": "tsc && node ./www/server.js",
-    "clean": "rm -rf www/ || true",
+    "clean": "rimraf www/ || true",
     "build": "npm run clean && tsc && cp -rf src/config www/config && cp .npmrc www/.npmrc && cp package.json www/package.json && cd www && zip -r Archive.zip . && cd ..",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -38,6 +38,7 @@
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "mocha": "^6.2.3",
+    "rimraf": "^3.0.2",
     "ts-node-dev": "^1.1.1",
     "tslint": "^5.20.1",
     "typescript": "^3.9.7"
