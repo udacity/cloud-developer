@@ -1,11 +1,11 @@
 export const config = {
   "dev": {
-    "username": "",
-    "password": "",
-    "database": "",
-    "host": "",
+    "username": "udaiaguestdev",
+    "password": "udaiaguestdev",
+    "database": "udaiaguestdev",
+    "host": "udaiaguestdev.cdpwqqqieuuf.eu-west-2.rds.amazonaws.com",
     "dialect": "postgres",
-    "aws_region": "us-east-2",
+    "aws_region": "eu-west-2",
     "aws_profile": "default",
     "aws_media_bucket": "udagram-ruttner-dev"
   },
