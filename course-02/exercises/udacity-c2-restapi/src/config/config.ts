@@ -5,7 +5,7 @@ export const config = {
     "database": "",
     "host": "",
     "dialect": "postgres",
-    "aws_reigion": "us-east-2",
+    "aws_region": "us-east-2",
     "aws_profile": "default",
     "aws_media_bucket": "udagram-ruttner-dev"
   },

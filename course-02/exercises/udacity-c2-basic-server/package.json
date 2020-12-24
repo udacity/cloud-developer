@@ -19,20 +19,20 @@
   },
   "homepage": "https://github.com/grutt/udacity-c2-basic-server#readme",
   "devDependencies": {
-    "@types/bluebird": "^3.5.26",
+    "@types/bluebird": "^3.5.27",
     "@types/chai": "^4.1.7",
-    "@types/express": "^4.16.1",
-    "@types/mocha": "^5.2.6",
-    "@types/node": "^11.11.6",
+    "@types/express": "^4.17.0",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^11.13.17",
     "chai": "^4.2.0",
-    "js-yaml": "^3.13.0",
-    "mocha": "^6.0.2",
-    "ts-node": "^8.0.3",
-    "ts-node-dev": "^1.0.0-pre.32",
-    "tslint": "^5.14.0",
-    "typescript": "^3.3.4000"
+    "js-yaml": "^3.13.1",
+    "mocha": "^6.1.4",
+    "ts-node": "^8.3.0",
+    "ts-node-dev": "^1.0.0-pre.40",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3"
   },
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.17.1"
   }
 }
