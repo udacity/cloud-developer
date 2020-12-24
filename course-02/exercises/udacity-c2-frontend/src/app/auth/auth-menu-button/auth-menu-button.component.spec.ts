@@ -1,7 +1,7 @@
 import { AuthMenuButtonComponent } from './auth-menu-button.component';
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ModalController } from '@ionic/angular';
 
 
@@ -10,7 +10,7 @@ describe('AuthMenuButtonPage', () => {
   let fixture: ComponentFixture<AuthMenuButtonComponent>;
   let modalSpy;
   let modalCtrlSpy;
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     modalSpy = jasmine.createSpyObj('Modal', ['present']);
     modalCtrlSpy = jasmine.createSpyObj('ModalController', ['create']);
     modalCtrlSpy.create.and.callFake(function () {

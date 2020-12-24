@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AuthRegisterComponent } from './auth-register.component';
@@ -8,7 +8,7 @@ describe('AuthRegisterPage', () => {
   let component: AuthRegisterComponent;
   let fixture: ComponentFixture<AuthRegisterComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [ ReactiveFormsModule ],
       declarations: [ AuthRegisterComponent ],
