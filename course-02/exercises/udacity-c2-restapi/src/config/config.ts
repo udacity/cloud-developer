@@ -10,5 +10,8 @@ export const config = {
     "database": process.env.POSTGREESS_DATABASE,
     "host": process.env.POSTGREESS_HOST,
     "dialect": "postgres"
+  },
+  "jwt" : {
+    "secret": "helloworld"
   }
 }
