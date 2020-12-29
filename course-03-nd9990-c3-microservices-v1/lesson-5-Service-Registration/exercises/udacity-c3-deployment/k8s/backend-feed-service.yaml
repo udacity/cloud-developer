@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-feed
+  labels:
+    service: backend-feed
+spec:
+  selector:
+    service: udacity-backend-feed
+  ports:
+    - name: "8080"
+      port: 8080
+      targetPort: 8080

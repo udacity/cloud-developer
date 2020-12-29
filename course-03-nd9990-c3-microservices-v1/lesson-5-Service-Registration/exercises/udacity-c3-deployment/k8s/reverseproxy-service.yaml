@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: reverseproxy
+  labels:
+    service: reverseproxy
+spec:
+  selector:
+    service: udacity-reverseproxy
+  ports:
+    - name: "8080"
+      port: 8080
+      targetPort: 8080
+  type: LoadBalancer

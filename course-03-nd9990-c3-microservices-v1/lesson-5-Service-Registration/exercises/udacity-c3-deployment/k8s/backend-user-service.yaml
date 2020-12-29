@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-user
+  labels:
+    service: backend-user
+spec:
+  selector:
+    service: udacity-backend-user
+  ports:
+    - name: "8080"
+      port: 8080
+      targetPort: 8080
