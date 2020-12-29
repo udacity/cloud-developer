@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: udacity-backend-user
+  labels:
+    service: udacity-backend-user
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: udacity-backend-user
+  template:
+    metadata:
+      labels:
+        service: udacity-backend-user
+    spec:
+      containers:
+        - image: jeanfern5/udacity-restapi-user
+          name: udacity-backend-user
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "1024Mi"
+              cpu: "500m"
+          env:
+            - name: URL
+              valueFrom:
+                configMapKeyRef:
+                  name: env-config
+                  key: URL
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: env-secret
+                  key: JWT_SECRET
+            - name: POSTGRES_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: env-config
+                  key: POSTGRES_DATABASE
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: env-secret
+                  key: POSTGRES_HOST
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: env-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: env-secret
+                  key: POSTGRES_USERNAME
+      restartPolicy: Always
+
+

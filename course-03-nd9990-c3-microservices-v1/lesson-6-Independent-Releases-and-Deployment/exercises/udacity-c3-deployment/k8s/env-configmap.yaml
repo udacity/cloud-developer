@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: env-config
+data:
+  AWS_MEDIA_BUCKET: udagram-fernan-dev
+  AWS_PROFILE: udacity
+  AWS_REGION: us-east-1
+  POSTGRES_DATABASE: udagramfernandev
+  URL: http://localhost:8100
+
