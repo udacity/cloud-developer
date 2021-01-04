@@ -7,7 +7,7 @@ export const config = {
     "dialect": "postgres",
     "aws_region": "eu-west-2",
     "aws_profile": "default",
-    "aws_media_bucket": "udagram-ruttner-dev"
+    "aws_media_bucket": "uda-iaguest-dev"
   },
   "prod": {
     "username": "",
