@@ -14,7 +14,7 @@ exports.handler = async (event) => {
 
   const newItem = {
     id: itemId,
-    ...parsedBody
+    ...parsedBody // name, description
   }
 
   await docClient.put({
