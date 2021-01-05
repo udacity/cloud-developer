@@ -1,24 +1,23 @@
-import { Router, Request, Response } from 'express';
-
-import { User } from '../models/User';
-
+import * as EmailValidator from 'email-validator';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
-import { NextFunction } from 'connect';
 
-import * as EmailValidator from 'email-validator';
+import { Request, Response, Router } from 'express';
+
+import { NextFunction } from 'connect';
+import { User } from '../models/User';
 
 const router: Router = Router();
 
-async function generatePassword(plainTextPassword: string): Promise<string> {
+async function generatePassword(plainTextPassword: string): Promise<any> {
     //@TODO Use Bcrypt to Generated Salted Hashed Passwords
 }
 
-async function comparePasswords(plainTextPassword: string, hash: string): Promise<boolean> {
+async function comparePasswords(plainTextPassword: string, hash: string): Promise<any> {
     //@TODO Use Bcrypt to Compare your password to your Salted Hashed Password
 }
 
-function generateJWT(user: User): string {
+function generateJWT(user: User): any {
     //@TODO Use jwt to create a new JWT Payload containing
 }
 
