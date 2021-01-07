@@ -24,9 +24,9 @@
     "email-validator": "^2.0.4",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "pg": "^7.11.0",
+    "pg": "^8.4.2",
     "reflect-metadata": "^0.1.13",
-    "sequelize": "^5.10.0",
+    "sequelize": "^5.22.3",
     "sequelize-typescript": "^0.6.11"
   },
   "devDependencies": {
