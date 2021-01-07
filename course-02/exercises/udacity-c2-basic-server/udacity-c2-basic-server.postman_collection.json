@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "9c5a8003-1c58-4207-b843-85f2355aaf4a",
+		"_postman_id": "ec944f3c-8f9c-4115-accf-56cb9d22bf58",
 		"name": "udacity-c2-basic-server",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -13,10 +13,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:8082/cars/",
 							"protocol": "http",
@@ -37,10 +33,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:8082/cars/?make=toyota",
 							"protocol": "http",
@@ -63,23 +55,19 @@
 					"response": []
 				},
 				{
-					"name": "/cars by id",
+					"name": "/cars by model",
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "Content-Type",
 								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
+								"type": "text",
+								"value": "application/json"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "http://localhost:8082/cars/2",
+							"raw": "http://localhost:8082/cars/model 3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -87,7 +75,7 @@
 							"port": "8082",
 							"path": [
 								"cars",
-								"2"
+								"model 3"
 							]
 						}
 					},
@@ -107,7 +95,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \"make\": \"ford\", \"type\": \"sedan\", \"model\": \"focus\", \"cost\": 12, \"id\": 9 }\n"
+							"raw": "{\n    \"make\": \"toyota\",\n    \"type\": \"suv\",\n    \"model\": \"RAV4\",\n    \"cost\": 40000,\n    \"id\": 9\n}"
 						},
 						"url": {
 							"raw": "http://localhost:8082/cars",
@@ -131,7 +119,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "9b4015b7-faf5-4924-8661-7728ba94e410",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -148,10 +135,6 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
 				"url": {
 					"raw": "http://localhost:8082/",
 					"protocol": "http",
@@ -172,7 +155,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "277a3edb-b69d-4dcd-9b13-00d00faaca25",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -190,10 +172,6 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
 				"url": {
 					"raw": "http://localhost:8082/persons/:name",
 					"protocol": "http",
@@ -221,7 +199,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "7df7eec7-78b4-46f4-b2f5-2a7b994747e9",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -242,10 +219,6 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
 				"url": {
 					"raw": "http://localhost:8082/persons?name=george",
 					"protocol": "http",
@@ -272,7 +245,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "23433ca1-6ffc-4149-9e3c-97514d889ac5",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -321,7 +293,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "444e71e3-ae8c-469a-9da1-22aa3ee0792d",
 						"exec": [
 							"pm.test(\"Status code is 400\", function () {",
 							"    pm.response.to.have.status(400);",
@@ -334,10 +305,6 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
 				"url": {
 					"raw": "http://localhost:8082/persons/",
 					"protocol": "http",
@@ -358,7 +325,6 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "6f442aeb-7c6b-401b-a76d-03a2c7b2cca9",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -368,7 +334,6 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "fae73fa3-4d3b-4528-a1af-a150ef18a902",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -378,7 +343,6 @@
 	],
 	"variable": [
 		{
-			"id": "0db39ab1-774e-4108-8078-7a4d7df27657",
 			"key": "endpoint",
 			"value": "http://localhost:8082",
 			"type": "string"
