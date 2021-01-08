@@ -96,7 +96,7 @@ app.get('/cars', (req: Request, res: Response) => {
   app.post('/cars', (req: Request, res: Response) => {
     const { id, make, type, model, cost } = req.body;
     if (!id || !type || !model || !cost) {
-      res.status(500).json('must include make, type, model, and cost')
+      res.status(400).send('must include make, type, model, and cost')
     } else {
       const car = { make, type, model, cost, id }
       cars.push(car)
