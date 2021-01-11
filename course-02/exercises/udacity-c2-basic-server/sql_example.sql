@@ -1,5 +1,6 @@
 DROP VIEW IF EXISTS joined;
-DROP VIEW IF EXISTS toyotas;
+DROP VIEW IF EXISTS toyota;
+DROP VIEW IF EXISTS tesla;
 DROP TABLE IF EXISTS "public"."make";
 DROP TABLE IF EXISTS "public"."cars";
 
@@ -11,12 +12,14 @@ CREATE TABLE "public"."cars" (
   make_id INT
 );
 
-INSERT INTO "public"."cars" ("type", "model", "cost", "make_id") VALUES 
-	('sedan', 'roadster', '33', '2'),
+INSERT INTO "public"."cars" ("type", "model", "cost", "make_id") VALUES
+	('sedan', 'model S', '88', '2'),
+	('sedan', 'model 3', '33', '2'),
+	('sedan', 'model X', '120', '2'),
 	('sedan', 'prius', '22', '1'),
 	('sedan', 'focus', '18', '3'),
 	('suv', 'highlander', '40', '1');
-  
+
 CREATE TABLE "public"."make" (
   id SERIAL PRIMARY KEY,
   name TEXT
@@ -29,10 +32,17 @@ SELECT cars.type, cars.cost, cars.model, make.name
   FROM cars
   INNER JOIN make ON (cars.make_id = make.id)
   ORDER BY cost DESC  LIMIT 30;
-  
-CREATE VIEW toyotas AS
+
+CREATE VIEW toyota AS
 SELECT cars.type, cars.cost, cars.model, make.name
   FROM cars
   INNER JOIN make ON (cars.make_id = make.id)
   WHERE make.name = 'toyota'
+  ORDER BY cost DESC  LIMIT 30;
+
+CREATE VIEW tesla AS
+SELECT cars.type, cars.cost, cars.model, make.name
+  FROM cars
+  INNER JOIN make ON (cars.make_id = make.id)
+  WHERE make.name = 'tesla'
   ORDER BY cost DESC  LIMIT 30;
