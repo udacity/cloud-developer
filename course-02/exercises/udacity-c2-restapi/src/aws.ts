@@ -4,8 +4,11 @@ import { config } from './config/config';
 const c = config.dev;
 
 //Configure AWS
-var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
-AWS.config.credentials = credentials;
+if(c.aws_profile !== "DEPLOYED") {
+  console.log("profile not DEPLOYED");
+  var credentials = new AWS.SharedIniFileCredentials({profile: c.aws_profile});
+  AWS.config.credentials = credentials;
+}
 
 export const s3 = new AWS.S3({
   signatureVersion: 'v4',
@@ -40,6 +43,7 @@ export function getGetSignedUrl( key: string ): string{
  *    a url as a string
  */
 export function getPutSignedUrl( key: string ){
+  console.log(c)
 
     const signedUrlExpireSeconds = 60 * 5
 
