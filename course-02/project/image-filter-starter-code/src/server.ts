@@ -1,6 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import { Router, Request, Response } from 'express';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import { resolve } from 'bluebird';
 
 (async () => {
 
@@ -36,6 +38,18 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   app.get( "/", async ( req, res ) => {
     res.send("try GET /filteredimage?image_url={{}}")
   } );
+
+  app.get("/filteredimage", async (req:Request, res:Response) => {
+    let { image_url } = req.query;
+    if(!image_url) {
+      res.status(400).send("image_url parameter is required");
+    }
+
+    let image_path:string  = await filterImageFromURL(image_url);
+
+    res.status(200).sendFile(image_path, () => deleteLocalFiles([image_path]));
+
+  });
   
 
   // Start the Server
