@@ -81,14 +81,22 @@ import { filter } from 'bluebird';
       if (make) {
         cars_list = cars.filter((car) => car.make === make);
       }
-
       // return the resulting list along with 200 success
       res.status(200).send(cars_list);
   });
   // @TODO Add an endpoint to get a specific car
   // it should require id
   // it should fail gracefully if no matching car is found
-
+  app.get( "/cars/:id", (req: Request, res: Response) => {
+    let id:Number = Number(req.params.id);
+    if (!id) {
+      return res.status(400)
+        .send(`id is required`);
+    }
+    const car_info = cars.filter((car) => car.id === id);
+    console.log(car_info);
+    return (car_info);
+  })
   /// @TODO Add an endpoint to post a new car to our list
   // it should require id, type, model, and cost
 
