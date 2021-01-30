@@ -74,7 +74,6 @@ import { filter } from 'bluebird';
   app.get( "/cars", ( req: Request, res: Response) => {
       // destruct our query paramaters
       let { make } = req.query;
-
       
       let cars_list = cars;
 
