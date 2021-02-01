@@ -23,7 +23,7 @@ async function comparePasswords(plainTextPassword: string, hash: string): Promis
 }
 
 function generateJWT(user: User): string {
-    return jwt.sign(user, config.dev.jwtSecret)
+    return jwt.sign(user.toJSON(), config.dev.jwtSecret)
 }
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
@@ -73,7 +73,7 @@ router.post('/login', async (req: Request, res: Response) => {
     }
 
     // check that the password matches
-    const authValid = await comparePasswords(password, user.password_hash)
+    const authValid = await comparePasswords(password, user.passwordHash)
 
     if (!authValid) {
         return res.status(401).send({ auth: false, message: 'Unauthorized' });
@@ -109,8 +109,8 @@ router.post('/', async (req: Request, res: Response) => {
     const passwordHash = await generatePassword(plainTextPassword);
 
     const newUser = new User({
-        email: email,
-        password_hash: passwordHash
+        email,
+        passwordHash
     });
 
     let savedUser;
