@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 
 import { Car, cars as cars_list } from './cars';
 import { filter } from 'bluebird';
+import { relative } from 'path';
 
 (async () => {
   let cars:Car[]  = cars_list;
@@ -88,18 +89,35 @@ import { filter } from 'bluebird';
   // it should require id
   // it should fail gracefully if no matching car is found
   app.get( "/cars/:id", (req: Request, res: Response) => {
-    let id:Number = Number(req.params.id);
+    let { id } = req.params;
     if (!id) {
       return res.status(400)
-        .send(`id is required`);
+                .send(`id is required`);
     }
-    const car_info = cars.filter((car) => car.id === id);
-    console.log(car_info);
-    return (car_info);
+    const car_info = cars.filter((car) => car.id.toString() === id);
+    if (car_info.length === 0) {
+      return res.status(400).send(`there is no id`);
+    }
+    return res.status(200).send(car_info);
   })
   /// @TODO Add an endpoint to post a new car to our list
   // it should require id, type, model, and cost
-
+  app.post( "/cars/", (req: Request, res: Response) => {
+    let { make, type, model, cost, id} = req.body;
+    if (!make || !type || !model || !cost || !id) {
+      return res.status(400)
+                .send(`make or type or model or cost or id were not found`);
+    }
+    const new_car: Car = {
+      make: make,
+      type: type,
+      model: model,
+      cost: cost,
+      id: id
+    };
+    cars.push(new_car);
+    return res.status(201).send(cars);
+  })
   // Start the Server
   app.listen( port, () => {
       console.log( `server running http://localhost:${ port }` );
