@@ -17,5 +17,6 @@ export const config = {
     "host": process.env.POSTGRES_HOST,
     "dialect": process.env.DATABASE_DIALECT,
     "jwtSecret": process.env.JWT_SECRET,
+    "aws_profile": "DEPLOYED",
   }
 }
