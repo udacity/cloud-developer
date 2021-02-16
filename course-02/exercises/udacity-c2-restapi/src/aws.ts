@@ -53,3 +53,28 @@ export function getPutSignedUrl(key: string) {
 
   return url;
 }
+
+/**
+ * Put an object in the s3 udagram bucket
+ * @param key s3 file key
+ * @param body buffer of file contents
+ * @param contentType content type
+ * @param contentEncoding content encoding, [base64] by default
+ */
+export async function putObject(
+  key: string,
+  body: Buffer,
+  contentType: string,
+  contentEncoding: string = 'base64',
+) {
+
+  const url = await s3.putObject({
+    Body: body,
+    Bucket: c.aws_media_bucket,
+    Key: key,
+    ContentEncoding: contentEncoding,
+    ContentType: contentType
+  }).promise();
+
+  return url;
+}
