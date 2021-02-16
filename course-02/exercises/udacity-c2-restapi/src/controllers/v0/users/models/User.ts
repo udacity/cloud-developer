@@ -1,4 +1,4 @@
-import {Table, Column, Model, HasMany, PrimaryKey, CreatedAt, UpdatedAt} from 'sequelize-typescript';
+import {Table, Column, Model, PrimaryKey, CreatedAt, UpdatedAt} from 'sequelize-typescript';
 
 @Table
 export class User extends Model<User> {
@@ -8,7 +8,7 @@ export class User extends Model<User> {
   public email!: string;
 
   @Column
-  public password_hash!: string; // for nullable fields
+  public passwordHash!: string; // for nullable fields
 
   @Column
   @CreatedAt
