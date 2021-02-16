@@ -9,6 +9,7 @@ export const config = {
     "aws_profile": process.env.AWS_PROFILE,
     "aws_media_bucket": process.env.AWS_MEDIA_BUCKET,
     "jwtSecret": process.env.JWT_SECRET,
+    "filteredImageUrl": process.env.FILTERED_IMAGE_URL
   },
   "prod": {
     "username": process.env.POSTGRES_USERNAME,
@@ -18,5 +19,6 @@ export const config = {
     "dialect": process.env.DATABASE_DIALECT,
     "jwtSecret": process.env.JWT_SECRET,
     "aws_profile": "DEPLOYED",
+    "filteredImageUrl": process.env.FILTERED_IMAGE_URL
   }
 }
