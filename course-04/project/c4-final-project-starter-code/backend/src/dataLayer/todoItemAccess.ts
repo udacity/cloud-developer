@@ -2,6 +2,7 @@ import * as AWS from 'aws-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 
 import { TodoItem } from '../models/TodoItem'
+import { createLogger } from '../utils/logger'
 
 /**
  * 
@@ -9,14 +10,15 @@ import { TodoItem } from '../models/TodoItem'
 export class TodoItemAccess {
     constructor(
         private readonly docClient: DocumentClient = createDynamoDBClient(),
-        private readonly todoTable = process.env.TODO_TABLE) {}
+        private readonly todoTable = process.env.TODO_TABLE,
+        private readonly LOGGER = createLogger("TODOITEM_ACCESS")) {}
 
     /**
      * data access method to return all todo items 
      */
     async getAllTodosItems(): Promise<TodoItem[]> {
-        console.log('Getting all todo items')
-
+        this.LOGGER.info('Getting all todo items')
+        
         const result = await this.docClient.scan(
             { TableName: this.todoTable }
         ).promise()
