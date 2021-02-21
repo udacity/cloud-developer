@@ -8,5 +8,7 @@ import { JwtToken } from './JwtToken'
  * @returns a user id from the JWT token
  */
 export function getUserId(jwtToken: string): string {
-  return ''
+  const decodedToken = decode(jwtToken) as JwtToken;
+  const userId = decodedToken.sub;
+  return userId;
 }
