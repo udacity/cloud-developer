@@ -12,8 +12,8 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'eu-central-1'}
 
-environment:
-  TODO_TABLE: ToDo-${self:provider.stage}
+  environment:
+    TODO_TABLE: ToDo-${self:provider.stage}
 
 functions:
 
@@ -27,6 +27,11 @@ functions:
       - http:
           method: get
           path: todos
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Scan
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODO_TABLE}
 
   # TODO: Configure this function
   CreateTodo:
@@ -35,6 +40,12 @@ functions:
       - http:
           method: post
           path: todos
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+          - dynamodb:PutItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODO_TABLE}
 
   # TODO: Configure this function
   UpdateTodo:
@@ -43,6 +54,11 @@ functions:
       - http:
           method: patch
           path: todos/{todoId}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODO_TABLE}
 
   # TODO: Configure this function
   DeleteTodo:
@@ -51,6 +67,12 @@ functions:
       - http:
           method: delete
           path: todos/{todoId}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:DeleteItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODO_TABLE}
+
 
   # TODO: Configure this function
   GenerateUploadUrl:
@@ -78,15 +100,7 @@ resources:
       Properties:
         AttributeDefinitions:
           - AttributeName: todoId
-            AttributeType: S
-          - AttributeName: createdAt
-            AttributeType: timestamp
-          - AttributeName: name
-            AttributeType: S 
-          - AttributeName: done
-            AttributeType: BOOL
-          - AttributeName: attachmentUrl
-            AttributeType: S            
+            AttributeType: S           
         KeySchema:
           - AttributeName: todoId
             KeyType: HASH
