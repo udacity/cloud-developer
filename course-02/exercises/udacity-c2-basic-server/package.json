@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/grutt/udacity-c2-basic-server.git"
+    "url": "git+https://github.com/udacity/cloud-developer/tree/master/course-02/exercises/udacity-c2-basic-server.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/grutt/udacity-c2-basic-server/issues"
+    "url": "https://github.com/udacity/cloud-developer/tree/master/course-02/exercises/udacity-c2-basic-server/issues"
   },
-  "homepage": "https://github.com/grutt/udacity-c2-basic-server#readme",
+  "homepage": "https://github.com/udacity/cloud-developer/tree/master/course-02/exercises/udacity-c2-basic-server#readme",
   "devDependencies": {
     "@types/bluebird": "^3.5.33",
     "@types/chai": "^4.2.14",
