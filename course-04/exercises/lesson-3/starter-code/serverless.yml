@@ -8,7 +8,9 @@ plugins:
 
 provider:
   name: aws
+
   runtime: nodejs10.x
+
 
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'eu-central-1'}

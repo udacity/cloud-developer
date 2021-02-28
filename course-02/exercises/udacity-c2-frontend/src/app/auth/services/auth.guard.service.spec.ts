@@ -9,7 +9,7 @@ describe('AuthGuardService', () => {
   }));
 
   it('should be created', () => {
-    const service: AuthGuardService = TestBed.get(AuthGuardService);
+    const service: AuthGuardService = TestBed.inject(AuthGuardService);
     expect(service).toBeTruthy();
   });
 });
