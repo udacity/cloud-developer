@@ -65,13 +65,13 @@ export class TodoItemAccess {
      * data access method to delete todo item
      * @param todoItem item to be deleted
      */
-    async deleteTodoItem(todoItemId: String): Promise<Boolean> {
+    async deleteTodoItem(todoItemId: String, userId: String): Promise<Boolean> {
         console.log("before deletion of todo item id:" + JSON.stringify(todoItemId))
         await this.docClient.delete(
             {
                 TableName: this.todoTable,
                 Key: {
-                    "userId": "DUMMY",
+                    "userId": userId,
                     "todoId": todoItemId
                 }
             }
@@ -84,13 +84,13 @@ export class TodoItemAccess {
      * data access method to update a todo item
      * @param todoItem todo item to be updated
      */
-    async updateTodoItem(id: String, name: String, done: boolean, dueDate: String): Promise<boolean> {
+    async updateTodoItem(id: String, name: String, done: boolean, dueDate: String, userId: String): Promise<boolean> {
         console.log("before update of todo item: " + id)
         var operationSuccessful: boolean = false
         await this.docClient.update({
             TableName: this.todoTable,
             Key: {
-                "userId": "DUMMY",
+                "userId": userId,
                 "todoId": id
             },
             UpdateExpression: "set #n=:n, dueDate=:d, done=:x",

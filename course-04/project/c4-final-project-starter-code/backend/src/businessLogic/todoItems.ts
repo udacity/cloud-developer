@@ -37,8 +37,8 @@ export async function createTodoItem( createTodoRequest: CreateTodoRequest, user
 }
 
 
-export async function deleteTodoItem( todoItemId: string): Promise<Boolean> {
-    await todoItemAccess.deleteTodoItem(todoItemId)
+export async function deleteTodoItem( todoItemId: string, userId: String): Promise<Boolean> {
+    await todoItemAccess.deleteTodoItem(todoItemId, userId)
     return true
 }
 
@@ -47,12 +47,13 @@ export async function getAllTodoItems(userId: String): Promise<TodoItem[]> {
     return allTodoItems
 }
 
-export async function updateTodoItem(todoId: String, todoItemUpdateRequest: UpdateTodoRequest): Promise<Boolean> {
+export async function updateTodoItem(todoId: String, userId: String, todoItemUpdateRequest: UpdateTodoRequest): Promise<Boolean> {
     const wasUpdated = await todoItemAccess.updateTodoItem(
         todoId, 
         todoItemUpdateRequest.name,
         todoItemUpdateRequest.done, 
-        todoItemUpdateRequest.dueDate)
+        todoItemUpdateRequest.dueDate,
+        userId)
     return wasUpdated
 }
 
