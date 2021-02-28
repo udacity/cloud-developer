@@ -13,5 +13,6 @@ export const sequelize = new Sequelize({
 
   dialect: 'postgres',
   storage: ':memory:',
+  logging: true
 });
 
