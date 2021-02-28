@@ -4,6 +4,7 @@ service:
 plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
+  - serverless-reqvalidator-plugin
 
 provider:
   name: aws
@@ -104,14 +105,6 @@ functions:
           - s3:PutObject
           - s3:GetObject
         Resource: arn:aws:s3:::${self:provider.environment.ATTACHMENTS_BUCKET_NAME}/*
-
-  ProcS3Upload:
-    handler: src/lambda/s3/processUploadEvent.handler
-    events:
-      - s3:
-        bucket: arn:aws:s3:::${self:provider.environment.ATTACHMENTS_BUCKET_NAME}
-        event: s3:PutObject
-    iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:UpdateItem

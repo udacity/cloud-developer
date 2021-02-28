@@ -22,7 +22,8 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
  
   const currentUserId = getUserId(event)
 
-  await updateAttachmentURL(todoId, currentUserId, )
+  const attachmentUrl = `https://todo-att-bucket-${process.env.STAGE}.s3.eu-central-1.amazonaws.com/${todoId}`
+  await updateAttachmentURL(todoId, currentUserId, attachmentUrl)
 
   return {
     statusCode: 200,
