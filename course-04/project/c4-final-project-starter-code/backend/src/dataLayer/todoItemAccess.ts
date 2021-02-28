@@ -11,20 +11,41 @@ export class TodoItemAccess {
     constructor(
         private readonly docClient: DocumentClient = createDynamoDBClient(),
         private readonly todoTable = process.env.TODO_TABLE,
+        private readonly indexName = process.env.SECONDARY_INDEX,
         private readonly LOGGER = createLogger("TODOITEM_ACCESS")) {}
 
     /**
      * data access method to return all todo items 
      */
-    async getAllTodosItems(): Promise<TodoItem[]> {
+    async getAllTodosItems(userId: String): Promise<TodoItem[]> {
         this.LOGGER.info('Getting all todo items')
         
-        const result = await this.docClient.scan(
-            { TableName: this.todoTable }
+        // const result = await this.docClient.scan(
+        //     { TableName: this.todoTable }
+        // ).promise()
+
+        var result;
+        try {
+        result = await this.docClient.query(
+            {
+                TableName: this.todoTable,
+                IndexName: this.indexName,
+                KeyConditionExpression: "userId = :userId",
+                ExpressionAttributeValues: {
+                    ":userId": userId
+                }
+            }
         ).promise()
+        } catch (error) {
+            
+            this.LOGGER.error("error during query").error(JSON.stringify(error))
+            
+        } 
+
         console.log("Got result from dynamodb: " + JSON.stringify(result))
         const items = result.Items
         return items as TodoItem[]
+        
     }
 
     /**
@@ -50,6 +71,7 @@ export class TodoItemAccess {
             {
                 TableName: this.todoTable,
                 Key: {
+                    "userId": "DUMMY",
                     "todoId": todoItemId
                 }
             }
@@ -68,6 +90,7 @@ export class TodoItemAccess {
         await this.docClient.update({
             TableName: this.todoTable,
             Key: {
+                "userId": "DUMMY",
                 "todoId": id
             },
             UpdateExpression: "set #n=:n, dueDate=:d, done=:x",
@@ -89,6 +112,33 @@ export class TodoItemAccess {
             console.error(JSON.stringify(error))
             operationSuccessful = false
         })
+        return operationSuccessful
+    }
+
+    async updateAttachmentURL(todoId: String, userId: String, url: String): Promise<Boolean> {
+        console.log(`updating attachmentURL of todo ${todoId } starting. Setting URL to ${url}`)
+        var operationSuccessful: boolean
+        await this.docClient.update({
+            TableName: this.todoTable,
+            Key: {
+                "userId": userId,
+                "todoId": todoId
+            },
+            UpdateExpression: "set attachmentUrl=:url",
+            ExpressionAttributeValues: {
+                ":url": url
+            }
+        }).promise().then( (updateItemOutput) => {
+            console.log("attachment url successfully updated")
+            console.log("result" + JSON.stringify(updateItemOutput))
+            operationSuccessful = true
+        }).catch( (error) => {
+            console.error("updating attachement url failed: " + JSON.stringify(error))
+            operationSuccessful = false
+        }).finally( () => {
+            console.log("process dynamo db update...")
+        })
+        console.log("after update of attachment url")
         return operationSuccessful
     }
     
