@@ -1,3 +1,4 @@
+require('dotenv').config();
 import express from 'express';
 import { sequelize } from './sequelize';
 
@@ -36,6 +37,4 @@ import { V0MODELS } from './controllers/v0/model.index';
       console.log( `server running http://localhost:${ port }` );
       console.log( `press CTRL+C to stop server` );
   } );
-
-  //await sequelize.sync({force: true});
 })();
