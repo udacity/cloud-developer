@@ -1,4 +1,4 @@
-import express from 'express';
+import express, {Router, Response, Request} from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
@@ -6,6 +6,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   // Init the Express application
   const app = express();
+  const router: Router = Router()
 
   // Set the network port
   const port = process.env.PORT || 8082;
@@ -28,15 +29,25 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
-
+  router.get('/filteredimage', async (req: Request, res: Response) => {
+    const { imgUrl } = req.query
+    await filterImageFromURL(imgUrl)
+      .then( filteredPath => {
+        res.status(200).sendFile(filteredPath, () =>
+          deleteLocalFiles([filteredPath])
+        )
+      })
+      .catch( err => res.send(err))
+  })
   //! END @TODO1
   
   // Root Endpoint
   // Displays a simple message to the user
-  app.get( "/", async ( req, res ) => {
+  router.get( "/", async ( req, res ) => {
     res.send("try GET /filteredimage?image_url={{}}")
   } );
   
+  app.use(router)
 
   // Start the Server
   app.listen( port, () => {
