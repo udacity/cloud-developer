@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import { filterImageFromURL, deleteLocalFiles } from './util/util';
 
@@ -15,29 +15,28 @@ import { filterImageFromURL, deleteLocalFiles } from './util/util';
   // Root Endpoint
 
   // Displays a simple message to the user
-  app.get('/', async (req, res) => {
+  app.get('/', async (req: Request, res: Response) => {
     res.send('try GET /filteredimage?image_url={{}}');
   });
 
   // filter image
-  app.get('/filteredimage', async (req, res) => {
+  app.get('/filteredimage', async (req: Request, res: Response) => {
     if (req.query.image_url) {
-      const imageUrl = req.query.image_url;
+      const imageUrl: string = req.query.image_url;
 
       try {
-        const filteredpath = await filterImageFromURL(imageUrl);
+        const filteredpath: string = await filterImageFromURL(imageUrl);
 
         if (filteredpath) {
           res.statusCode = 200;
-
           // the callback deletes the file after it was sended
-          await res.sendFile(filteredpath, (err) => {
+          await res.sendFile(filteredpath, (err: Error) => {
             if (!err) {
               deleteLocalFiles([filteredpath]);
             }
           });
         }
-      } catch (error) {
+      } catch (error: any) {
         res.statusCode = 500;
         res.send(`Error filtering the image: ${error}`);
       }
