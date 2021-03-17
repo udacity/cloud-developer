@@ -1,4 +1,4 @@
-FROM node:15-alpine
+FROM node:12-alpine
 
 RUN apk add --no-cache curl python3 py3-pip
 
@@ -15,3 +15,4 @@ RUN apk add --no-cache \
 WORKDIR /usr/src/app
 
 EXPOSE 8082
+EXPOSE 8080
