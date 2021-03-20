@@ -16,9 +16,7 @@ router.get('/', async (req: Request, res: Response) => {
     res.send(items);
 });
 
-//@TODO
-//Add an endpoint to GET a specific resource by Primary Key
-// Get all feed items
+// Get specific item by primary key
 router.get('/:id', async (req: Request, res: Response) => {
     let { id } = req.params;
     console.log(id);
