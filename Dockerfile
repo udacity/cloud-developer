@@ -3,6 +3,7 @@ FROM node:12-alpine
 RUN apk add --no-cache curl python3 py3-pip
 
 RUN npm install -g @ionic/cli
+RUN npm install -g dotenv
 
 RUN apk add --no-cache \
         python3 \
