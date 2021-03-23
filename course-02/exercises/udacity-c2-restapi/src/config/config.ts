@@ -1,13 +1,13 @@
 export const config = {
   "dev": {
-    "username": "clase3udacity",
-    "password": "Udacity123..",
+    "username": process.env.POSTGRES_USERNAME,
+    "password": process.env.POSTGRES_PASSWORD,
     "database": "udagramruttnerdev",
-    "host": "clase3udacity.cw73oocjn1bq.us-east-2.rds.amazonaws.com",
+    "host": process.env.POSTGRES_HOST,
     "dialect": "postgres",
-    "aws_region": "us-east-2",
-    "aws_profile": "default",
-    "aws_media_bucket": "udagram-ruttner-dev"
+    "aws_region": process.env.AWS_REGION,
+    "aws_profile": process.env.AWS_PROFILE,
+    "aws_media_bucket": "my-065533303252-udagram-dev"
   },
   "prod": {
     "username": "",
