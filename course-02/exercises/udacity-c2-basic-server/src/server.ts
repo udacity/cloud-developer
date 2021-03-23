@@ -112,7 +112,7 @@ import { Car, cars as cars_list } from './cars';
 
     if (!id || !type || !model || !cost){
       return res.status(400)
-                .send('make, type, model, cost, id are required now');
+                .send('make, type, model, cost, id are required now 2');
     }
 
     const new_car: Car = {
