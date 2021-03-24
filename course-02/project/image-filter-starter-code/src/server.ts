@@ -2,9 +2,8 @@ require('dotenv').config();
 import express from 'express';
 import { Router, Request, Response } from 'express';
 import bodyParser from 'body-parser';
-import {filterImageFromURL, deleteLocalFiles} from './controller/v0/util/util';
 
-import { IndexRouter } from './controller/v0/index.router';
+import { IndexRouter } from './controllers/v0/index.router';
 
 import { nextTick } from 'process';
 
