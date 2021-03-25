@@ -90,7 +90,7 @@ To deploy in Elastick Beanstalk I followed the instructions:
 ### Custom Domain and Elastick Beanstalk
 
 
-https://ricardo-ardiles-image-filter-dev.us-east-2.elasticbeanstalk.com/
+http://ricardo-ardiles-image-filter-dev.us-east-2.elasticbeanstalk.com/
 
 
 ### Postman
