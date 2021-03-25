@@ -80,12 +80,17 @@ The new endpoint is in `./image-filter/routes/image-filter.router` which uses qu
 
 ### Deploying the system
 
-Follow the process described in the course to `eb init` a new application and `eb create` a new environment to deploy your image-filter service! Don't forget you can use `eb deploy` to push changes.
+To deploy in Elastick Beanstalk I followed the instructions:
+
+`eb init` 
+`eb create`
+`eb deploy`
 
 
-### Custom Domain
+### Custom Domain and Elastick Beanstalk
 
-http://ricardo-ardiles-image-filter-dev.us-east-2.elasticbeanstalk.com/
+
+https://ricardo-ardiles-image-filter-dev.us-east-2.elasticbeanstalk.com/
 
 
 ### Postman
@@ -97,7 +102,12 @@ In this repository you can find a postman collection with two endpoints:
 
 The url is fixed to the postman just for testing purpose.
 
-### Elastick
+### Screenshots
 
-Add your own domain name and have it point to the running services (try adding a subdomain name to point to the processing server)
-> !NOTE: Domain names are not included in AWS’ free tier and will incur a cost.
+In deployment_screenshots folder you can find the evidence:
+
+* Deploy - Elastick Beanstalk
+* EB - Deploy
+* NPM - run dev 
+* Postman - Elastick Beanstalk Test
+* Postman - Local Test
