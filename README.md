@@ -10,11 +10,11 @@ This repository contains excercises and project of Cloud Developer Nanodegree Pr
 
 As we learned in class, this project is divided into 3 parts:
 
-* [udacity-c2-frontend] (https://github.com/ricardiles/cloud-developer/tree/master/course-02/exercises/udacity-c2-frontend)
-* [udacity-c2-restapi] (https://github.com/ricardiles/cloud-developer/tree/master/course-02/exercises/udacity-c2-restapi)
-* [image-filter-starter-code] (https://github.com/ricardiles/cloud-developer/tree/master/course-02/project/image-filter-starter-code)
+* [udacity-c2-frontend](https://github.com/ricardiles/cloud-developer/tree/master/course-02/exercises/udacity-c2-frontend)
+* [udacity-c2-restapi](https://github.com/ricardiles/cloud-developer/tree/master/course-02/exercises/udacity-c2-restapi)
+* [image-filter-starter-code](https://github.com/ricardiles/cloud-developer/tree/master/course-02/project/image-filter-starter-code)
 
 The principal task is create a new endpoint for The Image Filter Starter Code and use everything learned in the module. 
 
-In the readme of the [image-filter-starter-code] (https://github.com/ricardiles/cloud-developer/tree/master/course-02/project/image-filter-starter-code) you can find more information about what has been done and evidence of the deployment in addition to the tests carried out.
+In the readme of the [image-filter-starter-code](https://github.com/ricardiles/cloud-developer/tree/master/course-02/project/image-filter-starter-code) you can find more information about what has been done and evidence of the deployment in addition to the tests carried out.
 

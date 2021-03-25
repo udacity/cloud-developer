@@ -2,7 +2,6 @@ import express from 'express';
 import { Router, Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
-import { requireAuth } from '../../users/routes/auth.router';
 import { nextTick } from 'process';
 
 const fs = require('fs');

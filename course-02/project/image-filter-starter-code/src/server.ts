@@ -1,4 +1,3 @@
-require('dotenv').config();
 import express from 'express';
 import { Router, Request, Response } from 'express';
 import bodyParser from 'body-parser';
