@@ -30,6 +30,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "jimp": "^0.16.1",
+    "jsonwebtoken": "^8.5.1",
     "rimraf": "^3.0.2"
   }
 }
