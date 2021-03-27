@@ -3,7 +3,6 @@ FROM node:12-alpine
 RUN apk add --no-cache curl python3 py3-pip
 
 RUN npm install -g @ionic/cli
-RUN npm install -g dotenv
 
 RUN apk add --no-cache \
         python3 \
@@ -17,3 +16,4 @@ WORKDIR /usr/src/app
 
 EXPOSE 8082
 EXPOSE 8080
+EXPOSE 8100
