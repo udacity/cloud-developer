@@ -1,0 +1,59 @@
+name: Deploy Image Filter service on AWS Elastic Beanstalk
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'course-02/project/image-filter-starter-code/**'
+  workflow_dispatch:
+defaults:
+  run:
+    working-directory: course-02/project/image-filter-starter-code
+jobs:
+  build_and_deploy:
+    name: Deploy Image Filter service
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2        
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+      - name: Clean install dependencies and build
+        run: |
+          npm install
+          npm run build
+          ls
+          ls www
+      - name: Add SSH key
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+            mkdir -p /home/runner/.ssh
+            echo "${{ secrets.AWS_UDAGRAM_SSH_KEY }}" > /home/runner/.ssh/github_actions
+            chmod 600 /home/runner/.ssh/github_actions
+            ssh-agent -a $SSH_AUTH_SOCK > /dev/null   
+            ssh-add /home/runner/.ssh/github_actions
+      - uses: actions/setup-python@v1
+        with:
+          python-version: "3.6"
+      - name: Configure AWS credentials 
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{secrets.AWS_UDAGRAM_REGION}}
+          aws-access-key-id: ${{ secrets.AWS_UDAGRAM_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_UDAGRAM_SECRET_ACCESS_KEY }}
+      - name: Install Elastic Beanstalk Cli
+        run: |
+          python -m pip install --upgrade pip
+          pip install awsebcli --upgrade
+          eb --version
+      - name: Initialize Elastic Beanstalk
+        run: |
+          eb init -i ${{secrets.AWS_UDAGRAM_IMAGEFILTER_APP_NAME}} -p "${{secrets.AWS_UDAGRAM_PLATFORM}}" -k github_actions --region ${{secrets.AWS_UDAGRAM_REGION}}
+      - name: Configure deploy artifact
+        run: |
+          echo -e "deploy:\n  artifact: ./www/Archive.zip"  >> .elasticbeanstalk/config.yml 
+      - name: Deploy to AWS
+        run: |
+          eb deploy
+
+
