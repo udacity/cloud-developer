@@ -2,6 +2,8 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
+var validUrl = require('valid-url');
+
 (async () => {
 
   // Init the Express application
@@ -13,7 +15,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
 
-  // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
+  // Filtered Image Endpoint
   // GET /filteredimage?image_url={{URL}}
   // endpoint to filter an image from a public url.
   // IT SHOULD
@@ -26,10 +28,27 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //    image_url: URL of a publicly accessible image
   // RETURNS
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
+  app.get( "/filteredimage", async ( req, res ) => {
+    let { image_url } = req.query;
 
-  /**************************************************************************** */
+    if ( !image_url ) {
+      return res.status(400).send(`image_url is required`);
+    }
+    if (!validUrl.isUri(image_url)) {
+      return res.status(400).send(`image_url is invalid`);
+    }
 
-  //! END @TODO1
+    const filteredPath = await filterImageFromURL(image_url);
+
+    res.sendFile(filteredPath, function (err) {
+      if (err) {
+        console.log(err)
+        res.status(500).send('internal error')
+      } else {
+        deleteLocalFiles([filteredPath]);
+      }
+    })
+  } );
   
   // Root Endpoint
   // Displays a simple message to the user
