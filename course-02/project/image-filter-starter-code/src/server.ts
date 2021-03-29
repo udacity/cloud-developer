@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import { requireAuth } from './auth';
 
 var validUrl = require('valid-url');
 
@@ -28,28 +29,31 @@ var validUrl = require('valid-url');
   //    image_url: URL of a publicly accessible image
   // RETURNS
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
-  app.get( "/filteredimage", async ( req, res ) => {
-    let { image_url } = req.query;
+  app.get( "/filteredimage",
+        requireAuth,
+        async ( req, res ) => {
+          let { image_url } = req.query;
 
-    if ( !image_url ) {
-      return res.status(400).send(`image_url is required`);
-    }
-    if (!validUrl.isUri(image_url)) {
-      return res.status(400).send(`image_url is invalid`);
-    }
+          if ( !image_url ) {
+            return res.status(400).send(`image_url is required`);
+          }
+          if (!validUrl.isUri(image_url)) {
+            return res.status(400).send(`image_url is invalid`);
+          }
 
-    const filteredPath = await filterImageFromURL(image_url);
+          const filteredPath = await filterImageFromURL(image_url);
 
-    res.sendFile(filteredPath, function (err) {
-      if (err) {
-        console.log(err)
-        res.status(500).send('internal error')
-      } else {
-        deleteLocalFiles([filteredPath]);
-      }
-    })
-  } );
-  
+          res.sendFile(filteredPath, function (err) {
+            if (err) {
+              console.log(err)
+              res.status(500).send('internal error')
+            } else {
+              deleteLocalFiles([filteredPath]);
+            }
+          })
+        }
+  );
+
   // Root Endpoint
   // Displays a simple message to the user
   app.get( "/", async ( req, res ) => {
