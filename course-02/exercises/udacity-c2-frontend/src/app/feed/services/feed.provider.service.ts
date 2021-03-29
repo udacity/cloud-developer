@@ -7,6 +7,7 @@ import { ApiService } from '../../api/api.service';
 @Injectable({
   providedIn: 'root'
 })
+
 export class FeedProviderService {
   currentFeed$: BehaviorSubject<FeedItem[]> = new BehaviorSubject<FeedItem[]>([]);
 
@@ -20,7 +21,7 @@ export class FeedProviderService {
   }
 
   async uploadFeedItem(caption: string, file: File): Promise<any> {
-    const res = await this.api.upload('/feed', file, {caption: caption, url: file.name});
+    const res = await this.api.upload('/feed', file, {id: 0, caption: caption, url: file.name});
     const feed = [res, ...this.currentFeed$.value];
     this.currentFeed$.next(feed);
     return res;

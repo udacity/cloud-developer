@@ -17,6 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/jsonwebtoken": "^8.3.2",
+    "@types/uuid": "^8.3.0",
     "aws-sdk": "^2.492.0",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
@@ -28,7 +29,8 @@
     "reflect-metadata": "^0.1.13",
     "sequelize": "^5.22.4",
     "sequelize-typescript": "^0.6.11",
-    "system-sleep": "^1.3.7"
+    "system-sleep": "^1.3.7",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
