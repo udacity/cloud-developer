@@ -1,0 +1,33 @@
+name: Deploy Udagram Frontend on AWS S3
+on:
+  push:
+    branches: [ master ]
+    paths:   
+      - 'course-02/exercises/udacity-c2-frontend/**'
+  workflow_dispatch:
+defaults:
+  run:
+    working-directory: course-02/exercises/udacity-c2-frontend
+jobs:
+  build_and_deploy:
+    name: Deploy Udagram frontend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2        
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+      - name: Clean install dependencies and build
+        run: |
+          npm install
+          npm install -g @ionic/cli 
+          ionic build --prod
+      - name: Configure AWS credentials 
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{secrets.AWS_UDAGRAM_REGION}}
+          aws-access-key-id: ${{ secrets.AWS_UDAGRAM_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_UDAGRAM_SECRET_ACCESS_KEY }}
+      - name: Deploy to AWS S3
+        run: |
+          aws s3 sync ./www s3://${{secrets.AWS_UDAGRAM_FRONTEND_S3_BUCKET}} --delete
