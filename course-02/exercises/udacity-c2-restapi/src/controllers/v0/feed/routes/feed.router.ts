@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { FeedItem } from '../models/FeedItem';
 import { requireAuth } from '../../users/routes/auth.router';
 import * as AWS from '../../../../aws';
+import { v4 as uuidv4 } from 'uuid';
 
 const router: Router = Router();
 
@@ -39,8 +40,10 @@ router.get('/signed-url/:fileName',
     requireAuth, 
     async (req: Request, res: Response) => {
     let { fileName } = req.params;
+    fileName = uuidv4() + "_" + fileName;
+    console.log(fileName)
     const url = AWS.getPutSignedUrl(fileName);
-    res.status(201).send({url: url});
+    res.status(201).send({url: url, file_name: fileName});
 });
 
 // Post meta data and the filename after a file is uploaded 
