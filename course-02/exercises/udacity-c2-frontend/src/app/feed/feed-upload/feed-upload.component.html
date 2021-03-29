@@ -7,13 +7,15 @@
         </a>
     </label>
     <ion-item>
+        <ion-label position="floating" color="primary">Filter</ion-label>
+        <ion-checkbox type="boolean" formControlName="filter" ></ion-checkbox>
         <ion-label position="floating" color="primary">Caption</ion-label>
         <ion-input type="text" formControlName="caption" required></ion-input>
-      </ion-item>
-      <ion-button 
-        color="primary" 
-        type="submit"
-        [disabled]="!uploadForm.valid || !file">
-        Post
-      </ion-button>
+    </ion-item>
+    <ion-button
+      color="primary"
+      type="submit"
+      [disabled]="!uploadForm.valid || !file">
+      Post
+    </ion-button>
 </form>
