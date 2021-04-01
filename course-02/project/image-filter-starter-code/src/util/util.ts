@@ -1,6 +1,5 @@
 import fs from 'fs';
 import Jimp = require('jimp');
-
 // filterImageFromURL
 // helper function to download, filter, and save the filtered image locally
 // returns the absolute path to the local image
