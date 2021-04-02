@@ -4,6 +4,7 @@ on:
     branches: [ master ]
     paths:   
       - 'course-02/exercises/udacity-c2-frontend/**'
+      - '!course-02/exercises/udacity-c2-frontend/*.md'
   workflow_dispatch:
 defaults:
   run:
