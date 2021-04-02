@@ -32,19 +32,18 @@ var validUrl = require('valid-url');
   // RETURNS
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
   app.get( "/filteredimage",
-        requireAuth,
-        async ( req, res ) => {
-          let { image_url } = req.query;
+    requireAuth,
+    async ( req, res ) => {
+      let { image_url } = req.query;
 
-          if ( !image_url ) {
-            return res.status(400).send(`image_url is required`);
-          }
-          if (!validUrl.isUri(image_url)) {
-            return res.status(400).send(`image_url is invalid`);
-          }
-
-          const filteredPath = await filterImageFromURL(image_url);
-
+      if ( !image_url ) {
+        return res.status(400).send(`image_url is required`);
+      }
+      if (!validUrl.isUri(image_url)) {
+        return res.status(400).send(`image_url is invalid`);
+      }
+      filterImageFromURL(image_url)
+        .then((filteredPath) => {
           res.sendFile(filteredPath, function (err) {
             if (err) {
               console.log(err)
@@ -53,7 +52,18 @@ var validUrl = require('valid-url');
               deleteLocalFiles([filteredPath]);
             }
           })
+      })
+      .catch((err) => {
+        console.error(err.message)
+        if (err.message.includes('Unsupported MIME type:')) {
+          res.status(422).send(err.message)
+        } else if (err.message.includes('Could not find MIME')) {
+          res.status(422).send("Unprocessable entity")
+        } else {
+          res.status(500).send('internal error')
         }
+      })
+    }
   );
 
   // Root Endpoint
