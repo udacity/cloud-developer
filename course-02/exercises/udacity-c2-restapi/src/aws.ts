@@ -1,5 +1,6 @@
 import AWS = require('aws-sdk');
 import { config } from './config/config';
+import fs from 'fs';
 
 const c = config.aws;
 
@@ -52,4 +53,25 @@ export function getPutSignedUrl( key: string ){
     });
 
     return url;
+}
+
+/* uploadFile uploads a file to S3 bucket
+ * @Params
+ *    path: string - the path to local file
+ *    fileName: string - the name of the file to save on S3
+ */
+export function uploadFile( path: string, fileName: string ) {
+  const fileContent = fs.readFileSync(path);
+
+  const params = {
+      Bucket: c.media_bucket,
+      Key: fileName,
+      Body: fileContent
+  };
+
+  return s3.upload(params, function(err: any, data: any) {
+      if (err) {
+          throw err;
+      }
+  }).promise();
 }
