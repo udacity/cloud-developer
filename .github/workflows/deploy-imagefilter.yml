@@ -4,6 +4,7 @@ on:
     branches: [ master ]
     paths:
       - 'course-02/project/image-filter-starter-code/**'
+      - '!course-02/project/image-filter-starter-code/*.md'
   workflow_dispatch:
 defaults:
   run:

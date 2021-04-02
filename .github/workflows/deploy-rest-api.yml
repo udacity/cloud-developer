@@ -4,6 +4,7 @@ on:
     branches: [ master ]
     paths:
       - 'course-02/exercises/udacity-c2-restapi/**'
+      - '!course-02/exercises/udacity-c2-restapi/*.md'
   workflow_dispatch:
 defaults:
   run:
