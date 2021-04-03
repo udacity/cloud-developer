@@ -2,47 +2,112 @@
 
 Udagram is a simple cloud application developed alongside the Udacity Cloud Engineering Nanodegree. It allows users to register and log into a web client, post photos to the feed, and process photos using an image filtering microservice.
 
-The project is split into three parts:
-1. [The Simple Frontend](https://github.com/udacity/cloud-developer/tree/master/course-02/exercises/udacity-c2-frontend)
-A basic Ionic client web application which consumes the RestAPI Backend. [Covered in the course]
-2. [The RestAPI Backend](https://github.com/udacity/cloud-developer/tree/master/course-02/exercises/udacity-c2-restapi), a Node-Express server which can be deployed to a cloud service. [Covered in the course]
-3. [The Image Filtering Microservice](https://github.com/udacity/cloud-developer/tree/master/course-02/project/image-filter-starter-code), the final project for the course. It is a Node-Express application which runs a simple script to process images. [Your assignment]
+## Getting Started
 
-## Tasks
+To finish the tasks I change the folder structure of the folders according to what I learned in class. 
 
-### Setup Node Environment
+### Folder Structure 
+    .
+    ├── deployment_screenshots  # All screnshots of the work done.
+    │   └── ...  
+    ├── src                     # Source files 
+    │   ├── config
+    │   │   └── config.ts
+    │   ├── controllers
+    │   │   └── v0
+    │   │   │   ├── image-filter
+    │   │   │   │   ├── routes
+    │   │   │   │   │   ├── util
+    │   │   │   │   │   │   └── ...
+    │   │   │   │   │   └── image-filter.router.ts
+    │   │   │   ├── index.router.ts
+    │   │   │   └── model.router.ts
+    │   ├── routes
+    │   ├── server.ts 
+    │   └── ...    
+    ├── cloud-cdnd-c2-final-ricardo-ardiles.postman_collection.json  
+    ├── package.json                 
+    ├── tsconfig.json
+    ├── README.md
+    └── ...
 
-You'll need to create a new node server. Open a new terminal within the project directory and run:
+### Setup Node Environments
 
 1. Initialize a new project: `npm i`
 2. run the development server with `npm run dev`
 
-### Create a new endpoint in the server.ts file
+### Create a new endpoint to download an image from public URL and return image filtered.
 
-The starter code has a task for you to complete an endpoint in `./src/server.ts` which uses query parameter to download an image from a public URL, filter the image, and return the result.
-
-We've included a few helper functions to handle some of these concepts and we're importing it for you at the top of the `./src/server.ts`  file.
+The new endpoint is in `./image-filter/routes/image-filter.router` which uses query parameter to download an image from a public URL, filter the image, and return the result.
 
 ```typescript
-import {filterImageFromURL, deleteLocalFiles} from './util/util';
+    router.get('/filteredimage/', async (req: Request, res: Response) => {
+        let {image_url } = req.query;
+
+        if (!image_url) {
+        return res.status(400).send('image_url is required');
+        }
+        const new_image = await filterImageFromURL(<string>image_url);
+
+        // set timeout in 3 second by 
+        res.setTimeout(3000, function(){
+        console.log('Request has timed out. The image is probably too heavy.');
+        return res.status(408).send('Request has timed out. The image is probably too heavy or removed.');
+
+        });
+
+        // after finish the response, the image is deleted.
+        res.on('finish', function() {
+        try{
+            const pathTemp =  __dirname + '/util/tmp';
+            const filesToDelete = [];
+            const files = fs.readdirSync(pathTemp);
+            for (const file of files) {
+            filesToDelete.push(pathTemp + '/' + file)
+            }
+            deleteLocalFiles(filesToDelete);
+        }
+        catch(error){
+            console.log(error);
+            return res.status(422).send('error when we try to delete temp file.');
+        }
+        
+        });
+
+        return res.sendFile(new_image);
+    });
 ```
 
-### Deploying your system
+### Deploying the system
 
-Follow the process described in the course to `eb init` a new application and `eb create` a new environment to deploy your image-filter service! Don't forget you can use `eb deploy` to push changes.
+To deploy in Elastick Beanstalk I followed the instructions:
 
-## Stand Out (Optional)
+`eb init` 
+`eb create`
+`eb deploy`
 
-### Refactor the course RESTapi
 
-If you're feeling up to it, refactor the course RESTapi to make a request to your newly provisioned image server.
+### Custom Domain and Elastick Beanstalk
 
-### Authentication
 
-Prevent requests without valid authentication headers.
-> !!NOTE if you choose to submit this, make sure to add the token to the postman collection and export the postman collection file to your submission so we can review!
+http://ricardo-ardiles-image-filter-dev.us-east-2.elasticbeanstalk.com/
 
-### Custom Domain Name
 
-Add your own domain name and have it point to the running services (try adding a subdomain name to point to the processing server)
-> !NOTE: Domain names are not included in AWS’ free tier and will incur a cost.
+### Postman
+
+In this repository you can find a postman collection with two endpoints:
+
+* Local filteredImage
+* Elastickbeanstalk filteredImage
+
+The url is fixed to the postman just for testing purpose.
+
+### Screenshots
+
+In deployment_screenshots folder you can find the evidence:
+
+* Deploy - Elastick Beanstalk
+* EB - Deploy
+* NPM - run dev 
+* Postman - Elastick Beanstalk Test
+* Postman - Local Test
