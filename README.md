@@ -18,3 +18,5 @@ The principal task is create a new endpoint for The Image Filter Starter Code an
 
 In the readme of the [image-filter-starter-code](https://github.com/ricardiles/cloud-developer/tree/master/course-02/project/image-filter-starter-code) you can find more information about what has been done and evidence of the deployment in addition to the tests carried out.
 
+
+
