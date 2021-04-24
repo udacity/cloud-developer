@@ -1,0 +1,1 @@
+web: node /var/app/current/www/server.js
