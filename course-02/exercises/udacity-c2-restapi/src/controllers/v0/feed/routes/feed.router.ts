@@ -16,15 +16,50 @@ router.get('/', async (req: Request, res: Response) => {
     res.send(items);
 });
 
-//@TODO
-//Add an endpoint to GET a specific resource by Primary Key
+// GET a specific resource by Primary Key
+router.get('/:id', async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    if ( !id ) {
+        return res.status(400).send(`id is required for feed lookup`);
+    }
+
+    const item = await FeedItem.findByPk(id);
+
+    if ( item ) {
+        if ( item.url ) {
+            item.url = AWS.getGetSignedUrl(item.url);
+        }
+        return res.status(200).send(item);
+    }
+
+    return res.status(404).send(`no entries found for id of ${id}`);
+});
 
 // update a specific resource
 router.patch('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
-        //@TODO try it yourself
-        res.send(500).send("not implemented")
+        const { id } = req.params;
+        const { caption, url } = req.body;
+
+        if ( !id ) {
+            return res.status(400).send({ message: `id is required for feed patching` });
+        }
+
+        if (!caption && !url) {
+            return res.status(400).send({ message: 'Caption or file url is required' });
+        }
+    
+        let item = await FeedItem.findByPk(id);
+    
+        if ( item ) {
+            let updateItem = { caption: caption ? caption : item.caption, url: url ? url : item.url };
+            let result = await FeedItem.update(updateItem, { where: { id: id } });
+            return res.status(200).send(result);
+        }
+
+        return res.status(404).send({ message: 'item was not found for id of ' + id });
 });
 
 
