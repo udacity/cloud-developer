@@ -22,7 +22,7 @@ import { resolve } from 'path';
       return res.status(400).send(`image_url is required`);
     }
 
-    const filterImage = await filterImageFromURL(image_url);
+    const filterImage:string = await filterImageFromURL(image_url);
 
     if ( !filterImage ) {
       return res.status(400).send(`unable to filter image for url of ${image_url}`);
