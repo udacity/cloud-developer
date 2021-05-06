@@ -1,39 +1,41 @@
-'use strict'
+'use strict';
 
-const AWS = require('aws-sdk')
+const AWS = require('aws-sdk');
 
-const docClient = new AWS.DynamoDB.DocumentClient()
+const docClient = new AWS.DynamoDB.DocumentClient();
 
-const groupsTable = process.env.GROUPS_TABLE
+const groupsTable = process.env.GROUPS_TABLE;
 
 exports.handler = async (event) => {
-  console.log('Processing event: ', event)
+  console.log('Processing event: ', event);
 
-  // TODO: Read and parse "limit" and "nextKey" parameters from query parameters
-  // let nextKey // Next key to continue scan operation if necessary
-  // let limit // Maximum number of elements to return
+  const limit = getQueryParameter(event, 'limit');
+  const nextKeyString = getQueryParameter(event, 'nextKey');
 
-  // HINT: You might find the following method useful to get an incoming parameter value
-  // getQueryParameter(event, 'param')
+  if (!limit) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({
+        message: 'limit parameter is mandatory',
+      }),
+    };
+  }
 
-  // TODO: Return 400 error if parameters are invalid
-
-  // Scan operation parameters
+  const ExclusiveStartKey = nextKeyString ? JSON.parse(decodeURIComponent(nextKeyString)) : undefined;
+  
   const scanParams = {
     TableName: groupsTable,
-    // TODO: Set correct pagination parameters
-    // Limit: ???,
-    // ExclusiveStartKey: ???
-  }
-  console.log('Scan params: ', scanParams)
+    Limit: limit,
+    ExclusiveStartKey,
+  };
+  console.log('Scan params: ', scanParams);
 
-  const result = await docClient.scan(scanParams).promise()
+  const result = await docClient.scan(scanParams).promise();
 
-  const items = result.Items
+  const items = result.Items;
 
-  console.log('Result: ', result)
+  console.log('Result: ', result);
 
-  // Return result
   return {
     statusCode: 200,
     headers: {
@@ -41,11 +43,10 @@ exports.handler = async (event) => {
     },
     body: JSON.stringify({
       items,
-      // Encode the JSON object so a client can return it in a URL as is
       nextKey: encodeNextKey(result.LastEvaluatedKey)
-    })
-  }
-}
+    }),
+  };
+};
 
 /**
  * Get a query parameter or return "undefined"
@@ -56,12 +57,12 @@ exports.handler = async (event) => {
  * @returns {string} a value of a query parameter value or "undefined" if a parameter is not defined
  */
 function getQueryParameter(event, name) {
-  const queryParams = event.queryStringParameters
+  const queryParams = event.queryStringParameters;
   if (!queryParams) {
-    return undefined
+    return undefined;
   }
 
-  return queryParams[name]
+  return queryParams[name];
 }
 
 /**
@@ -73,8 +74,8 @@ function getQueryParameter(event, name) {
  */
 function encodeNextKey(lastEvaluatedKey) {
   if (!lastEvaluatedKey) {
-    return null
+    return null;
   }
 
-  return encodeURIComponent(JSON.stringify(lastEvaluatedKey))
+  return encodeURIComponent(JSON.stringify(lastEvaluatedKey));
 }
