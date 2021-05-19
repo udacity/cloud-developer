@@ -1,12 +1,36 @@
 {
 	"info": {
-		"_postman_id": "4bcf1909-8996-44b7-be35-b130ab03d12f",
+		"_postman_id": "2c708bf0-6ed6-4acc-9a5f-8c6b1c0bbdc8",
 		"name": "cloud-cdnd-c2-final",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "http://localhost:8082/filteredimage?image_url=https://timedotcom.files.wordpress.com/2019/03/kitten-report.jpg",
+			"name": "filterdimage with valid url",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{HOST}}/filteredimage?image_url=https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_tabby_and_white_kitten_n01.jpg",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"filteredimage"
+					],
+					"query": [
+						{
+							"key": "image_url",
+							"value": "https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_tabby_and_white_kitten_n01.jpg"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "filterdimage with valid url but photo is 404",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -28,13 +52,54 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "filterdimage with invalid url",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{HOST}}/filteredimage?image_url=badUrl",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"filteredimage"
+					],
+					"query": [
+						{
+							"key": "image_url",
+							"value": "badUrl"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "filterdimage with empty url",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{HOST}}/filteredimage",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"filteredimage"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "5887df52-1889-4e1f-82ee-054ab37b450a",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -44,7 +109,6 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "5e332dfe-c833-430b-b947-ab6c00311c28",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -54,7 +118,6 @@
 	],
 	"variable": [
 		{
-			"id": "1df3d31a-de30-494b-a3d0-f1228dd8713c",
 			"key": "HOST",
 			"value": "localhost:8082",
 			"type": "string"
