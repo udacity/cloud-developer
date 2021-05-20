@@ -4,7 +4,7 @@
         {
             "Effect": "Allow",
             "Action": "logs:CreateLogGroup",
-            "Resource": "arn:aws:logs:us-east-1:*:*"
+            "Resource": "arn:aws:logs:sa-east-1:*:*"
         },
         {
             "Effect": "Allow",
@@ -13,7 +13,7 @@
                 "logs:PutLogEvents"
             ],
             "Resource": [
-                "arn:aws:logs:us-east-1:*:log-group:/aws/lambda/chaos-monkey:*"
+                "arn:aws:logs:us-east-1:*:log-group:/aws/lambda/service-monitor:*"
             ]
         },
         {
