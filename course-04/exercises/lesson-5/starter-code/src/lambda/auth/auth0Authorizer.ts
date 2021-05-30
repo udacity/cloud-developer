@@ -11,6 +11,7 @@ const secretField = process.env.AUTH_0_SECRET_FIELD
 
 export const handler = middy(async (event: CustomAuthorizerEvent, context): Promise<CustomAuthorizerResult> => {
   try {
+    console.log(context.AUTH0_CERT)
     const decodedToken = verifyToken(
       event.authorizationToken,
       context.AUTH0_SECRET[secretField]
