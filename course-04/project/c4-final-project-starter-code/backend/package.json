@@ -24,7 +24,7 @@
     "serverless-iam-roles-per-function": "^3.2.0-e97ab49",
     "serverless-offline": "^7.0.0",
     "serverless-plugin-canary-deployments": "^0.4.7",
-    "serverless-plugin-tracing": "^2.0.0",
+    "serverless-plugin-tracing": "1.1.0",
     "serverless-reqvalidator-plugin": "^1.0.3",
     "serverless-webpack": "^5.2.0",
     "ts-loader": "^5.3.3",

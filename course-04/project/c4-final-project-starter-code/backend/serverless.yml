@@ -27,13 +27,21 @@ provider:
     IMAGES_S3_BUCKET: serverless-todo-imgs-${self:provider.stage}
     URL_EXPIRES: 500
   
-  amRoleStatements:
+  iamRoleStatements:
       - Effect: "Allow"
         Action: 
-          - "xray:PutTraceSegments"
-          - "xray:PutTelemetryRecords"
+          - xray:PutTraceSegments
+          - xray:PutTelemetryRecords
         Resource:
           - "*"
+  # iam:
+  #   role:
+  #     statements:
+  #       - Effect: "Allow"
+  #         Action:
+  #           - xray:PutTelemetryRecords
+  #           - xray:PutTraceSegments
+  #         Resource: "*"
 
   # iamRoleStatements:
   #   - Effect: Allow
@@ -75,7 +83,8 @@ custom:
   serverless-offline:
     port: 3003
     httpPort: 3003
-
+  serverless-iam-roles-per-function:
+    defaultInherit: true
 
 functions:
 
@@ -91,6 +100,7 @@ functions:
           path: todos
           cors: true
     iamRoleStatementsName: ${self:service.name}-GetTodos-${self:provider.stage}
+    # iamRoleStatementsInherit: true
     iamRoleStatements:
       - Effect: Allow
         Action:
