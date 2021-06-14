@@ -23,34 +23,34 @@ provider:
     IMAGES_S3_BUCKET: serverless-todo-imgs-${self:provider.stage}
     URL_EXPIRES: 500
 
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - codedeploy:*
-      Resource:
-        - '*'
-    - Effect: Allow
-      Action:
-        - dynamodb:Scan
-        - dynamodb:PutItem
-        - dynamodb:GetItem
-        - dynamodb:Query
-        - dynamodb:DeleteItem
-        - dynamodb:UpdateItem
-      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+  # iamRoleStatements:
+  #   - Effect: Allow
+  #     Action:
+  #       - codedeploy:*
+  #     Resource:
+  #       - '*'
+  #   - Effect: Allow
+  #     Action:
+  #       - dynamodb:Scan
+  #       - dynamodb:PutItem
+  #       - dynamodb:GetItem
+  #       - dynamodb:Query
+  #       - dynamodb:DeleteItem
+  #       - dynamodb:UpdateItem
+  #     Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
-    - Effect: Allow
-      Action:
-        - dynamodb:Query
-        - dynamodb:UpdateItem
-        - dynamodb:GetItem
-      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.INDEX_NAME}
+  #   - Effect: Allow
+  #     Action:
+  #       - dynamodb:Query
+  #       - dynamodb:UpdateItem
+  #       - dynamodb:GetItem
+  #     Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.INDEX_NAME}
     
-    - Effect: Allow
-      Action:
-        - s3:PutObject
-        - s3:GetObject
-      Resource: arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*
+  #   - Effect: Allow
+  #     Action:
+  #       - s3:PutObject
+  #       - s3:GetObject
+  #     Resource: arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*
 
 custom:
   dynamodb:
@@ -78,6 +78,18 @@ functions:
           method: get
           path: todos
           cors: true
+    iamRoleStatementsName: ${self:service.name}-GetTodos-${self:provider.stage}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+          # - dynamodb:Scan
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+          # - dynamodb:Scan
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.INDEX_NAME}
 
   CreateTodo:
     handler: src/lambda/http/createTodo.handler
@@ -87,6 +99,12 @@ functions:
           method: post
           path: todos
           cors: true
+    iamRoleStatementsName: ${self:service.name}-CreateTodo-${self:provider.stage}
+    iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
   UpdateTodo:
     handler: src/lambda/http/updateTodo.handler
@@ -96,6 +114,12 @@ functions:
           method: patch
           path: todos/{todoId}
           cors: true
+    iamRoleStatementsName: ${self:service.name}-UpdateTodo-${self:provider.stage}
+    iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:UpdateItem
+      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
   DeleteTodo:
     handler: src/lambda/http/deleteTodo.handler
@@ -105,6 +129,12 @@ functions:
           method: delete
           path: todos/{todoId}
           cors: true
+    iamRoleStatementsName: ${self:service.name}-DeleteTodo-${self:provider.stage}
+    iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DeleteItem
+      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
   GenerateUploadUrl:
     handler: src/lambda/http/generateUploadUrl.handler
@@ -114,20 +144,26 @@ functions:
           method: post
           path: todos/{todoId}/attachment
           cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - s3:PutObject
+          - s3:GetObject
+        Resource: arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*
 
 resources:
   Resources:
-    GatewayResponseDefault4XX:
-      Type: AWS::ApiGateway::GatewayResponse
-      Properties:
-        ResponseParameters:
-          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
-          gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type, X-Amz-Date,Authorization'"
-          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST'"
+    # GatewayResponseDefault4XX:
+    #   Type: AWS::ApiGateway::GatewayResponse
+    #   Properties:
+    #     ResponseParameters:
+    #       gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+    #       gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type, X-Amz-Date,Authorization'"
+    #       gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST'"
 
-        ResponseType: DEFAULT_4XX
-        RestApiId:
-          Ref: 'ApiGatewayRestApi'
+    #     ResponseType: DEFAULT_4XX
+    #     RestApiId:
+    #       Ref: 'ApiGatewayRestApi'
 
     TodosTable:
       Type: AWS::DynamoDB::Table
