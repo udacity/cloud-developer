@@ -12,18 +12,19 @@ const logger = createLogger('TodoAccess')
 export class TodoAccess {
   constructor(
     private readonly docClient: DocumentClient = createDynamoDBClient(),
-    private readonly todoTable = process.env.TODO_TABLE,
+    private readonly todoTable = process.env.TODOS_TABLE,
     private readonly index = process.env.INDEX_NAME
   ) {}
 
-  async getAllTodo(userid: string): Promise<TodoItem[]> {
+  async getAllTodo(userId: string): Promise<TodoItem[]> {
+    logger.info('getAllTodo', {userId})
     const todosList = await this.docClient
       .query({
         TableName: this.todoTable,
         IndexName: this.index,
-        KeyConditionExpression: 'userid = :userid',
+        KeyConditionExpression: 'userId = :userId',
         ExpressionAttributeValues: {
-          ':userid': userid
+          ':userId': userId
         }
       })
       .promise()
@@ -33,7 +34,7 @@ export class TodoAccess {
   }
 
   async createTodo(todo: TodoItem): Promise<TodoItem> {
-    logger.info('create todo: ', todo)
+    logger.info('create todo', {todo})
     await this.docClient
       .put({
         TableName: this.todoTable,
@@ -45,7 +46,7 @@ export class TodoAccess {
   }
 
   async deleteTodo(todo: TodoItem): Promise<{}> {
-    logger.info('deleteTodo: ', {todo})
+    logger.info('deleteTodo', {todo})
     await this.docClient
     .delete({
       TableName: this.todoTable,
@@ -58,6 +59,7 @@ export class TodoAccess {
   }
 
   async updateTodo(todoUpdate: TodoUpdate, userId: string, todoId: string): Promise <{}>{
+    logger.info('updateTodo', {todoUpdate, userId, todoId})
     await this.docClient.update({
       TableName: this.todoTable,
       Key: {

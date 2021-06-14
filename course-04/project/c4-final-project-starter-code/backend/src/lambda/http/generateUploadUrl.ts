@@ -7,8 +7,7 @@ const logger = createLogger('GenerateURl')
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const todoId = event.pathParameters.todoId
-  logger.info('Event generateURL ', todoId)
-  // TODO: Return a presigned URL to upload a file for a TODO item with the provided id
+  logger.info('Event generateURL', {todoId})
   
   const signedUrl = await generateUrl(todoId)
   return {

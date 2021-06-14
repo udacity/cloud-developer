@@ -16,17 +16,17 @@ export const handler: APIGatewayProxyHandler = async (
   // TODO: Get all TODO items for a current user
   logger.info('Event getTodos ', event)
   const userId = getUserId(event)
-  const todoList = getTodos(userId)
-  logger.info('TodoList', {userId, todoList})
+  const todoList = await getTodos(userId)
+  logger.info('TodoList', { userId, todoList })
 
   return {
-    statusCode: 201,
+    statusCode: 200,
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true
     },
-    body: JSON.stringify(
-      todoList
-    )
+    body: JSON.stringify({
+      items: todoList
+    })
   }
 }

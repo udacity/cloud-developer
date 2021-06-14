@@ -9,11 +9,10 @@ import { createLogger } from '../../utils/logger'
 const logger = createLogger('auth')
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  logger.info('Update event ', event)
+  logger.info('Update event', {event})
   const todoId = event.pathParameters.todoId
   const updatedTodo: UpdateTodoRequest = JSON.parse(event.body)
   const userId = getUserId(event)
-  // TODO: Update a TODO item with the provided id using values in the "updatedTodo" object
   const res = await updateTodo(updatedTodo, userId, todoId)
 
   return {
@@ -23,7 +22,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
       'Access-Control-Allow-Credentials': true
     },
     body: JSON.stringify({
-      res
+      items: res
     })
   }
 }

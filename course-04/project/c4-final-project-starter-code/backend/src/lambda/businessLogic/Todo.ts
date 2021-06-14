@@ -15,7 +15,7 @@ export async function createTodo(
   createTodoRequest: CreateTodoRequest,
   userId: string
 ): Promise<TodoItem> {
-  logger.info('createTodo: ', createTodoRequest, 'userId: ', userId)
+  logger.info('createTodo', {createTodoRequest, userId})
   const todoId = uuid.v4()
   const { name, dueDate } = createTodoRequest
   const createdAt = new Date().toISOString()
@@ -35,12 +35,13 @@ export async function updateTodo(
   userId: string,
   todoId: string
 ): Promise<{}> {
-  logger.info('updateTodo: ', todoUpdate, 'userId: ', userId, 'todoId: ', todoId)
-  return todoAccess.updateTodo(todoUpdate, userId, todoId)
+  logger.info('updateTodo', {todoUpdate, userId, todoId})
+  const todoUpdated = await todoAccess.updateTodo(todoUpdate, userId, todoId)
+  return todoUpdated
 }
 
 export async function getTodos(user: string): Promise<TodoItem[]> {
-  logger.info('GetTodos ', user)
+  logger.info('GetTodos ', {user})
   return await todoAccess.getAllTodo(user)
 }
 

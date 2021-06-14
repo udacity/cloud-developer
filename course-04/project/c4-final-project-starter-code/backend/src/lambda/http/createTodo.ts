@@ -12,7 +12,7 @@ import {createTodo} from '../businessLogic/Todo'
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
 
-  logger.info('Processing event: ', event)
+  logger.info('create todo req', {event})
 
   const newTodo: CreateTodoRequest = JSON.parse(event.body)
   const userId = getUserId(event)
@@ -26,8 +26,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
       'Access-Control-Allow-Credentials': true
     },
     body: JSON.stringify({
-      newItem
+      item: newItem
     })
   }
-
 }
