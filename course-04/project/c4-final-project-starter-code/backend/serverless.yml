@@ -6,6 +6,8 @@ plugins:
   - serverless-iam-roles-per-function
   - serverless-dynamodb-local
   - serverless-offline
+  - serverless-reqvalidator-plugin
+  - serverless-aws-documentation
 
 provider:
   name: aws
@@ -19,9 +21,6 @@ provider:
     apiGateway: true
 
   environment:
-    # AWS_XRAY_CONTEXT_MISSING: LOG_ERROR
-    # _X_AMZN_TRACE_ID: 0
-    # DISABLE_XRAY_TRACING: 1
     TODOS_TABLE: Todos-${self:provider.stage}
     INDEX_NAME: TodoIdIndex
     IMAGES_S3_BUCKET: serverless-todo-imgs-${self:provider.stage}
@@ -34,43 +33,6 @@ provider:
           - xray:PutTelemetryRecords
         Resource:
           - "*"
-  # iam:
-  #   role:
-  #     statements:
-  #       - Effect: "Allow"
-  #         Action:
-  #           - xray:PutTelemetryRecords
-  #           - xray:PutTraceSegments
-  #         Resource: "*"
-
-  # iamRoleStatements:
-  #   - Effect: Allow
-  #     Action:
-  #       - codedeploy:*
-  #     Resource:
-  #       - '*'
-  #   - Effect: Allow
-  #     Action:
-  #       - dynamodb:Scan
-  #       - dynamodb:PutItem
-  #       - dynamodb:GetItem
-  #       - dynamodb:Query
-  #       - dynamodb:DeleteItem
-  #       - dynamodb:UpdateItem
-  #     Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
-
-  #   - Effect: Allow
-  #     Action:
-  #       - dynamodb:Query
-  #       - dynamodb:UpdateItem
-  #       - dynamodb:GetItem
-  #     Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.INDEX_NAME}
-    
-  #   - Effect: Allow
-  #     Action:
-  #       - s3:PutObject
-  #       - s3:GetObject
-  #     Resource: arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*
 
 custom:
   dynamodb:
@@ -86,6 +48,32 @@ custom:
   serverless-iam-roles-per-function:
     defaultInherit: true
 
+  documentation:
+    api:
+      info:
+        version: '1.0.0'
+        title: todo
+        description: todo Api
+    models:
+      - name: UpdateTodoRequest
+        contentType: "application/json"
+        schema: ${file(src/models/updateTodoRequestValidator.json)}
+      - name: CreateTodoRequest
+        contentType: "application/json"
+        schema: ${file(src/models/createTodoRequestValidator.json)}
+      - name: UpdateTodoResponse
+        contentType: "application/json"
+        schema: ${file(src/models/updateTodoResponseValidator.json)}
+      - name: CreateTodoResponse
+        contentType: "application/json"
+        schema: ${file(src/models/createTodoResponseValidator.json)}
+          
+  commonModelSchemaFragments:
+    MethodResponse400Json:
+      statusCode: '400'
+      responseModels:
+        "application/json": 400JsonResponse
+
 functions:
 
   Auth:
@@ -100,17 +88,14 @@ functions:
           path: todos
           cors: true
     iamRoleStatementsName: ${self:service.name}-GetTodos-${self:provider.stage}
-    # iamRoleStatementsInherit: true
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:Query
-          # - dynamodb:Scan
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
       - Effect: Allow
         Action:
           - dynamodb:Query
-          # - dynamodb:Scan
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.INDEX_NAME}
 
   CreateTodo:
@@ -121,6 +106,17 @@ functions:
           method: post
           path: todos
           cors: true
+          reqValidatorName: 'xMyRequestValidator'
+          documentation:
+            summary: "Create new Todo"
+            description: "Create new Todo"
+            requestModels:
+              "application/json": CreateTodoRequest
+          methodResponses:
+              - statusCode: '200'
+                responseModels:
+                  "application/json": CreateTodoResponse
+              - ${self:custom.commonModelSchemaFragments.MethodResponse400Json}
     iamRoleStatementsName: ${self:service.name}-CreateTodo-${self:provider.stage}
     iamRoleStatements:
     - Effect: Allow
@@ -136,6 +132,17 @@ functions:
           method: patch
           path: todos/{todoId}
           cors: true
+          reqValidatorName: 'xMyRequestValidator'
+          documentation:
+            summary: "update new Todo"
+            description: "update new Todo"
+            requestModels:
+              "application/json": UpdateTodoRequest
+          methodResponses:
+              - statusCode: '200'
+                responseModels:
+                  "application/json": UpdateTodoResponse
+              - ${self:custom.commonModelSchemaFragments.MethodResponse400Json}
     iamRoleStatementsName: ${self:service.name}-UpdateTodo-${self:provider.stage}
     iamRoleStatements:
     - Effect: Allow
@@ -248,3 +255,12 @@ resources:
                 - s3:GetObject
               Resource: 'arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*'
         Bucket: !Ref AttachmentsBucket
+
+    xMyRequestValidator:  
+      Type: "AWS::ApiGateway::RequestValidator"
+      Properties:
+        Name: 'my-req-validator'
+        RestApiId: 
+          Ref: ApiGatewayRestApi
+        ValidateRequestBody: true
+        ValidateRequestParameters: false  
