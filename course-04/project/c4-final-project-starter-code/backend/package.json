@@ -5,7 +5,7 @@
   "dependencies": {
     "@types/axios": "^0.14.0",
     "@types/http-errors": "^1.6.1",
-    "aws-xray-sdk": "^3.0.0",
+    "aws-xray-sdk": "^3.3.3",
     "axios": "^0.21.1",
     "http-errors": "^1.7.2",
     "jsonwebtoken": "^8.5.1",
@@ -24,6 +24,7 @@
     "serverless-iam-roles-per-function": "^3.2.0-e97ab49",
     "serverless-offline": "^7.0.0",
     "serverless-plugin-canary-deployments": "^0.4.7",
+    "serverless-plugin-tracing": "^2.0.0",
     "serverless-reqvalidator-plugin": "^1.0.3",
     "serverless-webpack": "^5.2.0",
     "ts-loader": "^5.3.3",
