@@ -10,6 +10,18 @@ exports.handler = async (event) => {
   console.log('Processing event: ', event)
 
   // TODO: Read and parse "limit" and "nextKey" parameters from query parameters
+  let limit, nextkey;
+
+  try {
+    limit = getQueryParameter(event, 'limit');
+    nextkey = getQueryParameter(event, 'nextkey');
+    
+  } catch (error) {
+    return {
+      statusCode: 400
+    }
+  }
+
   // let nextKey // Next key to continue scan operation if necessary
   // let limit // Maximum number of elements to return
 
@@ -22,8 +34,8 @@ exports.handler = async (event) => {
   const scanParams = {
     TableName: groupsTable,
     // TODO: Set correct pagination parameters
-    // Limit: ???,
-    // ExclusiveStartKey: ???
+    Limit: limit,
+    ExclusiveStartKey: nextkey
   }
   console.log('Scan params: ', scanParams)
 

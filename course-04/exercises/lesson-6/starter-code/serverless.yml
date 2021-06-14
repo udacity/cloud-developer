@@ -19,7 +19,7 @@ provider:
   runtime: nodejs12.x
 
   stage: ${opt:stage, 'dev'}
-  region: ${opt:region, 'us-east-1'}
+  region: ${opt:region, 'us-east-2'}
 
   tracing:
     lambda: true
@@ -30,9 +30,9 @@ provider:
     IMAGES_TABLE: Images-${self:provider.stage}
     IMAGE_ID_INDEX: ImageIdIndex
     CONNECTIONS_TABLE: Connections-${self:provider.stage}
-    IMAGES_S3_BUCKET: serverless-udagram-images-${self:provider.stage}
+    IMAGES_S3_BUCKET: serverless-udagram-images-fer12062021-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
-    THUMBNAILS_S3_BUCKET: serverless-udagram-thumbnail-${self:provider.stage}
+    THUMBNAILS_S3_BUCKET: serverless-udagram-thumbnail-fer12062021-${self:provider.stage}
     AUTH_0_SECRET_ID: Auth0Secret-${self:provider.stage}
     AUTH_0_SECRET_FIELD: auth0Secret
 
@@ -85,9 +85,12 @@ custom:
   topicName: imagesTopic-${self:provider.stage}
 
   serverless-offline:
+    httpPort: 3003
     port: 3003
 
   dynamodb:
+    stages:
+      - ${self:provider.stage}
     start:
       port: 8000
       inMemory: true
@@ -106,6 +109,12 @@ custom:
       - name: ImageRequest
         contentType: application/json
         schema: ${file(models/create-image-request.json)}
+  
+  # deploymentSettings:
+  #   codeDeployRole: some_arn_value
+  #   codeDeployRolePermissionsBoundary: some_arn_value
+  #   stages:
+  #     - dev
 
 functions:
 

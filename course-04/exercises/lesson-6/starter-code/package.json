@@ -7,10 +7,12 @@
     "test": "jest"
   },
   "dependencies": {
+    "aws-serverless-express": "^3.4.0",
     "aws-xray-sdk": "^2.3.3",
     "elasticsearch": "^15.5.0",
+    "express": "^4.17.1",
     "http-aws-es": "^6.0.0",
-    "jimp": "^0.6.4",
+    "jimp": "^0.16.1",
     "jsonwebtoken": "^8.5.1",
     "middy": "^0.25.0",
     "source-map-support": "^0.5.11",
@@ -23,18 +25,18 @@
     "@types/jsonwebtoken": "^8.3.2",
     "@types/node": "^10.14.12",
     "aws-sdk": "^2.492.0",
-    "jest": "^24.8.0",
+    "jest": "^27.0.4",
     "serverless-aws-documentation": "^1.1.0",
     "serverless-dynamodb-local": "^0.2.38",
-    "serverless-iam-roles-per-function": "^1.0.4",
-    "serverless-offline": "^4.10.6",
-    "serverless-plugin-canary-deployments": "^0.4.7",
+    "serverless-iam-roles-per-function": "^3.2.0-e97ab49",
+    "serverless-offline": "^7.0.0",
+    "serverless-plugin-canary-deployments": "^0.6.0",
     "serverless-reqvalidator-plugin": "^1.0.3",
     "serverless-webpack": "^5.3.1",
-    "ts-jest": "^24.0.2",
+    "ts-jest": "^27.0.3",
     "ts-loader": "^5.4.5",
     "typescript": "^3.5.3",
-    "webpack": "^4.35.3"
+    "webpack": "^5.38.1"
   },
   "author": "Ivan Mushketyk",
   "license": "MIT"

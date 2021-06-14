@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "dateformat": "^3.0.3",
     "immutability-helper": "^3.0.1",
     "react": "^16.8.6",

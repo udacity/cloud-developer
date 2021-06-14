@@ -1,0 +1,4 @@
+sls invoke local 
+--func auth0Authorizer.ts
+--path ./backend/src/lambda/auth/auth0Authorizer
+--event '{}'
