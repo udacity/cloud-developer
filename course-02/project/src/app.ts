@@ -25,8 +25,29 @@ app.use(bodyParser.json());
 // RETURNS
 //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
-app.get("filteredimage", async (req, res) => {
-  await filterImageFromURL(req.query.image_url);
+const validator = (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  if (!req.query.image_url) {
+    res.status(400).send({
+      error: "image_url query parameter is required"
+    });
+  } else {
+    next();
+  }
+};
+
+app.get("/filteredimage",  validator, async (req, res) => {
+  try {
+    const pathToFilteredImage: string = await filterImageFromURL(req.query.image_url);
+    res.status(200).send({ url: pathToFilteredImage });
+  } catch(error) {
+    res.status(422).send({
+      error: `Could not process image. Please try again. ERROR MSG: ${error.message}`
+    });
+  }
 });
 
 /**************************************************************************** */
