@@ -2,6 +2,7 @@ import express from 'express';
 import { Application } from 'express-serve-static-core';
 import bodyParser from 'body-parser';
 import { filterImageFromURL, deleteLocalFiles } from './util/util';
+import { unlink } from "fs";
 
 let app: Application;
 
@@ -31,9 +32,7 @@ const validator = (
   next: express.NextFunction
 ) => {
   if (!req.query.image_url) {
-    res.status(400).send({
-      error: "image_url query parameter is required"
-    });
+    res.status(400).send("image_url query parameter is required");
   } else {
     next();
   }
@@ -42,11 +41,10 @@ const validator = (
 app.get("/filteredimage",  validator, async (req, res) => {
   try {
     const pathToFilteredImage: string = await filterImageFromURL(req.query.image_url);
-    res.status(200).send({ url: pathToFilteredImage });
+    res.status(200).send(pathToFilteredImage);
+    unlink(pathToFilteredImage, console.warn);
   } catch(error) {
-    res.status(422).send({
-      error: `Could not process image. Please try again. ERROR MSG: ${error.message}`
-    });
+    res.status(422).send(`Could not process image. Please try again. ERROR MSG: ${error.message}`);
   }
 });
 

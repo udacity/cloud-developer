@@ -10,32 +10,30 @@ const getEndpoint = (mockUrl: string) => `${route}?image_url=${mockUrl}`;
 
 describe('GET filteredimage/:inputUrl', () => {
   it("should be a valid route", async () => {
-    const result = await request(app).get("/filteredimage");
-    expect(result.status).not.toEqual(404);
+    const res = await request(app).get("/filteredimage");
+    expect(res.status).not.toEqual(404);
   });
 
   it("should return HTTP 400 if image_url query parameter is not defined", async () => {
-    const result = await request(app).get(route);
-    expect(result.status).toEqual(400);
-    expect(result.body.error).toBeDefined();
+    const res = await request(app).get(route);
+    expect(res.status).toEqual(400);
+    expect(res.text).toBeDefined();
   });
 
   it("should return HTTP 422 if image url is an unprocessible entity", async () => {
-    const result = await request(app).get(getEndpoint(mockFailUrl));
-    expect(result.status).toEqual(422);
-    expect(result.body.error).toBeDefined();
+    const res = await request(app).get(getEndpoint(mockFailUrl));
+    expect(res.status).toEqual(422);
+    expect(res.text).toBeDefined();
   });
 
   it("should return HTTP 200 with path to image in temporary directory", async () => {
-    const result = await request(app).get(getEndpoint(mockImgUrl));
-    expect(result.status).toEqual(200);
-    expect(existsSync(result.body.url)).toBe(true);
-    expect(result.body.url).toBeDefined();
+    const res = await request(app).get(getEndpoint(mockImgUrl));
+    expect(res.status).toEqual(200);
+    expect(existsSync(res.text)).toBe(false);
+    expect(res.text).toBeDefined();
   });
 
   afterAll(() => {
-    rimraf(__dirname + "/util/tmp/", (error) => {
-      const msg = error;
-    });
+    rimraf(__dirname + "/util/tmp/", (error) => {});
   });
 });
