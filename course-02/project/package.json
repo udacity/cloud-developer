@@ -31,7 +31,7 @@
     "ts-jest": "^27.0.3",
     "ts-node-dev": "^1.0.0-pre.40",
     "tslint": "^5.18.0",
-    "typescript": "^3.5.3"
+    "typescript": "^3.9.7"
   },
   "dependencies": {
     "express": "^4.17.1",

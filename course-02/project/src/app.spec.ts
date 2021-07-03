@@ -1,7 +1,7 @@
 import app from "./app";
 import request from "supertest";
 import rimraf from "rimraf";
-import { existsSync, readdir } from "fs";
+import { readdir } from "fs";
 
 const route = "/filteredimage";
 const mockFailUrl = "https://google.com";
