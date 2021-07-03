@@ -6,7 +6,6 @@ import { readdir } from "fs";
 const route = "/filteredimage";
 const mockFailUrl = "https://google.com";
 const mockImgUrl = "https://cdn.pixabay.com/photo/2021/05/23/21/57/mountains-6277391_1280.jpg";
-const largeMockImgUrl = "https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_tabby_and_white_kitten_n01.jpg";
 const getEndpoint = (mockUrl: string) => `${route}?image_url=${mockUrl}`;
 
 describe('GET filteredimage/:inputUrl', () => {
@@ -29,15 +28,6 @@ describe('GET filteredimage/:inputUrl', () => {
 
   it("should return HTTP 200 with filtered image", async () => {
     const res = await request(app).get(getEndpoint(mockImgUrl));
-    expect(res.status).toEqual(200);
-    expect(res.type).toEqual('image/jpeg');
-    readdir(__dirname + "/util/tmp/", (err, files) => {
-      expect(files.length).toBe(0);
-    });
-  });
-
-  it("should return HTTP 200 with larger image cropped and filtered", async () => {
-    const res = await request(app).get(getEndpoint(largeMockImgUrl));
     expect(res.status).toEqual(200);
     expect(res.type).toEqual('image/jpeg');
     readdir(__dirname + "/util/tmp/", (err, files) => {

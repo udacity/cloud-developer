@@ -1,7 +1,7 @@
 **Notes**
 
 EBS URL: http://udagram-development.us-east-1.elasticbeanstalk.com
-Example endpoint: http://udagram-development.us-east-1.elasticbeanstalk.com/filteredimage?image_url=https://cdn.pixabay.com/photo/2021/05/23/21/57/mountains-6277391_1280.jpg
+Example endpoint: http://udagram-development.us-east-1.elasticbeanstalk.com/filteredimage?image_url=https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_tabby_and_white_kitten_n01.jpg
 
 I've written integration tests for the endpoint to ensure the project meets the code specs.
 
