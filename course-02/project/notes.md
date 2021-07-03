@@ -1,12 +1,12 @@
 **Notes**
 
 EBS URL: http://udagram-development.us-east-1.elasticbeanstalk.com
-Example endpoint: http://udagram-development.us-east-1.elasticbeanstalk.com/filteredimage?image_url=https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_tabby_and_white_kitten_n01.jpg
+Example endpoint: http://udagram-development.us-east-1.elasticbeanstalk.com/filteredimage?image_url=https://cdn.pixabay.com/photo/2021/05/23/21/57/mountains-6277391_1280.jpg
 
 I've written integration tests for the endpoint to ensure the project meets the code specs.
 
 Given the example image url in the rubric: https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_tabby_and_white_kitten_n01.jpg
-Jimp fails to read the file, I have tested the image filtering logic on about a dozen different image urls including images of similar size and only the kittne image above seems to fail. This is a known issue with the underlying http libraries that jimp uses. See github issue [here](https://github.com/oliver-moran/jimp/issues/775). To fix this issue I followed the recommended workaround in the issue above. However, given that this course is about cloud development and not about image processing, I'd recommend changing the sample image in the rubric to an image that is verified to work with the Jimp library and mention this edge cases in the project description.
+Jimp fails to read this file specifically. but will read every other publicly accessible image file I've tested. I have tested about a dozen different image urls including images of similar size and only the kitten image mentioned in the project rubric seems to fail for me. I'm also running the latest stable version of Jimp and confirmed this is a known issue that hasn't been resolved. Here's the github issue [here](https://github.com/oliver-moran/jimp/issues/775). Given this project is more about cloud infrastructure and deployment, I didn't see the need to devote more time trying to fix this edge case. I thought you'd like to know so you can notify other students about this, or refactor your project starter code to use a different image transformation library.
 
 # PROJECT SPECIFICATION
 ## Engineering Full Stack Apps in the Cloud
