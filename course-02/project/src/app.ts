@@ -41,8 +41,9 @@ const validator = (
 app.get("/filteredimage",  validator, async (req, res) => {
   try {
     const pathToFilteredImage: string = await filterImageFromURL(req.query.image_url);
-    res.status(200).send(pathToFilteredImage);
-    unlink(pathToFilteredImage, console.warn);
+    res.status(200).sendFile(pathToFilteredImage, () => {
+      unlink(pathToFilteredImage, console.warn)
+    });
   } catch(error) {
     res.status(422).send(`Could not process image. Please try again. ERROR MSG: ${error.message}`);
   }

@@ -1,7 +1,7 @@
 import app from "./app";
 import request from "supertest";
 import rimraf from "rimraf";
-import { existsSync } from "fs";
+import { existsSync, readdir } from "fs";
 
 const route = "/filteredimage";
 const mockFailUrl = "https://google.com";
@@ -29,8 +29,10 @@ describe('GET filteredimage/:inputUrl', () => {
   it("should return HTTP 200 with path to image in temporary directory", async () => {
     const res = await request(app).get(getEndpoint(mockImgUrl));
     expect(res.status).toEqual(200);
-    expect(existsSync(res.text)).toBe(false);
-    expect(res.text).toBeDefined();
+    expect(res.type).toEqual('image/jpeg');
+    readdir(__dirname + "/util/tmp/", (err, files) => {
+      expect(files.length).toBe(0);
+    });
   });
 
   afterAll(() => {
