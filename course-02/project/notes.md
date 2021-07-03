@@ -5,6 +5,9 @@ Example endpoint: http://udagram-development.us-east-1.elasticbeanstalk.com/filt
 
 I've written integration tests for the endpoint to ensure the project meets the code specs.
 
+Given the example image url in the rubric: https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_tabby_and_white_kitten_n01.jpg
+Jimp fails to read the file, I have tested the image filtering logic on about a dozen different image urls including images of similar size and only the kittne image above seems to fail. This is a known issue with the underlying http libraries that jimp uses. See github issue [here](https://github.com/oliver-moran/jimp/issues/775). To fix this issue I followed the recommended workaround in the issue above. However, given that this course is about cloud development and not about image processing, I'd recommend changing the sample image in the rubric to an image that is verified to work with the Jimp library and mention this edge cases in the project description.
+
 # PROJECT SPECIFICATION
 ## Engineering Full Stack Apps in the Cloud
 
@@ -22,7 +25,7 @@ I've written integration tests for the endpoint to ensure the project meets the 
 
 ### Elastic Beanstalk Deployment
 
-- [] **The project demonstrates the ability to create functional cloud deployments** An endpoint URL for a running elastic beanstalk deployment (EB_URL) has been submitted along with the project submission. This endpoint responds to valid GET requests including:
+- [X] **The project demonstrates the ability to create functional cloud deployments** An endpoint URL for a running elastic beanstalk deployment (EB_URL) has been submitted along with the project submission. This endpoint responds to valid GET requests including:
 http://{{EB_URL}}/filteredimage?image_url=https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_tabby_and_white_kitten_n01.jpg
-- [] **The project demonstrates an understanding of AWS Elastic Beanstalk’s CLI and Console Dashboard** The project was deployed using the AWS Elastic Beanstalk CLI eb init, eb create, and eb deploy commands.
-- [] A screenshot of the elastic beanstalk application dashboard is included in a deployment_screenshot directory.
+- [X] **The project demonstrates an understanding of AWS Elastic Beanstalk’s CLI and Console Dashboard** The project was deployed using the AWS Elastic Beanstalk CLI eb init, eb create, and eb deploy commands.
+- [X] A screenshot of the elastic beanstalk application dashboard is included in a deployment_screenshot directory.
