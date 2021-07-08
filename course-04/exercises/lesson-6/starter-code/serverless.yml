@@ -157,6 +157,10 @@ functions:
         Action:
           - dynamodb:GetItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.GROUPS_TABLE}
+      - Effect: Allow
+        Action:
+        - xray:PutTraceSegments
+        Resource: "*"
 
   CreateImage:
     handler: src/lambda/http/createImage.handler
