@@ -50,13 +50,19 @@ router.get('/:id/filtered',
     let query = '?image_url=' + item.url;
     const requestUrl = host + path + query;
 
+    console.log(`requesting filter image_url: ${item.url}`);
+
     const options = {
         protocol: 'http:',
-        method: 'GET'
+        method: 'GET',
+        headers: {'Authorization': req.headers.authorization}
     };
       
     await http.get(new URL(requestUrl), options, (response: any) => {
         response.on('data', (d: Buffer) => {
+            if (response.statusCode != 200) {
+                return res.status(response.statusCode).send(d.toString());
+            }
             var jsonObj = {
                 dataurl: 'data:image/jpg;base64, ' + d.toString('base64')
             }
