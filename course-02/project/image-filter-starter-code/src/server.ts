@@ -84,7 +84,12 @@ import { config } from './config/config';
     }
 
     //    2. call filterImageFromURL(image_url) to filter the image
-    let filteredpath: string = await filterImageFromURL(image_url);
+    let filteredpath: string;
+    try {
+      filteredpath = await filterImageFromURL(image_url);
+    } catch (error) {
+      return res.status(422).send("filterImageFromURL error occured: " + error);
+    }
 
     //    3. send the resulting file in the response
     res.sendFile(filteredpath, function (err) {
