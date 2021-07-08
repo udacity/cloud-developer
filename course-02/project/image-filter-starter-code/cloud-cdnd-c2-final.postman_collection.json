@@ -1,20 +1,147 @@
 {
 	"info": {
-		"_postman_id": "4bcf1909-8996-44b7-be35-b130ab03d12f",
+		"_postman_id": "f7bb0e53-8bcc-41a7-98e2-1416605eb0c0",
 		"name": "cloud-cdnd-c2-final",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "http://localhost:8082/filteredimage?image_url=https://timedotcom.files.wordpress.com/2019/03/kitten-report.jpg",
+			"name": "Valid Token /api/v0/user/auth/login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"body includes an email and token\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.auth).to.eql(true);",
+							"    pm.expect(jsonData.user).to.not.eql(null);",
+							"    pm.expect(jsonData.token).to.not.eql(null)",
+							"    ",
+							"    pm.environment.set(\"TOKEN\", jsonData.token);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 500ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\":\"hello@gmail.com\",\n\t\"password\":\"hello\"\n}"
+				},
+				"url": {
+					"raw": "{{UDAGRAM_HOST}}/api/v0/users/auth/login",
+					"host": [
+						"{{UDAGRAM_HOST}}"
+					],
+					"path": [
+						"api",
+						"v0",
+						"users",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Udagram /api/v0/feed/:id/filtered",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"A single item is returned\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.id).to.not.eql(null);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{HOST}}/filteredimage?image_url=https://timedotcom.files.wordpress.com/2019/03/kitten-report.jpg",
-					"protocol": "http",
+					"raw": "{{UDAGRAM_HOST}}/api/v0/feed/:id/filtered",
 					"host": [
-						"{{HOST}}"
+						"{{UDAGRAM_HOST}}"
+					],
+					"path": [
+						"api",
+						"v0",
+						"feed",
+						":id",
+						"filtered"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				},
+				"description": "Request a specific feed item detail"
+			},
+			"response": []
+		},
+		{
+			"name": "Filter /filteredimage?image_url=http://www.sebulli.com/Testbildgenerator/testbild.gif",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{FILTER_HOST}}/filteredimage?image_url=http://www.sebulli.com/Testbildgenerator/testbild.gif",
+					"host": [
+						"{{FILTER_HOST}}"
 					],
 					"path": [
 						"filteredimage"
@@ -22,7 +149,7 @@
 					"query": [
 						{
 							"key": "image_url",
-							"value": "https://timedotcom.files.wordpress.com/2019/03/kitten-report.jpg"
+							"value": "http://www.sebulli.com/Testbildgenerator/testbild.gif"
 						}
 					]
 				}
@@ -34,7 +161,6 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "5887df52-1889-4e1f-82ee-054ab37b450a",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -44,7 +170,6 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "5e332dfe-c833-430b-b947-ab6c00311c28",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -54,10 +179,20 @@
 	],
 	"variable": [
 		{
-			"id": "1df3d31a-de30-494b-a3d0-f1228dd8713c",
-			"key": "HOST",
-			"value": "localhost:8082",
-			"type": "string"
+			"key": "FILTER_HOST",
+			"value": "http://filter-hebauf-dev.eu-central-1.elasticbeanstalk.com"
+		},
+		{
+			"key": "UDAGRAM_HOST",
+			"value": "http://udagram-hebauf-dev.eu-central-1.elasticbeanstalk.com"
+		},
+		{
+			"key": "FILTER_LOCAL",
+			"value": "http://localhost:8082"
+		},
+		{
+			"key": "UDAGRAM_LOCAL",
+			"value": "http://localhost:8080"
 		}
 	]
 }

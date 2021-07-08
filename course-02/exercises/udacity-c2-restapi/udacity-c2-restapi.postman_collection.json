@@ -311,7 +311,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\":\"hello@gmail.com\",\n\t\"password\":\"fancypass\"\n}"
+							"raw": "{\n\t\"email\":\"hello@gmail.com\",\n\t\"password\":\"hello\"\n}"
 						},
 						"url": {
 							"raw": "{{host}}/api/v0/users/auth/login",
@@ -613,7 +613,7 @@
 					]
 				},
 				{
-					"name": "/api/v0/feed/signed-url/:fileName",
+					"name": "/api/v0/feed/signed-url/:fileName SignedUrl",
 					"event": [
 						{
 							"listen": "test",
@@ -688,7 +688,7 @@
 					"response": []
 				},
 				{
-					"name": "/api/v0/feed/signed-url/:fileName Copy",
+					"name": "/api/v0/feed/signed-url/:fileName Fileupload",
 					"event": [
 						{
 							"listen": "test",
@@ -728,6 +728,69 @@
 							]
 						},
 						"description": "Request a signed url for a file"
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v0/feed authorized",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"The post returns a new item with an id\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.not.eql(null);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"caption\": \"Hello\",\n    \"url\": \"test.jpg\",\n    \"filter\": true\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/v0/feed",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v0",
+								"feed"
+							]
+						},
+						"description": "Post a new item to the feed"
 					},
 					"response": []
 				},
@@ -795,17 +858,17 @@
 					"response": []
 				},
 				{
-					"name": "/api/v0/feed authorized",
+					"name": "/api/v0/feed/:id/filtered",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 201\", function () {",
-									"    pm.response.to.have.status(201);",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
 									"});",
 									"",
-									"pm.test(\"The post returns a new item with an id\", function () {",
+									"pm.test(\"A single item is returned\", function () {",
 									"    var jsonData = pm.response.json();",
 									"    pm.expect(jsonData.id).to.not.eql(null);",
 									"});",
@@ -829,31 +892,28 @@
 								}
 							]
 						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"caption\": \"Hello\",\n    \"url\": \"test.jpg\"\n}"
-						},
+						"method": "GET",
+						"header": [],
 						"url": {
-							"raw": "{{host}}/api/v0/feed",
+							"raw": "{{host}}/api/v0/feed/:id/filtered",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
 								"v0",
-								"feed"
+								"feed",
+								":id",
+								"filtered"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
 							]
 						},
-						"description": "Post a new item to the feed"
+						"description": "Request a specific feed item detail"
 					},
 					"response": []
 				}
@@ -913,8 +973,11 @@
 	"variable": [
 		{
 			"key": "host",
-			"value": "http://localhost:8080",
-			"type": "string"
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "prod",
+			"value": "http://udagram-hebauf-dev.eu-central-1.elasticbeanstalk.com"
 		}
 	]
 }
