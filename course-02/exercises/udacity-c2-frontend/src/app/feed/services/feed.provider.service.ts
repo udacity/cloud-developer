@@ -26,6 +26,10 @@ export class FeedProviderService {
     return res;
   }
 
+  async getFilteredImage(id: any): Promise<any> {
+    return await this.api.get(`/feed/${id}/filtered`);
+  }
+
 }
 
 // async getFeed() {

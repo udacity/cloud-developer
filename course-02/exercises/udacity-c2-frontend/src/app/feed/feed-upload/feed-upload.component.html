@@ -1,19 +1,44 @@
-<form [formGroup]="uploadForm" (submit)="onSubmit($event)">`
-    <label>
-        <input type="file" (change)="selectImage($event)" accept="image/*" style="display:none"/>
-        <img *ngIf="previewDataUrl" [src]="previewDataUrl" style="width:50px; height: 50px;" />
-        <a *ngIf="!previewDataUrl" ion-button color="secondary">
-            Select a Photo
-        </a>
-    </label>
+<form [formGroup]="uploadForm" (submit)="onSubmit($event)">
+
+<!--   <label>
+    <input type="file" (change)="selectImage($event)" accept="image/*" style="display:none" />
+    <img *ngIf="previewDataUrl" [src]="previewDataUrl" style="width:50px; height: 50px;" />
+    <a *ngIf="!previewDataUrl" ion-button color="secondary">
+      Select a Photo
+    </a>
+  </label> -->
+
+  <ion-list>
+    <ion-list-header>
+      New Post Creator
+    </ion-list-header>
+
+    <!-- button (click)="selectImage($event)" -->
+    <ion-item *ngIf="!previewDataUrl">
+
+      <ion-label color="secondary">Select a Photo</ion-label>
+      <ion-input type="file" (change)="selectImage($event)" accept="image/*"></ion-input>
+      <!-- style="display:none" -->
+
+      <ion-icon name="cloud-upload-outline" slot="end"></ion-icon>
+    </ion-item>
+    
+    <ion-item button *ngIf="previewDataUrl" (click)="removeImage()">
+      <ion-thumbnail slot="start">
+        <ion-img [src]="previewDataUrl"></ion-img>
+      </ion-thumbnail>
+      <ion-label>Preview</ion-label>
+      <ion-icon *ngIf="previewDataUrl" name="trash-outline" slot="end"></ion-icon>
+    </ion-item>
+
     <ion-item>
-        <ion-label position="floating" color="primary">Caption</ion-label>
-        <ion-input type="text" formControlName="caption" required></ion-input>
-      </ion-item>
-      <ion-button 
-        color="primary" 
-        type="submit"
-        [disabled]="!uploadForm.valid || !file">
-        Post
-      </ion-button>
+      <ion-label position="floating" color="primary">Caption</ion-label>
+      <ion-input type="text" formControlName="caption" required></ion-input>
+    </ion-item>
+
+  </ion-list>
+
+  <ion-button type="submit" [disabled]="!uploadForm.valid || !file" color="primary">
+    Post
+  </ion-button>
 </form>

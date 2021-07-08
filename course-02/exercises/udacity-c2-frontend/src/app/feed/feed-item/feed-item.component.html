@@ -1,10 +1,14 @@
 <ion-card class="photo-card" *ngIf="feedItem">
-  <ion-img [src]="feedItem.url"></ion-img>
-  <!-- <ion-card-header>
-    <ion-card-subtitle>Get Started</ion-card-subtitle>
-    <ion-card-title></ion-card-title>
-  </ion-card-header> -->
+  <ion-img [src]="originalImageVisible || !feedItem.filteredDataUrl ? feedItem.url : feedItem.filteredDataUrl"></ion-img>
+
   <ion-card-content>
     <p>{{feedItem.caption}}</p>
+
+    <ion-button *ngIf="originalImageVisible" color="primary" (click)="showFilteredImage(feedItem.id)">
+      Filtered
+    </ion-button>
+    <ion-button *ngIf="!originalImageVisible" color="primary" (click)="originalImageVisible = true">
+      Original
+    </ion-button>
   </ion-card-content>
 </ion-card>
