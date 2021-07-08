@@ -3,6 +3,9 @@ import { FeedItem } from '../models/FeedItem';
 import { requireAuth } from '../../users/routes/auth.router';
 import * as AWS from '../../../../aws';
 import { isNumeric } from 'validator';
+import { config } from '../../../../config/config';
+
+var http = require('http');
 
 const router: Router = Router();
 
@@ -29,6 +32,42 @@ router.get('/:id', async (req: Request, res: Response) => {
     }
     res.send(item);
 });
+
+router.get('/:id/filtered', 
+    requireAuth,
+    async (req: Request, res: Response) => {
+    const { id } = req.params;
+    if (!id || !isNumeric(id)) {
+        return res.status(400).send({ message: 'Required Id is not a number' });
+    }
+    const item = await FeedItem.findByPk(id);
+    if(item.url) {
+        item.url = AWS.getGetSignedUrl(item.url);
+    }
+
+    let host = config.apis.filter_server_url;
+    let path = '/filteredimage';
+    let query = '?image_url=' + item.url;
+    const requestUrl = host + path + query;
+
+    const options = {
+        protocol: 'http:',
+        method: 'GET'
+    };
+      
+    await http.get(new URL(requestUrl), options, (response: any) => {
+        response.on('data', (d: Buffer) => {
+            var jsonObj = {
+                dataurl: 'data:image/jpg;base64, ' + d.toString('base64')
+            }
+            return res.status(200).send(jsonObj);
+        });
+    }).on('error', (e: any) => {
+        console.error(e);
+        res.status(500).send('An error occured while requesting the filtered image.');
+    });
+});
+
 
 // Update a specific resource by Primary Key
 router.patch('/:id', requireAuth, async (req: Request, res: Response) => {

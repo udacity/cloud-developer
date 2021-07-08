@@ -13,5 +13,8 @@ export const config = {
   },
   "jwt": {
     "secret": process.env.JWT_SECRET
+  },
+  "apis": {
+    "filter_server_url": process.env.FILTER_SERVER_URL
   }
 }
