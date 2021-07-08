@@ -45,10 +45,16 @@ export class FeedUploadComponent implements OnInit {
     if (!file) {
       return;
     }
+
     this.file = file[0];
     this.setPreviewDataUrl(this.file);
-
   }
+
+  removeImage() {
+    this.file = null;
+    this.previewDataUrl = null;
+  }
+
 
   onSubmit($event) {
     $event.preventDefault();
