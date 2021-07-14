@@ -1,6 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import {filterImageFromURL, deleteLocalFiles, isSupportedFormat} from './util/util';
+
+
 
 (async () => {
 
@@ -29,13 +31,19 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   /**************************************************************************** */
 
+
   app.get("/filteredimage", async( req, res) => {
     let image_url = req.query.image_url;   // pull image_url from query string
+
 
     if (! image_url) {
        return res.status(400).send(`Supply an image_url, like this: /filteredimage?image_url=<your image url>`); 
     }
-    res.send(`Hello there, thanks for sending ${image_url}`)
+    if (! isSupportedFormat(image_url)) {
+      return res.status(400).send("Supported formats include .jpg and .png")
+    }
+
+    res.status(200).send(`Hello there, thanks for sending ${image_url}`)
   })
   //! END @TODO1
   

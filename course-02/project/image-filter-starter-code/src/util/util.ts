@@ -32,3 +32,11 @@ export async function deleteLocalFiles(files:Array<string>){
         fs.unlinkSync(file);
     }
 }
+
+export function isSupportedFormat(image_url: string) {
+    let suffix = image_url.split(".")[1]
+    if ((suffix === "jpg") || (suffix === "png")) {
+        return true;
+    }
+    return false;
+}
