@@ -34,9 +34,21 @@ export async function deleteLocalFiles(files:Array<string>){
 }
 
 export function isSupportedFormat(image_url: string) {
-    let suffix = image_url.split(".")[1]
+    let url_parts = image_url.split("\.")
+    let suffix = url_parts[url_parts.length-1]
+
     if ((suffix === "jpg") || (suffix === "png")) {
         return true;
     }
     return false;
 }
+
+// export async function doesFileExist(url: string) {
+//     // let xhr = new XMLHttpRequest();
+//     let xhr = require("xmlhttprequest").XMLHttpRequest;
+
+//     xhr.open('HEAD', url, false);
+//     xhr.send();
+     
+//     return xhr.status !== 404;
+// }

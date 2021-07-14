@@ -1,8 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import {filterImageFromURL, deleteLocalFiles, isSupportedFormat} from './util/util';
+import {filterImageFromURL, deleteLocalFiles, isSupportedFormat } from './util/util';
 
-
+// import { doesFileExist } from './util/util'
 
 (async () => {
 
@@ -42,7 +42,9 @@ import {filterImageFromURL, deleteLocalFiles, isSupportedFormat} from './util/ut
     if (! isSupportedFormat(image_url)) {
       return res.status(400).send("Supported formats include .jpg and .png")
     }
-
+    // if (! doesFileExist(image_url)) {
+    //   return res.status(400).send(`Supplied file ${image_url} cannot be found - try again`)
+    // }
     res.status(200).send(`Hello there, thanks for sending ${image_url}`)
   })
   //! END @TODO1
