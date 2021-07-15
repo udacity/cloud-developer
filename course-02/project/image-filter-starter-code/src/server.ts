@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles, isSupportedFormat } from './util/util';
 
-// import { doesFileExist } from './util/util'
+import { doesFileExist } from './util/util'
 
 (async () => {
 
@@ -35,16 +35,16 @@ import {filterImageFromURL, deleteLocalFiles, isSupportedFormat } from './util/u
   app.get("/filteredimage", async( req, res) => {
     let image_url = req.query.image_url;   // pull image_url from query string
 
-
     if (! image_url) {
        return res.status(400).send(`Supply an image_url, like this: /filteredimage?image_url=<your image url>`); 
     }
     if (! isSupportedFormat(image_url)) {
       return res.status(400).send("Supported formats include .jpg and .png")
     }
-    // if (! doesFileExist(image_url)) {
-    //   return res.status(400).send(`Supplied file ${image_url} cannot be found - try again`)
-    // }
+    if (! doesFileExist(image_url)) {
+      return res.status(400).send(`Supplied file ${image_url} cannot be found - try again`)
+    }
+
     let filteredPath = await filterImageFromURL(image_url)
     res.sendFile(filteredPath)
   })

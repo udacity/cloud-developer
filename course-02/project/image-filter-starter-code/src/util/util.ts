@@ -1,5 +1,7 @@
 import fs from 'fs';
+import { url } from 'inspector';
 import Jimp = require('jimp');
+const http = require('http');
 
 // filterImageFromURL
 // helper function to download, filter, and save the filtered image locally
@@ -38,6 +40,30 @@ export function isSupportedFormat(image_url: string) {
     let suffix = url_parts[url_parts.length-1]
 
     if ((suffix === "jpg") || (suffix === "png")) {
+        return true;
+    }
+    return false;
+}
+
+export async function doesFileExist(userUrl: string) {
+    const myURL = new URL(userUrl);
+
+    const options = {
+        method: 'HEAD',
+        hostname: myURL.hostname,
+        path: myURL.pathname
+    };
+
+    let status = 0
+    const req = http.request(options, (res: any) => {
+        console.log(JSON.stringify(res.headers));
+        console.log("STATUS RETURNED", res.statusCode);
+        status = res.statusCode
+    });
+    console.log("status is ", status)
+    req.end();
+
+    if ((status > 200) && (status < 300)) {
         return true;
     }
     return false;
