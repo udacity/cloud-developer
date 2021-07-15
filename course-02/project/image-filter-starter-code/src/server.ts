@@ -45,7 +45,8 @@ import {filterImageFromURL, deleteLocalFiles, isSupportedFormat } from './util/u
     // if (! doesFileExist(image_url)) {
     //   return res.status(400).send(`Supplied file ${image_url} cannot be found - try again`)
     // }
-    res.status(200).send(`Hello there, thanks for sending ${image_url}`)
+    let filteredPath = await filterImageFromURL(image_url)
+    res.sendFile(filteredPath)
   })
   //! END @TODO1
   
