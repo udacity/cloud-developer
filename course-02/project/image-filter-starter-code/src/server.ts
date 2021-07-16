@@ -53,7 +53,7 @@ import { doesFileExist } from './util/util'
           res.status(415).send('URL is not an Image');
       }
       else{
-          res.status(200).sendFile(filteredImage, () =>{deleteLocalFiles([filteredImage])});
+          res.status(200).sendFile(filteredImage)
       }
     }
     catch (error) {
