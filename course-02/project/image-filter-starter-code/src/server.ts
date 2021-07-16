@@ -41,12 +41,35 @@ import { doesFileExist } from './util/util'
     if (! isSupportedFormat(image_url)) {
       return res.status(400).send("Supported formats include .jpg and .png")
     }
-    if (! doesFileExist(image_url)) {
-      return res.status(400).send(`Supplied file ${image_url} cannot be found - try again`)
+
+    // if (! doesFileExist(image_url)) {
+    //   return res.status(400).send(`Supplied file ${image_url} cannot be found - try again`)
+    // }
+
+    let filteredImage: any
+    try {
+      filteredImage = await filterImageFromURL(image_url);
+      if (filteredImage==="error"){
+          res.status(415).send('URL is not an Image');
+      }
+      else{
+          res.status(200).sendFile(filteredImage, () =>{deleteLocalFiles([filteredImage])});
+      }
+    }
+    catch (error) {
+      console.log("unable to filter image")
+      res.status(400).send(`URL ${image_url} is not an Image`);
     }
 
-    let filteredPath = await filterImageFromURL(image_url)
-    res.sendFile(filteredPath)
+    res.status(200).sendFile(filteredImage);
+
+ 
+    // filterImageFromURL(image_url)
+    //   .then(filteredpath => {
+    //      res.status(200).sendFile(filteredpath, () => {deleteLocalFiles([filteredpath]);} );
+      
+    // })
+
   })
   //! END @TODO1
   

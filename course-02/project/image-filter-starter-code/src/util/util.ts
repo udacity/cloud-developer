@@ -1,3 +1,4 @@
+import { reject } from 'bluebird';
 import fs from 'fs';
 import { url } from 'inspector';
 import Jimp = require('jimp');
@@ -10,20 +11,39 @@ const http = require('http');
 //    inputURL: string - a publicly accessible url to an image file
 // RETURNS
 //    an absolute path to a filtered image locally saved file
-export async function filterImageFromURL(inputURL: string): Promise<string>{
-    return new Promise( async resolve => {
-        const photo = await Jimp.read(inputURL);
-        const outpath = '/tmp/filtered.'+Math.floor(Math.random() * 2000)+'.jpg';
-        await photo
-        .resize(256, 256) // resize
-        .quality(60) // set JPEG quality
-        .greyscale() // set greyscale
-        .write(__dirname+outpath, (img)=>{
-            resolve(__dirname+outpath);
-        });
-    });
-}
+// export async function filterImageFromURL(inputURL: string): Promise<string>{
+//     return new Promise( async resolve => {
+//         const photo = await Jimp.read(inputURL);
+//         const outpath = '/tmp/filtered.'+Math.floor(Math.random() * 2000)+'.jpg';
+//         await photo
+//         .resize(256, 256) // resize
+//         .quality(60) // set JPEG quality
+//         .greyscale() // set greyscale
+//         .write(__dirname+outpath, (img)=>{
+//             resolve(__dirname+outpath);
+//         });
+//     });
+// }
 
+export async function filterImageFromURL(inputURL: string): Promise<string>{
+    return new Promise( async resolve => { 
+        try {
+            const photo = await Jimp.read(inputURL);
+            const outpath = '/tmp/filtered.'+Math.floor(Math.random() * 2000)+'.jpg';
+            await photo
+            .resize(256, 256) // resize
+            .quality(60) // set JPEG quality
+            .greyscale() // set greyscale
+            .write(__dirname+outpath, (img)=>{
+                resolve(__dirname+outpath);});
+        }
+        catch (error) { 
+            console.log("hello - image not good")
+            console.log(typeof(error), error)
+            return Promise.reject(error); 
+        }
+   });
+}
 // deleteLocalFiles
 // helper function to delete files on the local disk
 // useful to cleanup after tasks
@@ -45,6 +65,10 @@ export function isSupportedFormat(image_url: string) {
     return false;
 }
 
+function doSomething(status: number) {
+    console.log("status", status)
+}
+
 export async function doesFileExist(userUrl: string) {
     const myURL = new URL(userUrl);
 
@@ -54,16 +78,21 @@ export async function doesFileExist(userUrl: string) {
         path: myURL.pathname
     };
 
-    let status = 0
+    let status: number;
     const req = http.request(options, (res: any) => {
         console.log(JSON.stringify(res.headers));
         console.log("STATUS RETURNED", res.statusCode);
-        status = res.statusCode
-    });
-    console.log("status is ", status)
+        console.log("Headers ", res.headers);
+        status = res.statusCode;
+    })
+
+    req.on('error', (error: any) => {
+        console.log("hello" , error)
+    })
+    
     req.end();
 
-    if ((status > 200) && (status < 300)) {
+    if ((status >= 200) && (status < 300)) {
         return true;
     }
     return false;
