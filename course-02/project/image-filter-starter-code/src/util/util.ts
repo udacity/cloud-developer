@@ -40,7 +40,7 @@ export async function filterImageFromURL(inputURL: string): Promise<string>{
         catch (error) { 
             console.log("hello - image not good")
             console.log(typeof(error), error)
-            return Promise.reject(error); 
+            resolve("error"); 
         }
    });
 }
