@@ -33,7 +33,8 @@ import {filterImageFromURL, deleteLocalFiles, isSupportedFormat } from './util/u
        return res.status(400).send(`Supply an image_url, like this: /filteredimage?image_url=<your image url>`); 
     }
 
-    if (! isSupportedFormat(image_url)) {
+    let supportedFormat = await isSupportedFormat(image_url);
+    if (! supportedFormat) {
       return res.status(400).send("Supported formats include .jpg and .jpeg")
     }
 
