@@ -37,7 +37,7 @@ import {filterImageFromURL, deleteLocalFiles, isSupportedFormat } from './util/u
       return res.status(400).send("Supported formats include .jpg and .jpeg")
     }
 
-    let errorMessage = `URL ${image_url} is not an Image in a support format`
+    let errorMessage = `URL ${image_url} is not an Image in a supported format`
     try {
       let filteredImage = await filterImageFromURL(image_url);
       if (filteredImage==="error"){
