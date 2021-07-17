@@ -39,7 +39,7 @@ export async function deleteLocalFiles(files:Array<string>){
 
 export function isSupportedFormat(image_url: string) {
     let url_parts = image_url.split("\.")
-    let suffix = url_parts[url_parts.length-1]
+    let suffix = url_parts[url_parts.length-1].toLowerCase()
 
     if ((suffix === "jpg") || (suffix === "jpeg")) {
         return true;
