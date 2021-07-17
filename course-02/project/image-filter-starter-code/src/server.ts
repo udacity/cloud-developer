@@ -44,12 +44,10 @@ import {filterImageFromURL, deleteLocalFiles, isSupportedFormat } from './util/u
           res.status(415).send(errorMessage);
       }
       else{
-          console.log("filtered image is ", filteredImage)
           res.status(200).sendFile(filteredImage, () => {deleteLocalFiles([filteredImage])});
       }
     }
     catch (error) {
-      console.log("unable to filter image")
       res.status(400).send(errorMessage);
     }
   })
