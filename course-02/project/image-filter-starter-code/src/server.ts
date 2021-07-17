@@ -1,8 +1,7 @@
-import express from 'express';
+import express, { response } from 'express';
 import bodyParser from 'body-parser';
-import {filterImageFromURL, deleteLocalFiles, isSupportedFormat } from './util/util';
-
-import { doesFileExist } from './util/util'
+import {filterImageFromURL, deleteLocalFiles, isSupportedFormat, doesFileExist2 } from './util/util';
+import { resolve } from 'bluebird';
 
 (async () => {
 
@@ -24,7 +23,7 @@ import { doesFileExist } from './util/util'
   //    2. call filterImageFromURL(image_url) to filter the image
   //    3. send the resulting file in the response
   //    4. deletes any files on the server on finish of the response
-  // QUERY PARAMATERS
+  // QUERY PARAMETERS
   //    image_url: URL of a publicly accessible image
   // RETURNS
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
@@ -42,18 +41,13 @@ import { doesFileExist } from './util/util'
       return res.status(400).send("Supported formats include .jpg and .png")
     }
 
-    // if (! doesFileExist(image_url)) {
-    //   return res.status(400).send(`Supplied file ${image_url} cannot be found - try again`)
-    // }
-
-    let filteredImage: any
     try {
-      filteredImage = await filterImageFromURL(image_url);
+      let filteredImage = await filterImageFromURL(image_url);
       if (filteredImage==="error"){
           res.status(415).send('URL is not an Image');
       }
       else{
-          res.status(200).sendFile(filteredImage)
+          res.status(200).sendFile(filteredImage, () => {deleteLocalFiles([filteredImage])});
       }
     }
     catch (error) {
@@ -61,9 +55,7 @@ import { doesFileExist } from './util/util'
       res.status(400).send(`URL ${image_url} is not an Image`);
     }
 
-    res.status(200).sendFile(filteredImage);
 
- 
     // filterImageFromURL(image_url)
     //   .then(filteredpath => {
     //      res.status(200).sendFile(filteredpath, () => {deleteLocalFiles([filteredpath]);} );

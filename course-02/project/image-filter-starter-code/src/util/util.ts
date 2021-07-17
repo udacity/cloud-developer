@@ -38,8 +38,6 @@ export async function filterImageFromURL(inputURL: string): Promise<string>{
                 resolve(__dirname+outpath);});
         }
         catch (error) { 
-            console.log("hello - image not good")
-            console.log(typeof(error), error)
             resolve("error"); 
         }
    });
@@ -65,11 +63,8 @@ export function isSupportedFormat(image_url: string) {
     return false;
 }
 
-function doSomething(status: number) {
-    console.log("status", status)
-}
 
-export async function doesFileExist(userUrl: string) {
+export async function doesFileExist2(userUrl: string): Promise<string> {
     const myURL = new URL(userUrl);
 
     const options = {
@@ -77,26 +72,45 @@ export async function doesFileExist(userUrl: string) {
         hostname: myURL.hostname,
         path: myURL.pathname
     };
-
-    let status: number;
-    const req = http.request(options, (res: any) => {
-        console.log(JSON.stringify(res.headers));
-        console.log("STATUS RETURNED", res.statusCode);
-        console.log("Headers ", res.headers);
-        status = res.statusCode;
+    return new Promise( async resolve => {
+        try {
+            const req = http.request(options, (res: any) => {
+                console.log(JSON.stringify(res.headers));
+                console.log("STATUS RETURNED", res.statusCode);
+                console.log("Headers ", res.headers);
+                resolve(res.statusCode)
+            })
+        }
+        catch (error) {
+            console.log("error getting file")
+            resolve("error getting file")
+        }
     })
-
-    req.on('error', (error: any) => {
-        console.log("hello" , error)
-    })
-    
-    req.end();
-
-    if ((status >= 200) && (status < 300)) {
-        return true;
-    }
-    return false;
 }
+
+// export async function doesFileExist(userUrl: string) {
+//     const myURL = new URL(userUrl);
+
+//     const options = {
+//         method: 'HEAD',
+//         hostname: myURL.hostname,
+//         path: myURL.pathname
+//     };
+
+//     const req = http.request(options, (res: any) => {
+//         console.log(JSON.stringify(res.headers));
+//         console.log("STATUS RETURNED", res.statusCode);
+//         console.log("Headers ", res.headers);
+//         // resolve(res.statusCode);
+//     })
+
+//     req.on('error', (error: any) => {
+//         console.log("hello" , error)
+//     })
+    
+//     req.end();
+
+// }
 
 // export async function doesFileExist(url: string) {
 //     // let xhr = new XMLHttpRequest();
