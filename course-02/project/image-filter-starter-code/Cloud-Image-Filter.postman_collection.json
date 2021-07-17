@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "d29f8ebd-c6f6-4712-88dc-c55357eebeaa",
+		"name": "Cloud-Image-Filter",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET /filteredimage no params",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a4d76c41-f81a-4004-9dac-fb39aeb9ae77",
+						"exec": [
+							"pm.test(\"Status code is 400\", () => {",
+							"  pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}/filteredimage",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"filteredimage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /filteredimage with examples",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b6846472-ab14-4076-8669-ef73456ed8c1",
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"  pm.response.to.have.status(200) || (pm.response.to.have.status(415));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}/filteredimage?image_url=https://static01.nyt.com/images/2021/07/14/world/14eu-climate-01/14eu-climate-01-superJumbo.jpg",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"filteredimage"
+					],
+					"query": [
+						{
+							"key": "image_url",
+							"value": "https://static01.nyt.com/images/2021/07/14/world/14eu-climate-01/14eu-climate-01-superJumbo.jpg",
+							"description": "works"
+						},
+						{
+							"key": "image_url",
+							"value": "https://static01.nyt.com/images/2021/07/14/opinion/14Keefe/14Keefe-superJumbo.jpg",
+							"description": "works",
+							"disabled": true
+						},
+						{
+							"key": "image_url",
+							"value": "https://static01.nyt.com/images/2021/07/14/climate/14CLI-EUClimate1/14CLI-EUClimate1-superJumbo.jpg",
+							"description": "works",
+							"disabled": true
+						},
+						{
+							"key": "image_url",
+							"value": "https://upload.wikimedia.org/wikipedia/commons/b/b2/A_sunflower_2014-06-18_16-51.png",
+							"description": "png not supported",
+							"disabled": true
+						},
+						{
+							"key": "image_url",
+							"value": "https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_tabby_and_white_kitten_n01.jpg",
+							"description": "does not work",
+							"disabled": true
+						},
+						{
+							"key": "image_url",
+							"value": "https://jpeg.org/images/jpeg-home.jpg",
+							"description": "works",
+							"disabled": true
+						},
+						{
+							"key": "image_url",
+							"value": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Red_Kitten_01.jpg/1599px-Red_Kitten_01.jpg",
+							"description": "does not work",
+							"disabled": true
+						},
+						{
+							"key": "image_url",
+							"value": "http://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Small_Red_Rose.JPG/1600px-Small_Red_Rose.JPG",
+							"description": "does not work",
+							"disabled": true
+						},
+						{
+							"key": "image_url",
+							"value": "https://jpeg.org/images/about.jpg",
+							"description": "works",
+							"disabled": true
+						},
+						{
+							"key": "image_url",
+							"value": "https://jpeg.org/images/jpeg2000-home.jpg",
+							"description": "works",
+							"disabled": true
+						},
+						{
+							"key": "image_url",
+							"value": "https://jpeg.org/images/aic-home.jpg",
+							"description": "works",
+							"disabled": true
+						},
+						{
+							"key": "image_url",
+							"value": "https://jpeg.org/images/jpegpleno-home.jpg",
+							"description": "works",
+							"disabled": true
+						},
+						{
+							"key": "image_url",
+							"value": "https://jpeg.org/images/jpegsystems-home.jpg",
+							"description": "works",
+							"disabled": true
+						},
+						{
+							"key": "image_url",
+							"value": "https://kinsta.com/wp-content/uploads/2019/08/jpg-vs-jpeg.jpg",
+							"description": "works",
+							"disabled": true
+						},
+						{
+							"key": "image_url",
+							"value": "https://99designs-blog.imgix.net/blog/wp-content/uploads/2016/10/Trolls3.jpg",
+							"description": "works",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
