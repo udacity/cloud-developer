@@ -36,7 +36,14 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   app.get( "/", async ( req, res ) => {
     res.send("try GET /filteredimage?image_url={{}}")
   } );
-  
+
+  app.get("/filteredimage", async (req, res) => {
+    if (!req.query.image_url){
+      res.status(400).send("Request is missing the image_url={{}} parameter is missing");
+    } else {
+      res.send("You passed in the request query for image_url as " + req.query.image_url);
+    }
+  } ); 
 
   // Start the Server
   app.listen( port, () => {
