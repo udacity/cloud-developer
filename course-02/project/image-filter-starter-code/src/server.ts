@@ -42,6 +42,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   // util function to adjust colours and size.
   app.get("/filteredimage", async (req, res) => {
     let { image_url } = req.query;
+    let imageList = new Array;
 
     if (!image_url){
       // Return bad request if no image_url parameter is passed into the endpoint
@@ -50,10 +51,16 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
       try {
         // Read in the file from the URL and process with filter util
         let image = await filterImageFromURL(image_url);
-        res.status(200).sendFile(image);
-
-        // Remove the local copy of the file
-        // deleteLocalFiles(image);
+        res.status(200).sendFile(image, (error) => {
+          if (error) {
+            console.log("Received error " + error);
+          } else {
+            imageList.push(image);
+            deleteLocalFiles(imageList);
+            console.log("Completed response and successfully deleted file." + image);
+          }
+        });
+        
       } catch (error) {
         // Return a 422 Unprocessible entity if the file errors on Jimp.read or filtering
         console.log(error);
