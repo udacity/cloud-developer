@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+
+  node:
+    build: . # Use an image built from the current directory, therefore docker-compose looks for our Dockerfile
+    volumes:
+      - .:/code
+      - ~/.aws/:/root/.aws:ro
+#      - ./node_modules:/code/node_modules
+    command: >
+      sh -c "npm run dev"
+    env_file:
+      - src/config/.env
+    expose:
+      - 8080
+    ports:
+      - 8080:8080

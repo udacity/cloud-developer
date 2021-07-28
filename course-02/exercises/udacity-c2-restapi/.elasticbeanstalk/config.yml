@@ -1,0 +1,26 @@
+branch-defaults:
+  default:
+    environment: udagram-proft-dev-dev
+    group_suffix: null
+  master:
+    environment: udagram-proft-dev-dev
+deploy:
+  artifact: ./www/Archive.zip
+environment-defaults:
+  udagram-proft-dev-dev:
+    branch: null
+    repository: null
+global:
+  application_name: udagram-proft-dev
+  branch: null
+  default_ec2_keyname: AWS_EC2_Demo
+  default_platform: Node.js 12 running on 64bit Amazon Linux 2
+  default_region: us-east-1
+  include_git_submodules: true
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: null
+  repository: null
+  sc: git
+  workspace_type: Application

@@ -37,3 +37,5 @@ npm run dev
 
 Developer mode runs off the TypeScript source. Any saves will reset the server and run the latest version of the codebase. 
 
+NOTE: The line `"main": "server.js",` inside the package.json may need to be changed back to `"main": "src/server.js",` in order to run the server locally (and vice-versa in order to run the server in AWS's Elastic Beanstalk - Can be deployed either through: `npm run build`, `EBS init`, then `EBS Create` or through redeploying by `EBS deploy` after building)
+
