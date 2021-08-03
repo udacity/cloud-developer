@@ -1,2 +1,4 @@
 # cloud-developer
-content for Udacity's cloud developer nanodegree
+Image Filter App
+
+EB URL: http://image-filter-app.us-east-1.elasticbeanstalk.com/
