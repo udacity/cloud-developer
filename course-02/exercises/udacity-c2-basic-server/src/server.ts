@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import { Car, cars as cars_list } from './cars';
 
 (async () => {
-  let cars:Car[]  = cars_list;
+  let cars:Car[] = cars_list;
 
   //Create an express applicaiton
   const app = express(); 
@@ -68,15 +68,47 @@ import { Car, cars as cars_list } from './cars';
                 .send(`Welcome to the Cloud, ${name}!`);
   } );
 
-  // @TODO Add an endpoint to GET a list of cars
-  // it should be filterable by make with a query paramater
+  // (C)   POST: Endpoint to Create a car item in our list of cars
+  app.post("/cars/", (req: Request, res: Response) => {
+    let {make, type, model, cost} = req.body;
 
-  // @TODO Add an endpoint to get a specific car
-  // it should require id
-  // it should fail gracefully if no matching car is found
+    if (!make || !type || !model || !cost) {
+      return res.status(400).send("Invalid Request");
+    }
 
-  /// @TODO Add an endpoint to post a new car to our list
-  // it should require id, type, model, and cost
+    const car:Car = {make:make, type:type, model:model, cost:cost, id:cars.length};
+    cars.push(car);
+    return res.status(201).send(car.id.toString());
+  });
+
+  // (R)    GET: Endpoint to Retrieve a car or list of cars
+  app.get( "/cars/", ( req: Request, res: Response ) => {
+    let { make } = req.query;
+
+    if (!make) {
+      return res.status(200).send(cars);
+    }
+
+  return res.status(200).send(
+      cars.filter((car) => car.make == make)
+    );
+  });
+
+  app.get( "/cars/:id", 
+    ( req: Request, res: Response ) => {
+      let { id } = req.params;
+      let carId:number = +id;
+      let specificCar = cars[carId];
+      if (specificCar) {
+        return res.status(200).send(specificCar);
+      }
+      
+      return res.status(404).send("Invalid Car ID");
+  });
+
+  // (U)    PUT: Endpoint to Update a car in our list of cars
+
+  // (D) DELETE: Endpoint to Delete a car from our list of cars
 
   // Start the Server
   app.listen( port, () => {
