@@ -7,6 +7,7 @@ const router: Router = Router();
 
 // Get all feed items
 router.get('/', async (req: Request, res: Response) => {
+    console.log("I'm here!");
     const items = await FeedItem.findAndCountAll({order: [['id', 'DESC']]});
     items.rows.map((item) => {
             if(item.url) {
@@ -20,11 +21,22 @@ router.get('/', async (req: Request, res: Response) => {
 //Add an endpoint to GET a specific resource by Primary Key
 
 // update a specific resource
-router.patch('/:id', 
+router.put('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
         //@TODO try it yourself
-        res.send(500).send("not implemented")
+        const id:string = req.body.id.toString();
+        if (!id){
+            res.status(400).send("Invalid Request. Please check the request and try again.");
+        }
+
+        const feedItem = await FeedItem.findOne({where: {id: id}});
+
+        if (!feedItem) {
+            res.status(404).send();
+        }
+
+        res.status(200).send(feedItem);
 });
 
 
