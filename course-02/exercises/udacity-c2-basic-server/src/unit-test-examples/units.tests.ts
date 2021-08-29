@@ -1,9 +1,10 @@
-import { add, divide } from './units';
+import { add, concat, divide} from './units';
 
 import { expect } from 'chai';
 import 'mocha';
 
 describe('add function', () => {
+
 
   it('should add two and two', () => {
     const result = add(2,2);
@@ -32,7 +33,21 @@ describe('divide', () => {
   it('should throw an error if div by zero', () => {
     expect(()=>{ divide(5,0) }).to.throw('div by 0')
   });
+});
+  describe('concat', () => {
 
+    it('should concatenate 6 by 3', () => {
+      const result = concat('boy','nhy');
+      expect(result).to.equal('boynhy');
+    });
+  
+    it('should divide 5 and 2', () => {
+      const result = concat('f5','e2');
+      expect(result).to.equal('f5e2');
+    });
+  
+    
+  
 });
 
 // @TODO try creating a new describe block for the "concat" method
