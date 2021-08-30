@@ -4,6 +4,10 @@ branch-defaults:
       artifact: ./www/Archive.zip
     environment: udagrampeniel-dev
     group_suffix: null
+environment-defaults:
+  udagrampeniel-dev:
+    branch: null
+    repository: null
 global:
   application_name: udagrampeniel
   branch: null

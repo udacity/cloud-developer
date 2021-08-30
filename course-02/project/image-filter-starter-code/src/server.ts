@@ -33,16 +33,18 @@ import { pseudoRandomBytes } from 'crypto';
   /**************************************************************************** */
 
   //! END @TODO1
-  app.get("/filteredimage", async ( req, res) => {
-    let url = req.query.image_url;
+  app.get( "/filteredimage/", async (req:express.Request, res:express.Response) => {
+
+    let url = req.query.image_url as string;
 
     if (!url) {
       return res.status(400).send("please provide image url");
     }
 
     const filePath = await filterImageFromURL(url);
-    res.sendFile(filePath, function(){
+    res.status(200).sendFile(filePath, function(){
       deleteLocalFiles([filePath]);
+
     });
   });
 
