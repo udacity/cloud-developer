@@ -1,6 +1,7 @@
 import express from 'express';
+import { Request, Response } from 'express';
 import bodyParser from 'body-parser';
-import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import {filterImageFromURL, deleteLocalFiles, validURL} from './util/util';
 
 (async () => {
 
@@ -29,6 +30,38 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   /**************************************************************************** */
 
+  app.get('/filteredimage', async (req: Request, res: Response) => {
+    let image_url = req.query.image_url as string;
+
+    console.log(`Image URL : ${image_url}`);
+    // if (image_url == null || !validURL(image_url)) 
+    if (image_url == null) 
+        return res.status(400).send({message: 'Image URL must be specified'});
+	
+	  // 2. call filterImageFromURL(image_url) to filter the image
+	  // use await
+    try {
+	    const outputFilePath : unknown = await filterImageFromURL(image_url)
+      .catch( (err) => {
+        res.status(500).send({message: 'Server Error'});
+      });
+	    console.log(`Output File : ${outputFilePath}`);
+	
+      let outputPath = '';
+      if (outputFilePath) {
+        outputPath = outputFilePath as string;
+	      res.status(200).sendFile(outputPath, {}, async function(err) {
+          if (err) {
+            console.log(err);
+          } else {
+            await deleteLocalFiles([outputPath]);
+         }
+        });
+      }
+    } catch(err) {
+      res.status(500).send('Server Error');
+    }
+  });
   //! END @TODO1
   
   // Root Endpoint

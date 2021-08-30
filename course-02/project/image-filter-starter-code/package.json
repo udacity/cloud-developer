@@ -1,31 +1,31 @@
 {
-  "name": "udacity-c2-image-filter",
+  "name": "udagram-rajiv-image-filter-dev",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Udacity Cloud Developer Course 2 Project",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rimraf www/ || true",
-    "build": "npm run clean && tsc && cp package.json www/package.json && mkdir www/tmp/ && cd www && zip -r Archive.zip . && cd ..",
+    "build": "npm run clean && tsc && cp -rf src\\util www\\util && cp package.json www\\package.json && mkdir  www\\tmp && cd www && zip -r Archive.zip . && cd ..",
     "dev": "ts-node-dev ./src/server.ts"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/grutt/udacity-c2-image-filter.git"
+    "url": "git+https://github.com/rrprajiv/cloud-developer/tree/master/course-02/project/image-filter-starter-code"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/grutt/udacity-c2-image-filter/issues"
+    "url": "https://github.com/rrprajiv/cloud-developer/tree/master/course-02/project/image-filter-starter-code/issues"
   },
-  "homepage": "https://github.com/grutt/udacity-c2-image-filter#readme",
+  "homepage": "https://github.com/rrprajiv/cloud-developer/tree/master/course-02/project/image-filter-starter-code#README",
   "devDependencies": {
     "@types/bluebird": "^3.5.27",
     "@types/express": "^4.17.0",
     "@types/node": "^11.13.17",
     "ts-node-dev": "^1.0.0-pre.40",
     "tslint": "^5.18.0",
-    "typescript": "^3.5.3"
+    "typescript": "^3.9.7"
   },
   "dependencies": {
     "express": "^4.17.1",
