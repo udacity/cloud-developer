@@ -12,6 +12,26 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
+  app.get("/filteredimage",async(req,res)=>{
+    console.log("get the url");
+    let {image_url} =req.query.image_url;
+    //validate the image_url query 
+    const isValidURL = image_url.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+    if (isValidURL == null)
+    return res.status(400).send('Invalid URL');
+    else{
+    //call filterImageFromURL)image_url) to filter the image
+    const filteredImage = filterImageFromURL(image_url);
+    if(filteredImage==null || filteredImage==undefined)
+     return res.status(400).send('Unable to filter the provided image');
+    else 
+    return res.status(200).sendFile(filteredImage +'')
+    //deletes any files on the server on finish of the  response
+    fs.unlinkSync(filteredImage);
+    
+    }
+    
+  })
 
   // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
   // GET /filteredimage?image_url={{URL}}
