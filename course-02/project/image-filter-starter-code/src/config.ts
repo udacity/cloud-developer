@@ -1,7 +1,7 @@
 const result = require('dotenv').config();
 
 if (result.error) {
-    throw result.error
+    console.info("No .env file is passed")
 } else {
     console.log(`Using config:`)
     console.log(result.parsed)
