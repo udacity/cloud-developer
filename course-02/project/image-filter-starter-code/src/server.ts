@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 import validUrl from 'valid-url';
+import {config} from "./config";
 
 (async () => {
 
@@ -9,7 +10,7 @@ import validUrl from 'valid-url';
     const app = express();
 
     // Set the network port
-    const port = process.env.PORT || 8082;
+    const port = config.dev.port;
 
     // Use the body parser middleware for post requests
     app.use(bodyParser.json());
