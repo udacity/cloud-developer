@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "bbda78bd-c37f-4362-a698-dcd2fbd05d25",
+		"_postman_id": "e8bf0201-2f57-4df8-992c-0b12f0819832",
 		"name": "cloud-cdnd-c2-final",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -31,6 +31,30 @@
 		},
 		{
 			"name": "Valid Image URL",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{HOST}}/filteredimage?image_url=https://timedotcom.files.wordpress.com/2019/03/kitten-report.jpg",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"filteredimage"
+					],
+					"query": [
+						{
+							"key": "image_url",
+							"value": "https://timedotcom.files.wordpress.com/2019/03/kitten-report.jpg"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Valid Image URL from rubric",
 			"request": {
 				"method": "GET",
 				"header": [],

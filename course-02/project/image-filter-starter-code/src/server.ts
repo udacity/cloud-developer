@@ -21,22 +21,27 @@ import validUrl from 'valid-url';
     // RETURNS
     //   the filtered image file
     app.get("/filteredimage", async (req, res) => {
-        let { image_url } = req.query;
+        let image_url: string = req.query.image_url;
 
         // Validation
         if (!validUrl.isWebUri(image_url)) {
-            res.status(400).send({ message: 'Image URL is required or malformed' });
+            res.status(400).send({message: 'Image URL is required or malformed'});
         }
 
         // The actual task
         try {
-            let filteredImagePath = await filterImageFromURL(image_url);
-
-            res.sendFile(filteredImagePath, () => {
-                deleteLocalFiles([filteredImagePath]);
-            })
+            filterImageFromURL(image_url)
+                .then(filteredImagePath =>
+                    res.sendFile(filteredImagePath, () => {
+                        deleteLocalFiles([filteredImagePath]);
+                    })
+                )
+                .catch(_ => {
+                    res.status(500).send({message: "Image processing failed"});
+                });
         } catch (e) {
-            res.status(418).send({ message: "Processing failed" });
+            // I know it should be a different code, but this one is much more fun :)
+            res.status(418).send({message: "Unknown error"});
         }
     });
 

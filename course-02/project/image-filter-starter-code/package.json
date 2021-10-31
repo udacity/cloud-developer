@@ -28,7 +28,10 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
+    "@types/axios": "^0.14.0",
     "@types/valid-url": "^1.0.3",
+    "axios": "^0.24.0",
+    "bluebird": "^3.7.2",
     "express": "^4.17.1",
     "jimp": "^0.16.1",
     "rimraf": "^3.0.2",
