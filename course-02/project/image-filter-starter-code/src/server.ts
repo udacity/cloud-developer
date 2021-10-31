@@ -1,4 +1,4 @@
-import express from 'express';
+import express,{Response, Request} from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
@@ -33,9 +33,39 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   
   // Root Endpoint
   // Displays a simple message to the user
-  app.get( "/", async ( req, res ) => {
-    res.send("try GET /filteredimage?image_url={{}}")
+  app.get( "/", async ( req: Request, res: Response ) => {
+    res.send("Welcome to Laweezy image filter. Use /filteredimage to filter your image")
   } );
+  
+  // api endpoint to get filtered image
+  app.get('/filteredimage',async (req:Request, res:Response)=>{
+
+    const {image_url} = req.query;
+    // if the image url is null or undefined
+    if(!image_url){
+      // bad request or user error
+      return res.status(400).send("Error. image_url is required")
+    }
+    try{
+      const result = await filterImageFromURL(image_url as string);
+
+      res.status(200).sendFile(result,async(err)=>{
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+        }
+        else{
+          await deleteLocalFiles([result]);
+        }
+      })
+    }
+    catch(error)
+    {
+      console.log(error);
+      return res.status(500).send("Something went very wrong");
+    }
+
+  });
   
 
   // Start the Server
