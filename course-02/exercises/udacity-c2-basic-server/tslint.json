@@ -1,4 +1,4 @@
-// {
+ {
 //     "defaultSeverity": "error",
 //     "extends": [
 //         "tslint:recommended"
@@ -7,4 +7,4 @@
 //     "rules": {
 //     },
 //     "rulesDirectory": []
-// }
+ }
