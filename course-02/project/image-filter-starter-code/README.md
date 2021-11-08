@@ -10,10 +10,11 @@ A basic Ionic client web application which consumes the RestAPI Backend. [Covere
 
 ## Tasks
 
+please find Elastic Bean Stalk Deployed Url: http://image-filter-starter-code-dev222222222.us-west-2.elasticbeanstalk.com/filterImageFromURL?image_url=https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_tabby_and_white_kitten_n01.jpg
+
 ### Setup Node Environment
 
 You'll need to create a new node server. Open a new terminal within the project directory and run:
-
 1. Initialize a new project: `npm i`
 2. run the development server with `npm run dev`
 
