@@ -1,15 +1,14 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import express, { Request, Response } from "express";
+import bodyParser from "body-parser";
+import { filterImageFromURL, deleteLocalFiles } from "./util/util";
 
 (async () => {
-
   // Init the Express application
   const app = express();
 
   // Set the network port
   const port = process.env.PORT || 8082;
-  
+
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
 
@@ -29,18 +28,52 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   /**************************************************************************** */
 
-  //! END @TODO1
-  
+  app.get("/filteredimage", async (req: Request, res: Response) => {
+    let { image_url } = req.query;
+
+    if (!image_url) {
+      return res.status(400).send(`The image URL is required`);
+    }
+
+    filterImageFromURL(image_url)
+      .then((data) => handleResponse(res, data))
+      .catch(() => handleError(res, image_url));
+  });
+
   // Root Endpoint
   // Displays a simple message to the user
-  app.get( "/", async ( req, res ) => {
-    res.send("try GET /filteredimage?image_url={{}}")
-  } );
-  
+  app.get("/", async (req, res) => {
+    res.send("try GET /filteredimage?image_url={{}}");
+  });
 
   // Start the Server
-  app.listen( port, () => {
-      console.log( `server running http://localhost:${ port }` );
-      console.log( `press CTRL+C to stop server` );
-  } );
+  app.listen(port, () => {
+    console.log(`server running http://localhost:${port}`);
+    console.log(`press CTRL+C to stop server`);
+  });
+
+  /**
+   * Handles the successful http response
+   * @param res the http response
+   * @param filePath the temporary file path
+   * @returns the http response containing the resized image
+   */
+  function handleResponse(res: express.Response, filePath: any) {
+    return res.sendFile(filePath, function () {
+      //delete the temporary image after sending the response to the client
+      deleteLocalFiles(filePath);
+    });
+  }
+
+  /**
+   * Handles the http response in case of error
+   * @param res the http response
+   * @param image_url the initial image_url provided by the client
+   * @returns an http containing an error message
+   */
+  function handleError(res: express.Response, image_url: string) {
+    return res
+      .status(500)
+      .send({ error: "Error at retrieving image from URL: " + image_url });
+  }
 })();
