@@ -31,8 +31,8 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   //! END @TODO1
 
-  app.get("/filteredimage", async ( req, res ) => {
-    let { image_url } = req.query;
+  app.get("/filteredimage", async ( req:express.Request, res:express.Response ) => {
+    let image_url:string = req.query.image_url;
 
     if ( !image_url ) {
       return res.status(400)
@@ -40,19 +40,19 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     }
 
     try {
-      let filteredpath = await filterImageFromURL(image_url);
+      let filteredpath:string = await filterImageFromURL(image_url);
       res.sendFile(filteredpath, async () => {
         await deleteLocalFiles( [ filteredpath ] );
       });
     } catch {
-      return res.status(422)
+      return res.status(500)
                   .send(`error fetching image. image url may be invalid.`);
     }
   });
   
   // Root Endpoint
   // Displays a simple message to the user
-  app.get( "/", async ( req, res ) => {
+  app.get( "/", async ( req:express.Request, res:express.Response ) => {
     res.send("try GET /filteredimage?image_url={{}}")
   } );
   
