@@ -8,6 +8,7 @@ import bodyParser from 'body-parser';
 import { V0MODELS } from './controllers/v0/model.index';
 
 (async () => {
+  console.log('starting');
   await sequelize.addModels(V0MODELS);
   await sequelize.sync();
 

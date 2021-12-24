@@ -2,7 +2,7 @@
   "name": "udacity-c2-restapi",
   "version": "1.0.0",
   "description": "",
-  "main": "src/server.js",
+  "main": "server.js",
   "scripts": {
     "start": "node .",
     "tsc": "tsc",
@@ -15,6 +15,9 @@
   "keywords": [],
   "author": "Gabriel Ruttner",
   "license": "ISC",
+  "engines": {
+    "node": "10.0.0"
+  },
   "dependencies": {
     "@types/bcrypt": "^3.0.0",
     "@types/jsonwebtoken": "^8.3.2",
@@ -38,9 +41,10 @@
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "mocha": "^6.2.3",
+    "node": "^10.0.0",
     "rimraf": "^3.0.2",
     "ts-node-dev": "^1.1.1",
     "tslint": "^5.20.1",
-    "typescript": "^3.9.7"
+    "typescript": "^3.3.4000"
   }
 }
