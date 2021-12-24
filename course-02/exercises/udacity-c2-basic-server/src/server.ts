@@ -17,7 +17,7 @@ import { Car, cars as cars_list } from './cars';
 
   // Root URI call
   app.get( "/", ( req: Request, res: Response ) => {
-    res.status(200).send("Welcome to the Cloud!");
+    res.status(200).send("Welcome to the Cloud Jesus is Lord!");
   } );
 
   // Get a greeting to a specific person 
@@ -70,13 +70,80 @@ import { Car, cars as cars_list } from './cars';
 
   // @TODO Add an endpoint to GET a list of cars
   // it should be filterable by make with a query paramater
+  // > using query {{host}}/cars?make=car_make
+  app.get( "/cars/", ( req: Request, res: Response ) => {
+    let { make } = req.query;
+
+    let carlist: Car[];
+
+    if ( make ) {
+      carlist = cars.filter(car=> car.make.toLowerCase()==String(make).toLocaleLowerCase());
+    }
+    else{
+      carlist = cars;
+    }
+    //send list of cars
+    return res.status(200).send(carlist);
+  } );
+
 
   // @TODO Add an endpoint to get a specific car
   // it should require id
   // it should fail gracefully if no matching car is found
+  // > try it {{host}}/cars/:id
+  app.get( "/cars/:id", 
+    ( req: Request, res: Response ) => {
+      let { id } = req.params;
+
+      if ( !id ) {
+        return res.status(400)
+                  .send(`id is required`);
+      }
+
+      const carlist: Car[] = [];
+      for(let mycar of cars) {
+        if(mycar.id == Number(id)) {
+          carlist.push(mycar); 
+        }
+      }
+
+      if(carlist.length >= 1){
+        return res.status(200).send(carlist);
+      }
+      else{
+        return res.status(404).send(`Vechicle ${id} not found`);
+      }
+      
+  } );
 
   /// @TODO Add an endpoint to post a new car to our list
   // it should require id, type, model, and cost
+  app.post( "/cars", 
+  async ( req: Request, res: Response ) => {
+    const newcar: Car  = req.body;
+
+    //Verify that all properties exist in the posted JSON
+    const valid_properties = ['make', 'type', 'model', 'cost', 'id']; 
+    const has_valid_properties: boolean = valid_properties.every(item => newcar.hasOwnProperty(item));
+
+    //verify number of properties as well as existence
+    if ( !has_valid_properties ||  !(valid_properties.length == Object.keys(newcar).length) ) {
+      return res.status(400).send(`Invalid data`);
+    }
+    else if(cars.some(item=>Object.values(item).includes(newcar.id))){
+      return res.status(400).send(`ID must be unique. id ${newcar.id} already exists`);
+    }
+    else {//good to go 
+      console.log(newcar);
+      cars.push(newcar);
+      return res.status(201).send(newcar); 
+    }
+    
+    
+    
+
+    
+} );
 
   // Start the Server
   app.listen( port, () => {
