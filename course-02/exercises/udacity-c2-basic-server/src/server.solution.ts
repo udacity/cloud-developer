@@ -9,7 +9,7 @@ import { Car, cars as cars_list } from './cars';
   //Create an express applicaiton
   const app = express(); 
   //default port to listen
-  const port = 8082; 
+  const port = 8082;
   
   //use middleware so post bodies 
   //are accessable as req.body.{{variable}}
@@ -75,7 +75,6 @@ import { Car, cars as cars_list } from './cars';
       // destruct our query paramaters
       let { make } = req.query;
 
-      
       let cars_list = cars;
 
       // if we have an optional query paramater, filter by it
@@ -92,7 +91,7 @@ import { Car, cars as cars_list } from './cars';
   // it should fail gracefully if no matching car is found
   app.get( "/cars/:id", ( req: Request, res: Response ) => {
     // destruct our path params
-    let { id } = req.params;
+    const id: number = parseInt(req.params.id);
 
     // check to make sure the id is set
     if (!id) { 
