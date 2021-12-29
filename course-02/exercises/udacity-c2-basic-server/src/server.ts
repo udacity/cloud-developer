@@ -79,7 +79,10 @@ import { Car, cars as cars_list } from './cars';
       cars_filter = cars.filter(c => c.make == make);
     }
     return res.status(200)
-              .json(cars_filter);
+              .json({
+                length: cars_filter.length,
+                cars: cars_filter
+              });
   }); 
 
   // @TODO Add an endpoint to get a specific car
@@ -117,9 +120,9 @@ import { Car, cars as cars_list } from './cars';
 
       return res.status(200)
                 .json({
-                  result: "Car added to list",
-                  car: car,
-                  cars_length: cars.length
+                  length: cars.length,
+                  cars: cars,
+                  car: car
                 });
   } );
 
