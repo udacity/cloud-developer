@@ -4,6 +4,7 @@ This is a simple node-express server to explore and understand the Request-Respo
 
 Important change! Now master and stage branches are secured and only permit changes trough verified PR!
 NOW It's working
+See now!
 
 ***
 ## Getting Setup
