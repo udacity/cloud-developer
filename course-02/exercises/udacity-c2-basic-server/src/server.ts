@@ -138,9 +138,7 @@ import { Car, cars as cars_list } from './cars';
       cars.push(newcar);
       return res.status(201).send(newcar); 
     } 
-  
-    
-} );
+  } );
 
   // Start the Server
   app.listen( port, () => {

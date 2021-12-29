@@ -18,13 +18,53 @@ router.get('/', async (req: Request, res: Response) => {
 
 //@TODO
 //Add an endpoint to GET a specific resource by Primary Key
+router.get('/:id', async (req: Request, res: Response) => {
+    let { id } = req.params;
+    if ( !id ) {
+        res.status(400).send(`id is required`);
+    }
+    const item = await FeedItem.findByPk(id);
+    if(!item){
+        res.status(404).send(`record id: ${id} not found`);
+    }
+    if(item.url) {
+        item.url = AWS.getGetSignedUrl(item.url);
+    }
+    res.status(200).send(item); 
+
+});
 
 // update a specific resource
 router.patch('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
         //@TODO try it yourself
-        res.send(500).send("not implemented")
+        let { id } = req.params;
+        if ( !id ) {
+            res.status(400).send(`id is required`);
+        }
+        //retrieve target record
+        const item = await FeedItem.findByPk(id);
+
+        if(!item){
+            res.status(404).send(`record id: ${id} not found`);
+        }
+
+        //Patch items
+        const caption = req.body.caption;
+        const fileName = req.body.url;
+        
+        if(caption) {
+            item.caption = caption;
+        }
+        if(fileName){
+            item.url = fileName;
+        }
+
+        //update record
+        const saved_item = await item.save();
+        saved_item.url = AWS.getGetSignedUrl(saved_item.url);
+        res.status(201).send(saved_item);
 });
 
 
