@@ -1,0 +1,7 @@
+Note
+for secrets I installed the dotenv module
+and created a .env file in the root of the project to contain 
+all the configuration settings
+alternatively on the mac we have the ~/.zshrc file which our terminal runs 
+this can be used in place of .env 
+the variables are accessed in node via process.env 
