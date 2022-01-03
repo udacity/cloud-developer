@@ -5,3 +5,10 @@ all the configuration settings
 alternatively on the mac we have the ~/.zshrc file which our terminal runs 
 this can be used in place of .env 
 the variables are accessed in node via process.env 
+
+To deploy to EBS 
+npm run build 
+eb create  
+
+* after making changes use this command to update code
+eb deploy 
