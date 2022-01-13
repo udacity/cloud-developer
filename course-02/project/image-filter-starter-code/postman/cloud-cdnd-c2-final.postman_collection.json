@@ -1,0 +1,114 @@
+{
+	"info": {
+		"_postman_id": "f8d0d28a-c6d6-483d-9b8d-d347da34bd34",
+		"name": "cloud-cdnd-c2-final",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Image Filter Success",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response Status is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"}); ",
+							"",
+							"pm.test(\"Content-Type is jpg\", function () {",
+							"    pm.response.to.be.header(\"Content-Type\", \"image/jpeg\");",
+							"}); "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{HOST}}/filteredimage?image_url=https://cdn-prod.medicalnewstoday.com/content/images/articles/322/322868/golden-retriever-puppy.jpg",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"filteredimage"
+					],
+					"query": [
+						{
+							"key": "image_url",
+							"value": "https://cdn-prod.medicalnewstoday.com/content/images/articles/322/322868/golden-retriever-puppy.jpg"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Image Filter Cilent Error",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status is 422\", function () {",
+							"    pm.response.to.have.status(422);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{HOST}}/filteredimage?image_url=",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"filteredimage"
+					],
+					"query": [
+						{
+							"key": "image_url",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "HOST",
+			"value": "localhost:8082",
+			"type": "string"
+		}
+	]
+}

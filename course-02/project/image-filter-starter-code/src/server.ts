@@ -9,9 +9,6 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   // Set the network port
   const port = process.env.PORT || 8082;
-
-  // const BASIC_URL_REGEX: string = "https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]*\.[a-zA-Z0-9()]*\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)";
-  // const URL_REGEX: RegExp = new RegExp(BASIC_URL_REGEX);
   
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
@@ -40,12 +37,8 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   const {image_url}: {image_url: string} = req.query
 
   if(!image_url) {
-    res.status(400).send("The required image_url was not provided");
+    res.status(422).send("The required image_url was not provided");
   }
-
-  // if(!image_url.match(URL_REGEX)) {
-  //   res.status(400).send("Malformed image_url");
-  // }
 
   const path: string = await filterImageFromURL(image_url);
 
