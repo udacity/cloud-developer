@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import fs from "fs";
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
 (async () => {
@@ -28,6 +29,23 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
+
+  app.get('/filteredimage', async (req, res) => {
+    const { image_url } = req.query
+    if (image_url) {
+      filterImageFromURL(image_url)
+          .then(
+              path => {
+                res.status(200).send(fs.readFileSync(path, { encoding: 'utf-8' }));
+                deleteLocalFiles([path]);
+              }
+          ).catch(
+              error => res.status(500).send({ "msg": error.message })
+          );
+    } else {
+      res.status(400).send({ "msg": "Image URL must be provided." })
+    }
+  });
 
   //! END @TODO1
   
