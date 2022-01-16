@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import fs from "fs";
+import fs from 'fs';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
 (async () => {
@@ -36,8 +36,12 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
       filterImageFromURL(image_url)
           .then(
               path => {
-                res.status(200).send(fs.readFileSync(path, { encoding: 'utf-8' }));
-                deleteLocalFiles([path]);
+                res.status(200).sendFile(path, err => {
+                    if (err) {
+                        res.status(500).send({ "message": err.message });
+                    }
+                    deleteLocalFiles([path]);
+                });
               }
           ).catch(
               error => res.status(500).send({ "msg": error.message })
