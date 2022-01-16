@@ -46,3 +46,36 @@ Prevent requests without valid authentication headers.
 
 Add your own domain name and have it point to the running services (try adding a subdomain name to point to the processing server)
 > !NOTE: Domain names are not included in AWS’ free tier and will incur a cost.
+
+## Delivery Info
+
+### Elastic Beans Environemt
+```text
+http://udagram-vini-filter-dev-dev.us-east-1.elasticbeanstalk.com
+```
+
+![Dashboard](img/eb-deploy-01.png)
+
+![Deploy Health Status](img/eb-deploy-02.png)
+
+### URL Samples
+- S3 image sample: https://udagram-vini-dev.s3.amazonaws.com/cat01.jpg
+- Image Filtering Sample: http://udagram-vini-filter-dev-dev.us-east-1.elasticbeanstalk.com/filteredimage?image_url=https://udagram-vini-dev.s3.amazonaws.com/cat01.jpg
+####S3 image sample: 
+![https://udagram-vini-dev.s3.amazonaws.com/cat01.jpg](https://udagram-vini-dev.s3.amazonaws.com/cat01.jpg)
+####Image Filtering Sample: 
+![http://udagram-vini-filter-dev-dev.us-east-1.elasticbeanstalk.com/filteredimage?image_url=https://udagram-vini-dev.s3.amazonaws.com/cat01.jpg](http://udagram-vini-filter-dev-dev.us-east-1.elasticbeanstalk.com/filteredimage?image_url=https://udagram-vini-dev.s3.amazonaws.com/cat01.jpg)
+####Image Compare
+![Image Comparison](img/image-compare.png)
+
+### Bucket Image List
+Cat 01: 
+```text
+Image: https://udagram-vini-dev.s3.amazonaws.com/cat01.jpg
+Filter: http://udagram-vini-filter-dev-dev.us-east-1.elasticbeanstalk.com/filteredimage?image_url=https://udagram-vini-dev.s3.amazonaws.com/cat01.jpg
+```
+Cat 02:
+```text
+Image: https://udagram-vini-dev.s3.amazonaws.com/cat02.jpeg
+Filter: http://udagram-vini-filter-dev-dev.us-east-1.elasticbeanstalk.com/filteredimage?image_url=https://udagram-vini-dev.s3.amazonaws.com/cat02.jpeg
+```
