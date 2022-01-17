@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MenubarComponent } from './menubar.component';
 import { environment } from '../../environments/environment';
@@ -9,7 +9,7 @@ describe('MenubarPage', () => {
   let component: MenubarComponent;
   let fixture: ComponentFixture<MenubarComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ MenubarComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
