@@ -58,6 +58,13 @@ http://udagram-vini-filter-dev-dev.us-east-1.elasticbeanstalk.com
 
 ![Deploy Health Status](img/eb-deploy-02.png)
 
+####Deploy Health after Revision
+![Dashboard](img/eb-deploy-update-01.png)
+
+###Git branches
+
+![Git Branches](img/git-branches.png)
+
 ### URL Samples
 - S3 image sample: https://udagram-vini-dev.s3.amazonaws.com/cat01.jpg
 - Image Filtering Sample: http://udagram-vini-filter-dev-dev.us-east-1.elasticbeanstalk.com/filteredimage?image_url=https://udagram-vini-dev.s3.amazonaws.com/cat01.jpg
