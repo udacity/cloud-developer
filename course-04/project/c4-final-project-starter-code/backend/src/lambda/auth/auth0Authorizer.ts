@@ -12,7 +12,7 @@ const logger = createLogger('auth')
 // TODO: Provide a URL that can be used to download a certificate that can be used
 // to verify JWT token signature.
 // To get this URL you need to go to an Auth0 page -> Show Advanced Settings -> Endpoints -> JSON Web Key Set
-const jwksUrl = '...'
+const jwksUrl = 'https://dev-dvo5mcfr.us.auth0.com/.well-known/jwks.json'
 
 export const handler = async (
   event: CustomAuthorizerEvent
@@ -61,7 +61,36 @@ async function verifyToken(authHeader: string): Promise<JwtPayload> {
   // TODO: Implement token verification
   // You should implement it similarly to how it was implemented for the exercise for the lesson 5
   // You can read more about how to do this here: https://auth0.com/blog/navigating-rs256-and-jwks/
-  return undefined
+  const sig = await getKey(jwt)
+  
+  return verify(token, sig.publicKey, { algorithms: ['RS256'] }) as JwtPayload
+}
+
+async function getKey(jwt: Jwt) {
+  let resp = await Axios.get(jwksUrl);
+  let keys = resp.data.keys;
+  const signingKeys = keys
+    .filter(key => key.use === 'sig'
+      && key.kty === 'RSA'
+      && key.kid
+      && key.x5c && key.x5c.length
+    ).map(key => {
+      return { kid: key.kid, nbf: key.nbf, publicKey: certToPEM(key.x5c[0]) };
+    });
+
+  const foundKey = signingKeys.find(key => key.kid === jwt['header']['kid'])
+  if(!foundKey){
+    logger.error("Key not found")
+  }
+
+  return foundKey
+}
+
+// Referenced https://knowledge.udacity.com/questions/203918 for certToPEM code
+function certToPEM(cert) {
+  cert = cert.match(/.{1,64}/g).join('\n')
+  cert = `-----BEGIN CERTIFICATE-----\n${cert}\n-----END CERTIFICATE-----\n`
+  return cert
 }
 
 function getToken(authHeader: string): string {
