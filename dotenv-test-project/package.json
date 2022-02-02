@@ -1,0 +1,16 @@
+{
+  "name": "dotenv-test-project",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "node ./server.js"
+  },
+  "main": "server.js",
+  "keywords": [],
+  "author": "JSHI",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^15.0.0",
+    "ts-node-dev": "^1.1.1"
+  }
+}

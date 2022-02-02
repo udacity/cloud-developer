@@ -18,13 +18,88 @@ router.get('/', async (req: Request, res: Response) => {
 
 //@TODO
 //Add an endpoint to GET a specific resource by Primary Key
+/* router.get('/:id', async (req: Request, res: Response) => {
+    let reqid = req.query.id;
+    if ( !reqid ) {
+        return res.status(400).send("id is required");
+    }
+
+    // does the work but this is a bit shitty... does it not obtain all possible records first and then filters it locally? is there no way to filter
+    // it directly by id?
+    const items = await FeedItem.findAndCountAll({order: [['id', 'DESC']]});
+    const filtered = items.rows.filter((target) => target.id == reqid);
+
+    filtered.map((item) => {
+        if(item.url) {
+            item.url = AWS.getGetSignedUrl(item.url)
+        }
+    })
+
+    if (filtered && filtered.length === 0) {
+        return res.status(404).send("id not found");
+    }
+    
+    res.status(200).send(filtered);
+    
+    
+}) */
+
+
+router.get('/:id', async (req: Request, res: Response) => {
+    let { id } = req.params;
+    if (!id) {
+        return res.status(400).send("id is required")
+    }
+
+    const items = await FeedItem.findByPk(id);
+
+    // console.log(items);
+    if(items){
+        res.send(items)
+    }
+    else {
+        res.status(404).send("id does not exist")
+    }
+    
+});
 
 // update a specific resource
 router.patch('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
         //@TODO try it yourself
-        res.status(500).send("not implemented")
+        // res.status(500).send("not implemented")
+        const caption = req.body.caption;
+        const fileName = req.body.url;
+
+        if (!caption) {
+            return res.status(400).send({message: 'Caption is required or malformed'});
+        }
+
+        if (!fileName) {
+            return res.status(400).send({message: 'File url is required'});
+        }
+
+        let {id} = req.params;
+        const item = await FeedItem.findByPk(id);
+        item.url = fileName;
+        item.caption = caption;
+        
+        const savedItem = await item.save();
+        savedItem.url = AWS.getGetSignedUrl(savedItem.url);
+        res.status(201).send(savedItem);
+
+        //Alternative solution:
+
+        /* const item = await FeedItem.update(
+            { caption: caption },
+            { where: { id: 1 } }
+        );
+
+        const saved_item = item[1]; */
+
+
+        
 });
 
 
@@ -36,6 +111,8 @@ router.get('/signed-url/:fileName',
     const url = AWS.getPutSignedUrl(fileName);
     res.status(201).send({url: url});
 });
+
+// Retrieves signed URL for upload to S3; note that when copying the url the quotation marks have to be removed in Postman!!
 
 // Post meta data and the filename after a file is uploaded 
 // NOTE the file name is they key name in the s3 bucket.

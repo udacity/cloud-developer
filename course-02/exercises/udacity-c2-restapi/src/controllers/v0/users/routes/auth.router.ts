@@ -3,6 +3,8 @@ import { Router, Request, Response } from 'express';
 import { User } from '../models/User';
 
 import * as bcrypt from 'bcrypt';
+// JSH: need to import this to fix error in generateJWT
+import { config } from '../../../../config/config';
 import * as jwt from 'jsonwebtoken';
 import { NextFunction } from 'connect';
 

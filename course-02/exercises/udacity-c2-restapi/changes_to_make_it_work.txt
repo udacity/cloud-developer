@@ -1,0 +1,24 @@
+If npm install has already been run delete the node_modules folder in this repo
+Uninstall node (google) and delete node and npm related folders
+Reinstall node using nvm which allows for specification of a version of node (following this tutorial https://blog.jamesauble.com/install-nvm-on-mac-with-brew-adb921fb92cc)
+Choose node v11 or earlier or alternatively, 13.12.0 works allows; after installation specify this version nvm use 13.12.0
+
+Run again npm install;
+
+Add an import in auth.router.ts to import the config settings; add a config setting for jwt.secret and use any kind of string like "helloworld"
+
+Run npm run dev and it should hopefully works
+
+Troubleshooting:
+
+if it does not work change the script for "dev" in package.json to "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts"
+verify also if the config.ts settings are set wrt RDS credentials
+
+
+unset all proxies via terminal (actually run "unset http_proxy ..." instead of export http_proxy="")
+
+
+
+Deployment to AWS EB:
+
+Node.js has to be version 12 and cannot be > 13.12 apparently! Otherwise node server.js exits without any errors.
