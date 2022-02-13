@@ -42,6 +42,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     // 4. deletes any files on the server on finish of the response
     res.on('finish', () => deleteLocalFiles([filteredImage]));
   } );
+  
   // Root Endpoint
   // Displays a simple message to the user
   app.get( "/", async ( req: Request, res: Response ) => {
