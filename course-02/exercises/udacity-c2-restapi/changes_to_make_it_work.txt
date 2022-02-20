@@ -22,3 +22,8 @@ unset all proxies via terminal (actually run "unset http_proxy ..." instead of e
 Deployment to AWS EB:
 
 Node.js has to be version 12 and cannot be > 13.12 apparently! Otherwise node server.js exits without any errors.
+So when running `eb create` the node version has to be set to 12.
+
+After deployment ssh into EC2 instance with `eb ssh`
+
+Files are located in /var/app/current
