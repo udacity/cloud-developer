@@ -60,7 +60,6 @@ const isImageURL = require('image-url-validator').default;
 
       // Assuming there will only be one image file present in the tmp folder (as we will always delete the folder content after sending the response)
       // we send the first result, then delete the local file
-      console.log(`Filepath is ${filteredImagePaths[0]}`)
       res.sendFile(filteredImagePaths[0], {root: "."}, () => {deleteLocalFiles(filteredImagePaths)});
       
     }
