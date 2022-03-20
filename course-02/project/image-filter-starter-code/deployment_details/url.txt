@@ -1,1 +1,1 @@
-http://udagram-safrrhmn-dev-dev.us-east-1.elasticbeanstalk.com/filteredimage?image_url=https://bloomsbythebox.sirv.com/img/product/xlarge/04711D__Rose_Topaz_Hot_Pink_40cm.jpg?q=100
+http://udagram-safrrhmn-dev-dev.us-east-1.elasticbeanstalk.com/filteredimage?image_url=https://bloomsbythebox.sirv.com/img/product/xlarge/04711D__Rose_Topaz_Hot_Pink_40cm.jpg?

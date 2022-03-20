@@ -13,13 +13,19 @@ import { url } from 'inspector';
 
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
-  app.get('/filteredimage', async (req, res) => {
+  app.get('/filteredimage', async (req: express.Request, res: express.Response, next) => {
     if (req === undefined || req.query === undefined || req.query.image_url === undefined) {
+      res.statusCode = 500;
       res.send("Incorrect or empty url");
     }
+    try {
+      const path: string = await filterImageFromURL(req.query.image_url);
+      res.statusCode = 200
+      res.send(path);
+    } catch (error) {
+      next(error)
+    }
 
-    const path = await filterImageFromURL(req.query.image_url);
-    res.send(path)
 
   })
   // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
@@ -42,9 +48,6 @@ import { url } from 'inspector';
 
   // Root Endpoint
   // Displays a simple message to the user
-  app.get("/", async (req, res) => {
-    res.send("try GET /filteredimage?image_url={{}}")
-  });
 
 
   // Start the Server
