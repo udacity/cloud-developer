@@ -21,7 +21,7 @@ import { url } from 'inspector';
     try {
       const path: string = await filterImageFromURL(req.query.image_url);
       res.statusCode = 200
-      res.send(path);
+      res.sendFile(path, () => deleteLocalFiles([path]));
     } catch (error) {
       next(error)
     }
