@@ -9,6 +9,9 @@ export const config = {
     "aws_profile": "default",
     "aws_media_bucket": "udagram-ruttner-dev"
   },
+  "jwt": {
+    "secret": " "
+  },
   "prod": {
     "username": "",
     "password": "",
