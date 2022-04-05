@@ -27,10 +27,9 @@ import { deleteLocalFiles, filterImageFromURL } from "./util/util";
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   app.get("/filteredimage", async (req: Request, res: Response) => {
-    const imageUrlQueryParam = req.query.image_url;
+    const imageUrlQueryParam = encodeURI(req.query.image_url);
     if (!!imageUrlQueryParam) {
       const localAbsolutePath = await filterImageFromURL(imageUrlQueryParam);
-      console.log(`localAbsolutePath: ${localAbsolutePath}`);
       if (!!localAbsolutePath) {
         res.sendFile(localAbsolutePath, (error) => {
           if (!!error) {
