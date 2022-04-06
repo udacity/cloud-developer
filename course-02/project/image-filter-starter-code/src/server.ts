@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+var validator = require('validator');
 
 (async () => {
 
@@ -28,7 +29,33 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
+  app.get( "/filteredimage", async ( req, res ) => {
+    // Read image url from query
+    const image_url = req.query.image_url;
+    let image_path = ''
+    try {
+      // Validate image url not null
+      if(!image_url) {
+        res.status(500).send("Image url can't be null");
+        // Validate image url
+      } else if(!validator.isURL(image_url)){
+        res.status(500).send("Image url isn't valid")
+      } else {
+        // Filter image
+        image_path = await filterImageFromURL(image_url);
+        // Send file to the response
+        res.sendFile(image_path, (err) => {
+          // Delete image after done
+          console.log([image_path])
+          deleteLocalFiles([image_path])
+        })
 
+      }
+    } catch(e) {
+      console.log(e)
+      res.status(500).send(e.toString());
+    }
+  } );
   //! END @TODO1
   
   // Root Endpoint
