@@ -17,7 +17,7 @@
     "@types/aws-lambda": "^8.10.28",
     "@types/elasticsearch": "^5.0.34",
     "@types/node": "^10.14.12",
-    "aws-sdk": "^2.492.0",
+    "aws-sdk": "^2.1110.0",
     "serverless-aws-documentation": "^1.1.0",
     "serverless-reqvalidator-plugin": "^1.0.3",
     "serverless-webpack": "^5.3.1",
