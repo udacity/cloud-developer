@@ -1,5 +1,4 @@
-# TODO: Change the name of the org 
-org: sudkul
+org: cmcgrew
 app: serverless-todo-app
 service: serverless-todo-app
 
@@ -27,6 +26,8 @@ provider:
     TODOS_CREATED_AT_INDEX: CreatedAtIndex
     ATTACHMENT_S3_BUCKET: serverless-c4-todo-images-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
+    # TODO - Store Secret in AWS environment (https://www.youtube.com/watch?v=_UkKkrBArU4)
+    AUTH_0_SECRET: iJlEaZUu-NnVGPgDP3QbiwVcjJVAaBMqZs8lkkaF3KiqcnEhSLm1QjKupswXgDpE
 
   logs:
     # Enable API Gateway logs
@@ -40,6 +41,11 @@ provider:
             - xray:PutTelemetryRecords
             - xray:PutTraceSegments
           Resource: "*"
+        - Effect: Allow
+          Action:
+            - s3:PutObject
+            - xray:GetObject
+          Resource: arn:aws:s3:::${self:provider.environment.ATTACHMENT_S3_BUCKET}/*
 
 
 functions:
@@ -57,6 +63,13 @@ functions:
           path: todos
           cors: true
           authorizer: Auth
+    # iamRoleStatementsName: my-custom-role-name #optional custom role name setting instead of the default generated one
+    iamRoleStatements:
+      - Effect: "Allow"        
+        Action:
+          - dynamodb:GetItem        
+          - dynamodb:Query        
+        Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/mytable" # TODO - fill out AWS arn resource for dynamodb here
 
   # TODO: Configure this function - 
   # Provide iamRoleStatements property. Decide the Actions and AWS Resource. 
@@ -73,33 +86,60 @@ functions:
           request:
             schemas:
               application/json: ${file(models/create-todo-model.json)}
+    # iamRoleStatementsName: my-custom-role-name #optional custom role name setting instead of the default generated one
+    iamRoleStatements:
+      - Effect: "Allow"        
+        Action:
+          - dynamodb:PutItem        
+        Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/mytable" # TODO - fill out AWS arn resource for dynamodb here
 
   # TODO: Configure this function
-  # Provide property for setting up CORS, Authorizer, iamRoleStatements, and request schemas
+  # Provide property for setting up CORS(done), Authorizer(done), iamRoleStatements(done), and request schemas (done)
   UpdateTodo:
     handler: src/lambda/http/updateTodo.handler
     events:
       - http:
           method: patch
+          cors: true
           path: todos/{todoId}
+          authorizer: Auth
+          request:
+            schemas:
+              application/json: ${file(models/update-todo-model.json)}
+    # iamRoleStatementsName: my-custom-role-name #optional custom role name setting instead of the default generated one
+    iamRoleStatements:
+      - Effect: "Allow"        
+        Action:
+          - dynamodb:UpdateItem        
+        Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/mytable" # TODO - fill out AWS arn resource for dynamodb here
 
   # TODO: Configure this function
-  # Provide property for setting up CORS, Authorizer, iamRoleStatements
+  # Provide property for setting up CORS (done), Authorizer (done), iamRoleStatements (done)
   DeleteTodo:
     handler: src/lambda/http/deleteTodo.handler
     events:
       - http:
           method: delete
+          cors: true
           path: todos/{todoId}
+          authorizer: Auth
+  # iamRoleStatementsName: my-custom-role-name #optional custom role name setting instead of the default generated one
+    iamRoleStatements:
+      - Effect: "Allow"        
+        Action:
+          - dynamodb:DeleteItem        
+        Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/mytable" # TODO - fill out AWS arn resource for dynamodb here
 
   # TODO: Configure this function
-  # Provide property for setting up CORS, Authorizer, iamRoleStatements
+  # Provide property for setting up CORS (done), Authorizer (done), iamRoleStatements??? <-- need to figure this one out
   GenerateUploadUrl:
     handler: src/lambda/http/generateUploadUrl.handler
     events:
       - http:
           method: post
+          cors: true
           path: todos/{todoId}/attachment
+          authorizer: Auth
 
 resources:
   Resources:
@@ -114,15 +154,71 @@ resources:
     TodosTable:
       Type: AWS::DynamoDB::Table
       Properties:
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: todoId
+            AttributeType: S
+          - AttributeName: createdAt
+            AttributeType: S
+          - AttributeName: name
+            AttributeType: S
+          - AttributeName: dueDate
+            AttributeType: S
+          - AttributeName: done
+            AttributeType: BOOL #TODO:: Check this datatype, may need to be string
+          - AttributeName: attachmentUrl
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+          - AttributeName: todoId
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:provider.environment.TODOS_TABLE}
+        LocalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.TODOS_CREATED_AT_INDEX}
+            KeySchema:
+              - AttributeName: userId
+                KeyType: HASH
+              - AttributeName: createdAt
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL # What attributes will be copied to an index
 
     # TODO: Complete the bucket properties below. 
     # Do not forget to add the CorsConfiguration propoerty
     AttachmentsBucket:
       Type: AWS::S3::Bucket
       Properties:
+        BucketName: ${self:provider.environment.ATTACHMENT_S3_BUCKET}
+        CorsConfiguration:
+          CorsRules:
+            -
+              AllowedOrigins:
+                - '*'
+              AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - GET
+                - PUT
+                - POST
+                - DELETE
+                - HEAD
+              MaxAge: 3000
 
     # TODO: Complete the policy below and attach it to the bucket defined above
     # For cross referencing the name of the bucket, use "!Ref AttachmentsBucket"
     BucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
+        PolicyDocument:
+          Id: TodoPolicy # TODO:: Check if this needs to be something specific
+          Version: "2012-10-17"
+          Statement:
+            - Sid: PublicReadForGetBucketObjects
+              Effect: Allow
+              Principal: '*'
+              Action: 's3:GetObject'
+              Resource: 'arn:aws:s3:::$self:provider.environment.ATTACHMENT_S3_BUCKET}/*' # TODO:: Need to create the bucket in AWS
+        Bucket: !Ref AttachmentsBucket
