@@ -1,7 +1,7 @@
 import AWS = require('aws-sdk');
 import { config } from './config/config';
 
-const c = config.dev;
+const c = config.postgress;
 
 //Configure AWS
 if(c.aws_profile !== "DEPLOYED") {
@@ -26,12 +26,14 @@ export function getGetSignedUrl( key: string ): string{
 
   const signedUrlExpireSeconds = 60 * 5
 
-    const url = s3.getSignedUrl('getObject', {
+    /*const url = s3.getSignedUrl('getObject', {
         Bucket: c.aws_media_bucket,
         Key: key,
         Expires: signedUrlExpireSeconds
       });
-
+*/
+      const param = {Bucket: c.aws_media_bucket, Key: key, Expires: 60*5};
+      const url: string = s3.getSignedUrl('getObject',param);
     return url;
 }
 
@@ -43,7 +45,7 @@ export function getGetSignedUrl( key: string ): string{
  */
 export function getPutSignedUrl( key: string ){
 
-    const signedUrlExpireSeconds = 60 * 5
+   /* const signedUrlExpireSeconds = 60 * 5
 
     const url = s3.getSignedUrl('putObject', {
       Bucket: c.aws_media_bucket,
@@ -52,4 +54,9 @@ export function getPutSignedUrl( key: string ){
     });
 
     return url;
+    */
+    const param = {Bucket: c.aws_media_bucket, Key: key, Expires: 60*5};
+    const url: string = s3.getSignedUrl('putObject',param);
+  return url;
+
 }
