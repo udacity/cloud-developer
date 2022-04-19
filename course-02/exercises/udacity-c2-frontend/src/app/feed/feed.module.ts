@@ -15,15 +15,14 @@ const entryComponents = [FeedUploadComponent];
 const components = [FeedListComponent, FeedItemComponent, FeedUploadComponent, FeedUploadButtonComponent];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    ReactiveFormsModule
-  ],
-  declarations: components,
-  exports: components,
-  entryComponents: entryComponents,
-  providers: [FeedProviderService]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        ReactiveFormsModule
+    ],
+    declarations: components,
+    exports: components,
+    providers: [FeedProviderService]
 })
 export class FeedModule {}

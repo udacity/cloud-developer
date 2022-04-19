@@ -16,16 +16,15 @@ const entryComponents = [AuthMenuUserComponent, AuthMenuButtonComponent, AuthLog
 const components = [...entryComponents];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    ReactiveFormsModule,
-    ApiModule
-  ],
-  entryComponents: entryComponents,
-  declarations: components,
-  exports: components,
-  providers: []
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        ReactiveFormsModule,
+        ApiModule
+    ],
+    declarations: components,
+    exports: components,
+    providers: []
 })
 export class AuthModule {}
