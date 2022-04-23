@@ -1,5 +1,5 @@
 import * as AWS from 'aws-sdk'
-import { XavcSlowPal } from 'aws-sdk/clients/mediaconvert';
+// import { XavcSlowPal } from 'aws-sdk/clients/mediaconvert';
 import * as AWSXRay from 'aws-xray-sdk'
 
 const XAWS = AWSXRay.captureAWS(AWS)

@@ -6,14 +6,14 @@ plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
   - serverless-plugin-tracing
-
+  - serverless-dynamodb-local
 provider:
   name: aws
   runtime: nodejs12.x
   lambdaHashingVersion: '20201221'
 
   stage: ${opt:stage, 'dev'}
-  region: ${opt:region, 'us-east-1'}
+  region: 'us-east-1'
 
   tracing:
     lambda: true
@@ -24,10 +24,15 @@ provider:
   environment:
     TODOS_TABLE: Todos-${self:provider.stage}
     TODOS_CREATED_AT_INDEX: CreatedAtIndex
-    ATTACHMENT_S3_BUCKET: serverless-c4-todo-images-${self:provider.stage}
+    ATTACHMENT_S3_BUCKET: serverless-c4-todo-images-154524364323-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
     # TODO - Store Secret in AWS environment (https://www.youtube.com/watch?v=_UkKkrBArU4)
-    AUTH_0_SECRET: iJlEaZUu-NnVGPgDP3QbiwVcjJVAaBMqZs8lkkaF3KiqcnEhSLm1QjKupswXgDpE
+    DISABLE_XRAY_TRACING: 1
+    AWS_XRAY_CONTEXT_MISSING: LOG_ERROR
+    _X_AMZN_TRACE_ID: 0
+    AUTH_0_SECRET_ID: Auth0Secret-${self:provider.stage}
+    AUTH_0_SECRET_FIELD: auth0Secret
+
 
   logs:
     # Enable API Gateway logs
@@ -46,6 +51,14 @@ provider:
             - s3:PutObject
             - xray:GetObject
           Resource: arn:aws:s3:::${self:provider.environment.ATTACHMENT_S3_BUCKET}/*
+        - Effect: Allow
+          Action:
+            - secretsmanager:GetSecretValue
+          Resource: !Ref Auth0Secret
+        - Effect: Allow
+          Action:
+            - kms:Decrypt
+          Resource: !GetAtt KMSKey.Arn
 
 
 functions:
@@ -67,9 +80,9 @@ functions:
     iamRoleStatements:
       - Effect: "Allow"        
         Action:
-          - dynamodb:GetItem        
+          - dynamodb:GetItem
           - dynamodb:Query        
-        Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/mytable" # TODO - fill out AWS arn resource for dynamodb here
+        Resource: "arn:aws:dynamodb:us-east-1:154524364323:table/Todos-${self:provider.stage}"
 
   # TODO: Configure this function - 
   # Provide iamRoleStatements property. Decide the Actions and AWS Resource. 
@@ -91,15 +104,14 @@ functions:
       - Effect: "Allow"        
         Action:
           - dynamodb:PutItem        
-        Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/mytable" # TODO - fill out AWS arn resource for dynamodb here
-
+        Resource: "arn:aws:dynamodb:us-east-1:154524364323:table/Todos-dev"
   # TODO: Configure this function
   # Provide property for setting up CORS(done), Authorizer(done), iamRoleStatements(done), and request schemas (done)
   UpdateTodo:
     handler: src/lambda/http/updateTodo.handler
     events:
       - http:
-          method: patch
+          method: put
           cors: true
           path: todos/{todoId}
           authorizer: Auth
@@ -111,8 +123,7 @@ functions:
       - Effect: "Allow"        
         Action:
           - dynamodb:UpdateItem        
-        Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/mytable" # TODO - fill out AWS arn resource for dynamodb here
-
+        Resource: "arn:aws:dynamodb:us-east-1:154524364323:table/Todos-dev"
   # TODO: Configure this function
   # Provide property for setting up CORS (done), Authorizer (done), iamRoleStatements (done)
   DeleteTodo:
@@ -128,7 +139,7 @@ functions:
       - Effect: "Allow"        
         Action:
           - dynamodb:DeleteItem        
-        Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/mytable" # TODO - fill out AWS arn resource for dynamodb here
+        Resource: "arn:aws:dynamodb:us-east-1:154524364323:table/Todos-dev"
 
   # TODO: Configure this function
   # Provide property for setting up CORS (done), Authorizer (done), iamRoleStatements??? <-- need to figure this one out
@@ -149,6 +160,10 @@ resources:
     GatewayResponseDefault4XX:
       Type: AWS::ApiGateway::GatewayResponse
       Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: BAD_REQUEST
     
     # TODO: Create a DynamoDB table with local secondary index and a composite key
     TodosTable:
@@ -160,14 +175,6 @@ resources:
           - AttributeName: todoId
             AttributeType: S
           - AttributeName: createdAt
-            AttributeType: S
-          - AttributeName: name
-            AttributeType: S
-          - AttributeName: dueDate
-            AttributeType: S
-          - AttributeName: done
-            AttributeType: BOOL #TODO:: Check this datatype, may need to be string
-          - AttributeName: attachmentUrl
             AttributeType: S
         KeySchema:
           - AttributeName: userId
@@ -220,5 +227,55 @@ resources:
               Effect: Allow
               Principal: '*'
               Action: 's3:GetObject'
-              Resource: 'arn:aws:s3:::$self:provider.environment.ATTACHMENT_S3_BUCKET}/*' # TODO:: Need to create the bucket in AWS
+              Resource: 'arn:aws:s3:::$self:provider.environment.ATTACHMENT_S3_BUCKET}/*'
         Bucket: !Ref AttachmentsBucket
+    
+    KMSKey:
+      Type: AWS::KMS::KEY
+      Properties: 
+        Description: KMS key to encrypt Auth0 secret
+        KeyPolicy:
+          Version: '2012-10-17'
+          Id: key-default-1
+          Statement:
+            - Sid: Allow administration of the key
+              Effect: Allow
+              Principal:
+                AWS:
+                  Fn::Join:
+                    - ':'
+                    - - 'arn:aws:iam'
+                      - Ref: AWS::AccountId
+                      - 'root'
+              Action:
+                - 'kms:*'
+              Resource: '*'
+    KMSKeyAlias:
+      Type: AWS::KMS::Alias
+      Properties:
+        AliasName: alias/Auth0Secret-${self:provider.stage}
+        TargetKeyId: !Ref KMSKey
+
+    Auth0Secret:
+      Type: AWS::SecretsManager::Secret
+      Properties:
+        Name: ${self:providerenvironment.AUTH_0_SECRET_ID}
+        Description: Auth- secret
+        KmsKeyId: !Ref KMSKey
+custom:
+  topicName: attachmentTopic-${self:provider.stage}
+
+  serverless-offline:
+    port: 3003
+
+  dynamodb:
+    stages: 
+      - dev
+      - test
+      - stage
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+
+      

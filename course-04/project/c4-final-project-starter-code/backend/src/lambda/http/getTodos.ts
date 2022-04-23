@@ -25,7 +25,7 @@ export const handler = middy(
     }
 
     try {
-      const response = getTodosForUser(getUserId(event))
+      const response = await getTodosForUser(getUserId(event))
       return {
         statusCode: 200,
         headers: {

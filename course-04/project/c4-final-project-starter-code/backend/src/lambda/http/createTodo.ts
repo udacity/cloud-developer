@@ -5,13 +5,18 @@ import { cors } from 'middy/middlewares'
 import { CreateTodoRequest } from '../../requests/CreateTodoRequest'
 import { getUserId } from '../utils';
 import { createTodo } from '../../businessLogic/todos'
-import { TodoItem } from '../../models/TodoItem'
+// import { TodoItem } from '../../models/TodoItem'
+import { createLogger } from '../../utils/logger'
 
+const logger = createLogger('createTodo')
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {
       validateParameters(event)
     } catch (err) {
+      logger.error('Missing required paramenters', {
+        error: err
+      })
       return {
         statusCode: 400,
         headers: {
@@ -27,7 +32,7 @@ export const handler = middy(
     const userId : string = getUserId(event)
     
     try {
-      const response = createTodo(newTodo, userId)
+      const response = await createTodo(newTodo, userId)
       return {
         statusCode: 201,
         headers: {
@@ -40,6 +45,10 @@ export const handler = middy(
         })
       }
     } catch (err) {
+      logger.error('Unable to complete the create Todo Operation for user', {
+        userId: userId,
+        error: err
+      })
       return {
         statusCode: 500,
         headers: {

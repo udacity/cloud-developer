@@ -5,7 +5,7 @@
   "dependencies": {
     "@types/axios": "^0.14.0",
     "@types/http-errors": "^1.6.1",
-    "aws-xray-sdk": "^2.2.0",
+    "aws-xray-sdk": "^2.5.0",
     "axios": "^0.18.0",
     "http-errors": "^1.7.2",
     "jsonwebtoken": "^8.5.1",
@@ -19,7 +19,9 @@
     "@types/jsonwebtoken": "^8.3.2",
     "@types/node": "^10.14.4",
     "aws-sdk": "^2.433.0",
+    "serverless": "^3.12.0",
     "serverless-aws-documentation": "^1.1.0",
+    "serverless-dynamodb-local": "^0.2.40",
     "serverless-iam-roles-per-function": "^3.2.0-e97ab49",
     "serverless-plugin-canary-deployments": "^0.4.7",
     "serverless-plugin-tracing": "^2.0.0",

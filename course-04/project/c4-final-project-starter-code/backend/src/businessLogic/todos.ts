@@ -5,24 +5,30 @@ import { CreateTodoRequest } from '../requests/CreateTodoRequest'
 import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 import { createLogger } from '../utils/logger'
 import * as uuid from 'uuid'
-import * as createError from 'http-errors'
+// import * as createError from 'http-errors'
 import { TodoUpdate } from '../models/TodoUpdate'
 
 // TODO: Implement businessLogic
-const todoAccess: TodosAccess = new TodosAccess('ToDoTable')
+const todoAccess: TodosAccess = new TodosAccess()
 const attachmentUtils = new AttachmentUtils()
-export const getTodosForUser = (userId: string) => {
+const logger = createLogger('businessLayerLogger')
+export async function getTodosForUser(userId: string) {
     try {
-        return todoAccess.getTodoList(userId)
+        let todos = await todoAccess.getTodoList(userId)
+        return todos
     } catch (err) {
+        logger.error("Unable to get list of ToDos", {
+            userId,
+            error: err
+        })
         return err
     }
 }
 
 
-export const createTodo = (todoRequest: CreateTodoRequest, userId: string) => {
+export async function createTodo(todoRequest: CreateTodoRequest, userId: string) {
 
-    const todoId = uuid.v4
+    const todoId = uuid.v4()
     // Build ToDoItem
     const todoItem : TodoItem = 
     {
@@ -32,35 +38,40 @@ export const createTodo = (todoRequest: CreateTodoRequest, userId: string) => {
       name: todoRequest.name,
       dueDate: todoRequest.dueDate,
       done: false,
-      attachmentUrl: `https://${process.env.BUCKET_NAME}.s3.amazonaws.com/${todoId}`
+      attachmentUrl: todoRequest.attachmentUrl
     }
 
     try {
-        todoAccess.insertTodoItem(todoItem)
+        await todoAccess.insertTodoItem(todoItem)
         return todoItem
     } catch (err) {
+        logger.error("Unable to save ToDo Item", {
+            methodName: 'todos.intertTodoItem',
+            userId,
+            error: err
+        })
         return err
     }
 
 }
 
-export const updateTodo = (todoId: string, updatedTodoItem: UpdateTodoRequest) => {
+export async function updateTodo(todoId: string,userId: string, updatedTodoItem: UpdateTodoRequest) {
     // Map UpdateTodoRequest to TodoUpdate
     const todoUpdate: TodoUpdate = {
         ...updatedTodoItem
     }
     
     try {
-        todoAccess.updateTodoItem(todoId, todoUpdate)
+        await todoAccess.updateTodoItem(todoId, userId, todoUpdate)
     } catch (err) {
         return err
     }
 }
 
-export const deleteTodo = (todoId: string) => {
+export async function deleteTodo(todoId: string, userId: string) {
     
     try {
-        todoAccess.deleteTodoItem(todoId)
+        await todoAccess.deleteTodoItem(todoId, userId)
     } catch (err) {
         return err
     }

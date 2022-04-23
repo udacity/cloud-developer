@@ -3,9 +3,8 @@ import 'source-map-support/register'
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import * as middy from 'middy'
 import { cors, httpErrorHandler } from 'middy/middlewares'
-
-import { deleteTodo } from '../../businessLogic/todos'
 import { getUserId } from '../utils'
+import { deleteTodo } from '../../businessLogic/todos'
 
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
@@ -24,10 +23,10 @@ export const handler = middy(
     }
     
     const todoId = event.pathParameters.todoId
-    // TODO: Remove a TODO item by id
+    const userId = getUserId(event)
     
     try {
-      deleteTodo(todoId)
+      deleteTodo(todoId, userId)
       return {
         statusCode: 200,
         headers: {
@@ -57,12 +56,12 @@ handler
     })
   )
 
-  function validateParameters(event) {
-    if(!event) {
-      throw 'event is required'
-    } else {
-      if(!event.pathParameters) {
-        throw 'id is required in path params'
-      }
+function validateParameters(event) {
+  if(!event) {
+    throw 'event is required'
+  } else {
+    if(!event.pathParameters) {
+      throw 'id is required in path params'
     }
   }
+}
