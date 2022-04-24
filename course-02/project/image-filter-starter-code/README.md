@@ -46,3 +46,9 @@ Prevent requests without valid authentication headers.
 
 Add your own domain name and have it point to the running services (try adding a subdomain name to point to the processing server)
 > !NOTE: Domain names are not included in AWS’ free tier and will incur a cost.
+
+Image:
+![image](https://user-images.githubusercontent.com/42094883/164988466-86cced3e-6c6d-478a-83f7-535df0e15df8.png)
+
+Endpoint:
+http://new-eb-due-dev.us-east-1.elasticbeanstalk.com/filteredimage?image_url=https://avi.edu.vn/wp-content/uploads/2019/11/london-2393098.jpg
