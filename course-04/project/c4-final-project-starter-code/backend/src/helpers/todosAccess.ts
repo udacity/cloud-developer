@@ -1,5 +1,5 @@
 import * as AWS from 'aws-sdk'
-// const AWSXRay = require('aws-xray-sdk')
+const AWSXRay = require('aws-xray-sdk')
 // import { APIGatewayProxyHandler, APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 import { createLogger } from '../utils/logger'
@@ -7,37 +7,34 @@ import { TodoItem } from '../models/TodoItem'
 import { TodoUpdate } from '../models/TodoUpdate';
 // import { stringify } from 'querystring'
 
-// const client = new AWS.DynamoDB.DocumentClient({
-//   service: new AWS.DynamoDB({
-//     region: 'localhost',
-//     endpoint: 'http://localhost:8000'
-//   }),
-//   region: 'localhost',
-//   endpoint: 'http://localhost:8000'
-// })
+const client = new AWS.DynamoDB.DocumentClient({
+  service: new AWS.DynamoDB({
+    region: 'us-east-1'
+  }),
+  region: 'us-east-1'
+})
 
-// const XAWS = AWSXRay.captureAWS(AWS)
-// AWSXRay.captureAWSClient((client as any).service);
+AWSXRay.captureAWSClient((client as any).service);
 
 
-function createDynamoDbClient() {
-  try {
-    if(process.env.IS_OFFLINE) {
-      console.log("Using local dynamo db instance")
-      return new AWS.DynamoDB.DocumentClient({
-        service: new AWS.DynamoDB(),
-        region: 'localhost',
-        endpoint: 'http://localhost:8000'
-      })
-    }
-  } catch (err) {
-    console.log("DOCCLIENT ERRORrrrrrrR:" + JSON.stringify)
-  }
+// function createDynamoDbClient() {
+//   try {
+//     if(process.env.IS_OFFLINE) {
+//       console.log("Using local dynamo db instance")
+//       return new AWS.DynamoDB.DocumentClient({
+//         service: new AWS.DynamoDB(),
+//         region: 'localhost',
+//         endpoint: 'http://localhost:8000'
+//       })
+//     }
+//   } catch (err) {
+//     console.log("DOCCLIENT ERRORrrrrrrR:" + JSON.stringify)
+//   }
 
-  return new AWS.DynamoDB.DocumentClient({
-    service: new AWS.DynamoDB()
-  })
-}
+//   return new AWS.DynamoDB.DocumentClient({
+//     service: new AWS.DynamoDB()
+//   })
+// }
 
 const logger = createLogger('TodosAccess')
 
@@ -47,7 +44,7 @@ export class TodosAccess {
 
 
   constructor(
-    private readonly docClient: DocumentClient = createDynamoDbClient(),
+    private readonly docClient: DocumentClient = client,
     private readonly todosTable = process.env.TODOS_TABLE
   ) {
 

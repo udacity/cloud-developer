@@ -1,4 +1,4 @@
-org: cmcgrew
+org: cmmcgrew
 app: serverless-todo-app
 service: serverless-todo-app
 
@@ -7,6 +7,7 @@ plugins:
   - serverless-iam-roles-per-function
   - serverless-plugin-tracing
   - serverless-dynamodb-local
+  - serverless-offline
 provider:
   name: aws
   runtime: nodejs12.x
@@ -27,38 +28,38 @@ provider:
     ATTACHMENT_S3_BUCKET: serverless-c4-todo-images-154524364323-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
     # TODO - Store Secret in AWS environment (https://www.youtube.com/watch?v=_UkKkrBArU4)
-    DISABLE_XRAY_TRACING: 1
-    AWS_XRAY_CONTEXT_MISSING: LOG_ERROR
-    _X_AMZN_TRACE_ID: 0
-    AUTH_0_SECRET_ID: Auth0Secret-${self:provider.stage}
-    AUTH_0_SECRET_FIELD: auth0Secret
+    # DISABLE_XRAY_TRACING: 1
+    # AWS_XRAY_CONTEXT_MISSING: LOG_ERROR
+    # _X_AMZN_TRACE_ID: 0
+    # AUTH_0_SECRET_ID: Auth0Secret-${self:provider.stage}
+    # AUTH_0_SECRET_FIELD: auth0Secret
 
 
   logs:
     # Enable API Gateway logs
     restApi: true
 
-  iam:
-    role:
-      statements:
-        - Effect: Allow
-          Action:
-            - xray:PutTelemetryRecords
-            - xray:PutTraceSegments
-          Resource: "*"
-        - Effect: Allow
-          Action:
-            - s3:PutObject
-            - xray:GetObject
-          Resource: arn:aws:s3:::${self:provider.environment.ATTACHMENT_S3_BUCKET}/*
-        - Effect: Allow
-          Action:
-            - secretsmanager:GetSecretValue
-          Resource: !Ref Auth0Secret
-        - Effect: Allow
-          Action:
-            - kms:Decrypt
-          Resource: !GetAtt KMSKey.Arn
+  # iam:
+  #   role:
+  #     statements:
+  #       - Effect: Allow
+  #         Action:
+  #           - xray:PutTelemetryRecords
+  #           - xray:PutTraceSegments
+  #         Resource: "*"
+  #       - Effect: Allow
+  #         Action:
+  #           - s3:PutObject
+  #           - xray:GetObject
+  #         Resource: arn:aws:s3:::${self:provider.environment.ATTACHMENT_S3_BUCKET}/*
+  #       - Effect: Allow
+  #         Action:
+  #           - secretsmanager:GetSecretValue
+  #         Resource: !Ref Auth0Secret
+  #       - Effect: Allow
+  #         Action:
+  #           - kms:Decrypt
+  #         Resource: !GetAtt KMSKey.Arn
 
 
 functions:
@@ -70,6 +71,7 @@ functions:
   # Provide iamRoleStatements property for performing Actions on DynamoDB
   GetTodos:
     handler: src/lambda/http/getTodos.handler
+    tracing: true
     events:
       - http:
           method: get
@@ -81,7 +83,8 @@ functions:
       - Effect: "Allow"        
         Action:
           - dynamodb:GetItem
-          - dynamodb:Query        
+          - dynamodb:Query
+          - dynamodb:Scan  
         Resource: "arn:aws:dynamodb:us-east-1:154524364323:table/Todos-${self:provider.stage}"
 
   # TODO: Configure this function - 
@@ -90,6 +93,7 @@ functions:
   # To validate incoming HTTP requests, we have provided the request schemas in function definition below. 
   CreateTodo:
     handler: src/lambda/http/createTodo.handler
+    tracing: true
     events:
       - http:
           method: post
@@ -109,6 +113,7 @@ functions:
   # Provide property for setting up CORS(done), Authorizer(done), iamRoleStatements(done), and request schemas (done)
   UpdateTodo:
     handler: src/lambda/http/updateTodo.handler
+    tracing: true
     events:
       - http:
           method: put
@@ -128,6 +133,7 @@ functions:
   # Provide property for setting up CORS (done), Authorizer (done), iamRoleStatements (done)
   DeleteTodo:
     handler: src/lambda/http/deleteTodo.handler
+    tracing: true
     events:
       - http:
           method: delete
@@ -145,12 +151,23 @@ functions:
   # Provide property for setting up CORS (done), Authorizer (done), iamRoleStatements??? <-- need to figure this one out
   GenerateUploadUrl:
     handler: src/lambda/http/generateUploadUrl.handler
+    tracing: true
     events:
       - http:
           method: post
           cors: true
           path: todos/{todoId}/attachment
           authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - s3:PutObject
+          - s3:GetObject
+        Resource: arn:aws:s3:::${self:provider.environment.ATTACHMENT_S3_BUCKET}/*
+      - Effect: Allow
+        Action:
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
 resources:
   Resources:
@@ -163,7 +180,20 @@ resources:
         ResponseParameters:
           gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
           gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
-        ResponseType: BAD_REQUEST
+          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+   
+    GatewayResponseDefault5XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_5XX
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
     
     # TODO: Create a DynamoDB table with local secondary index and a composite key
     TodosTable:
@@ -174,8 +204,8 @@ resources:
             AttributeType: S
           - AttributeName: todoId
             AttributeType: S
-          - AttributeName: createdAt
-            AttributeType: S
+          # - AttributeName: createdAt
+          #   AttributeType: S
         KeySchema:
           - AttributeName: userId
             KeyType: HASH
@@ -183,13 +213,13 @@ resources:
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.TODOS_TABLE}
-        LocalSecondaryIndexes:
+        GlobalSecondaryIndexes:
           - IndexName: ${self:provider.environment.TODOS_CREATED_AT_INDEX}
             KeySchema:
               - AttributeName: userId
                 KeyType: HASH
-              - AttributeName: createdAt
-                KeyType: RANGE
+              # - AttributeName: createdAt
+              #   KeyType: RANGE
             Projection:
               ProjectionType: ALL # What attributes will be copied to an index
 
@@ -220,48 +250,50 @@ resources:
       Type: AWS::S3::BucketPolicy
       Properties:
         PolicyDocument:
-          Id: TodoPolicy # TODO:: Check if this needs to be something specific
+          Id: TodoPolicy
           Version: "2012-10-17"
           Statement:
             - Sid: PublicReadForGetBucketObjects
               Effect: Allow
               Principal: '*'
-              Action: 's3:GetObject'
-              Resource: 'arn:aws:s3:::$self:provider.environment.ATTACHMENT_S3_BUCKET}/*'
+              Action: 
+                - 's3:GetObject'
+                - 's3:PutObject'
+              Resource: 'arn:aws:s3:::${self:provider.environment.ATTACHMENT_S3_BUCKET}/*'
         Bucket: !Ref AttachmentsBucket
     
-    KMSKey:
-      Type: AWS::KMS::KEY
-      Properties: 
-        Description: KMS key to encrypt Auth0 secret
-        KeyPolicy:
-          Version: '2012-10-17'
-          Id: key-default-1
-          Statement:
-            - Sid: Allow administration of the key
-              Effect: Allow
-              Principal:
-                AWS:
-                  Fn::Join:
-                    - ':'
-                    - - 'arn:aws:iam'
-                      - Ref: AWS::AccountId
-                      - 'root'
-              Action:
-                - 'kms:*'
-              Resource: '*'
-    KMSKeyAlias:
-      Type: AWS::KMS::Alias
-      Properties:
-        AliasName: alias/Auth0Secret-${self:provider.stage}
-        TargetKeyId: !Ref KMSKey
+    # KMSKey:
+    #   Type: AWS::KMS::Key
+    #   Properties:
+    #     Description: KMS key to encrypt Auth0 secret
+    #     KeyPolicy:
+    #       Version: '2012-10-17'
+    #       Id: key-default-1
+    #       Statement:
+    #         - Sid: Allow administration of the key
+    #           Effect: Allow
+    #           Principal:
+    #             AWS:
+    #               Fn::Join:
+    #               - ':'
+    #               - - 'arn:aws:iam:'
+    #                 - Ref: AWS::AccountId
+    #                 - 'root'
+    #           Action:
+    #             - 'kms:*'
+    #           Resource: '*'
+    # KMSKeyAlias:
+    #   Type: AWS::KMS::Alias
+    #   Properties:
+    #     AliasName: alias/Auth0Secret-${self:provider.stage}
+    #     TargetKeyId: !Ref KMSKey
 
-    Auth0Secret:
-      Type: AWS::SecretsManager::Secret
-      Properties:
-        Name: ${self:providerenvironment.AUTH_0_SECRET_ID}
-        Description: Auth- secret
-        KmsKeyId: !Ref KMSKey
+    # Auth0Secret:
+    #   Type: AWS::SecretsManager::Secret
+    #   Properties:
+    #     Name: ${self:provider.environment.AUTH_0_SECRET_ID}
+    #     Description: Auth-secret
+    #     KmsKeyId: !Ref KMSKey
 custom:
   topicName: attachmentTopic-${self:provider.stage}
 
