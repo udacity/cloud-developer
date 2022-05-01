@@ -5,7 +5,6 @@ import { cors } from 'middy/middlewares'
 import { CreateTodoRequest } from '../../requests/CreateTodoRequest'
 import { getUserId } from '../utils';
 import { createTodo } from '../../businessLogic/todos'
-// import { TodoItem } from '../../models/TodoItem'
 import { createLogger } from '../../utils/logger'
 
 const logger = createLogger('createTodo')
@@ -38,11 +37,11 @@ export const handler = middy(
         headers: {
           'Access-Control-Allow-Origin': '*'
         },
-        body: JSON.stringify({
-          items: [
-            response
-          ]
-        })
+        body: JSON.stringify(
+          {
+            item: response
+          }
+        )
       }
     } catch (err) {
       logger.error('Unable to complete the create Todo Operation for user', {

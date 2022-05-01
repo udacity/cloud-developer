@@ -16,30 +16,8 @@ const client = new AWS.DynamoDB.DocumentClient({
 
 AWSXRay.captureAWSClient((client as any).service);
 
-
-// function createDynamoDbClient() {
-//   try {
-//     if(process.env.IS_OFFLINE) {
-//       console.log("Using local dynamo db instance")
-//       return new AWS.DynamoDB.DocumentClient({
-//         service: new AWS.DynamoDB(),
-//         region: 'localhost',
-//         endpoint: 'http://localhost:8000'
-//       })
-//     }
-//   } catch (err) {
-//     console.log("DOCCLIENT ERRORrrrrrrR:" + JSON.stringify)
-//   }
-
-//   return new AWS.DynamoDB.DocumentClient({
-//     service: new AWS.DynamoDB()
-//   })
-// }
-
 const logger = createLogger('TodosAccess')
 
-// TODO: Implement the dataLayer logic
-// this is class TodosAccess
 export class TodosAccess {
 
 
@@ -49,10 +27,6 @@ export class TodosAccess {
   ) {
 
   }
-  // constructor(groupsTable: string) {
-  //   private readonly docClient: new XAWS.DynamoDB.DocumentClient();
-  //   this.groupsTable = groupsTable;
-  // }
 
   async getTodoList(userId: string) {
 
@@ -80,7 +54,6 @@ export class TodosAccess {
   }
 
   async insertTodoItem(todoItem: TodoItem) {
-    console.log("NAMMMMMEEEEE: " + todoItem.name)
     let input = { "userId": todoItem.userId, "todoId": todoItem.todoId, "createdAt": todoItem.createdAt, "done": todoItem.done, "name": todoItem.name, "attachmentUrl": todoItem.attachmentUrl, "dueDate": todoItem.dueDate }
     const params: DocumentClient.PutItemInput = {
       TableName: this.todosTable,
@@ -140,7 +113,40 @@ export class TodosAccess {
         }
       }).promise()
     } catch (err) {
+      logger.error("Unable to delete ToDos in database", {
+        methodName: 'todosAccess.deleteTodoItem',
+        todoId: todoId,
+        error: err
+      })
+      return err
+    }
+  }
+
+  async updateTodoItemAttachmentUrl(todoId: string, userId: string, imageId: string) {
+    const params = {
+      TableName: this.todosTable,
+      Key: { 
+        todoId,
+        userId
+      },
+      UpdateExpression: 'set attachmentUrl = :attachmentUrl',
+      ExpressionAttributeValues: { ':attachmentUrl': `https://${process.env.ATTACHMENT_S3_BUCKET}.s3.amazonaws.com/${imageId}` },
+    }
+    try {
+      await this.docClient.update(params, function(err) {
+        if(err) {
+          console.log(err)
+        }
+      }).promise()
+    } catch (err) {
+      logger.error("Unable to Todo attachmentUrl in database", {
+        methodName: 'todosAccess.updateTodoItemAttachmentUrl',
+        todoId: todoId,
+        error: err
+      })
       return err
     }
   }
 }
+
+

@@ -5,10 +5,8 @@ import { CreateTodoRequest } from '../requests/CreateTodoRequest'
 import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 import { createLogger } from '../utils/logger'
 import * as uuid from 'uuid'
-// import * as createError from 'http-errors'
 import { TodoUpdate } from '../models/TodoUpdate'
 
-// TODO: Implement businessLogic
 const todoAccess: TodosAccess = new TodosAccess()
 const attachmentUtils = new AttachmentUtils()
 const logger = createLogger('businessLayerLogger')
@@ -29,7 +27,6 @@ export async function getTodosForUser(userId: string) {
 export async function createTodo(todoRequest: CreateTodoRequest, userId: string) {
 
     const todoId = uuid.v4()
-    // Build ToDoItem
     const todoItem : TodoItem = 
     {
       userId: userId,
@@ -56,7 +53,6 @@ export async function createTodo(todoRequest: CreateTodoRequest, userId: string)
 }
 
 export async function updateTodo(todoId: string,userId: string, updatedTodoItem: UpdateTodoRequest) {
-    // Map UpdateTodoRequest to TodoUpdate
     const todoUpdate: TodoUpdate = {
         ...updatedTodoItem
     }
@@ -77,10 +73,18 @@ export async function deleteTodo(todoId: string, userId: string) {
     }
 }
 
-export const createAttachmentPresignedUrl = (todoId: string) => {
+export async function createAttachmentPresignedUrl(todoId: string, userId: string) {
     try {
-        return attachmentUtils.generateSignedUrl(todoId)
+        const imageId = uuid.v4();
+        let url = await attachmentUtils.generateSignedUrl(imageId)
+        await todoAccess.updateTodoItemAttachmentUrl(todoId, userId, imageId)
+        return url
     } catch (err) {
-        err
+        logger.error("Unable to update ToDo Item attachment Url", {
+            methodName: 'todos.createAttachmentPresignedUrl',
+            userId,
+            error: err
+        })
+        return err
     }
 }

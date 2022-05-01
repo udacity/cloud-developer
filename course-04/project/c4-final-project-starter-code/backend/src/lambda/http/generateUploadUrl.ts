@@ -5,7 +5,7 @@ import * as middy from 'middy'
 import { cors, httpErrorHandler } from 'middy/middlewares'
 
 import { createAttachmentPresignedUrl } from '../../businessLogic/todos'
-// import { getUserId } from '../utils'
+import { getUserId } from '../utils'
 
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
@@ -24,11 +24,10 @@ export const handler = middy(
     }
     
     const todoId = event.pathParameters.todoId
-    // TODO: Return a presigned URL to upload a file for a TODO item with the provided id
-    
+    const userId : string = getUserId(event)    
 
     try {
-      const signedUrl = createAttachmentPresignedUrl(todoId)
+      const signedUrl = await createAttachmentPresignedUrl(todoId, userId)
       return {
         statusCode: 200,
         headers: {

@@ -10,9 +10,7 @@ const s3 = new XAWS.S3({
 
 export class AttachmentUtils {
 
-    s3; // TODO:: set type
-    groupsTable: string;
-    attachmentsTable: string;
+    s3;
     bucketName: string;
     urlExpiration: string;
    
@@ -20,9 +18,7 @@ export class AttachmentUtils {
         this.s3 = new XAWS.S3({
             signatureVersion: 'v4'
         })
-        this.groupsTable = process.env.GROUPS_TABLE
-        this.attachmentsTable = process.env.ATTACHMENTS_TABLE
-        this.bucketName = process.env.ATTACHMENTS_S3_BUCKET
+        this.bucketName = process.env.ATTACHMENT_S3_BUCKET
         this.urlExpiration = process.env.SIGNED_URL_EXPIRATION
     }
 
@@ -35,8 +31,10 @@ export class AttachmentUtils {
         }
 
         try {
-        return s3.getSignedUrl('putObject', params)
+            let singedUrl = s3.getSignedUrl('putObject', params)
+            return singedUrl
         } catch (err) {
+            console.log("Failed to get singed URL: " + err.message)
         return err
         }
     }
