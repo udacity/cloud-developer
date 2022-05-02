@@ -23,7 +23,8 @@ export class TodosAccess {
 
   constructor(
     private readonly docClient: DocumentClient = client,
-    private readonly todosTable = process.env.TODOS_TABLE
+    private readonly todosTable: string = process.env.TODOS_TABLE,
+    private readonly todosTableIndex: string = process.env.TODOS_CREATED_AT_INDEX
   ) {
 
   }
@@ -32,16 +33,17 @@ export class TodosAccess {
 
     const params = {
       TableName: this.todosTable,
-      FilterExpression: "userId = :userId",
+      IndexName: this.todosTableIndex,
+      KeyConditionExpression: "userId = :userId",
       ExpressionAttributeValues: {
-        ':userId': userId
+        ":userId": userId
       },
     };
 
 
 
     try {
-      return await this.docClient.scan(params).promise()
+      return await this.docClient.query(params).promise()
     } catch (err) {
       logger.error("Unable to get ToDos from database", {
         methodName: 'todosAccess.getToDoList',

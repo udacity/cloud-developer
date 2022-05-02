@@ -51,7 +51,14 @@ functions:
           - dynamodb:GetItem
           - dynamodb:Query
           - dynamodb:Scan  
-        Resource: "arn:aws:dynamodb:us-east-1:154524364323:table/Todos-${self:provider.stage}"
+        Resource: "arn:aws:dynamodb:${self:provider.region}:154524364323:table/${self:provider.environment.TODOS_TABLE}"
+      - Effect: "Allow"        
+        Action:
+          - dynamodb:GetItem
+          - dynamodb:Query
+          - dynamodb:Scan  
+        # Resource: arn:aws:dynamodb:us-east-1:154524364323:table/Todos-${self:provider.stage}/index/CreatedAtIndex
+        Resource: arn:aws:dynamodb:${self:provider.region}:154524364323:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.TODOS_CREATED_AT_INDEX}
 
   CreateTodo:
     handler: src/lambda/http/createTodo.handler
@@ -69,7 +76,7 @@ functions:
       - Effect: "Allow"        
         Action:
           - dynamodb:PutItem        
-        Resource: "arn:aws:dynamodb:us-east-1:154524364323:table/Todos-dev"
+        Resource: "arn:aws:dynamodb:${self:provider.region}:154524364323:table/${self:provider.environment.TODOS_TABLE}"
 
   UpdateTodo:
     handler: src/lambda/http/updateTodo.handler
@@ -87,7 +94,7 @@ functions:
       - Effect: "Allow"        
         Action:
           - dynamodb:UpdateItem        
-        Resource: "arn:aws:dynamodb:us-east-1:154524364323:table/Todos-dev"
+        Resource: "arn:aws:dynamodb:${self:provider.region}154524364323:table/${self:provider.environment.TODOS_TABLE}"
 
   DeleteTodo:
     handler: src/lambda/http/deleteTodo.handler
@@ -102,7 +109,7 @@ functions:
       - Effect: "Allow"        
         Action:
           - dynamodb:DeleteItem        
-        Resource: "arn:aws:dynamodb:us-east-1:154524364323:table/Todos-dev"
+        Resource: "arn:aws:dynamodb:${self:provider.region}:154524364323:table/${self:provider.environment.TODOS_TABLE}"
 
   GenerateUploadUrl:
     handler: src/lambda/http/generateUploadUrl.handler
@@ -122,7 +129,7 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:UpdateItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:154524364323:table/${self:provider.environment.TODOS_TABLE}
 
 resources:
   Resources:
@@ -156,6 +163,8 @@ resources:
             AttributeType: S
           - AttributeName: todoId
             AttributeType: S
+          - AttributeName: createdAt
+            AttributeType: S
         KeySchema:
           - AttributeName: userId
             KeyType: HASH
@@ -168,8 +177,11 @@ resources:
             KeySchema:
               - AttributeName: userId
                 KeyType: HASH
+              - AttributeName: createdAt
+                KeyType: RANGE
             Projection:
               ProjectionType: ALL
+    
     AttachmentsBucket:
       Type: AWS::S3::Bucket
       Properties:
