@@ -94,7 +94,7 @@ functions:
       - Effect: "Allow"        
         Action:
           - dynamodb:UpdateItem        
-        Resource: "arn:aws:dynamodb:${self:provider.region}154524364323:table/${self:provider.environment.TODOS_TABLE}"
+        Resource: "arn:aws:dynamodb:${self:provider.region}:154524364323:table/${self:provider.environment.TODOS_TABLE}"
 
   DeleteTodo:
     handler: src/lambda/http/deleteTodo.handler
