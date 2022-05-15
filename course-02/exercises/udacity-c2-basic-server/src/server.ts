@@ -87,7 +87,11 @@ import { Car, cars as cars_list } from './cars';
     return res.status(200).send(cars_list);
   } );
   
- 
+ //Return all the cars in the list
+
+ app.get("/cars/total_cars", (req: Request, res: Response) => {
+    return res.status(200).send(cars);   
+ });
 
   // @TODO Add an endpoint to get a specific car
   // it should require id
@@ -113,7 +117,33 @@ import { Car, cars as cars_list } from './cars';
 
   /// @TODO Add an endpoint to post a new car to our list
   // it should require id, type, model, and cost
+  app.post("/cars/", (req: Request, res: Response) => {
+    
+    let {make, type, model, cost, id} = req.body;
+    
+    if (!make || !type || !model || !cost || !id) {
+      return res.status(400).send(`id, type, model, and cost are required`);
+    }
+// create a new car instance
+    const new_car: Car = {
+      make: make, type: type, model: model, cost: cost, id: id};
 
+// add the new car to the list
+    cars.push(new_car);
+
+    res.status(201).send(new_car);
+  });
+
+
+
+  // TEST for my own case
+  // app.post("./persons/", (req: Request, res: Response) => {
+  //   let {name} = req.body;
+
+  //   persons.push(name);
+
+  //   res.status(201).send(name);
+  // })
   // Start the Server
   app.listen( port, () => {
       console.log( `server running http://localhost:${ port }` );
