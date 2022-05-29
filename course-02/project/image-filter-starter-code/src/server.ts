@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { IndexRouter } from './controllers/v0/index.router';
+import { FilteredImageRouter } from './controllers/filteredimage/routes/filteredimage.router';
 
 
 (async () => {
@@ -14,19 +14,12 @@ import { IndexRouter } from './controllers/v0/index.router';
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
 
-  //CORS Should be restricted
-  app.use( (req, res, next)  => {
-    res.header("Access-Control-Allow-Origin", "http://localhost:8100");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-    next();
-  });
-
-  app.use('/api/v0/', IndexRouter);
+  app.use('/filteredimage', FilteredImageRouter);
 
   // Root Endpoint
   // Displays a simple message to the user
   app.get( "/", async ( req, res ) => {
-    res.send("/api/v0/filteredimage?image_url={{}}")
+    res.send("try GET /filteredimage?image_url={{}}")
   } );
   
 
