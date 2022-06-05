@@ -35,3 +35,8 @@ UserInterfaceState.xcuserstate
 node_modules
 venv/
 .vscode
+
+.env
+*.env
+.env.*
+!.env.example
