@@ -1,6 +1,10 @@
-import express from 'express';
+import express, { 
+  Request,
+  Response
+} from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import { auth } from './middlewares/auth';
 
 (async () => {
 
@@ -29,9 +33,9 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   /**************************************************************************** */
 
-  app.get('/filteredimage', async (req, res) => {
+  app.get('/filteredimage', auth,  async (req: Request, res: Response) => {
     try{
-      const { image_url } = req.query;
+      const { image_url }: {image_url: string} = req.query;
       if(!image_url){
         res.status(401).send({
           status: 'failed',
