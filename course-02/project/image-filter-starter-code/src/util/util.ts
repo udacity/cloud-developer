@@ -1,5 +1,6 @@
 import fs from "fs";
 import Jimp = require("jimp");
+import https = require("https");
 
 // filterImageFromURL
 // helper function to download, filter, and save the filtered image locally
@@ -36,4 +37,19 @@ export async function deleteLocalFiles(files: Array<string>) {
   for (let file of files) {
     fs.unlinkSync(file);
   }
+}
+
+//Function validate Image url
+export async function isValidImageUrl(url:string) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      https.get(url, function(res) {
+        var contentType = res.headers['content-type'];
+        if (!contentType) return resolve(false);
+        return resolve(contentType.search(/^image\//) != -1);
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
 }
