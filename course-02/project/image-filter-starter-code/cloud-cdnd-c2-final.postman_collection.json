@@ -63,11 +63,16 @@
 	"variable": [
 		{
 			"key": "HOST",
-			"value": "localhost:8082"
+			"value": "localhost:8082",
+			"disabled": true
 		},
 		{
 			"key": "AccessToken",
 			"value": "christian-osueke-token"
+		},
+		{
+			"key": "HOST",
+			"value": "udacity-image-filter-dev1.us-east-1.elasticbeanstalk.com"
 		}
 	]
 }
