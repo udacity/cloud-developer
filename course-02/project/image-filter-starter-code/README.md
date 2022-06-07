@@ -1,3 +1,9 @@
+# Welcome to review my submission
+1. Git repository: https://github.com/robertdinh/cloud-developer/tree/master/course-02/project/image-filter-starter-code
+2. Endpoint URL: http://lamdt-img-filter-dev.us-east-1.elasticbeanstalk.com/
+3. Deployment screenshots: https://github.com/robertdinh/cloud-developer/tree/master/course-02/project/image-filter-starter-code/deployment_screenshots/screencapture-us-east-1-console-aws-amazon-elasticbeanstalk-home-2022-06-08-01_30_53.png
+4. Postman collection: https://github.com/robertdinh/cloud-developer/tree/master/course-02/project/image-filter-starter-code/cloud-cdnd-c2-final.postman_collection.json
+
 # Udagram Image Filtering Microservice
 
 Udagram is a simple cloud application developed alongside the Udacity Cloud Engineering Nanodegree. It allows users to register and log into a web client, post photos to the feed, and process photos using an image filtering microservice.
