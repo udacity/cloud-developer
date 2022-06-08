@@ -26,6 +26,7 @@ Postbird is a useful client GUI (graphical user interface) to interact with our 
 
 #### 2. [Postman](https://www.getpostman.com/downloads/)
 Postman is a useful tool to issue and save requests. Postman can create GET, PUT, POST, etc. requests complete with bodies. It can also be used to test endpoints automatically. We've included a collection (`./udacity-c2-restapi.postman_collection.json `) which contains example requsts.
+ 
 
 ***
 
@@ -37,3 +38,4 @@ npm run dev
 
 Developer mode runs off the TypeScript source. Any saves will reset the server and run the latest version of the codebase. 
 
+N/B: Most of these modules are deprecated either upgrade the dependencies or regress to earlier node versions 
