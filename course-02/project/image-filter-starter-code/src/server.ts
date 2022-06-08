@@ -28,33 +28,39 @@ import {filterImageFromURL, deleteLocalFiles, isValidImageUrl} from './util/util
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
-  app.get( "/filteredimage", async ( req, res ) => {
+  app.get( "/filteredimage", async ( request, response ) => {
     //    1. validate the image_url query
-    var validImgUrl = await isValidImageUrl(req.query.image_url)
+    var validImgUrl = await isValidImageUrl(request.query.image_url)
     if(validImgUrl){
       //    2. call filterImageFromURL(image_url) to filter the image
-      var filteredImage = await filterImageFromURL(req.query.image_url);
+      var filteredImage = await filterImageFromURL(request.query.image_url);
       //    3. send the resulting file in the response
-      res.sendFile(filteredImage, function(err){
-        if(err){
-          res.send('Error on send file');
+      response.status(200).sendFile(filteredImage, function(error){
+        if(error){
+          response.status(422)
+          response.send('Error on send file');
         }
         else{
           //    4. deletes any files on the server on finish of the response
-          deleteLocalFiles([filteredImage]);
+          try{
+            deleteLocalFiles([filteredImage]);
+          }
+          catch(error){
+            response.status(422).send({error: error});
+          }
         }
       });
     }
     else{
-      res.send("Please input valid image!")
+      response.status(400).send("Please input valid image url!")
     }    
   } );
   //! END @TODO1
   
   // Root Endpoint
   // Displays a simple message to the user
-  app.get( "/", async ( req, res ) => {
-    res.send("try GET /filteredimage?image_url={{}}")
+  app.get( "/", async ( request, response ) => {
+    response.send("try GET /filteredimage?image_url={{}}")
   } );
   
 
