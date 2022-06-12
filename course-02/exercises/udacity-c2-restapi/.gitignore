@@ -12,7 +12,7 @@ log.txt
 .vscode/
 npm-debug.log*
 
-.env
+*.env
 .idea/
 .ionic/
 .sourcemaps/
