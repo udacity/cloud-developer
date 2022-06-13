@@ -33,25 +33,25 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   app.get("/filteredimage/", async (req, res) => {
 
     let { image_url } = req.query
-//    let path: Array<string> = []
+    let path: Array<string> = []
     
     if (image_url) {
       try {
         let file = await filterImageFromURL(image_url)
-        return res.status(200).sendFile(file)
+
+        path.push(file)
+
+        let stream = fs.createReadStream(file)
+        
+        stream.once("end", function () {
+          stream.destroy();
+          deleteLocalFiles(path);
+        }).pipe(res);
+        
       } catch (error) {
         return res.status(422)
           .send('Unable to download the file, please check the url you provided')
       }
-
-//        path.push(file)
-
-//        let stream = fs.createReadStream(file)
-
-//        stream.once("end", function () {
-//          stream.destroy();
-//          deleteLocalFiles(path);
-//        }).pipe(res);
     }
     else {
       return res.status(400).send('Use image url as query')
