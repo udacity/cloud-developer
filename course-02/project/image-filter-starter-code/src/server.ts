@@ -33,14 +33,19 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   app.get("/filteredimage/", async (req, res) => {
 
     let { image_url } = req.query
-    let path: Array<string> = []
+//    let path: Array<string> = []
     
     if (image_url) {
+      try {
+        let file = await filterImageFromURL(image_url)
+        return res.status(200).sendFile(file)
+      } catch (error) {
+        return res.status(422).send('Unable to download the file')
+      }
+      
 
-      let file = await filterImageFromURL(image_url)
-
-      if (file === null) {
-        res.status(422).send('Unable to download')
+//      if (file === null) {
+//        res.status(422).send('Unable to download')
 //        path.push(file)
 
 //        let stream = fs.createReadStream(file)
@@ -49,8 +54,6 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 //          stream.destroy();
 //          deleteLocalFiles(path);
 //        }).pipe(res);
-      }
-      res.status(200).sendFile(file)
     }
   });
 
