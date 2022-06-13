@@ -13,7 +13,9 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
 
+  //declare and initialize fs
   const fs = require('fs');
+  
   // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
   // GET /filteredimage?image_url={{URL}}
   // endpoint to filter an image from a public url.
@@ -37,7 +39,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     
     if (image_url) {
       try {
-        let file = await filterImageFromURL(image_url)
+        let file: string = await filterImageFromURL(image_url)
 
         path.push(file)
 
@@ -47,7 +49,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
           stream.destroy();
           deleteLocalFiles(path);
         }).pipe(res);
-        
+
       } catch (error) {
         return res.status(422)
           .send('Unable to download the file, please check the url you provided')
