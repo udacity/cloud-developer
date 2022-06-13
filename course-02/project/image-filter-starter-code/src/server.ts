@@ -6,13 +6,14 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   // Init the Express application
   const app = express();
-
+  
   // Set the network port
   const port = process.env.PORT || 8082;
   
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
 
+  const fs = require('fs');
   // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
   // GET /filteredimage?image_url={{URL}}
   // endpoint to filter an image from a public url.
@@ -28,6 +29,30 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
+
+  app.get("/filteredimage/", async (req, res) => {
+
+    let { image_url } = req.query
+    let path: Array<string> = []
+    
+    if (image_url) {
+
+      let file = await filterImageFromURL(image_url)
+
+      if (file === null) {
+        res.status(422).send('Unable to download')
+//        path.push(file)
+
+//        let stream = fs.createReadStream(file)
+
+//        stream.once("end", function () {
+//          stream.destroy();
+//          deleteLocalFiles(path);
+//        }).pipe(res);
+      }
+      res.status(200).sendFile(file)
+    }
+  });
 
   //! END @TODO1
   

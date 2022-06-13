@@ -18,13 +18,47 @@ router.get('/', async (req: Request, res: Response) => {
 
 //@TODO
 //Add an endpoint to GET a specific resource by Primary Key
+router.get('/:id',
+    requireAuth,
+    async (req: Request, res: Response) => {
+        let { id } = req.params;
+
+        if (!id) {
+            return res.status(400).send(`id is required`)
+        } else {
+            // const items = await FeedItem.findAndCountAll({where: {id: id}, order: [['id', 'DESC']]});
+            // items.rows.map((item) => {
+            //     if(item.url) {
+            //         item.url = AWS.getGetSignedUrl(item.url);
+            //     }
+            // });
+
+            // if (items.count === 0) {
+            //     res.status(404).send(`Feed not found`)
+            // }
+
+            // return res.status(200).send(items)
+
+            const item = await FeedItem.findByPk(id);
+            if (item === null) {
+                return res.status(404).send(`Feed not found`)
+            }
+            return res.status(200).send(item);
+        }
+    }
+);
 
 // update a specific resource
 router.patch('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
         //@TODO try it yourself
-        res.status(500).send("not implemented")
+        let {id} = req.params;
+        const item = await FeedItem.update({caption: "Freshly update to Goodbye"}, {where: {id: id}});
+        if (item && item[0] === 0) {
+            return res.status(404).send(`Feed not found`)
+        }
+        res.status(200).send(item)
 });
 
 
@@ -56,7 +90,7 @@ router.post('/',
         return res.status(400).send({ message: 'File url is required' });
     }
 
-    const item = await new FeedItem({
+    const item: FeedItem = await FeedItem.build({
             caption: caption,
             url: fileName
     });
