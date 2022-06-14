@@ -12,8 +12,7 @@ log.txt
 .vscode/
 
 .env
-config.ts
-
+src/config/config.ts
 npm-debug.log*
 
 .idea/
