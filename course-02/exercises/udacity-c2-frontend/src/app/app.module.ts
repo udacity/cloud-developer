@@ -13,6 +13,10 @@ import { MenubarComponent } from './menubar/menubar.component';
 import { AuthModule } from './auth/auth.module';
 import { ApiService } from './api/api.service';
 
+// Import HttpClientModule from @angular/common/http in AppModule
+import {HttpClientModule} from '@angular/common/http';
+
+
 @NgModule({
   declarations: [
     AppComponent,
