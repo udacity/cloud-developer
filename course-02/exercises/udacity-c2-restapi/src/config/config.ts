@@ -33,7 +33,7 @@ export const config = {
     "aws_media_bucket": "udagrambucket1655121080"
   },
   "jwt": {
-    "secret": " "
+    "secret": "hello,world!"
   },
   "prod": {
     "username": "rootefuraimujs",
