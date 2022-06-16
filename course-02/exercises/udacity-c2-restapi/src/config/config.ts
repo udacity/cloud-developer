@@ -40,6 +40,9 @@ export const config = {
     "password": "udagramdb1655121080",
     "database": "udagramdb1655121080",
     "host": "udagramdb1655121080.cocqdrux33zf.us-east-1.rds.amazonaws.com",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "aws_region": "us-east-1",
+    "aws_profile": "default",
+    "aws_media_bucket": "udagrambucket1655121080"
   }
 }
