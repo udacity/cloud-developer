@@ -29,8 +29,9 @@
   },
   "dependencies": {
     "express": "^4.17.1",
+    "image-q": "^4.0.0",
     "jimp": "^0.16.1",
-    "rimraf": "^3.0.2",
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "rimraf": "^3.0.2"
   }
 }
