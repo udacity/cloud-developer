@@ -66,7 +66,7 @@ __webpack_require__.r(__webpack_exports__);
 const environment = {
     production: false,
     appName: 'Udagram',
-    apiHost: 'udagramdb1655121080-dev-dev.us-east-1.elasticbeanstalk.com'
+    apiHost: 'http://udagramdb1655121080-dev-dev.us-east-1.elasticbeanstalk.com/api/v0'
 };
 /*
  * For easier debugging in development mode, you can import the following file
