@@ -22,7 +22,7 @@
     "@types/jest": "^24.0.15",
     "@types/jsonwebtoken": "^8.3.2",
     "@types/node": "^10.14.12",
-    "aws-sdk": "^2.492.0",
+    "aws-sdk": "^2.1110",
     "jest": "^24.8.0",
     "serverless-aws-documentation": "^1.1.0",
     "serverless-dynamodb-local": "^0.2.38",
