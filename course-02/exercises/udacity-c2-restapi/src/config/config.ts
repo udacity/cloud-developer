@@ -13,7 +13,7 @@ export const config = {
     // "aws_media_bucket": "udagram-1234567890-bucket-dev"
   },
   "jwt": {
-    "secret": " "
+    "secret": process.env.JWT_SECRET
   },
   "prod": {
     "username": "",
