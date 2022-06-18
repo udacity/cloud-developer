@@ -1,0 +1,22 @@
+{
+  "name": "alexandra",
+  "version": "1.0.0",
+  "description": "My custom instagram: Udagram",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/king-Alex-d-great/cloud-developer.git"
+  },
+  "keywords": [
+    "ALX-T"
+  ],
+  "author": "Ogubuike Alexandra",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/king-Alex-d-great/cloud-developer/issues"
+  },
+  "homepage": "https://github.com/king-Alex-d-great/cloud-developer#readme"
+}
