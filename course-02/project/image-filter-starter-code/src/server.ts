@@ -30,7 +30,38 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   /**************************************************************************** */
 
   //! END @TODO1
-  
+  app.get( "/image", async (req: Request, res: Response) => {
+   
+    const {imageUrl} = req.query;
+
+     //Url not null
+    if(!imageUrl){              
+      res.status(422).json({     
+        status: false,
+        message: 'Image Required'
+      }); 
+      // image extention 
+    }else if(!imageUrl.match(/\.(jpeg|jpg|gif|png)$/)){           //return(url.match(/\.(jpeg|jpg|gif|png)$/) != null);    https://stackoverflow.com/questions/9714525/javascript-image-url-verify
+      res.status(422).json({
+        status: false,
+        message: 'invalid image URL, Please provide a proper image URL'
+      });
+      // process image
+    }else{
+    const imagePath = await filterImageFromURL(imageUrl);   //call image filter 
+    res.status(200).sendFile(imagePath, err => {
+      if (err){
+        console.log('Error Processing Image');
+        console.log(err);
+        //removing files from the server
+      }else{
+        res.on('close', () =>  {
+        deleteLocalFiles([imagePath]);
+        })
+      }
+    })
+    
+  } });
   // Root Endpoint
   // Displays a simple message to the user
   app.get( "/", async ( req, res ) => {
