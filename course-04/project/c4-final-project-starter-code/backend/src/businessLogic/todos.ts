@@ -7,7 +7,6 @@ import { createLogger } from '../utils/logger'
 import * as uuid from 'uuid'
 import * as createError from 'http-errors'
 
-// TODO: Implement businessLogic
 const logger = createLogger('todos')
 
 const todosAccess = new TodosAccess()

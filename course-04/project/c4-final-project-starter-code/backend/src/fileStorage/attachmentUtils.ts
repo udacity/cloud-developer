@@ -4,8 +4,6 @@ import { S3 } from 'aws-sdk'
 
 const XAWS = AWSXRay.captureAWS(AWS)
 
-// TODO: Implement the fileStogare logic
-
 export class AttachmentUtils {
     constructor(
       private readonly s3: S3 = new XAWS.S3({ signatureVersion: 'v4' }),
