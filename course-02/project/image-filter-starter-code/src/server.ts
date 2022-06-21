@@ -1,6 +1,6 @@
-import express, {Request, Response} from 'express';
+import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
-import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import { filterImageFromURL, deleteLocalFiles } from './util/util';
 
 (async () => {
 
@@ -9,7 +9,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   // Set the network port
   const port = process.env.PORT || 8082;
-  
+
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
 
@@ -28,32 +28,40 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
-  app.get('/filteredimage/',async (req: Request, res: Response) => {
-    let { image_url} = req.query;
-    let image_url_copy = String(image_url);
-    console.log(image_url)
+  app.get('/filteredimage', async (req: Request, res: Response) => {
+    const { image_url } = req.query;
+    //console.log(image_url);
+    const image_url_copy = String(image_url);
+    //console.log(image_url_copy);
     if (!image_url_copy) {
       return res.status(400)
-                  .send(`Image Url is required`);
+        .send(`Image Url is required`);
     }
-    const filteredpath = await filterImageFromURL(image_url_copy);
-    console.log(filteredpath);
-    res.status(200).sendFile(filteredpath)
-    deleteLocalFiles([filteredpath]);
+    try {
+      let filteredpath = await filterImageFromURL(image_url_copy);
+      //console.log(filteredpath);
+      res.status(200).sendFile(filteredpath, () => {
+        deleteLocalFiles([filteredpath])
+      });
+    } catch (error) {
+      return res.status(422).send('Image is not downloadable');
+    }
+
+
   });
 
   //! END @TODO1
-  
+
   // Root Endpoint
   // Displays a simple message to the user
-  app.get( "/", async ( req, res ) => {
+  app.get("/", async (req, res) => {
     res.send("Welcome to Filtered Image Api Endpoint")
-  } );
-  
+  });
+
 
   // Start the Server
-  app.listen( port, () => {
-      console.log( `server running http://localhost:${ port }` );
-      console.log( `press CTRL+C to stop server` );
-  } );
+  app.listen(port, () => {
+    console.log(`server running http://localhost:${port}`);
+    console.log(`press CTRL+C to stop server`);
+  });
 })();

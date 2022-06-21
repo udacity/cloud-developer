@@ -50,3 +50,8 @@ Add your own domain name and have it point to the running services (try adding a
 
 ### Elastic Beanstalk Endpoint
 http://image-filter-starter-code-dev22222222222222.us-east-1.elasticbeanstalk.com/
+
+### URL used
+
+https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_tabby_and_white_kitten_n01.jpg
+https://cdn1.vectorstock.com/i/1000x1000/37/90/close-up-of-colorful-eyes-cat-vector-23633790.jpg
