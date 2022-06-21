@@ -28,9 +28,10 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "express": "^4.17.1",
     "jimp": "^0.16.1",
-    "rimraf": "^3.0.2",
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "rimraf": "^3.0.2"
   }
 }
