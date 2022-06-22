@@ -13,13 +13,16 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
 
-  app.get( "/filteredimage/", ( req: Request, res: Response ) => {
+  app.get( "/filteredimage/", ( req: express.Request, res: express.Response ) => {
     let { image_url } = req.query;
     if ( !image_url ) {
       return res.status(400).send("Please provide image_url");
-    }    
-    filterImageFromURL(image_url)
-      .then(imagePath => {
+    }
+    if ( typeof image_url !== "string" ) {
+      res.status(500).json({ error: 'Invalid image_url' });
+      return;
+    }   
+    filterImageFromURL(image_url).then(imagePath => {
         return res.status(200).sendFile(imagePath, err => {
           if (!err) {
             let filesList: string[] = [imagePath];
