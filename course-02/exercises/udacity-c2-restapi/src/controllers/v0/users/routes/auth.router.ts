@@ -13,12 +13,15 @@ const router: Router = Router();
 
 async function generatePassword(plainTextPassword: string): Promise<string> {
     //@TODO Use Bcrypt to Generated Salted Hashed Passwords
-    return "NotYetImplemented"
+    const hash = await bcrypt.hash(plainTextPassword, 10);
+
+    return hash;
 }
 
 async function comparePasswords(plainTextPassword: string, hash: string): Promise<boolean> {
     //@TODO Use Bcrypt to Compare your password to your Salted Hashed Password
-    return true
+    const result = bcrypt.compareSync(plainTextPassword, hash);
+    return result;
 }
 
 function generateJWT(user: User): string {
