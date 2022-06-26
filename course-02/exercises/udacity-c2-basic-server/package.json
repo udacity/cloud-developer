@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha -r ts-node/register src/**/*.tests.ts",
     "dev": "ts-node-dev ./src/server.ts",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -24,15 +25,19 @@
     "@types/express": "^4.17.9",
     "@types/mocha": "^5.2.7",
     "@types/node": "^11.15.42",
+    "@typescript-eslint/eslint-plugin": "^5.29.0",
+    "@typescript-eslint/parser": "^5.29.0",
     "chai": "^4.2.0",
+    "eslint": "^8.18.0",
     "js-yaml": "^3.14.1",
     "mocha": "^6.2.3",
     "ts-node": "^8.10.2",
     "ts-node-dev": "^1.1.1",
     "tslint": "^5.20.1",
-    "typescript": "^3.9.7"
+    "typescript": "^3.9.10"
   },
   "dependencies": {
+    "eslint-config-airbnb-typescript": "^17.0.0",
     "express": "^4.17.1"
   }
 }
