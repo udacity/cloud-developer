@@ -36,6 +36,7 @@ The image filter server on AWS can be accessed using the following endpoint:
 http://image-filter-huber-dev-dev.us-east-1.elasticbeanstalk.com/filteredImageFromURL?image_url={{}}
 
 Example:
+
 http://image-filter-huber-dev-dev.us-east-1.elasticbeanstalk.com/filteredImageFromURL?image_url=https://www.empa.ch/documents/56024/350623/UrbanMining_Unit_neu3.jpg/b181bde6-34c1-4048-b553-3d1e1a4c3ced?t=1518026888360
 
 
