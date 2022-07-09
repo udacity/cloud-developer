@@ -52,4 +52,4 @@ Git repo
 
 Screenshot of the EBS application dashboard after deployment
 
-[Link to the endpoint URL]: (http://udacity-udagram-image-filter-dev.us-east-1.elasticbeanstalk.com/)
+[Link to the endpoint URL] (http://udacity-udagram-image-filter-dev.us-east-1.elasticbeanstalk.com/)
