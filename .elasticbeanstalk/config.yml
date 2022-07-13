@@ -2,6 +2,10 @@ branch-defaults:
   default:
     environment: null
     group_suffix: null
+  dev:
+    environment: development
+deploy:
+    artifact: ./www/Archive.zip
 global:
   application_name: image-filter-starter-code
   branch: null

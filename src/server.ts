@@ -38,7 +38,7 @@ import { promises } from 'dns';
     }
     const filteredImagePath  = await filterImageFromURL(imageUrl)
     const removeImage = () => deleteLocalFiles([filteredImagePath])
-    Promise.resolve(response.sendFile(filteredImagePath)).then(removeImage)
+    response.sendFile(filteredImagePath, removeImage)
   })
   //! END @TODO1
   
