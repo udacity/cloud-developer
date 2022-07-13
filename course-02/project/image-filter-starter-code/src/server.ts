@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import { promises } from 'dns';
 
 (async () => {
 
@@ -17,7 +18,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   // GET /filteredimage?image_url={{URL}}
   // endpoint to filter an image from a public url.
   // IT SHOULD
-  //    1
+  // 
   //    1. validate the image_url query
   //    2. call filterImageFromURL(image_url) to filter the image
   //    3. send the resulting file in the response
@@ -29,6 +30,16 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   /**************************************************************************** */
 
+
+  app.get("/filteredImage", async (request, response) => {
+    const imageUrl = request.query.image_url
+    if (!imageUrl) {
+      response.status(400).send({message: 'Image not provided. Please provide an image_url query param'})
+    }
+    const filteredImagePath  = await filterImageFromURL(imageUrl)
+    const removeImage = () => deleteLocalFiles([filteredImagePath])
+    Promise.resolve(response.sendFile(filteredImagePath)).then(removeImage)
+  })
   //! END @TODO1
   
   // Root Endpoint
