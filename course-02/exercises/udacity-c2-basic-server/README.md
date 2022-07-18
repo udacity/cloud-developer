@@ -48,7 +48,7 @@ This directory contains some simple unit functions (`units.ts`) and correspondin
 # Tasks
 1. @TODO `./src/server.ts/`
 Add an endpoint to GET a list of cars.
-
+###done
 2. @TODO `./src/server.ts/` 
 Add an endpoint to get a specific car.
 
