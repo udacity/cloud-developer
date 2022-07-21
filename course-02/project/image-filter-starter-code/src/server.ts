@@ -50,7 +50,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
       return res.status(400).json({"Provide a valid image url": false});
     }
     try {
-      let imageFile = await filterImageFromURL(image_url);
+      let imageFile = await filterImageFromURL("image_url");
       console.log(imageFile);
 
       return res.status(200).sendFile(imageFile, () => {
