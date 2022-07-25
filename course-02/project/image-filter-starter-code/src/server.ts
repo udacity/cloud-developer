@@ -29,6 +29,42 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   /**************************************************************************** */
 
+// validate URL helper func
+  function validURL(str : string) {
+    var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+      '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+    return !!pattern.test(str);
+  }
+  
+  // Filter image Endpoint
+  app.get( "/filteredimage", async ( req, res ) => {
+
+    //    1. validate the image_url query
+    if(!validURL(req.query.image_url)){
+     res.status(400).send("Invalide URL, please check it.")
+     return
+    }
+
+  //    2. call filterImageFromURL(image_url) to filter the image
+    let file = await filterImageFromURL(req.query.image_url)
+
+  //    3. send the resulting file in the response  
+  res.sendFile(file, function (err) {
+    if (err) {
+        res.status(500).send("Something went wrong, please try again.");
+    } else {
+          //    4. deletes any files on the server on finish of the response
+          deleteLocalFiles([file])    
+    }
+});
+
+    return 
+  } );
+
   //! END @TODO1
   
   // Root Endpoint
