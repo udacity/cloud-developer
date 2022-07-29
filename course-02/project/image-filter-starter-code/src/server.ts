@@ -1,6 +1,9 @@
-import express from 'express';
+import express  from 'express';
+
+import { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+const validUrl = require('valid-url');
 
 (async () => {
 
@@ -30,15 +33,32 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   /**************************************************************************** */
 
   //! END @TODO1
-  
+  app.get( "/filteredimage", async (req: Request, res: Response) => {
+    let image_url = req.query.image_url;
+    
+    if (image_url && validUrl.isUri(image_url)) {
+      let filtered_url = await filterImageFromURL(image_url);
+      console.log(filtered_url);
+      res.status(200).sendFile(filtered_url,function () {
+          try {
+            deleteLocalFiles([filtered_url])  
+          } catch(e) {
+            console.log("error removing ", filtered_url); 
+        }
+      });
+
+    }
+    else {
+      res.status(400).send(`Add a valid url to image_url query`)
+    }
+  } );
   // Root Endpoint
   // Displays a simple message to the user
-  app.get( "/", async ( req, res ) => {
+  app.get( "/", async (req: Request, res: Response) => {
     res.send("try GET /filteredimage?image_url={{}}")
   } );
-  
-
   // Start the Server
+
   app.listen( port, () => {
       console.log( `server running http://localhost:${ port }` );
       console.log( `press CTRL+C to stop server` );
