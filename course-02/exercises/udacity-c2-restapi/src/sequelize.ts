@@ -9,6 +9,7 @@ export const sequelize = new Sequelize({
   "username": c.username,
   "password": c.password,
   "database": c.database,
+  
   "host":     c.host,
 
   dialect: 'postgres',
