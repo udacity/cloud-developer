@@ -18,12 +18,11 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
     if ( !image_url ) {
       return res.status(400)
-      .send('URL is required');
+                .send('URL is required');
     }
+      const filteredpath = await filterImageFromURL(image_url);
+      res.sendFile(filteredpath,function() {deleteLocalFiles([filteredpath])});
 
-    const filteredpath = await filterImageFromURL(image_url);
-    res.sendFile(filteredpath,function() {deleteLocalFiles([filteredpath])});
-  
   });
   // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
   // GET /filteredimage?image_url={{URL}}
