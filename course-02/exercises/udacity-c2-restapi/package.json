@@ -21,12 +21,13 @@
     "aws-sdk": "^2.492.0",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
+    "dotenv": "^16.0.1",
     "email-validator": "^2.0.4",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "pg": "^7.11.0",
+    "pg": "^8.2.1",
     "reflect-metadata": "^0.1.13",
-    "sequelize": "^5.10.0",
+    "sequelize": "^4.44.4",
     "sequelize-typescript": "^0.6.11"
   },
   "devDependencies": {
