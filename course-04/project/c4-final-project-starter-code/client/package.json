@@ -18,7 +18,7 @@
     "@types/dateformat": "^3.0.1",
     "@types/jest": "26.0.24",
     "@types/node": "16.3.2",
-    "@types/react": "17.0.14",
+    "@types/react": "^18.0.15",
     "@types/react-dom": "17.0.9",
     "@types/react-router-dom": "^5.1.8",
     "@types/styled-components": "^5.1.11",
