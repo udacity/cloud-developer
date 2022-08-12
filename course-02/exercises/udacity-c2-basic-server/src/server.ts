@@ -7,9 +7,9 @@ import { Car, cars as cars_list } from './cars';
   let cars:Car[]  = cars_list;
 
   // Create an express application
-  const app = express(); 
+  const app = express();
   // Default port to listen
-  const port = 8082; 
+  const port = 8082;
   
   // Use middleware so post bodies 
   // are accessable as req.body.{{variable}}
