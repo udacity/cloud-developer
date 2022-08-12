@@ -6,13 +6,13 @@ import { Car, cars as cars_list } from './cars';
 (async () => {
   let cars:Car[]  = cars_list;
 
-  //Create an express applicaiton
+  // Create an express application
   const app = express(); 
-  //default port to listen
+  // Default port to listen
   const port = 8082; 
   
-  //use middleware so post bodies 
-  //are accessable as req.body.{{variable}}
+  // Use middleware so post bodies 
+  // are accessable as req.body.{{variable}}
   app.use(bodyParser.json()); 
 
   // Root URI call
