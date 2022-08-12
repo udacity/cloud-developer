@@ -45,7 +45,7 @@ This is a javascript object containing a list of cars. This will be useful for p
 This directory contains some simple unit functions (`units.ts`) and corresponding tests using Mocha and Chai (`units.tests.ts`).
 
 ***
-# Tasks
+# Tasks to attempt
 1. @TODO `./src/server.ts/`
 Add an endpoint to GET a list of cars.
 
