@@ -3,6 +3,8 @@
 This is a simple node-express server to explore and understand the Request-Response pattern.
 
 ***
+## Important update coming soon
+
 ## Getting Setup
 
 ### Installing project dependencies
