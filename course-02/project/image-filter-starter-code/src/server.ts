@@ -60,7 +60,9 @@ import { finished } from 'stream';
       } 
     }  
   } );
-  
+  app.get( "/", async ( req, res ) => {
+    res.status(200).send("pls go to /filteredimage")
+  } );
 
   // Start the Server
   app.listen( port, () => {
