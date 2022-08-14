@@ -21,8 +21,8 @@ export async function filterImageFromURL(inputURL: string): Promise<string> {
         .write(__dirname + outpath, (img) => {
           resolve(__dirname + outpath);
         });
-    } catch (error) {
-      reject(error);
+    } catch (err) {
+      resolve("no image found");
     }
   });
 }
@@ -34,6 +34,9 @@ export async function filterImageFromURL(inputURL: string): Promise<string> {
 //    files: Array<string> an array of absolute paths to files
 export async function deleteLocalFiles(files: Array<string>) {
   for (let file of files) {
-    fs.unlinkSync(file);
+    console.log(file);
+    if (file) {
+      fs.unlinkSync(file);
+    }
   }
 }
