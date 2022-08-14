@@ -6,7 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rimraf www/ || true",
-    "build": "npm run clean && tsc && cp package.json www/package.json && mkdir www/tmp/ && cd www && zip -r Archive.zip . && cd ..",
+    "build": "npm run clean",
+    "tsc": "tsc",
+    "filecopy": "node -e \"require('fs').copyFileSync('./package.json', './www/package.json')\"",
+    "tmp": "mkdirp .www/tmp/ && cd www && zip -r Archive.zip . && cd ..",
     "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts"
   },
   "repository": {
@@ -23,14 +26,16 @@
     "@types/bluebird": "^3.5.33",
     "@types/express": "^4.17.0",
     "@types/node": "^11.13.17",
+    "mkdirp": "^1.0.4",
+    "rimraf": "^3.0.2",
     "ts-node-dev": "^1.0.0-pre.40",
     "tslint": "^5.18.0",
     "typescript": "^3.5.3"
   },
   "dependencies": {
     "express": "^4.17.1",
-    "jimp": "^0.16.1",
-    "rimraf": "^3.0.2",
-    "lodash": "^4.17.15"
+    "jimp": "^0.16.0",
+    "lodash": "^4.17.15",
+    "zip-lib": "^0.7.3"
   }
 }
