@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import fs from "fs";
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
 (async () => {
@@ -12,6 +13,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
+  const directory:string = "/util/tmp/";
 
   // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
   // GET /filteredimage?image_url={{URL}}
@@ -29,8 +31,27 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   /**************************************************************************** */
 
+  app.get("/filteredimage", async ( req, res ) => {
+    var image_url = req.query.image_url;
+    if (!image_url) {
+      return;
+    }
+    var path = await filterImageFromURL(image_url);
+    res.status(200).sendFile(path);
+    fs.readdir(__dirname + directory, (err, files) => {
+      var listFile: string[] = [];
+      if (err)
+        console.log(err);
+      else {
+        files.forEach(file => {
+          listFile.push(__dirname + directory + file)
+        });
+        deleteLocalFiles(listFile);
+      }
+    })
+  } );
   //! END @TODO1
-  
+  //#GET_PASSES_THIS_REPO_UDACITY_PLEASE
   // Root Endpoint
   // Displays a simple message to the user
   app.get( "/", async ( req, res ) => {
