@@ -35,7 +35,7 @@ import { finished } from 'stream';
   // Root Endpoint
   // Displays a simple message to the user
   app.get( "/filteredimage/", async ( req, res ) => {
-    let { image_url } = req.query;
+    let { image_url } :{image_url:string} = req.query;
     console.log(image_url);
     if(!image_url) {
       res.status(400).send("Can't found an image");
