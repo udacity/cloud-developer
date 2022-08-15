@@ -12,9 +12,6 @@ import { type } from 'os';
   // Set the network port
   const port = process.env.PORT || 8082;
 
-  // regex to verify image_url format
-  const image_url_regex = /(http(s?):)([/|.|\w|\s|-])*\.(?:jpeg|jpg|gif|png|svg)/
-
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
 
@@ -36,24 +33,27 @@ import { type } from 'os';
   /**************************************************************************** */
 
   app.get("/filteredimage/", async (req: Request, res: Response) => {
-    const url_img: string = req.query;
+    let {image_url} = req.query;
 
-    if (!url_img) {
+    console.log(image_url);
+    console.log(typeof image_url);
+    if (!image_url) {
       return res.status(400).send({ auth: false, message: 'URL is required' });
     }
 
-    // if (url_img.match(image_url_regex)) {
-    //   return res.status(400).send({ auth: false, message: 'URL is invalid, url like : https://some_domain/some_paths/image_name.png/jpg' });
-    // }
-    await filterImageFromURL(url_img).then((response) => {
+    console.log(image_url);
+
+    await filterImageFromURL(image_url).then((response) => {
       if (response == "no image found") {
         return res.status(422).send("image processing failed");
       }
       res.status(200).sendFile(response);
-      deleteLocalFiles([response]);
+      res.on(`finish`, () => deleteLocalFiles([response]));
+      console.log("done");
     });
 
   });
+
   //! END @TODO1
 
   // Root Endpoint
