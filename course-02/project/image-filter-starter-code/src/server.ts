@@ -1,4 +1,4 @@
-// Importing Express Framework, valid-url for, bodyParser middleware and filter from
+// Importing Express Framework, bodyParser middleware and filter from 
 // ./util/util.ts file
 import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
