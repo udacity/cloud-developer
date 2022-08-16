@@ -1,7 +1,3 @@
-I can not find the environment I create and I have posted a question about that here:
-https://knowledge.udacity.com/questions/887073
-Please let me know if you know what is happening!!
-
 Elastic Beanstalk Endpoint:
 http://image-filter-starter-code-dev-dev.us-east-1.elasticbeanstalk.com
 
