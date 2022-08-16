@@ -10,6 +10,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   // Set the network port
   const port = process.env.PORT || 8082;
   
+  
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
 
@@ -34,9 +35,25 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   // Root Endpoint
   // Displays a simple message to the user
   app.get( "/", async ( req, res ) => {
-    res.send("try GET /filteredimage?image_url={{}}")
+    res.send("this is the home page URL ")
   } );
-  
+  app.get("/imagefiltering?image_url={{}}",async(req,res)=>{
+    
+    let { image_url } = req.params.image_url;
+    //we have to verify the url of the image.. 
+    const imageURL = image_url.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+
+    if(imageURL == null)
+      return res.status(400).send(`the image URL you have just entererd is invalid..`);
+      // else we process the image...
+    else{
+      const imageFilter = filterImageFromURL(image_url);
+      if(imageFilter===undefined||imageFilter===null)
+      return res.status(400).send(`filtering of the image impossible`);
+    else
+      return res.status(200).sendFile(imageFilter+'');
+    }
+  })
 
   // Start the Server
   app.listen( port, () => {
