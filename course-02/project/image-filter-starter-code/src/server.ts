@@ -30,7 +30,34 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   /**************************************************************************** */
 
   //! END @TODO1
+  // working url = https://www.humanesociety.org/sites/default/files/styles/1441x612/public/2022-07/kitten-playing-575035.jpg
+  // https://images.theconversation.com/files/443350/original/file-20220131-15-1ndq1m6.jpg
+  app.get("/filteredimage", async (req, res) => {
+    
+    const { image_url } = req.query;
+    
+    if (!image_url) {
+      return res.status(400).send("Image url is required!");
+    }
+
+    const filtered_image_path = await filterImageFromURL(image_url)
+    .then((img) => {
+      res.status(200).sendFile(img, (err) => {
+        if (err) {
+          return res.status(500);
+        }
+        deleteLocalFiles([img])
+      });
+
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(404).send('Image not found!');
+    });
+
+    });
   
+
   // Root Endpoint
   // Displays a simple message to the user
   app.get( "/", async ( req, res ) => {
