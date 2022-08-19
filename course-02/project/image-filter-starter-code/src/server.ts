@@ -1,5 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import fs from "fs"
+import path from "path"
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
 (async () => {
@@ -27,6 +29,36 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   // RETURNS
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
+
+  app.get( "/filteredimage", async ( req, res ) => {
+    try {
+      const {image_url} = req.query
+
+      if(!image_url) throw new Error("No image Url provided.")
+
+      const image = await filterImageFromURL(image_url)
+
+      if(image){
+        res.sendFile(image)
+      }else{
+        throw new Error("Could not process provided url, please try again.")
+      }
+      try {
+        const filePath = path.join(__dirname, 'util/tmp');
+
+        const files = fs.readdirSync(filePath)
+       
+        await deleteLocalFiles(files)
+      } catch (error) {
+        console.log(error)
+      }
+    } catch (error) {
+      throw new Error(`Error: ${error}`)
+    }
+    
+  } );
+  
+
   /**************************************************************************** */
 
   //! END @TODO1
@@ -36,7 +68,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   app.get( "/", async ( req, res ) => {
     res.send("try GET /filteredimage?image_url={{}}")
   } );
-  
+
 
   // Start the Server
   app.listen( port, () => {
