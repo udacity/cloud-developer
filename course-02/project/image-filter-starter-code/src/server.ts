@@ -36,7 +36,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
       if(!image_url) throw new Error("No image Url provided.")
 
-      const image = await filterImageFromURL(image_url)
+      const image:any = await filterImageFromURL(image_url)
 
       if(image){
         res.sendFile(image)
@@ -44,9 +44,9 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
         throw new Error("Could not process provided url, please try again.")
       }
       try {
-        const filePath = path.join(__dirname, 'util/tmp');
+        const filePath:string = path.join(__dirname, 'util/tmp');
 
-        const files = fs.readdirSync(filePath)
+        const files:Array<string> = fs.readdirSync(filePath)
        
         await deleteLocalFiles(files)
       } catch (error) {
