@@ -53,7 +53,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
         }
       })
     } catch {
-      res.status(400).send("There is something wrong!")
+      res.status(400).send("There is an issue")
     }
   } );
 
