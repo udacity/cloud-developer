@@ -22,10 +22,11 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
       return res.status(422).send("Image is not verified");
     } 
     const ImagePath = await filterImageFromURL(image_url);
-    res.status(200).sendFile(ImagePath);
-    return deleteLocalFiles([ImagePath]);
+    res.sendFile(ImagePath);
+    return res.on('finish', () => deleteLocalFiles([ImagePath]));
   });
   ////////////// Root Endpoint //////////////////////////////
+  
   // Displays a simple message to the user
   app.get( "/", async ( req, res ) => {
     res.send("try GET /filteredimage?image_url={{}}")
