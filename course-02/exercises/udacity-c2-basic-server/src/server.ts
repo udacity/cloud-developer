@@ -78,7 +78,7 @@ import { Car, cars as cars_list } from './cars';
   // it should fail gracefully if no matching car is found
 
   /// @TODO Add an endpoint to post a new car to our list
-  // it should require id, type, model, and cost
+  // it should require id, make, type, model, and cost
 
   // Start the Server
   app.listen( port, () => {
