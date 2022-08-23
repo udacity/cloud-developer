@@ -1,20 +1,20 @@
 export const config = {
   "dev": {
-    "username": "ceejaydb",
-    "password": "0xceejaydb",
-    "database": "ceejaydb",
-    "host": "ceejaydb.cmydjrbiczif.us-east-1.rds.amazonaws.com",
+    "username": process.env.POSTGRESS_USERNAME,
+    "password": process.env.POSTGRESS_processWORD,
+    "database": process.env.POSTGRESS_DATABASE,
+    "host": process.env.POSTGRESS_HOST,
     "dialect": "postgres",
-    "aws_region": "us-east-1",
-    "aws_profile": "default",
-    "aws_media_bucket": "udagram-ruttner-dev"
+    "aws_region": process.env.POSTGRESS_REGION,
+    "aws_profile": process.env.POSTGRESS_PROFILE,
+    "aws_media_bucket": process.env.POSTGRESS_BUCKET
   },
   "jwt": {
     "secret": " "
   },
   "prod": {
     "username": "",
-    "password": "",
+    "processword": "",
     "database": "",
     "host": "",
     "dialect": ""
