@@ -1,6 +1,6 @@
 # Server Link
 `http://image-filter-starter-code-dev222222222222222222222222.us-east-1.elasticbeanstalk.com/`
-> Note the image in the reubric has something wrong with it try any other image.
+> Note the image in the rebric has something wrong with it try any other image.
 
 # Udagram Image Filtering Microservice
 
