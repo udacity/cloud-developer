@@ -22,6 +22,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
       return res.status(422).send("Image is not verified");
     } 
     const ImagePath = await filterImageFromURL(image_url);
+    console.log(ImagePath);
     res.status(200).sendFile(ImagePath);
     //return res.on('finish', () => deleteLocalFiles([ImagePath]));
   });
