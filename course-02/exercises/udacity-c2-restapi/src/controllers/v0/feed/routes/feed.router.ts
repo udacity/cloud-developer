@@ -18,14 +18,49 @@ router.get('/', async (req: Request, res: Response) => {
 
 //@TODO
 //Add an endpoint to GET a specific resource by Primary Key
+router.get('/:id', async (req: Request, res: Response) => {
+    let { id } = req.params;
+    const items = await FeedItem.findByPk(Number(id));
+    if (items == null) {
+        return res.send(`no items with the ID ${id} is found`);
+    }
+    res.send(items);
+});
+
 
 // update a specific resource
-router.patch('/:id', 
-    requireAuth, 
+router.patch('/:id',
+    requireAuth,
     async (req: Request, res: Response) => {
         //@TODO try it yourself
-        res.status(500).send("not implemented")
-});
+        let { id } = req.params;
+        const items = await FeedItem.findByPk(Number(id));
+        if (items == null) {
+            return res.send(`no items with the ID ${id} is found`);
+        }
+        const caption = req.body.caption;
+        const url = req.body.url;
+        if (!caption && !url) {
+            return res.status(400)
+                .send(`At least 1 field is required`);
+        }
+        if (caption) {
+            await FeedItem.update({ caption: caption }, {
+                where: {
+                    id: id
+                }
+            });
+        }
+        if (url) {
+            await FeedItem.update({ url: url }, {
+                where: {
+                    id: id
+                }
+            });
+        }
+        res.status(200).send("update done")
+    });
+
 
 
 // Get a signed url to put a new item in the bucket

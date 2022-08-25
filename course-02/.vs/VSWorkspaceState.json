@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\exercises",
+    "\\exercises\\udacity-c2-restapi",
+    "\\exercises\\udacity-c2-restapi\\.elasticbeanstalk",
+    "\\exercises\\udacity-c2-restapi\\src",
+    "\\exercises\\udacity-c2-restapi\\src\\controllers",
+    "\\exercises\\udacity-c2-restapi\\src\\controllers\\v0",
+    "\\exercises\\udacity-c2-restapi\\src\\controllers\\v0\\feed",
+    "\\exercises\\udacity-c2-restapi\\src\\controllers\\v0\\feed\\routes",
+    "\\exercises\\udacity-c2-restapi\\www"
+  ],
+  "SelectedNode": "\\exercises\\udacity-c2-restapi\\package.json",
+  "PreviewInSolutionExplorer": false
+}
