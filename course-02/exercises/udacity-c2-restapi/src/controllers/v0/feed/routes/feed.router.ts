@@ -20,11 +20,19 @@ router.get('/', async (req: Request, res: Response) => {
 //Add an endpoint to GET a specific resource by Primary Key
 
 // update a specific resource
-router.patch('/:id', 
+router.get('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
         //@TODO try it yourself
-        res.status(500).send("not implemented")
+        let { id } = req.params;
+        const item = await FeedItem.findByPk(id);
+        if(!item){
+            res.status(404).send("not found")
+        }
+        if(item.url) {
+            item.url = AWS.getGetSignedUrl(item.url);
+        }
+        res.status(200).send(item)
 });
 
 
