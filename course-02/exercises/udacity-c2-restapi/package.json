@@ -16,7 +16,6 @@
   "author": "Gabriel Ruttner",
   "license": "ISC",
   "dependencies": {
-    "@types/bcrypt": "^5.0.0",
     "@types/jsonwebtoken": "^8.5.8",
     "aws-sdk": "^2.1199.0",
     "bcrypt": "^5.0.1",
@@ -31,6 +30,7 @@
     "sequelize-typescript": "^0.6.11"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/bluebird": "^3.5.36",
     "@types/express": "^4.17.13",
     "@types/node": "^18.7.9",
