@@ -19,12 +19,8 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   if(!image_url){
     return res.status(400).send({ message: 'Invalid Url' });
   }
-   const filteredImage = await filterImageFromURL(image_url)
- 
-    res.sendFile( filteredImage)
-    
- res.on("finish" ,() => deleteLocalFiles( [ filteredImage])  )
-    
+
+    res.send( "/api/v0/" );
 
   } );
 

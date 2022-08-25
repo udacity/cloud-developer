@@ -20,10 +20,10 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     return res.status(400).send({ message: 'Invalid Url' });
   }
    const filteredImage = await filterImageFromURL(image_url)
- 
+   console.log(filteredImage)
     res.sendFile( filteredImage)
     
- res.on("finish" ,() => deleteLocalFiles( [ filteredImage])  )
+ //res.on("finish" , deleteLocalFiles( [ filteredImage])  )
     
 
   } );
