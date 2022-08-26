@@ -17,7 +17,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
        let { image_url } :{image_url:string} = req.query;
 
     if ( !image_url ) {
-      return res.status(400)
+      return res.status(422)
                 .send({message: 'URL is not provided'})
     }
 
