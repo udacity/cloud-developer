@@ -18,13 +18,54 @@ router.get('/', async (req: Request, res: Response) => {
 
 //@TODO
 //Add an endpoint to GET a specific resource by Primary Key
+router.get('/:id', async (req: Request, res: Response) => {
+
+    const { id } = req.params;
+    
+    if(id == undefined){
+        return "error";
+    }
+
+    const item = await FeedItem.findByPk(id).then((item) => {
+        if(!item){
+            return 'Not Found';
+        }
+        return item;
+    });
+    
+    res.send(item);
+});
 
 // update a specific resource
-router.patch('/:id', 
+router.patch('/:id',
     requireAuth, 
     async (req: Request, res: Response) => {
-        //@TODO try it yourself
-        res.status(500).send("not implemented")
+        
+        const { id } = req.params;
+        const caption = req.body.caption;
+        const fileName = req.body.url;
+    
+        if(id == undefined){
+            return "error";
+        }
+
+        let item: FeedItem = await FeedItem.findByPk(id).then((item) => {
+            if(!item){
+                return null;
+            }
+            return item;
+        });
+
+        if(item === null){
+            return "Item Not Found"
+        }
+
+        item.caption = caption;
+        item.url = fileName;
+
+        const saved_item = await item.save();
+
+        res.status(200).send(saved_item)
 });
 
 
