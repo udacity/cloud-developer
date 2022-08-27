@@ -2,15 +2,18 @@
   "ExpandedNodes": [
     "",
     "\\exercises",
-    "\\exercises\\udacity-c2-restapi",
-    "\\exercises\\udacity-c2-restapi\\.elasticbeanstalk",
+    "\\exercises\\udacity-c2-basic-server\\src",
     "\\exercises\\udacity-c2-restapi\\src",
     "\\exercises\\udacity-c2-restapi\\src\\controllers",
     "\\exercises\\udacity-c2-restapi\\src\\controllers\\v0",
-    "\\exercises\\udacity-c2-restapi\\src\\controllers\\v0\\feed",
-    "\\exercises\\udacity-c2-restapi\\src\\controllers\\v0\\feed\\routes",
-    "\\exercises\\udacity-c2-restapi\\www"
+    "\\exercises\\udacity-c2-restapi\\src\\controllers\\v0\\users",
+    "\\exercises\\udacity-c2-restapi\\src\\controllers\\v0\\users\\routes",
+    "\\project",
+    "\\project\\image-filter-starter-code",
+    "\\project\\image-filter-starter-code\\.elasticbeanstalk",
+    "\\project\\image-filter-starter-code\\deployment_screenshots",
+    "\\project\\image-filter-starter-code\\src"
   ],
-  "SelectedNode": "\\exercises\\udacity-c2-restapi\\package.json",
+  "SelectedNode": "\\project\\image-filter-starter-code\\.elasticbeanstalk\\config.yml",
   "PreviewInSolutionExplorer": false
 }
