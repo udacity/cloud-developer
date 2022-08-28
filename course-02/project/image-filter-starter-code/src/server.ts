@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import {Request, Response} from "express";
 
 (async () => {
 
@@ -15,7 +16,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   
   ///////// @TODO1 IMPLEMENT A RESTFUL ENDPOINT ///////////////
-  app.get("/filteredimage", async (req, res) => {
+  app.get("/filteredimage", async (req: Request, res: Response) => {
     const { image_url } = req.query;
 
     if (!image_url) {
